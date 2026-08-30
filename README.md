@@ -25,6 +25,24 @@ mismo commit. El API interno necesita ver este directorio: en el monorepo lo
 resuelve solo, en un deploy separado hay que montarlo y apuntar
 `MKT_PROJECT_DIR`.
 
+## Cómo llega a producción
+
+El sitio se sirve desde **Coolify** (VPS propio), buildeado **desde este repo en
+GitHub**: `elippser/internal_app-public-website`, rama `master`. `bookfer.com` y
+`www.bookfer.com` son registros A al VPS.
+
+Guardar un archivo —desde el panel o desde tu editor— **no publica nada**:
+escribe el working tree y ahí queda. Publicar es commit + push + build, y el
+push por sí solo tampoco alcanza, porque la app de Coolify no tiene webhook: el
+build se pide por su API.
+
+Las dos formas de hacer esos tres pasos:
+
+- **Marketing › Sitio › Publicar** en el panel interno. Lista qué archivos se
+  suben, commitea con tu usuario, pushea y dispara el build mostrando en qué
+  etapa va. Necesita `MKT_COOLIFY_APP_UUID` en el `.env` del API interno.
+- **A mano:** `git push` y después disparar el deploy en Coolify.
+
 ## Estructura
 
 ```
