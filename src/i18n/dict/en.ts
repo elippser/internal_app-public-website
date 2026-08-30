@@ -329,6 +329,8 @@ const en: Dictionary = {
     submit: "Send",
     sending: "Sending…",
     honeypot: "Do not fill in",
+    errorGeneric: "We couldn't send it.",
+    errorRate: "Too many submissions in a row.",
     errorTail: "If it keeps failing, write to us at hola@bookfer.com.",
     legal:
       "We use your details only to contact you about bookfer. You can ask us to delete them whenever you want. More in the [privacy policy](/legal/privacidad).",

@@ -57,6 +57,7 @@ src/i18n/
 src/app/
   globals.css                 el sistema de diseño: tokens y primitivas
   sitemap.ts / robots.ts      se arman solos desde `i18n/routes.ts`
+  api/lead/route.ts           reenvía el formulario al API interno (hay CORS de por medio)
   [lang]/
     layout.tsx                <html lang>, header, footer, metadata, pixels
     page.tsx                  la home
@@ -166,10 +167,16 @@ plan**, no en la tabla.
 
 ## Captura de leads
 
-`LeadForm` postea desde el navegador a `POST /public/mkt/leads`. El API interno
-tiene que aceptar el origen del sitio: hay una allowlist en
-`internal-laupser/api/src/index.ts` que ya incluye `bookfer.com`,
-`www.bookfer.com` y `localhost:6300`, ampliable con `PUBLIC_SITE_ORIGINS`.
+`LeadForm` postea a `/api/lead` —de este mismo sitio— y esa route handler
+reenvía al API interno desde el servidor. **No postea directo**, y el rodeo no
+es opcional: el API interno sólo autoriza por CORS el origen del panel, así que
+un POST desde `bookfer.com` lo corta el navegador y el lead se pierde sin dejar
+rastro. Es el mismo camino que ya usan los precios, que por eso sí funcionan.
+
+De paso, la handler resuelve dos cosas más: pone su propio rate-limit contra la
+IP real del visitante (el del API interno cuenta por IP y desde acá todos los
+envíos comparten la del servidor) y manda el idioma dentro de `utm.lang`,
+porque el schema del endpoint rechaza cualquier clave que no conozca.
 
 ## Pixels
 

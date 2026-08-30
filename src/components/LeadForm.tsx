@@ -3,21 +3,18 @@
 import { useState, type FormEvent } from "react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dict/es";
-import { internalApiUrl, siteConfig } from "@/lib/siteConfig";
+import { siteConfig } from "@/lib/siteConfig";
 import { renderRich } from "./site/RichText";
 import styles from "./LeadForm.module.css";
 
 /**
  * Captura de leads del sitio público.
  *
- * Postea directo al API interno (`POST /public/mkt/leads`), que es público y
- * no pide JWT: crea o reusa la cuenta en el CRM y emite `lead.captured`. No
- * pasa por una route handler de Next a propósito — no hay nada que esconder
- * en el medio y así el sitio puede quedar estático.
- *
- * Ojo con el CORS: al postear desde el navegador, el API interno tiene que
- * aceptar el origen del sitio público (`bookfer.com` y `www.bookfer.com`),
- * además del panel. Está resuelto con una allowlist en `internal-laupser/api`.
+ * Postea a `/api/lead`, de este mismo sitio, y desde ahí el servidor reenvía
+ * al API interno. El rodeo es obligatorio: el API interno sólo autoriza por
+ * CORS el origen del panel, así que un POST directo desde `bookfer.com` lo
+ * corta el navegador y el lead se pierde en silencio. El porqué completo está
+ * en `src/app/api/lead/route.ts`.
  *
  * Las UTM se leen de la URL en el submit, no en el render: leerlas antes
  * obligaría a que el componente sea dinámico y rompería el prerender.
@@ -57,7 +54,7 @@ export default function LeadForm({
     for (const [k, v] of params) if (k.startsWith("utm_")) utm[k] = v;
 
     try {
-      const res = await fetch(`${internalApiUrl}/public/mkt/leads`, {
+      const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -75,11 +72,16 @@ export default function LeadForm({
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body?.error ?? "Error");
+        // Al visitante no le decimos "upstream": son códigos nuestros. Sólo
+        // el 429 merece un texto propio, porque es lo único que puede
+        // resolver esperando.
+        setError(body?.error === "rate_limited" ? t.errorRate : t.errorGeneric);
+        setState("error");
+        return;
       }
       setState("sent");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error");
+    } catch {
+      setError(t.errorGeneric);
       setState("error");
     }
   };
@@ -184,7 +186,7 @@ export default function LeadForm({
 
       {error && (
         <p role="alert" className={styles.error}>
-          {error}. {t.errorTail}
+          {error} {t.errorTail}
         </p>
       )}
 

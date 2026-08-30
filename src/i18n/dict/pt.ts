@@ -329,6 +329,8 @@ const pt: Dictionary = {
     submit: "Enviar",
     sending: "Enviando…",
     honeypot: "Não preencher",
+    errorGeneric: "Não conseguimos enviar.",
+    errorRate: "Envios demais seguidos.",
     errorTail: "Se continuar falhando, escreva para hola@bookfer.com.",
     legal:
       "Usamos seus dados só para falar com você sobre o bookfer. Pode pedir para apagá-los quando quiser. Mais na [política de privacidade](/legal/privacidad).",

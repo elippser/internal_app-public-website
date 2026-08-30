@@ -333,6 +333,8 @@ const es = {
     submit: "Enviar",
     sending: "Enviando…",
     honeypot: "No completar",
+    errorGeneric: "No pudimos enviarlo.",
+    errorRate: "Demasiados envíos seguidos.",
     errorTail: "Si sigue fallando, escribinos a hola@bookfer.com.",
     legal:
       "Usamos tus datos sólo para contactarte sobre bookfer. Podés pedirnos que los borremos cuando quieras. Más en la [política de privacidad](/legal/privacidad).",

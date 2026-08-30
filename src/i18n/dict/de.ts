@@ -329,6 +329,8 @@ const de: Dictionary = {
     submit: "Senden",
     sending: "Wird gesendet…",
     honeypot: "Nicht ausfüllen",
+    errorGeneric: "Wir konnten es nicht senden.",
+    errorRate: "Zu viele Sendungen hintereinander.",
     errorTail: "Wenn es weiterhin fehlschlägt, schreiben Sie uns an hola@bookfer.com.",
     legal:
       "Wir verwenden Ihre Daten nur, um Sie zu bookfer zu kontaktieren. Sie können jederzeit ihre Löschung verlangen. Mehr in der [Datenschutzerklärung](/legal/privacidad).",
