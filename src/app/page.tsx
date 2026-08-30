@@ -85,7 +85,7 @@ export default function HomePage() {
           <section className="hero">
               <h1 className="headline" id="headline">
                   <div className="line line-1">
-                      <span className="word"><span>Business</span></span>
+                      <span className="word"><span>Puto el que lee</span></span>
                       <span className="word"><span>Teams</span></span>
                   </div>
                   <div className="line line-2">
