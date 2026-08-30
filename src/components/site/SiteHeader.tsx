@@ -1,0 +1,258 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import type { Locale } from "@/i18n/config";
+import { localizedHref as localePath } from "@/i18n/routes";
+import type { Dictionary } from "@/i18n/dict/es";
+import { loginUrl, registerUrl } from "@/lib/siteConfig";
+import LangSwitcher from "./LangSwitcher";
+import Logo from "./Logo";
+import { MAIN_NAV, PRODUCT_GROUPS, PRODUCT_HREFS } from "./nav";
+import styles from "./SiteHeader.module.css";
+
+/**
+ * Header del sitio.
+ *
+ * Es el único componente del chrome que necesita ser cliente, y por cuatro
+ * cosas concretas: el mega menú, el cajón de móvil, la sombra al scrollear y
+ * el selector de idioma. El resto del sitio es HTML servido.
+ *
+ * El mega menú abre con el mouse y también con el teclado (es un `<button>` con
+ * `aria-expanded`, no un `:hover` de CSS): la mitad de las auditorías de
+ * accesibilidad de sitios de SaaS se caen justo ahí.
+ */
+export default function SiteHeader({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+}) {
+  const [scrolled, setScrolled] = useState(false);
+  const [megaOpen, setMegaOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const pathname = usePathname();
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** El mega menú quedó "fijado" por un clic y no lo cierra el hover. */
+  const pinned = useRef(false);
+
+  const path = (href: string) => localePath(locale, href);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Navegar cierra todo. Sin esto el cajón queda abierto sobre la página nueva,
+  // porque el App Router no desmonta el layout entre rutas.
+  useEffect(() => {
+    pinned.current = false;
+    setMegaOpen(false);
+    setDrawerOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      pinned.current = false;
+      setMegaOpen(false);
+      setDrawerOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Con el cajón abierto el fondo no se scrollea: en iOS, si no, se mueve la
+  // página de atrás y el cajón parece roto.
+  useEffect(() => {
+    document.body.style.overflow = drawerOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [drawerOpen]);
+
+  /**
+   * El mega menú abre con el mouse y se puede *fijar* con un clic.
+   *
+   * Sin lo de fijar, el patrón obvio está roto: el mouse pasa por encima, el
+   * hover lo abre, la persona hace clic —que es lo que uno hace con un menú— y
+   * el clic lo cierra, porque para el componente ya estaba abierto. Se ve como
+   * si el botón no funcionara.
+   */
+  const openMega = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setMegaOpen(true);
+  };
+
+  // El cierre por hover va con retardo: entre el botón y el panel hay 10px de
+  // aire y sin la gracia se cierra mientras el mouse los cruza.
+  const closeMega = () => {
+    if (pinned.current) return;
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setMegaOpen(false), 140);
+  };
+
+  const toggleMega = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    if (megaOpen && pinned.current) {
+      pinned.current = false;
+      setMegaOpen(false);
+      return;
+    }
+    pinned.current = true;
+    setMegaOpen(true);
+  };
+
+  // Un clic fuera del header cierra el menú fijado. Sin esto, la única forma de
+  // sacarlo es volver a apuntarle al botón.
+  useEffect(() => {
+    if (!megaOpen) return;
+    const onDown = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("header")) return;
+      pinned.current = false;
+      setMegaOpen(false);
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [megaOpen]);
+
+  return (
+    <header className={styles.wrap}>
+      <div className={[styles.bar, scrolled ? styles.barScrolled : ""].join(" ")}>
+        <Link href={path("/")} className={styles.brand} aria-label={dict.nav.home}>
+          <Logo id="logo-header" />
+        </Link>
+
+        <nav className={styles.nav} aria-label={dict.nav.primary}>
+          <button
+            type="button"
+            className={[styles.navItem, megaOpen ? styles.navItemOpen : ""].join(" ")}
+            aria-expanded={megaOpen}
+            aria-haspopup="true"
+            onClick={toggleMega}
+            onMouseEnter={openMega}
+            onMouseLeave={closeMega}
+            onFocus={openMega}
+          >
+            {dict.nav.product}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+
+          {MAIN_NAV.map((item) => (
+            <Link key={item.href} href={path(item.href)} className={styles.navItem}>
+              {dict.nav.links[item.key]}
+            </Link>
+          ))}
+        </nav>
+
+        <div className={styles.actions}>
+          <LangSwitcher locale={locale} label={dict.nav.language} />
+          <a className={styles.login} href={loginUrl}>
+            {dict.nav.login}
+          </a>
+          <a className={["btn", "btn-primary", styles.cta].join(" ")} href={registerUrl}>
+            {dict.nav.signup}
+          </a>
+          <button
+            type="button"
+            className={styles.burger}
+            aria-expanded={drawerOpen}
+            aria-label={drawerOpen ? dict.nav.closeMenu : dict.nav.openMenu}
+            onClick={() => setDrawerOpen((v) => !v)}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+              {drawerOpen ? (
+                <>
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                </>
+              ) : (
+                <>
+                  <line x1="3.5" y1="8" x2="20.5" y2="8" />
+                  <line x1="3.5" y1="16" x2="20.5" y2="16" />
+                </>
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {megaOpen && (
+          <div
+            className={styles.megaWrap}
+            onMouseEnter={openMega}
+            onMouseLeave={closeMega}
+          >
+            <div className={styles.mega}>
+              {PRODUCT_GROUPS.map((group) => (
+                <div key={group.key} className={styles.megaGroup}>
+                  <p className={styles.megaLabel}>{dict.nav.groups[group.key]}</p>
+                  {group.items.map((key) => (
+                    <Link key={key} href={path(PRODUCT_HREFS[key])} className={styles.megaItem}>
+                      <span className={styles.megaTitle}>{dict.nav.products[key].title}</span>
+                      <span className={styles.megaDesc}>{dict.nav.products[key].desc}</span>
+                    </Link>
+                  ))}
+                </div>
+              ))}
+              <div className={styles.megaFoot}>
+                <span className={styles.megaFootText}>{dict.nav.megaFoot}</span>
+                <Link href={path("/producto")} className="link-arrow">
+                  {dict.nav.megaLink}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <line x1="4" y1="12" x2="19" y2="12" />
+                    <polyline points="13 6 19 12 13 18" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {drawerOpen && (
+        <div className={styles.drawer} id="menu-movil">
+          {PRODUCT_GROUPS.map((group) => (
+            <div key={group.key} className={styles.drawerGroup}>
+              <p className={styles.drawerLabel}>{dict.nav.groups[group.key]}</p>
+              {group.items.map((key) => (
+                <Link key={key} href={path(PRODUCT_HREFS[key])} className={styles.drawerLink}>
+                  {dict.nav.products[key].title}
+                  <span className={styles.drawerDesc}>{dict.nav.products[key].desc}</span>
+                </Link>
+              ))}
+            </div>
+          ))}
+          <div className={styles.drawerGroup}>
+            <p className={styles.drawerLabel}>{dict.nav.more}</p>
+            <Link href={path("/producto")} className={styles.drawerLink}>
+              {dict.nav.platform}
+            </Link>
+            {MAIN_NAV.map((item) => (
+              <Link key={item.href} href={path(item.href)} className={styles.drawerLink}>
+                {dict.nav.links[item.key]}
+              </Link>
+            ))}
+            <Link href={path("/contacto")} className={styles.drawerLink}>
+              {dict.nav.contact}
+            </Link>
+          </div>
+          <div className={styles.drawerActions}>
+            <a className={["btn", "btn-primary", "btn-lg"].join(" ")} href={registerUrl}>
+              {dict.nav.signup}
+            </a>
+            <a className={["btn", "btn-ghost", "btn-lg"].join(" ")} href={loginUrl}>
+              {dict.nav.login}
+            </a>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}

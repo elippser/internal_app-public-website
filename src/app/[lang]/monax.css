@@ -1,0 +1,241 @@
+/* ============================================================================
+ * El hero de la home: el headline del template original (el landing de GSAP),
+ * conservado por decisión de diseño. SOLO el hero — el resto de aquella
+ * plantilla (header de pastillas, columnas, features, cta) se descartó y la
+ * home sigue con las secciones del sistema de `globals.css`.
+ *
+ * Tres diferencias con el original:
+ * - La tipografía es la del sistema nuevo: Inter 600 con tracking -0.035em y
+ *   la línea final en Instrument Serif itálica verde, como el resto del sitio
+ *   (el original era Inter 800 a secas).
+ * - El chip y la píldora ya NO nacen en `scale(0)` desde CSS: ese estado lo
+ *   pone GSAP al iniciar. Sin JavaScript, el hero se ve completo y quieto.
+ * - `.monax` scopea lo poco que queda de tokens del template para no pisar
+ *   los del sistema.
+ *
+ * El movimiento vive en `src/components/home.animation.js` (GSAP +
+ * ScrollTrigger de CDN, disparado por `HomeScripts.tsx`): máscaras de palabra
+ * que suben, chip y píldora con pop elástico, flotación continua, hover con
+ * rebote y el fade del headline al scrollear.
+ * ========================================================================== */
+
+.monax {
+    /* Lo único que el hero usa del set de tokens viejo. */
+    --mx-green: #bfd58f;
+}
+
+.monax .hero {
+    /* El original tenía su header en flujo; ahora arriba está la cápsula fija
+       del sitio y el hero necesita despejarla. */
+    padding: clamp(120px, 14vw, 172px) 40px 24px;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+}
+
+.monax .headline {
+    /* Tipografía del sistema nuevo, no la del template. */
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(44px, 7.2vw, 118px);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--text);
+    max-width: 1300px;
+    margin: 0 auto;
+    text-wrap: balance;
+}
+
+.monax .headline .line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    overflow: visible;
+    padding: 4px 0;
+}
+
+/* La máscara del reveal: cada palabra vive en una ventana con overflow oculto
+   y su span sube desde 105%. El padding compensa los descendentes. */
+.monax .headline .word {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+}
+
+.monax .headline .word>span {
+    display: inline-block;
+}
+
+/* La línea final, en la voz del resto del sitio: serif editorial itálica en
+   el verde de marca. */
+.monax .headline .word-serif>span {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    color: var(--brand);
+}
+
+/* ------------------------------------------------------- chip de imagen --- */
+
+.monax .inline-img {
+    display: inline-block;
+    width: clamp(110px, 13vw, 205px);
+    height: clamp(56px, 6.9vw, 108px);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 18px 30px -10px rgba(80, 60, 20, 0.35),
+        0 6px 12px -3px rgba(80, 60, 20, 0.18),
+        inset 0 2px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -3px 6px rgba(80, 40, 0, 0.18);
+    background: linear-gradient(135deg,
+            #ffd66b 0%,
+            #ffaa4b 35%,
+            #e26a4d 70%,
+            #4d9cc6 100%);
+    will-change: transform;
+}
+
+.monax .inline-img::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 60%,
+            rgba(78, 162, 200, 0.55),
+            transparent 50%),
+        radial-gradient(circle at 30% 30%,
+            rgba(255, 255, 255, 0.3),
+            transparent 50%);
+    pointer-events: none;
+}
+
+.monax .inline-img::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* La ilusión de tubo enrollado del original. */
+    background: repeating-linear-gradient(95deg,
+            transparent 0 6px,
+            rgba(0, 0, 0, 0.08) 6px 7px),
+        linear-gradient(155deg,
+            rgba(255, 255, 255, 0.18) 0%,
+            transparent 30%,
+            transparent 70%,
+            rgba(60, 30, 0, 0.18) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+/* ------------------------------------------------------- píldora verde ---- */
+
+.monax .idea-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--mx-green);
+    border-radius: 999px;
+    padding: 8px 12px 8px 22px;
+    box-shadow: 0 14px 24px -10px rgba(60, 100, 30, 0.3),
+        0 5px 10px -2px rgba(60, 100, 30, 0.15),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -2px 4px rgba(60, 100, 30, 0.2);
+    will-change: transform;
+}
+
+.monax .idea-pill .txt {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(11px, 1.15vw, 17px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    text-align: left;
+}
+
+.monax .idea-pill .leaf {
+    width: clamp(38px, 4.8vw, 70px);
+    height: clamp(38px, 4.8vw, 70px);
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 12px -2px rgba(60, 100, 30, 0.4),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -2px 4px rgba(40, 80, 20, 0.4);
+    background: radial-gradient(circle at 35% 35%,
+            #d7f08c 0%,
+            #8fb852 40%,
+            #4a6e22 100%);
+    flex-shrink: 0;
+}
+
+.monax .idea-pill .leaf::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 70% 70%,
+            transparent 30%,
+            rgba(0, 0, 0, 0.15) 60%,
+            transparent 80%),
+        radial-gradient(circle at 30% 80%,
+            rgba(255, 255, 255, 0.2),
+            transparent 40%);
+}
+
+.monax .idea-pill .leaf::after {
+    content: "";
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at 30% 30%, #c8e078, #5c7b30);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+}
+
+/* --------------------------------------------------- CTA bajo el titular -- */
+
+/* Botones y notas del sistema nuevo, dentro del hero del template. GSAP los
+   hace entrar al final de la intro (clase .monax-cta). */
+.monax .monax-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin-top: clamp(26px, 3vw, 40px);
+}
+
+/* ------------------------------------------------------------ responsive -- */
+
+/* Los textos de bookfer son más largos que los del template original
+   ("alojamiento" contra "Teams"): en pantallas chicas el headline envuelve en
+   vez de cortarse. */
+@media (max-width: 700px) {
+    .monax .hero {
+        padding-inline: 18px;
+    }
+
+    .monax .headline {
+        font-size: clamp(34px, 10.5vw, 64px);
+    }
+
+    .monax .headline .line {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        row-gap: 4px;
+    }
+
+    .monax .inline-img {
+        width: 96px;
+        height: 52px;
+    }
+
+    .monax .idea-pill {
+        transform: scale(0.82);
+    }
+}

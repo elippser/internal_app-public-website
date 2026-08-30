@@ -1,0 +1,111 @@
+/* Comparativa de planes. Es una tabla de verdad —`<table>`— porque es una
+   tabla: se lee con lector de pantalla, se copia y se imprime. */
+
+.wrap {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.table th,
+.table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-top: 1px solid var(--line);
+}
+
+.table thead th {
+    border-top: 0;
+    position: sticky;
+    top: 0;
+    background: var(--paper-2);
+    z-index: 1;
+}
+
+.colProduct {
+    width: 44%;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--text);
+}
+
+.colProduct span {
+    display: block;
+    font-weight: 400;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--text-3);
+    margin-top: 2px;
+}
+
+.planHead {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    text-align: center;
+}
+
+.planHead b {
+    display: block;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-3);
+    margin-top: 3px;
+}
+
+.cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.yes {
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--brand-soft);
+    color: var(--brand);
+}
+
+.yes svg {
+    width: 12px;
+    height: 12px;
+}
+
+.no {
+    color: var(--line-2);
+    font-size: 15px;
+}
+
+.groupRow th {
+    background: var(--paper-2);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-3);
+}
+
+.limit {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text-2);
+}
+
+.note {
+    margin-top: 14px;
+    font-size: 12.8px;
+    color: var(--text-3);
+}

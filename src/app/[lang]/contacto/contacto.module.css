@@ -1,0 +1,82 @@
+.wrap {
+    padding-top: clamp(112px, 13vw, 168px);
+    padding-bottom: clamp(40px, 5vw, 64px);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(30px, 5vw, 72px);
+    align-items: start;
+}
+
+.aside {
+    max-width: 52ch;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: clamp(20px, 3vw, 32px);
+    box-shadow: var(--shadow);
+}
+
+.direct {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+}
+
+.directLabel {
+    font-size: 12.5px;
+    color: var(--text-3);
+    margin-bottom: 12px;
+}
+
+.directLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    height: 40px;
+    padding-inline: 16px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-2);
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.directLink:hover {
+    background: #fff;
+    border-color: var(--brand);
+    color: var(--brand);
+}
+
+.directLink svg {
+    width: 17px;
+    height: 17px;
+    flex: none;
+}
+
+.shortcut {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: clamp(20px, 3vw, 30px);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--paper-2);
+}
+
+@media (max-width: 880px) {
+    .grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

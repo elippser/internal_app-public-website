@@ -1,0 +1,1267 @@
+/* ============================================================================
+ * Viñetas de producto.
+ *
+ * Son mini-renders en HTML y CSS de pantallas que existen de verdad: el tape
+ * chart del hub Reservas, el calendario informativo del motor, la tarjeta de
+ * decisión del RMS, el turno del agente. No son capturas.
+ *
+ * El motivo es práctico antes que estético: una captura queda vieja al mes
+ * siguiente, pesa, y no se puede leer en un lector de pantalla. Esto pesa cero,
+ * escala a cualquier ancho y se corrige editando un archivo.
+ * ========================================================================== */
+
+.frame {
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.frameInk {
+    border-color: var(--line-ink);
+    background: #191b14;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.36);
+}
+
+.bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(20, 21, 15, 0.02);
+}
+
+.frameInk .bar {
+    border-color: var(--line-ink);
+    background: rgba(242, 239, 232, 0.03);
+}
+
+.dots {
+    display: flex;
+    gap: 5px;
+    flex: none;
+}
+
+.dots i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--line-2);
+}
+
+.frameInk .dots i {
+    background: rgba(242, 239, 232, 0.2);
+}
+
+.barLabel {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-3);
+}
+
+.frameInk .barLabel {
+    color: var(--text-ink-3);
+}
+
+.barTag {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-3);
+    letter-spacing: -0.01em;
+}
+
+.frameInk .barTag {
+    color: var(--text-ink-3);
+}
+
+.body {
+    padding: 14px;
+}
+
+/* ---------------------------------------------------------- tape chart ---- */
+
+.tape {
+    display: grid;
+    grid-template-columns: 74px repeat(14, minmax(0, 1fr));
+    gap: 4px;
+    align-items: center;
+}
+
+.tapeHead {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    text-align: center;
+    color: var(--text-3);
+    padding-bottom: 2px;
+}
+
+.tapeUnit {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-2);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tapeCell {
+    height: 22px;
+    border-radius: 5px;
+    background: rgba(20, 21, 15, 0.045);
+}
+
+.tapeBar {
+    height: 22px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding-inline: 7px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.barConfirmed {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.barPending {
+    background: #fff;
+    border: 1px dashed var(--amber);
+    color: var(--amber);
+}
+
+.barLive {
+    background: var(--brand-bright);
+    color: var(--ink);
+    box-shadow: 0 0 0 1px rgba(78, 107, 40, 0.25);
+}
+
+.barBlock {
+    background: repeating-linear-gradient(45deg,
+            rgba(20, 21, 15, 0.14) 0 4px,
+            rgba(20, 21, 15, 0.05) 4px 8px);
+    color: var(--text-2);
+}
+
+.tapeFoot {
+    /* A la derecha: en la portada, la tarjeta de "bookfer ia" flota sobre la
+       esquina inferior izquierda del calendario y taparía la leyenda. */
+    justify-content: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 12px;
+    padding-top: 11px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--text-3);
+}
+
+.legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend i {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex: none;
+}
+
+/* ---------------------------------------------- calendario del motor ------ */
+
+.cal {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 4px;
+}
+
+.calDow {
+    text-align: center;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    padding-bottom: 4px;
+}
+
+.calDay {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 5px 4px 6px;
+    text-align: center;
+    background: #fff;
+    min-height: 52px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    justify-content: center;
+}
+
+.calNum {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.1;
+}
+
+.calPrice {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--text-2);
+}
+
+.calLeft {
+    font-size: 8.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--amber);
+}
+
+.calSelected {
+    border-color: var(--ink);
+    background: var(--ink);
+}
+
+.calSelected .calNum {
+    color: var(--paper);
+}
+
+.calSelected .calPrice {
+    color: rgba(242, 239, 232, 0.7);
+}
+
+.calSelected .calLeft {
+    color: var(--brand-bright);
+}
+
+.calInRange {
+    background: var(--brand-soft);
+    border-color: transparent;
+}
+
+.calClosed {
+    background: var(--paper-2);
+    border-style: dashed;
+    color: var(--text-3);
+}
+
+.calClosed .calNum,
+.calClosed .calPrice {
+    color: var(--text-3);
+    text-decoration: line-through;
+}
+
+.calMuted {
+    opacity: 0.35;
+}
+
+.calHint {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 9px;
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+/* -------------------------------------------------- decisión del RMS ------ */
+
+.decisionTop {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.decisionDate {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-bottom: 3px;
+}
+
+.decisionRates {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+}
+
+.rateOld {
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--text-3);
+    text-decoration: line-through;
+}
+
+.rateNew {
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text);
+}
+
+.rateDelta {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding-inline: 8px;
+    border-radius: 999px;
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+.logLine {
+    display: flex;
+    gap: 9px;
+    align-items: baseline;
+    padding: 6px 0;
+    border-top: 1px dotted var(--line);
+    font-size: 11.8px;
+    color: var(--text-2);
+}
+
+.logKey {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-3);
+    flex: none;
+    width: 104px;
+}
+
+.logVal strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.decisionActions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.miniBtn {
+    height: 30px;
+    padding-inline: 13px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--ink);
+    color: var(--paper);
+    display: inline-flex;
+    align-items: center;
+}
+
+.miniBtnGhost {
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--line);
+}
+
+/* ------------------------------------------------- turno del agente ------- */
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.msgUser {
+    align-self: flex-end;
+    max-width: 88%;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 9px 13px;
+    border-radius: 14px 14px 4px 14px;
+    font-size: 12.8px;
+    line-height: 1.5;
+}
+
+.trace {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(242, 239, 232, 0.05);
+    border: 1px solid var(--line-ink);
+}
+
+.traceLine {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 10.8px;
+    color: var(--text-ink-3);
+}
+
+.traceLine b {
+    color: var(--brand-bright);
+    font-weight: 500;
+}
+
+.traceOk {
+    margin-left: auto;
+    color: var(--brand-bright);
+    font-size: 11px;
+}
+
+.msgBot {
+    font-size: 12.8px;
+    line-height: 1.55;
+    color: var(--text-ink-2);
+}
+
+.resCard {
+    margin-top: 4px;
+    padding: 11px 13px;
+    border-radius: 12px;
+    background: rgba(242, 239, 232, 0.06);
+    border: 1px solid var(--line-ink);
+}
+
+.resHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 7px;
+}
+
+.resName {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-ink);
+}
+
+.resCode {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--brand-bright);
+}
+
+.resMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    font-size: 11.5px;
+    color: var(--text-ink-3);
+}
+
+.resActions {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.resBtn {
+    height: 26px;
+    padding-inline: 11px;
+    border-radius: 999px;
+    border: 1px solid var(--line-ink);
+    color: var(--text-ink-2);
+    font-size: 11.5px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+}
+
+.resBtnMain {
+    background: var(--brand-bright);
+    border-color: transparent;
+    color: var(--ink);
+}
+
+/* --------------------------------------------- espacios operativos -------- */
+
+.spaces {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.spaceTabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.spaceTab {
+    height: 28px;
+    padding-inline: 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-3);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.spaceTabOn {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+}
+
+.menuList {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px;
+    border-radius: 12px;
+    background: var(--paper-2);
+}
+
+.menuItem {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 12.2px;
+    font-weight: 500;
+    color: var(--text-2);
+    background: #fff;
+}
+
+.menuItem i {
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    background: var(--brand);
+    flex: none;
+}
+
+.menuOff {
+    background: transparent;
+    color: var(--text-3);
+    opacity: 0.55;
+}
+
+.menuOff i {
+    background: var(--line-2);
+}
+
+.menuTag {
+    margin-left: auto;
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--text-3);
+}
+
+/* ------------------------------------------------- superficie agéntica ---- */
+
+.code {
+    font-family: var(--mono);
+    font-size: 11.2px;
+    line-height: 1.75;
+    color: var(--text-ink-2);
+    white-space: pre;
+    overflow-x: auto;
+    padding: 4px 2px;
+}
+
+.code b {
+    color: var(--brand-bright);
+    font-weight: 500;
+}
+
+.code i {
+    color: var(--text-ink-3);
+    font-style: normal;
+}
+
+.tabsRow {
+    display: flex;
+    gap: 4px;
+    padding: 8px 10px 0;
+    flex-wrap: wrap;
+}
+
+.tabChip {
+    padding: 5px 10px;
+    border-radius: 8px 8px 0 0;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-ink-3);
+    border: 1px solid transparent;
+    border-bottom: 0;
+}
+
+.tabChipOn {
+    background: #191b14;
+    border-color: var(--line-ink);
+    color: var(--brand-bright);
+}
+
+/* ----------------------------------------------------------- LinkHub ------ */
+
+.phone {
+    width: 232px;
+    margin-inline: auto;
+    border-radius: 30px;
+    border: 8px solid var(--ink);
+    background: var(--ink);
+    box-shadow: 0 22px 50px rgba(20, 21, 15, 0.22);
+    overflow: hidden;
+}
+
+.phoneScreen {
+    border-radius: 22px;
+    background: linear-gradient(170deg, #2c3320 0%, #14150f 62%);
+    padding: 20px 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    align-items: center;
+}
+
+.phoneAvatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--brand-bright);
+    display: grid;
+    place-items: center;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.phoneName {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-ink);
+    letter-spacing: -0.02em;
+}
+
+.phoneBio {
+    font-size: 10.5px;
+    color: var(--text-ink-3);
+    text-align: center;
+    margin-top: -6px;
+}
+
+.phoneBlock {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 11px;
+    background: rgba(242, 239, 232, 0.1);
+    border: 1px solid rgba(242, 239, 232, 0.14);
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.phoneBlockMain {
+    background: var(--brand-bright);
+    border-color: transparent;
+    color: var(--ink);
+}
+
+.phoneDots {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.phoneDots i {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid rgba(242, 239, 232, 0.2);
+}
+
+/* ------------------------------------------------- señales del sistema ---- */
+
+/* Tarjetas chicas que flotan al costado del tape chart en la portada. Son
+   deliberadamente bajas: la viñeta grande completa tapaba el calendario, que es
+   lo que la persona vino a mirar. */
+.signal {
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--card);
+
+
+    box-shadow: 0 14px 36px rgba(20, 21, 15, 0.13);
+    padding: 13px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.signalHead {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    color: var(--text-3);
+}
+
+.signalHead i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brand);
+    flex: none;
+}
+
+.signalMain {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    color: var(--text);
+}
+
+.signalDelta {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding-inline: 7px;
+    border-radius: 999px;
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.signalText {
+    font-size: 12.3px;
+    line-height: 1.45;
+    color: var(--text-2);
+}
+
+.signalFoot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--brand);
+    font-weight: 600;
+}
+
+.signalFoot svg {
+    width: 12px;
+    height: 12px;
+    flex: none;
+}
+
+/* ----------------------------------------------------- reglas del RMS ----- */
+
+.rules {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rule {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 11px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: #fff;
+}
+
+.ruleOn {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+}
+
+.ruleOff {
+    opacity: 0.5;
+}
+
+.ruleOrder {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+}
+
+.ruleCond {
+    font-size: 12.2px;
+    color: var(--text-2);
+    line-height: 1.35;
+}
+
+.ruleCond b {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.ruleAction {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--brand);
+    white-space: nowrap;
+}
+
+.ruleNote {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 11.5px;
+    color: var(--text-3);
+}
+
+/* ------------------------------------------------------------ comp-set --- */
+
+.comp {
+    display: flex;
+    flex-direction: column;
+}
+
+.compRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 64px 74px;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 2px;
+    border-top: 1px solid var(--line);
+    font-size: 12.4px;
+}
+
+.compRow:first-child {
+    border-top: 0;
+}
+
+.compName {
+    color: var(--text);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.compSrc {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+}
+
+.compRate {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    text-align: right;
+    color: var(--text-2);
+}
+
+.compMine {
+    background: var(--brand-soft);
+    border-radius: 8px;
+    padding-inline: 8px;
+    border-top-color: transparent;
+}
+
+.compMine .compRate,
+.compMine .compName {
+    color: var(--brand);
+    font-weight: 700;
+}
+
+/* ============================================================ movimiento == */
+
+/* Las viñetas se "dibujan" cuando entran en pantalla: el FxObserver pone
+   `data-fx-in` en la raíz y estas reglas hacen el resto. Todo con `backwards`
+   para que durante el retardo el elemento espere en su estado inicial, y NADA
+   fuera de `prefers-reduced-motion: no-preference`: sin JS o sin ganas de
+   movimiento, la viñeta está entera desde el primer frame. */
+
+@media (prefers-reduced-motion: no-preference) {
+
+    /* --------------------------------------------------------- tape chart */
+
+    [data-fx-in] .tapeBar {
+        transform-origin: left center;
+        animation: fxGrowX 0.55s cubic-bezier(0.22, 0.9, 0.3, 1) backwards;
+        animation-delay: var(--d, 0s);
+    }
+
+    /* La reserva que "entró recién" respira una vez que terminó de crecer. */
+    [data-fx-in] .barLive {
+        animation:
+            fxGrowX 0.55s cubic-bezier(0.22, 0.9, 0.3, 1) backwards,
+            fxLivePulse 2.6s ease-in-out calc(var(--d, 0s) + 0.7s) infinite;
+    }
+
+    /* ------------------------------------------------ calendario del motor */
+
+    [data-fx-in] .calDay {
+        animation: fxPop 0.4s ease backwards;
+        animation-delay: var(--d, 0s);
+    }
+
+    [data-fx-in] .calSelected {
+        animation:
+            fxPop 0.4s ease backwards var(--d, 0s),
+            fxRing 3s ease-in-out calc(var(--d, 0s) + 0.6s) infinite;
+    }
+
+    [data-fx-in] .calHint {
+        animation: fxRiseSoft 0.5s ease 0.75s backwards;
+    }
+
+    /* ----------------------------------------------------- decisión del RMS */
+
+    [data-fx-in] .rateNew {
+        animation: fxPop 0.45s ease 0.1s backwards;
+    }
+
+    .rateDelta {
+        animation: fxBreathe 2.8s ease-in-out infinite;
+    }
+
+    [data-fx-in] .logLine {
+        animation: fxSlideL 0.45s ease backwards;
+    }
+
+    [data-fx-in] .logLine:nth-child(1) {
+        animation-delay: 0.2s;
+    }
+
+    [data-fx-in] .logLine:nth-child(2) {
+        animation-delay: 0.32s;
+    }
+
+    [data-fx-in] .logLine:nth-child(3) {
+        animation-delay: 0.44s;
+    }
+
+    [data-fx-in] .logLine:nth-child(4) {
+        animation-delay: 0.56s;
+    }
+
+    [data-fx-in] .logLine:nth-child(5) {
+        animation-delay: 0.68s;
+    }
+
+    [data-fx-in] .logLine:nth-child(6) {
+        animation-delay: 0.8s;
+    }
+
+    [data-fx-in] .decisionActions {
+        animation: fxRiseSoft 0.5s ease 0.95s backwards;
+    }
+
+    /* ---------------------------------------------------- turno del agente */
+
+    /* La conversación pasa en orden: pregunta → herramientas una por una →
+       respuesta → tarjeta. Es la viñeta que más gana con la secuencia, porque
+       lo que cuenta ES la secuencia. */
+    [data-fx-in] .msgUser {
+        animation: fxPop 0.4s ease 0.05s backwards;
+    }
+
+    [data-fx-in] .trace {
+        animation: fxRiseSoft 0.4s ease 0.25s backwards;
+    }
+
+    [data-fx-in] .traceLine {
+        animation: fxSlideL 0.4s ease backwards;
+    }
+
+    [data-fx-in] .traceLine:nth-child(1) {
+        animation-delay: 0.35s;
+    }
+
+    [data-fx-in] .traceLine:nth-child(2) {
+        animation-delay: 0.55s;
+    }
+
+    [data-fx-in] .traceLine:nth-child(3) {
+        animation-delay: 0.75s;
+    }
+
+    [data-fx-in] .traceLine:nth-child(4) {
+        animation-delay: 0.95s;
+    }
+
+    [data-fx-in] .msgBot {
+        animation: fxRiseSoft 0.45s ease 1.2s backwards;
+    }
+
+    [data-fx-in] .resCard {
+        animation: fxPop 0.45s ease 1.4s backwards;
+    }
+
+    /* ------------------------------------------------- espacios operativos */
+
+    [data-fx-in] .spaceTab {
+        animation: fxPop 0.35s ease backwards;
+    }
+
+    [data-fx-in] .spaceTab:nth-child(1) {
+        animation-delay: 0.05s;
+    }
+
+    [data-fx-in] .spaceTab:nth-child(2) {
+        animation-delay: 0.12s;
+    }
+
+    [data-fx-in] .spaceTab:nth-child(3) {
+        animation-delay: 0.19s;
+    }
+
+    [data-fx-in] .spaceTab:nth-child(4) {
+        animation-delay: 0.26s;
+    }
+
+    [data-fx-in] .menuItem {
+        animation: fxSlideL 0.4s ease backwards;
+    }
+
+    [data-fx-in] .menuItem:nth-child(1) {
+        animation-delay: 0.25s;
+    }
+
+    [data-fx-in] .menuItem:nth-child(2) {
+        animation-delay: 0.33s;
+    }
+
+    [data-fx-in] .menuItem:nth-child(3) {
+        animation-delay: 0.41s;
+    }
+
+    [data-fx-in] .menuItem:nth-child(4) {
+        animation-delay: 0.49s;
+    }
+
+    [data-fx-in] .menuItem:nth-child(5) {
+        animation-delay: 0.57s;
+    }
+
+    [data-fx-in] .menuItem:nth-child(6) {
+        animation-delay: 0.65s;
+    }
+
+    [data-fx-in] .menuItem:nth-child(7) {
+        animation-delay: 0.73s;
+    }
+
+    [data-fx-in] .menuItem:nth-child(8) {
+        animation-delay: 0.81s;
+    }
+
+    /* ------------------------------------------------------ reglas del RMS */
+
+    [data-fx-in] .rule {
+        animation: fxSlideL 0.4s ease backwards;
+    }
+
+    [data-fx-in] .rule:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    [data-fx-in] .rule:nth-child(2) {
+        animation-delay: 0.22s;
+    }
+
+    [data-fx-in] .rule:nth-child(3) {
+        animation-delay: 0.34s;
+    }
+
+    [data-fx-in] .rule:nth-child(4) {
+        animation-delay: 0.46s;
+    }
+
+    /* ------------------------------------------------------------ comp-set */
+
+    [data-fx-in] .compRow {
+        animation: fxSlideL 0.4s ease backwards;
+    }
+
+    [data-fx-in] .compRow:nth-child(1) {
+        animation-delay: 0.08s;
+    }
+
+    [data-fx-in] .compRow:nth-child(2) {
+        animation-delay: 0.18s;
+    }
+
+    [data-fx-in] .compRow:nth-child(3) {
+        animation-delay: 0.28s;
+    }
+
+    [data-fx-in] .compRow:nth-child(4) {
+        animation-delay: 0.38s;
+    }
+
+    [data-fx-in] .compRow:nth-child(5) {
+        animation-delay: 0.48s;
+    }
+
+    /* ------------------------------------------------------------- LinkHub */
+
+    .phone {
+        animation: fxFloat 7s ease-in-out infinite;
+    }
+
+    [data-fx-in] .phoneBlock,
+    [data-fx-in] .phoneAvatar,
+    [data-fx-in] .phoneName,
+    [data-fx-in] .phoneBio {
+        animation: fxPop 0.4s ease backwards;
+    }
+
+    [data-fx-in] .phoneAvatar {
+        animation-delay: 0.05s;
+    }
+
+    [data-fx-in] .phoneName {
+        animation-delay: 0.12s;
+    }
+
+    [data-fx-in] .phoneBio {
+        animation-delay: 0.19s;
+    }
+
+    [data-fx-in] .phoneBlock:nth-of-type(1) {
+        animation-delay: 0.28s;
+    }
+
+    [data-fx-in] .phoneBlock:nth-of-type(2) {
+        animation-delay: 0.36s;
+    }
+
+    [data-fx-in] .phoneBlock:nth-of-type(3) {
+        animation-delay: 0.44s;
+    }
+
+    [data-fx-in] .phoneBlock:nth-of-type(4) {
+        animation-delay: 0.52s;
+    }
+
+    [data-fx-in] .phoneBlock:nth-of-type(5) {
+        animation-delay: 0.6s;
+    }
+
+    /* ----------------------------------------------------- señales del hero */
+
+    .signal {
+        animation: fxFloat 6s ease-in-out infinite;
+        animation-delay: var(--d, 0s);
+    }
+}
+
+/* Cursor de la respuesta del agente. Parpadea siempre — es un detalle, no
+   contenido, así que no depende del observer. */
+.caret {
+    display: inline-block;
+    width: 7px;
+    height: 13px;
+    margin-left: 5px;
+    border-radius: 2px;
+    background: var(--brand-bright);
+    vertical-align: baseline;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .caret {
+        animation: fxBlink 1.1s steps(2, start) infinite;
+    }
+}
+
+/* ------------------------------------------------------------ keyframes --- */
+
+@keyframes fxGrowX {
+    from {
+        transform: scaleX(0);
+        opacity: 0;
+    }
+}
+
+@keyframes fxPop {
+    from {
+        transform: scale(0.82);
+        opacity: 0;
+    }
+}
+
+@keyframes fxSlideL {
+    from {
+        transform: translateX(-12px);
+        opacity: 0;
+    }
+}
+
+@keyframes fxRiseSoft {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+}
+
+@keyframes fxLivePulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 1px rgba(78, 107, 40, 0.25);
+    }
+
+    50% {
+        box-shadow: 0 0 0 5px rgba(120, 160, 60, 0.22);
+    }
+}
+
+@keyframes fxRing {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(200, 226, 147, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 0 5px rgba(120, 160, 60, 0.3);
+    }
+}
+
+@keyframes fxBreathe {
+    50% {
+        transform: scale(1.07);
+    }
+}
+
+@keyframes fxFloat {
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+@keyframes fxBlink {
+    50% {
+        opacity: 0;
+    }
+}

@@ -1,0 +1,89 @@
+# Bookfer
+
+> Sistema operativo hotelero: PMS, motor de reservas, constructor de sitios web,
+> revenue management, link-in-bio, portal del huésped y un asistente de IA que
+> opera el sistema. Todo sobre una sola base de datos. Hecho en Argentina, para
+> hoteles, cabañas, hostels, aparts, glamping y alquileres temporarios de escala
+> chica y mediana.
+
+Este archivo existe por coherencia: bookfer le pide a cada alojamiento que
+publique el suyo, así que el sitio de bookfer publica el propio.
+
+## Idiomas
+
+El sitio está en cinco idiomas, y las URLs también están traducidas: cada
+página tiene su slug en cada idioma, no sólo un prefijo distinto.
+
+- Español  → /es   (por ejemplo /es/producto/ia)
+- English  → /en   (/en/platform/ai)
+- Português → /pt  (/pt/plataforma/ia)
+- Français → /fr   (/fr/plateforme/ia)
+- Deutsch  → /de   (/de/plattform/ki)
+
+Las cinco versiones de una página se declaran entre sí con `hreflang` y en el
+sitemap; son la misma página en otro idioma, no páginas distintas.
+
+## Qué reemplaza
+
+- PMS de reservas y habitaciones
+- Motor de reservas / booking engine
+- Constructor de sitio web
+- RMS de revenue management
+- Link-in-bio y presencia digital
+- Portal del huésped
+- Asistente y automatizaciones
+
+## Diferenciales
+
+- Espacios operativos: recepción, housekeeping, marketing y administración ven
+  menús, pantallas de inicio y permisos distintos del mismo sistema.
+- Modelo de venta dual por categoría: pool de habitaciones intercambiables o
+  unidad única 1:1 con nombre propio, con asistente de migración entre ambos.
+- Anti-overbooking como garantía de base de datos: candado único por unidad y
+  fecha, compartido con los bloqueos de mantenimiento.
+- Capa agéntica: el motor publica llms.txt, availability.json y
+  engine-capabilities.json, más JSON-LD y un editor de GEO por página.
+- Revenue management con lazo cerrado: aceptar una recomendación empuja un
+  override de tarifa al motor de reservas.
+- Multi-moneda con moneda base, de cobro y de comparación, congelamiento del
+  tipo de cambio al check-in y cotización elegible para ARS (blue, MEP, CCL u
+  oficial).
+- Emails al huésped sin configurar SMTP por hotel.
+- Asistente de IA con 272 herramientas y política de permisos en tres capas.
+
+## Estado del producto
+
+Declarado públicamente en /es/nosotros#estado (y su equivalente en cada
+idioma). Hoy NO existen: channel manager (sin sincronización de inventario ni
+tarifas con OTAs) ni pasarela de pago (el cobro es contra el check-in). Son
+parciales: publicación por API de Google Business y fichas de OTA, tarifas
+automáticas de competidores, facturación y cuotas de créditos de IA.
+
+## Precios
+
+Planes con suscripción por alojamiento, sin comisión por reserva y sin costo de
+puesta en marcha. El detalle vive en /es/precios (o /en/pricing, /pt/precos,
+/fr/tarifs, /de/preise) y sale del mismo catálogo con el que el sistema
+resuelve cada cuenta.
+
+## Páginas
+
+Con los slugs en español; para los otros idiomas, ver la lista de arriba.
+
+- /es                       Qué es bookfer
+- /es/producto              La plataforma completa
+- /es/producto/reservas     Reservas y habitaciones
+- /es/producto/motor        Motor de reservas
+- /es/producto/revenue      Revenue management
+- /es/producto/sitios       Sitio web, marca y LinkHub
+- /es/producto/ia           Bookfer IA
+- /es/producto/agentes      Alojamiento agéntico (llms.txt, GEO)
+- /es/soluciones            Por tipo de alojamiento y por puesto
+- /es/precios               Planes y comparativa
+- /es/nosotros              Tesis y estado del producto
+- /es/contacto              Formulario, WhatsApp y email
+
+## Contacto
+
+Email: hola@bookfer.com
+Alta autogestionada y gratuita: https://app.bookfer.com/register

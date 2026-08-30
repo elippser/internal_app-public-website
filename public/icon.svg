@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!--
+    Favicon de bookfer. La marca se pinta con `currentColor`, y el color lo
+    decide el tema del navegador de quien mira: tinta sobre pestaña clara,
+    papel sobre pestaña oscura. Un favicon negro fijo desaparece en modo
+    oscuro y uno blanco desaparece en modo claro.
+
+    La consulta de medios dentro del SVG la respetan Chrome, Edge y Firefox;
+    el que no la soporte se queda con el color declarado en `svg`, que es el
+    oscuro y es el caso más común.
+  -->
+  <style>
+    svg { color: #14150f; }
+    @media (prefers-color-scheme: dark) { svg { color: #f2efe8; } }
+  </style>
+  <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+    <rect width="24" height="24" fill="black"/>
+    <circle cx="9.6" cy="6.4" r="6" fill="white"/>
+    <circle cx="17.4" cy="9.2" r="5.9" fill="white"/>
+    <circle cx="6.6" cy="13.9" r="6.2" fill="white"/>
+    <circle cx="14.4" cy="17.2" r="6.2" fill="white"/>
+    <path d="M12 5.9c.5 3.5 2.6 5.6 6.1 6.1-3.5.5-5.6 2.6-6.1 6.1-.5-3.5-2.6-5.6-6.1-6.1 3.5-.5 5.6-2.6 6.1-6.1Z" fill="black"/>
+  </mask>
+  <rect width="24" height="24" fill="currentColor" mask="url(#m)"/>
+</svg>

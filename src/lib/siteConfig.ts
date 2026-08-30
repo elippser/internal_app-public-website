@@ -43,3 +43,36 @@ export const siteUrl =
 /** API de internal-laupser: captura de leads y conversiones. */
 export const internalApiUrl =
   process.env.NEXT_PUBLIC_INTERNAL_API_URL ?? "http://localhost:8600";
+
+/**
+ * El PMS. Todos los CTA de "empezar" e "ingresar" salen del sitio hacia acá:
+ * el alta real vive en pms-core, este repo no tiene formulario de registro y
+ * no debería tenerlo nunca (dos altas distintas = dos verdades).
+ */
+export const appUrl =
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://app.bookfer.com";
+
+export const registerUrl = `${appUrl}/register`;
+export const loginUrl = `${appUrl}/login`;
+
+/**
+ * Datos de contacto públicos. Están acá y no repartidos por las páginas para
+ * que cambiar un teléfono sea un archivo y no una búsqueda por todo el repo.
+ */
+export const contact = {
+  email: "hola@bookfer.com",
+  /** E.164 sin espacios, como pide la convención de teléfonos de la plataforma. */
+  whatsapp: "+5492611234567",
+  instagram: "https://www.instagram.com/bookfer.app/",
+  linkedin: "https://www.linkedin.com/company/bookfer/",
+};
+
+/**
+ * El enlace de WhatsApp con el mensaje ya escrito. El texto viene del
+ * diccionario del idioma activo: quien escribe desde la versión alemana no
+ * tiene por qué mandar un mensaje en castellano.
+ */
+export function whatsappUrlFor(message: string): string {
+  const number = contact.whatsapp.replace(/[^0-9]/g, "");
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+}

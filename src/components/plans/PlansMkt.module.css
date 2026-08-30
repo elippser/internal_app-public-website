@@ -1,214 +1,203 @@
-/* ============================================================================
- * <PlansMkt/> — la sección de precios del sitio público.
- *
- * Tokens propios `--pm-*` y no los del sitio: la sección se pone en páginas
- * distintas y tiene que verse igual en todas. Para adaptarla a una página con
- * otro fondo alcanza con redefinir estos tokens desde afuera.
- * ========================================================================== */
+/* La sección de precios. Se dibuja con los planes que devuelve el catálogo del
+   panel interno, así que la cantidad de tarjetas y el largo de cada lista de
+   productos son variables: nada acá puede depender de que sean tres. */
 
 .section {
-  --pm-accent: #2f74df;
-  --pm-accent-soft: rgba(47, 116, 223, 0.1);
-  --pm-bg: #f8f9fb;
-  --pm-surface: #ffffff;
-  --pm-surface-2: #f3f4f7;
-  --pm-text: #0d0f14;
-  --pm-text-2: #4a5068;
-  --pm-text-3: #9198b0;
-  --pm-border: rgba(0, 0, 0, 0.08);
-  --pm-green: #059669;
-  --pm-radius: 14px;
-  --pm-radius-pill: 25px;
-
-  background: var(--pm-bg);
-  color: var(--pm-text);
-  padding: 88px 24px;
+    padding-block: clamp(64px, 8.5vw, 124px);
+    background: var(--paper-2);
 }
 
 .inner {
-  max-width: 1160px;
-  margin: 0 auto;
+    width: 100%;
+    max-width: var(--maxw);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
 }
 
 .header {
-  text-align: center;
-  max-width: 620px;
-  margin: 0 auto 48px;
+    max-width: 680px;
+    margin-bottom: clamp(30px, 4vw, 52px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
 .title {
-  font-size: clamp(28px, 4vw, 40px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.12;
-  margin: 0 0 12px;
+    font-size: clamp(27px, 3.5vw, 43px);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.07;
+    text-wrap: balance;
 }
 
 .subtitle {
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--pm-text-2);
-  margin: 0;
+    font-size: clamp(16px, 1.4vw, 18.5px);
+    line-height: 1.62;
+    color: var(--text-2);
+    text-wrap: pretty;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 22px;
-  align-items: stretch;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(268px, 1fr));
+    gap: clamp(14px, 1.6vw, 20px);
+    align-items: stretch;
 }
 
 .card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background: var(--pm-surface);
-  border: 1px solid var(--pm-border);
-  border-radius: var(--pm-radius);
-  padding: 30px 26px 26px;
-  box-shadow: 0 1px 2px rgba(13, 15, 20, 0.04);
-  transition:
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: clamp(22px, 2.4vw, 30px);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .card:hover {
-  box-shadow: 0 12px 32px rgba(13, 15, 20, 0.09);
-  transform: translateY(-3px);
+    transform: translateY(-3px);
+    border-color: var(--line-2);
+    box-shadow: var(--shadow);
 }
 
+/* El plan destacado no cambia de tamaño: crecer rompe la alineación de las
+   listas de productos, que es justo lo que la persona está comparando. */
 .cardHighlighted {
-  border-color: color-mix(in srgb, var(--pm-accent) 45%, var(--pm-border));
+    border-color: var(--ink);
+    box-shadow: 0 0 0 1px var(--ink);
 }
 
 .ribbon {
-  position: absolute;
-  top: -12px;
-  left: 26px;
-  padding: 5px 12px;
-  border-radius: var(--pm-radius-pill);
-  background: var(--pm-accent);
-  color: #fff;
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+    position: absolute;
+    top: -11px;
+    left: clamp(22px, 2.4vw, 30px);
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 11px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
 .planName {
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  margin: 0;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.026em;
 }
 
 .planTagline {
-  margin: 8px 0 0;
-  font-size: 13.5px;
-  line-height: 1.5;
-  color: var(--pm-text-2);
-  min-height: 40px;
+    font-size: 13.8px;
+    line-height: 1.5;
+    color: var(--text-2);
+    min-height: 42px;
 }
 
 .priceRow {
-  display: flex;
-  align-items: baseline;
-  gap: 7px;
-  margin: 22px 0 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 6px;
 }
 
 .priceAmount {
-  font-size: 34px;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1;
+    font-size: clamp(28px, 3vw, 36px);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1;
 }
 
 .pricePeriod {
-  font-size: 13px;
-  color: var(--pm-text-3);
+    font-size: 13px;
+    color: var(--text-3);
 }
 
 .priceNote {
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--pm-green);
-  min-height: 19px;
+    font-size: 12.5px;
+    color: var(--brand);
+    font-weight: 600;
+    min-height: 18px;
 }
 
 .productList {
-  list-style: none;
-  margin: 24px 0 0;
-  padding: 24px 0 0;
-  border-top: 1px solid var(--pm-border);
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  flex: 1;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin: 8px 0 0;
+    padding: 14px 0 0;
+    border-top: 1px solid var(--line);
+    flex: 1;
 }
 
 .productItem {
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--pm-text-2);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--text-2);
 }
 
 .checkIcon {
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: var(--pm-green);
+    flex: none;
+    margin-top: 2px;
+    color: var(--brand);
 }
 
 .limits {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px dashed var(--pm-border);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
 }
 
 .limitChip {
-  padding: 4px 10px;
-  border-radius: var(--pm-radius-pill);
-  background: var(--pm-surface-2);
-  color: var(--pm-text-2);
-  font-size: 12px;
-  font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding-inline: 10px;
+    border-radius: 999px;
+    background: var(--paper-2);
+    font-size: 11.5px;
+    color: var(--text-2);
 }
 
 .cta {
-  margin-top: 24px;
-  display: block;
-  padding: 12px 20px;
-  border-radius: var(--pm-radius-pill);
-  border: 1px solid var(--pm-accent);
-  background: var(--pm-accent);
-  color: #fff;
-  font-size: 14.5px;
-  font-weight: 600;
-  text-align: center;
-  text-decoration: none;
-  transition: background 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    margin-top: 4px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    border: 1px solid transparent;
+    transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
 }
 
 .cta:hover {
-  background: color-mix(in srgb, var(--pm-accent) 86%, black);
+    background: var(--ink-3);
 }
 
 .ctaGhost {
-  background: transparent;
-  color: var(--pm-accent);
+    background: transparent;
+    border-color: var(--line-2);
+    color: var(--text);
 }
 
 .ctaGhost:hover {
-  background: var(--pm-accent-soft);
-}
-
-@media (max-width: 640px) {
-  .section {
-    padding: 56px 18px;
-  }
+    background: #fff;
+    border-color: var(--text-3);
 }

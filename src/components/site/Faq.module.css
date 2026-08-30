@@ -1,0 +1,83 @@
+.list {
+    border-top: 1px solid var(--line);
+}
+
+.item {
+    border-bottom: 1px solid var(--line);
+}
+
+.summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 2px;
+    cursor: pointer;
+    font-size: clamp(16px, 1.6vw, 18px);
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    line-height: 1.35;
+    color: var(--text);
+    list-style: none;
+}
+
+/* Safari dibuja su propio triángulo y no respeta `list-style: none`. */
+.summary::-webkit-details-marker {
+    display: none;
+}
+
+.summary:hover {
+    color: var(--brand);
+}
+
+.summary svg {
+    width: 19px;
+    height: 19px;
+    flex: none;
+    color: var(--text-3);
+    transition: color 0.16s ease;
+}
+
+.item[open] .summary svg {
+    color: var(--brand);
+}
+
+/* El "+" se vuelve "−" al abrir: la barra vertical se esconde. */
+.plusBar {
+    transform-origin: center;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.item[open] .plusBar {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+.answer {
+    padding: 0 44px 22px 2px;
+    font-size: 15.5px;
+    line-height: 1.62;
+    color: var(--text-2);
+    max-width: 62ch;
+}
+
+.answer p+p {
+    margin-top: 12px;
+}
+
+.answer a {
+    color: var(--brand);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.answer strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+@media (max-width: 560px) {
+    .answer {
+        padding-right: 0;
+    }
+}

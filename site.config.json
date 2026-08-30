@@ -2,10 +2,10 @@
   "name": "Bookfer",
   "lang": "es",
   "siteId": "site-9d6aa53c-b486-4a9e-8013-6dd435b51275",
-  "favicon": "",
+  "favicon": "/icon.svg",
   "seo": {
-    "title": "",
-    "description": "",
+    "title": "Bookfer · El sistema operativo de tu alojamiento",
+    "description": "PMS, motor de reservas, sitio web, revenue management y un asistente de IA que opera el sistema. Todo sobre una sola base de datos, para hoteles, cabañas, hostels y alquileres.",
     "ogImage": "",
     "noindex": false
   },
@@ -20,6 +20,6 @@
     "https://fonts.gstatic.com"
   ],
   "stylesheets": [
-    "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300..900&family=Instrument+Serif:ital@0;1&display=swap"
   ]
 }

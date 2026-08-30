@@ -1,0 +1,110 @@
+.wrap {
+    position: relative;
+    flex: none;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding-inline: 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-2);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.button:hover {
+    background: rgba(20, 21, 15, 0.055);
+    color: var(--text);
+}
+
+.button svg {
+    width: 15px;
+    height: 15px;
+    opacity: 0.7;
+}
+
+.buttonInk {
+    color: var(--text-ink-2);
+}
+
+.buttonInk:hover {
+    background: rgba(242, 239, 232, 0.08);
+    color: var(--text-ink);
+}
+
+.menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 20;
+    min-width: 168px;
+    list-style: none;
+    padding: 6px;
+    border-radius: 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 40px rgba(20, 21, 15, 0.14);
+    animation: langIn 0.14s ease both;
+}
+
+/* En el pie el menú abre hacia arriba: abajo no hay página. */
+.menuInk {
+    top: auto;
+    bottom: calc(100% + 8px);
+    background: var(--ink-2);
+    border-color: var(--line-ink);
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes langIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 11px;
+    border-radius: 9px;
+    font-size: 13.8px;
+    color: var(--text-2);
+    transition: background-color 0.14s ease, color 0.14s ease;
+}
+
+.item:hover {
+    background: var(--paper-2);
+    color: var(--text);
+}
+
+.menuInk .item {
+    color: var(--text-ink-2);
+}
+
+.menuInk .item:hover {
+    background: rgba(242, 239, 232, 0.08);
+    color: var(--text-ink);
+}
+
+.itemOn {
+    font-weight: 600;
+    color: var(--brand);
+}
+
+.menuInk .itemOn {
+    color: var(--brand-bright);
+}
+
+.item svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+}

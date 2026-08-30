@@ -1,83 +1,70 @@
+import type { Dictionary } from "@/i18n/dict/es";
+import { registerUrl } from "@/lib/siteConfig";
+import { fetchPlans, type MktPlan } from "./plansApi";
 import styles from "./PlansMkt.module.css";
 
 /**
  * `<PlansMkt/>` — la sección de precios del sitio público de bookfer.
  *
- * Se pone en cualquier página del sitio (`src/app/precios/page.tsx`, la home,
- * una landing) y se dibuja sola: los planes salen del mismo catálogo que
- * alimenta la pantalla de elección del PMS, así que lo que se publica acá y lo
- * que se le cobra al hotel no se pueden contradecir. Editar un precio en
- * Planes → el sitio lo muestra sin tocar código.
+ * Se pone en cualquier página del sitio (la home, `/precios`, una landing) y se
+ * dibuja sola: los planes salen del mismo catálogo que alimenta la pantalla de
+ * elección del PMS, así que lo que se publica acá y lo que se le cobra al hotel
+ * no se pueden contradecir. Editar un precio en Planes → el sitio lo muestra
+ * sin tocar código.
  *
  * Es un Server Component a propósito: la llamada al catálogo se hace en el
  * servidor de Next, así que no hay CORS que configurar en el API interno, el
  * HTML sale con los precios adentro (que es lo que indexa Google) y nadie
  * descarga JavaScript para leer una tabla de precios.
  *
- * Este archivo se edita desde el panel interno (Planes → Código), y su vista
- * previa vive en `/preview/plans`.
+ * Los NOMBRES de los planes y de los productos vienen del catálogo y no del
+ * diccionario: son datos, no copy. Lo que sí se traduce es todo lo que rodea
+ * —"por mes", "días de prueba", los topes—, que es lo que está acá abajo.
+ *
+ * Su vista previa aislada vive en `/[lang]/preview/plans`.
  */
 
-export interface MktPlanProduct {
-  key: string;
-  name: string;
-  description: string;
+/* El tipo y la llamada viven en `plansApi.ts`: los comparte con la tabla
+   comparativa de `/precios`, que tiene que estar mirando lo mismo. */
+export type { MktPlan, MktPlanProduct } from "./plansApi";
+
+/** Reemplaza `{n}` en una plantilla del diccionario. */
+function fill(template: string, n: number | string): string {
+  return template.replace("{n}", String(n));
 }
 
-export interface MktPlan {
-  planId: string;
-  slug: string;
-  name: string;
-  tagline: string;
-  description: string;
-  price: { amount: number; currency: string; period: string };
-  free: boolean;
-  freeDurationDays: number | null;
-  trialDays: number;
-  limits: {
-    maxProperties?: number | null;
-    maxUsers?: number | null;
-    iaMonthlyCredits?: number | null;
-  };
-  highlighted?: boolean;
-  order?: number;
-  products: MktPlanProduct[];
+/**
+ * Los topes del plan, en el idioma correcto y con el singular donde va.
+ * `null` en el catálogo significa "sin límite", y el 1 en singular: "Hasta 1
+ * propiedades" es el detalle que hace que una página de precios parezca a
+ * medio terminar.
+ */
+function limitChip(
+  value: number | null | undefined,
+  one: string,
+  many: string,
+  none: string,
+): string {
+  if (value === null || value === undefined) return none;
+  return fill(value === 1 ? one : many, value);
 }
 
-const API =
-  process.env.NEXT_PUBLIC_INTERNAL_API_URL?.trim() || "http://localhost:8600";
-
-async function fetchPlans(): Promise<MktPlan[]> {
-  try {
-    const res = await fetch(`${API}/public/plans`, {
-      // Se revalida cada 5 minutos: un cambio de precio tiene que llegar al
-      // sitio sin un deploy, pero tampoco hace falta pegarle al API en cada
-      // visita de una página que cambia una vez por trimestre.
-      next: { revalidate: 300 },
-    });
-    if (!res.ok) return [];
-    const body = (await res.json()) as { data?: MktPlan[] };
-    return body.data ?? [];
-  } catch {
-    // Un corte del API interno no puede tumbar la home del sitio público: la
-    // sección se omite y el resto de la página sigue en pie.
-    return [];
-  }
-}
-
-function priceLabel(plan: MktPlan): { amount: string; period: string } {
+function priceLabel(
+  plan: MktPlan,
+  d: Dictionary["plans"],
+): { amount: string; period: string } {
   if (plan.free) {
     return {
-      amount: "Gratis",
-      period: plan.freeDurationDays ? `por ${plan.freeDurationDays} días` : "",
+      amount: d.free,
+      period: plan.freeDurationDays ? fill(d.freeFor, plan.freeDurationDays) : "",
     };
   }
   const period =
     plan.price.period === "yearly"
-      ? "por año"
+      ? d.perYear
       : plan.price.period === "one_time"
-        ? "pago único"
-        : "por mes";
+        ? d.oneTime
+        : d.perMonth;
   return {
     amount: `${plan.price.currency} ${plan.price.amount.toLocaleString("es-AR")}`,
     period,
@@ -85,23 +72,24 @@ function priceLabel(plan: MktPlan): { amount: string; period: string } {
 }
 
 interface Props {
+  dict: Dictionary;
   /** Encabezado de la sección. Vacío = sin encabezado. */
   title?: string;
   subtitle?: string;
   /** A dónde lleva el botón de cada plan. */
   ctaHref?: string;
-  ctaLabel?: string;
   /** Planes ya resueltos. Si no vienen, el componente los busca solo. */
   plans?: MktPlan[];
 }
 
 export default async function PlansMkt({
-  title = "Un solo sistema, un solo precio",
-  subtitle = "Todo lo que un alojamiento necesita para operar y vender, sin cinco proveedores.",
-  ctaHref = "/registro",
-  ctaLabel = "Empezar ahora",
+  dict,
+  title = "",
+  subtitle = "",
+  ctaHref = registerUrl,
   plans: given,
 }: Props) {
+  const d = dict.plans;
   const plans = given ?? (await fetchPlans());
   if (plans.length === 0) return null;
 
@@ -117,7 +105,7 @@ export default async function PlansMkt({
 
         <div className={styles.grid}>
           {plans.map((plan) => {
-            const { amount, period } = priceLabel(plan);
+            const { amount, period } = priceLabel(plan, d);
             return (
               <article
                 key={plan.planId}
@@ -128,23 +116,17 @@ export default async function PlansMkt({
                   .filter(Boolean)
                   .join(" ")}
               >
-                {plan.highlighted && (
-                  <span className={styles.ribbon}>El más elegido</span>
-                )}
+                {plan.highlighted && <span className={styles.ribbon}>{d.ribbon}</span>}
 
                 <h3 className={styles.planName}>{plan.name}</h3>
-                <p className={styles.planTagline}>
-                  {plan.tagline || plan.description}
-                </p>
+                <p className={styles.planTagline}>{plan.tagline || plan.description}</p>
 
                 <div className={styles.priceRow}>
                   <span className={styles.priceAmount}>{amount}</span>
                   <span className={styles.pricePeriod}>{period}</span>
                 </div>
                 <div className={styles.priceNote}>
-                  {plan.trialDays > 0
-                    ? `${plan.trialDays} días de prueba gratis`
-                    : " "}
+                  {plan.trialDays > 0 ? fill(d.trial, plan.trialDays) : " "}
                 </div>
 
                 <ul className={styles.productList}>
@@ -169,31 +151,32 @@ export default async function PlansMkt({
                   ))}
                 </ul>
 
-                {(plan.limits?.maxProperties || plan.limits?.maxUsers) && (
-                  <div className={styles.limits}>
-                    {plan.limits.maxProperties ? (
-                      <span className={styles.limitChip}>
-                        Hasta {plan.limits.maxProperties} propiedades
-                      </span>
-                    ) : null}
-                    {plan.limits.maxUsers ? (
-                      <span className={styles.limitChip}>
-                        Hasta {plan.limits.maxUsers} usuarios
-                      </span>
-                    ) : null}
-                  </div>
-                )}
+                <div className={styles.limits}>
+                  <span className={styles.limitChip}>
+                    {limitChip(
+                      plan.limits?.maxProperties,
+                      d.upToProperty,
+                      d.upToProperties,
+                      d.noPropertyLimit,
+                    )}
+                  </span>
+                  <span className={styles.limitChip}>
+                    {limitChip(
+                      plan.limits?.maxUsers,
+                      d.upToUser,
+                      d.upToUsers,
+                      d.noUserLimit,
+                    )}
+                  </span>
+                </div>
 
                 <a
                   href={ctaHref}
-                  className={[
-                    styles.cta,
-                    plan.highlighted ? "" : styles.ctaGhost,
-                  ]
+                  className={[styles.cta, plan.highlighted ? "" : styles.ctaGhost]
                     .filter(Boolean)
                     .join(" ")}
                 >
-                  {ctaLabel}
+                  {d.cta}
                 </a>
               </article>
             );
