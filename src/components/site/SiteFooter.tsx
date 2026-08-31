@@ -33,7 +33,7 @@ export default function SiteFooter({
       <div className="container container-wide">
         <div className={styles.top}>
           <div className={styles.brandCol}>
-            <Logo tone="paper" id="logo-footer" />
+            <Logo tone="paper" />
             <p className={styles.claim}>{dict.footer.claim}</p>
             <div className={styles.social}>
               <a

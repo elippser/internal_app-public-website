@@ -11,6 +11,32 @@
     pointer-events: none;
 }
 
+/* Progressive blur del top: banda que difumina el contenido al pasar bajo el
+   header. Receta verbatim del ::before de la rightbar del builder de pms-core
+   (RightbarStylesEditor.module.css), sobre un div hermano del header — no un
+   pseudo del wrap. Solo cambian la geometría (banda full-width en el top) y
+   el z-index: 89 para quedar delante de toda la página pero debajo del wrap
+   del header (90). */
+.blurTop::before {
+    content: '';
+    pointer-events: none;
+    position: fixed;
+    height: 96px;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* Solo la propiedad estándar: Lightning CSS (el minificador de Next)
+       genera el -webkit- solo. Si se escriben las dos y la estándar va
+       primero, las colapsa a -webkit- únicamente… y Chrome NO soporta
+       -webkit-backdrop-filter (es alias solo de Safari): el blur muere en
+       silencio. Así se rompió la primera versión de esta banda. */
+    backdrop-filter: blur(5px);
+    mask: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 100%);
+    pointer-events: none;
+    z-index: 89;
+}
+
 .bar {
     pointer-events: auto;
     position: relative;
@@ -25,24 +51,21 @@
     gap: 14px;
     padding: 8px 8px 8px 18px;
     border-radius: 999px;
-    background: rgba(251, 250, 247, 0.72);
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.75);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 6px 22px rgba(20, 21, 15, 0.06);
-    transition: box-shadow 0.22s ease, background-color 0.22s ease;
-}
-
-.barScrolled {
-    background: rgba(251, 250, 247, 0.9);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 10px 34px rgba(20, 21, 15, 0.12);
+    /* La cápsula es la misma siempre: no hay variante de scroll. El vidrio se
+       resuelve con blur + un aro gris, sin el stack de insets del thumb del
+       PMS: sobre el papel claro esas capas no se leían. */
+    background-color: #ffffff8a;
+    border: 1px solid #cfcfcfc2;
+    /* Solo la estándar; ver la nota en .blurTop::before. */
+    backdrop-filter: blur(23px);
+    transition: background-color 0.22s ease;
 }
 
 .brand {
     display: inline-flex;
     align-items: center;
     flex: none;
-    padding-block: 4px;
+    padding: 10px 5px;
 }
 
 /* ------------------------------------------------------------- navegación - */

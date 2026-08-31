@@ -1,9 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="673 215 630 627" width="32" height="32">
   <!--
-    Favicon de bookfer. La marca se pinta con `currentColor`, y el color lo
-    decide el tema del navegador de quien mira: tinta sobre pestaña clara,
-    papel sobre pestaña oscura. Un favicon negro fijo desaparece en modo
-    oscuro y uno blanco desaparece en modo claro.
+    Favicon de bookfer: el isotipo de la marca (brand/isotype.png y su variante
+    brand/isotype-blackbackground.png), vectorizado. Los trazados salen de
+    src/components/site/logoPaths.ts: si se regenera el brand, se copian de ahí.
+
+    La "b" se pinta con `currentColor` y el color lo decide el tema del
+    navegador de quien mira: tinta sobre pestaña clara, papel sobre pestaña
+    oscura. Un favicon negro fijo desaparece en modo oscuro y uno blanco
+    desaparece en modo claro.
+
+    El punto NO se invierte: en el brand el verde es el mismo sobre blanco y
+    sobre negro, así que va fijo.
 
     La consulta de medios dentro del SVG la respetan Chrome, Edge y Firefox;
     el que no la soporte se queda con el color declarado en `svg`, que es el
@@ -13,13 +20,6 @@
     svg { color: #14150f; }
     @media (prefers-color-scheme: dark) { svg { color: #f2efe8; } }
   </style>
-  <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
-    <rect width="24" height="24" fill="black"/>
-    <circle cx="9.6" cy="6.4" r="6" fill="white"/>
-    <circle cx="17.4" cy="9.2" r="5.9" fill="white"/>
-    <circle cx="6.6" cy="13.9" r="6.2" fill="white"/>
-    <circle cx="14.4" cy="17.2" r="6.2" fill="white"/>
-    <path d="M12 5.9c.5 3.5 2.6 5.6 6.1 6.1-3.5.5-5.6 2.6-6.1 6.1-.5-3.5-2.6-5.6-6.1-6.1 3.5-.5 5.6-2.6 6.1-6.1Z" fill="black"/>
-  </mask>
-  <rect width="24" height="24" fill="currentColor" mask="url(#m)"/>
+  <path fill="currentColor" fill-rule="evenodd" d="M 676.296 432.750 C 676.675 669.600, 676.194 651.796, 682.904 677.454 C 714.142 796.910, 839.500 866.326, 956.462 828.935 C 1060.331 795.728, 1123.017 691.418, 1103.418 584.395 C 1091.307 518.263, 1047.781 460.708, 987 430.453 C 920.523 397.363, 840.187 401.340, 777.250 440.836 L 769 446.014 769 332.007 L 769 218 722.476 218 L 675.951 218 676.296 432.750 M 878.519 502.106 C 794.467 510.954, 744.135 603.291, 782.450 678.350 C 820.924 753.722, 920.889 768.686, 979.533 707.853 C 1012.303 673.858, 1022.447 623.743, 1005.460 579.758 C 988.598 536.098, 949.247 506.478, 902.173 502.014 C 890.414 500.899, 889.973 500.900, 878.519 502.106"/>
+  <circle fill="#4d6a28" cx="1223" cy="762" r="77"/>
 </svg>

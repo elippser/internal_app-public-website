@@ -15,9 +15,9 @@ import styles from "./SiteHeader.module.css";
 /**
  * Header del sitio.
  *
- * Es el único componente del chrome que necesita ser cliente, y por cuatro
- * cosas concretas: el mega menú, el cajón de móvil, la sombra al scrollear y
- * el selector de idioma. El resto del sitio es HTML servido.
+ * Es el único componente del chrome que necesita ser cliente, y por tres
+ * cosas concretas: el mega menú, el cajón de móvil y el selector de idioma.
+ * El resto del sitio es HTML servido.
  *
  * El mega menú abre con el mouse y también con el teclado (es un `<button>` con
  * `aria-expanded`, no un `:hover` de CSS): la mitad de las auditorías de
@@ -30,7 +30,6 @@ export default function SiteHeader({
   locale: Locale;
   dict: Dictionary;
 }) {
-  const [scrolled, setScrolled] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const pathname = usePathname();
@@ -39,13 +38,6 @@ export default function SiteHeader({
   const pinned = useRef(false);
 
   const path = (href: string) => localePath(locale, href);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   // Navegar cierra todo. Sin esto el cajón queda abierto sobre la página nueva,
   // porque el App Router no desmonta el layout entre rutas.
@@ -122,10 +114,13 @@ export default function SiteHeader({
   }, [megaOpen]);
 
   return (
-    <header className={styles.wrap}>
-      <div className={[styles.bar, scrolled ? styles.barScrolled : ""].join(" ")}>
+    <>
+      {/* Hermano del header: porta el ::before del progressive blur. */}
+      <div aria-hidden className={styles.blurTop} />
+      <header className={styles.wrap}>
+      <div className={styles.bar}>
         <Link href={path("/")} className={styles.brand} aria-label={dict.nav.home}>
-          <Logo id="logo-header" />
+          <Logo />
         </Link>
 
         <nav className={styles.nav} aria-label={dict.nav.primary}>
@@ -254,5 +249,6 @@ export default function SiteHeader({
         </div>
       )}
     </header>
+    </>
   );
 }

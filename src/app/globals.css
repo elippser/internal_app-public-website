@@ -22,7 +22,7 @@
     --ink-3: #2b2e25;
 
     --text: #14150f;
-    --text-2: #4c4e44;
+    --text-2: #242424;
     --text-3: #86887c;
     --line: #ddd8ca;
     --line-2: #cec8b6;
@@ -356,7 +356,7 @@ select {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    height: 46px;
+    height: 39px;
     padding-inline: 22px;
     border-radius: 999px;
     font-size: 14.5px;

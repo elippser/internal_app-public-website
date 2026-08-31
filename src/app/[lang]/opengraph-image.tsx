@@ -1,4 +1,10 @@
 import { ImageResponse } from "next/og";
+import {
+  LOGOTYPE_DOT,
+  LOGOTYPE_RATIO,
+  LOGOTYPE_TEXT_PATH,
+  LOGOTYPE_VIEWBOX,
+} from "@/components/site/logoPaths";
 
 /**
  * La imagen que se ve cuando alguien pega un link del sitio en WhatsApp, en
@@ -28,32 +34,22 @@ export default function OpengraphImage() {
           color: "#f2efe8",
         }}
       >
-        {/* La marca: el mismo dibujo del logo, en grande. */}
-        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <div
-            style={{
-              width: 64,
-              height: 64,
-              borderRadius: 18,
-              background: "#f2efe8",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              gap: 7,
-              padding: 13,
-            }}
+        {/* La marca: el logotipo real (mismos paths que el header), en claro
+            sobre tinta, con el punto en pistacho como en el footer. */}
+        <div style={{ display: "flex" }}>
+          <svg
+            width={Math.round(52 * LOGOTYPE_RATIO)}
+            height={52}
+            viewBox={LOGOTYPE_VIEWBOX}
           >
-            <div style={{ display: "flex", gap: 5 }}>
-              <div style={{ width: 10, height: 11, borderRadius: 3, background: "rgba(20,21,15,0.28)" }} />
-              <div style={{ width: 23, height: 11, borderRadius: 3, background: "#4e6b28" }} />
-            </div>
-            <div style={{ display: "flex", gap: 5 }}>
-              <div style={{ width: 17, height: 11, borderRadius: 3, background: "#4e6b28" }} />
-              <div style={{ width: 8, height: 11, borderRadius: 3, background: "rgba(20,21,15,0.28)" }} />
-              <div style={{ width: 8, height: 11, borderRadius: 3, background: "rgba(20,21,15,0.28)" }} />
-            </div>
-          </div>
-          <div style={{ fontSize: 40, fontWeight: 700, letterSpacing: -2 }}>bookfer</div>
+            <path fill="#f2efe8" fillRule="evenodd" d={LOGOTYPE_TEXT_PATH} />
+            <circle
+              fill="#c8e293"
+              cx={LOGOTYPE_DOT.cx}
+              cy={LOGOTYPE_DOT.cy}
+              r={LOGOTYPE_DOT.r}
+            />
+          </svg>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>

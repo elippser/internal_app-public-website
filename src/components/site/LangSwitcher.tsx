@@ -11,6 +11,7 @@ import {
   type Locale,
 } from "@/i18n/config";
 import { publicPath, routeKeyOf } from "@/i18n/routes";
+import LocaleFlag from "@/i18n/LocaleFlag";
 import styles from "./LangSwitcher.module.css";
 
 /**
@@ -88,10 +89,7 @@ export default function LangSwitcher({
         aria-label={label}
         onClick={() => setOpen((v) => !v)}
       >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden>
-          <circle cx="12" cy="12" r="9" />
-          <path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z" />
-        </svg>
+        <LocaleFlag locale={locale} className={styles.flag} />
         {LOCALE_SHORT[locale]}
       </button>
 
@@ -105,7 +103,10 @@ export default function LangSwitcher({
                 className={[styles.item, l === locale ? styles.itemOn : ""].join(" ")}
                 onClick={() => remember(l)}
               >
-                {LOCALE_NAMES[l]}
+                <span className={styles.itemName}>
+                  <LocaleFlag locale={l} className={styles.flag} />
+                  {LOCALE_NAMES[l]}
+                </span>
                 {l === locale && (
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <polyline points="20 6 9 17 4 12" />
