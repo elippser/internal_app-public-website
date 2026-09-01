@@ -14,7 +14,8 @@ import {
   SpaceSwitcher,
 } from "@/components/site/Vignettes";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
+import BreadcrumbsLd from "@/components/site/BreadcrumbsLd";
 import { getDictionary } from "@/i18n/get-dictionary";
 
 export async function generateMetadata({
@@ -24,11 +25,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.ia.meta.title,
-    description: dict.ia.meta.description,
-    alternates: alternatesFor(lang, "/producto/ia"),
-  };
+  return pageMetadata(lang, "/producto/ia", dict.ia.meta.title, dict.ia.meta.description);
 }
 
 export default async function IaPage({
@@ -115,6 +112,14 @@ export default async function IaPage({
         title={t.cta.title}
         lead={t.cta.lead}
         steps={t.cta.steps}
+      />
+
+      <BreadcrumbsLd
+        lang={lang}
+        trail={[
+          { name: dict.producto.meta.title, href: "/producto" },
+          { name: dict.ia.meta.title, href: "/producto/ia" },
+        ]}
       />
     </>
   );

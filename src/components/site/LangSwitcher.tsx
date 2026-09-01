@@ -86,7 +86,9 @@ export default function LangSwitcher({
         className={[styles.button, tone === "ink" ? styles.buttonInk : ""].join(" ")}
         aria-expanded={open}
         aria-haspopup="true"
-        aria-label={label}
+        // WCAG 2.5.3 (Label in Name): el nombre accesible tiene que contener
+        // el texto visible del control ("ES"), no sólo describir la acción.
+        aria-label={`${label}: ${LOCALE_SHORT[locale]}`}
         onClick={() => setOpen((v) => !v)}
       >
         <LocaleFlag locale={locale} className={styles.flag} />

@@ -9,7 +9,7 @@ import {
 } from "@/components/site/Sections";
 import { SpaceSwitcher } from "@/components/site/Vignettes";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
 import { getDictionary } from "@/i18n/get-dictionary";
 import styles from "./nosotros.module.css";
 
@@ -20,11 +20,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.nosotros.meta.title,
-    description: dict.nosotros.meta.description,
-    alternates: alternatesFor(lang, "/nosotros"),
-  };
+  return pageMetadata(lang, "/nosotros", dict.nosotros.meta.title, dict.nosotros.meta.description);
 }
 
 const DOT = { ok: styles.dotOk, partial: styles.dotPartial, none: styles.dotNo };

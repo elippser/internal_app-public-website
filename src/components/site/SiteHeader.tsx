@@ -23,12 +23,15 @@ import styles from "./SiteHeader.module.css";
  * `aria-expanded`, no un `:hover` de CSS): la mitad de las auditorías de
  * accesibilidad de sitios de SaaS se caen justo ahí.
  */
+// Recibe SOLO dict.nav y no el diccionario entero: esto es un client
+// component, y todo lo que le llega por props se serializa al payload de
+// hidratacion de CADA pagina (el dict completo son ~97KB de JSON).
 export default function SiteHeader({
   locale,
-  dict,
+  nav,
 }: {
   locale: Locale;
-  dict: Dictionary;
+  nav: Dictionary["nav"];
 }) {
   const [megaOpen, setMegaOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -119,11 +122,11 @@ export default function SiteHeader({
       <div aria-hidden className={styles.blurTop} />
       <header className={styles.wrap}>
       <div className={styles.bar}>
-        <Link href={path("/")} className={styles.brand} aria-label={dict.nav.home}>
+        <Link href={path("/")} className={styles.brand} aria-label={nav.home}>
           <Logo />
         </Link>
 
-        <nav className={styles.nav} aria-label={dict.nav.primary}>
+        <nav className={styles.nav} aria-label={nav.primary}>
           <button
             type="button"
             className={[styles.navItem, megaOpen ? styles.navItemOpen : ""].join(" ")}
@@ -134,7 +137,7 @@ export default function SiteHeader({
             onMouseLeave={closeMega}
             onFocus={openMega}
           >
-            {dict.nav.product}
+            {nav.product}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
               <polyline points="6 9 12 15 18 9" />
             </svg>
@@ -142,24 +145,24 @@ export default function SiteHeader({
 
           {MAIN_NAV.map((item) => (
             <Link key={item.href} href={path(item.href)} className={styles.navItem}>
-              {dict.nav.links[item.key]}
+              {nav.links[item.key]}
             </Link>
           ))}
         </nav>
 
         <div className={styles.actions}>
-          <LangSwitcher locale={locale} label={dict.nav.language} />
+          <LangSwitcher locale={locale} label={nav.language} />
           <SamePageLink className={styles.login}>
-            {dict.nav.login}
+            {nav.login}
           </SamePageLink>
           <SamePageLink className={["btn", "btn-primary", styles.cta].join(" ")}>
-            {dict.nav.signup}
+            {nav.signup}
           </SamePageLink>
           <button
             type="button"
             className={styles.burger}
             aria-expanded={drawerOpen}
-            aria-label={drawerOpen ? dict.nav.closeMenu : dict.nav.openMenu}
+            aria-label={drawerOpen ? nav.closeMenu : nav.openMenu}
             onClick={() => setDrawerOpen((v) => !v)}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
@@ -187,19 +190,19 @@ export default function SiteHeader({
             <div className={styles.mega}>
               {PRODUCT_GROUPS.map((group) => (
                 <div key={group.key} className={styles.megaGroup}>
-                  <p className={styles.megaLabel}>{dict.nav.groups[group.key]}</p>
+                  <p className={styles.megaLabel}>{nav.groups[group.key]}</p>
                   {group.items.map((key) => (
                     <Link key={key} href={path(PRODUCT_HREFS[key])} className={styles.megaItem}>
-                      <span className={styles.megaTitle}>{dict.nav.products[key].title}</span>
-                      <span className={styles.megaDesc}>{dict.nav.products[key].desc}</span>
+                      <span className={styles.megaTitle}>{nav.products[key].title}</span>
+                      <span className={styles.megaDesc}>{nav.products[key].desc}</span>
                     </Link>
                   ))}
                 </div>
               ))}
               <div className={styles.megaFoot}>
-                <span className={styles.megaFootText}>{dict.nav.megaFoot}</span>
+                <span className={styles.megaFootText}>{nav.megaFoot}</span>
                 <Link href={path("/producto")} className="link-arrow">
-                  {dict.nav.megaLink}
+                  {nav.megaLink}
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <line x1="4" y1="12" x2="19" y2="12" />
                     <polyline points="13 6 19 12 13 18" />
@@ -215,35 +218,35 @@ export default function SiteHeader({
         <div className={styles.drawer} id="menu-movil">
           {PRODUCT_GROUPS.map((group) => (
             <div key={group.key} className={styles.drawerGroup}>
-              <p className={styles.drawerLabel}>{dict.nav.groups[group.key]}</p>
+              <p className={styles.drawerLabel}>{nav.groups[group.key]}</p>
               {group.items.map((key) => (
                 <Link key={key} href={path(PRODUCT_HREFS[key])} className={styles.drawerLink}>
-                  {dict.nav.products[key].title}
-                  <span className={styles.drawerDesc}>{dict.nav.products[key].desc}</span>
+                  {nav.products[key].title}
+                  <span className={styles.drawerDesc}>{nav.products[key].desc}</span>
                 </Link>
               ))}
             </div>
           ))}
           <div className={styles.drawerGroup}>
-            <p className={styles.drawerLabel}>{dict.nav.more}</p>
+            <p className={styles.drawerLabel}>{nav.more}</p>
             <Link href={path("/producto")} className={styles.drawerLink}>
-              {dict.nav.platform}
+              {nav.platform}
             </Link>
             {MAIN_NAV.map((item) => (
               <Link key={item.href} href={path(item.href)} className={styles.drawerLink}>
-                {dict.nav.links[item.key]}
+                {nav.links[item.key]}
               </Link>
             ))}
             <Link href={path("/contacto")} className={styles.drawerLink}>
-              {dict.nav.contact}
+              {nav.contact}
             </Link>
           </div>
           <div className={styles.drawerActions}>
             <SamePageLink className={["btn", "btn-primary", "btn-lg"].join(" ")}>
-              {dict.nav.signup}
+              {nav.signup}
             </SamePageLink>
             <SamePageLink className={["btn", "btn-ghost", "btn-lg"].join(" ")}>
-              {dict.nav.login}
+              {nav.login}
             </SamePageLink>
           </div>
         </div>

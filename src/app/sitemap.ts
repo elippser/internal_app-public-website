@@ -14,23 +14,28 @@ import { siteUrl } from "@/lib/siteConfig";
  * página, y no cinco páginas parecidas compitiendo.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
   return LOCALES.flatMap((locale) =>
     PUBLIC_ROUTE_KEYS.map((key) => {
       const isLegal = key === "privacidad" || key === "terminos" || key === "cookies";
       return {
+        // Sin `lastModified` a propósito: antes iba `new Date()` y cada deploy
+        // "modificaba" las 75 URLs, que es la manera más rápida de que Google
+        // deje de creerle al campo. Mejor no declararlo que declararlo falso.
         url: new URL(publicPath(locale, key), siteUrl).toString(),
-        lastModified: now,
         changeFrequency: (isLegal ? "yearly" : "monthly") as "yearly" | "monthly",
         priority: key === "home" ? 1 : isLegal ? 0.2 : 0.7,
         alternates: {
-          languages: Object.fromEntries(
-            LOCALES.map((l) => [
-              LOCALE_TAGS[l],
-              new URL(publicPath(l, key), siteUrl).toString(),
-            ]),
-          ),
+          languages: {
+            ...Object.fromEntries(
+              LOCALES.map((l) => [
+                LOCALE_TAGS[l],
+                new URL(publicPath(l, key), siteUrl).toString(),
+              ]),
+            ),
+            // El mismo x-default que emiten las páginas: la versión ES. Sin él
+            // acá, el sitemap y el <head> contaban historias distintas.
+            "x-default": new URL(publicPath("es", key), siteUrl).toString(),
+          },
         },
       };
     }),

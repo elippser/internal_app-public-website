@@ -13,6 +13,11 @@ const en: Dictionary = {
     description:
       "PMS, booking engine, website, revenue management and an AI assistant that operates the system. All on a single database, for hotels, cabins, hostels and rentals.",
     tagline: "Hospitality operating system",
+    og: {
+      title: "A whole property, in a single system.",
+      lead: "Reservations, rooms, your own booking engine, website, revenue management and an assistant that operates all of it with you.",
+      chips: ["PMS", "Booking engine", "Websites", "Revenue", "LinkHub", "Bookfer AI"],
+    },
   },
 
   nav: {

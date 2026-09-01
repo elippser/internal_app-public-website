@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LegalBody, TextHero } from "@/components/site/Sections";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
 import { getDictionary } from "@/i18n/get-dictionary";
 
 export async function generateMetadata({
@@ -11,11 +11,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.legal.privacy.meta.title,
-    description: dict.legal.privacy.meta.description,
-    alternates: alternatesFor(lang, "/legal/privacidad"),
-  };
+  return pageMetadata(lang, "/legal/privacidad", dict.legal.privacy.meta.title, dict.legal.privacy.meta.description);
 }
 
 export default async function LegalPage({

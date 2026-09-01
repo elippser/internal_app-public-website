@@ -12,7 +12,7 @@ import {
   TapeChart,
 } from "@/components/site/Vignettes";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
 import { getDictionary } from "@/i18n/get-dictionary";
 
 export async function generateMetadata({
@@ -22,11 +22,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.soluciones.meta.title,
-    description: dict.soluciones.meta.description,
-    alternates: alternatesFor(lang, "/soluciones"),
-  };
+  return pageMetadata(lang, "/soluciones", dict.soluciones.meta.title, dict.soluciones.meta.description);
 }
 
 export default async function SolucionesPage({

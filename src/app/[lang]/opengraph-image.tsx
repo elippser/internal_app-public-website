@@ -5,21 +5,34 @@ import {
   LOGOTYPE_TEXT_PATH,
   LOGOTYPE_VIEWBOX,
 } from "@/components/site/logoPaths";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { readLocale } from "@/i18n/params";
 
 /**
  * La imagen que se ve cuando alguien pega un link del sitio en WhatsApp, en
  * LinkedIn o en un chat interno del hotel.
  *
- * Se genera en el build con `next/og`, sin subir un PNG a ningún lado: cambiar
- * el texto es editar este archivo. No carga tipografías remotas a propósito —
- * una fuente de Google acá haría que el build dependa de la red y falle en el
+ * Se genera en el build con `next/og`, sin subir un PNG a ningún lado. Los
+ * textos salen del diccionario del idioma (`site.og`): el archivo vive bajo
+ * `[lang]` justamente para que el share de `/de/plattform` no muestre una
+ * tarjeta en castellano. No carga tipografías remotas a propósito — una
+ * fuente de Google acá haría que el build dependa de la red y falle en el
  * peor momento, que es el deploy.
  */
-export const alt = "Bookfer · El sistema operativo de tu alojamiento";
+// El alt es sólo la marca: es el único texto de este archivo que no puede
+// variar por idioma (Next lo exige como constante del segmento).
+export const alt = "Bookfer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OpengraphImage() {
+export default async function OpengraphImage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const lang = await readLocale(params);
+  const og = (await getDictionary(lang)).site.og;
+
   return new ImageResponse(
     (
       <div
@@ -62,16 +75,15 @@ export default function OpengraphImage() {
               maxWidth: 900,
             }}
           >
-            Un alojamiento entero, en un solo sistema.
+            {og.title}
           </div>
           <div style={{ fontSize: 27, color: "rgba(242,239,232,0.66)", maxWidth: 860, lineHeight: 1.4 }}>
-            Reservas, habitaciones, motor propio, sitio web, revenue management
-            y un asistente que opera todo eso con vos.
+            {og.lead}
           </div>
         </div>
 
         <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-          {["PMS", "Motor de reservas", "Sitios web", "Revenue", "LinkHub", "Bookfer IA"].map((chip) => (
+          {og.chips.map((chip) => (
             <div
               key={chip}
               style={{

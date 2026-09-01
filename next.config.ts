@@ -9,6 +9,41 @@ const nextConfig: NextConfig = {
     // Evita subir a lockfiles de carpetas superiores al ejecutar desde acá.
     root: path.join(process.cwd()),
   },
+  // No hay por qué anunciar el framework en cada respuesta.
+  poweredByHeader: false,
+  experimental: {
+    // CSS inline en el HTML en vez de <link>: el sitio es estático y chico de
+    // estilos; esto borra 4-5 requests render-blocking del camino crítico.
+    inlineCss: true,
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          // Que el navegador no adivine content-types ni mande el referrer
+          // completo a terceros. Mínimos de higiene, sin CSP: una CSP a medias
+          // rompería los JSON-LD inline y no está el tiempo de mantenerla.
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        ],
+      },
+      {
+        // Lo leen los agentes de IA; cache corto con margen de revalidación
+        // para no servirles un stale de días si se actualiza.
+        source: "/llms.txt",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" },
+        ],
+      },
+      {
+        // El favicon no cambia entre deploys; un día de cache alcanza y evita
+        // el request en cada navegación.
+        source: "/icon.svg",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400" }],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

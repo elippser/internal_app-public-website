@@ -18,7 +18,32 @@ export default function robots(): MetadataRoute.Robots {
   }
 
   return {
-    rules: [{ userAgent: "*", allow: "/", disallow: ["/preview/", "/*/preview/"] }],
+    rules: [
+      { userAgent: "*", allow: "/", disallow: ["/preview/", "/*/preview/"] },
+      /* Los rastreadores de IA, nombrados uno por uno además del comodín.
+         Redundante a propósito: (a) documenta la decisión donde un tercero la
+         va a buscar, y (b) si algún día un WAF/CDN interpone su propio manejo
+         de bots (Cloudflare los bloquea por defecto desde 2025), el grupo
+         explícito deja constancia de la intención del sitio. Cubre las tres
+         familias por proveedor: entrenamiento, índice de búsqueda y fetch en
+         vivo por pedido del usuario. */
+      ...[
+        "GPTBot",
+        "OAI-SearchBot",
+        "ChatGPT-User",
+        "ClaudeBot",
+        "Claude-SearchBot",
+        "Claude-User",
+        "PerplexityBot",
+        "Perplexity-User",
+        "Google-Extended",
+        "CCBot",
+      ].map((userAgent) => ({
+        userAgent,
+        allow: "/",
+        disallow: ["/preview/", "/*/preview/"],
+      })),
+    ],
     sitemap: new URL("/sitemap.xml", siteUrl).toString(),
     host: siteUrl,
   };

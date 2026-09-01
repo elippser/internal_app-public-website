@@ -9,7 +9,8 @@ import {
 } from "@/components/site/Sections";
 import { CompSet, RateDecision, RulesList } from "@/components/site/Vignettes";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
+import BreadcrumbsLd from "@/components/site/BreadcrumbsLd";
 import { getDictionary } from "@/i18n/get-dictionary";
 
 export async function generateMetadata({
@@ -19,11 +20,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.revenue.meta.title,
-    description: dict.revenue.meta.description,
-    alternates: alternatesFor(lang, "/producto/revenue"),
-  };
+  return pageMetadata(lang, "/producto/revenue", dict.revenue.meta.title, dict.revenue.meta.description);
 }
 
 export default async function RevenuePage({
@@ -99,6 +96,14 @@ export default async function RevenuePage({
         title={t.cta.title}
         lead={t.cta.lead}
         steps={t.cta.steps}
+      />
+
+      <BreadcrumbsLd
+        lang={lang}
+        trail={[
+          { name: dict.producto.meta.title, href: "/producto" },
+          { name: dict.revenue.meta.title, href: "/producto/revenue" },
+        ]}
       />
     </>
   );

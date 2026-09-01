@@ -16,7 +16,8 @@ import {
 } from "@/components/site/Vignettes";
 import { PRODUCT_HREFS } from "@/components/site/nav";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
+import BreadcrumbsLd from "@/components/site/BreadcrumbsLd";
 import { getDictionary } from "@/i18n/get-dictionary";
 
 export async function generateMetadata({
@@ -26,11 +27,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.motor.meta.title,
-    description: dict.motor.meta.description,
-    alternates: alternatesFor(lang, "/producto/motor"),
-  };
+  return pageMetadata(lang, "/producto/motor", dict.motor.meta.title, dict.motor.meta.description);
 }
 
 export default async function MotorPage({
@@ -139,6 +136,14 @@ export default async function MotorPage({
         title={t.cta.title}
         lead={t.cta.lead}
         steps={t.cta.steps}
+      />
+
+      <BreadcrumbsLd
+        lang={lang}
+        trail={[
+          { name: dict.producto.meta.title, href: "/producto" },
+          { name: dict.motor.meta.title, href: "/producto/motor" },
+        ]}
       />
     </>
   );

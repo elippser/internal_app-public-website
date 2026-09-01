@@ -15,11 +15,6 @@
     "googleAdsConversionId": "",
     "gtmContainerId": ""
   },
-  "preconnect": [
-    "https://fonts.googleapis.com",
-    "https://fonts.gstatic.com"
-  ],
-  "stylesheets": [
-    "https://fonts.googleapis.com/css2?family=Outfit:wght@300..900&family=Instrument+Serif:ital@0;1&display=swap"
-  ]
+  "preconnect": [],
+  "stylesheets": []
 }

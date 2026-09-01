@@ -13,6 +13,11 @@ const pt: Dictionary = {
     description:
       "PMS, motor de reservas, site, revenue management e um assistente de IA que opera o sistema. Tudo sobre um único banco de dados, para hotéis, chalés, hostels e aluguéis.",
     tagline: "Sistema operacional hoteleiro",
+    og: {
+      title: "Uma hospedagem inteira, em um só sistema.",
+      lead: "Reservas, quartos, motor próprio, site, revenue management e um assistente que opera tudo isso com você.",
+      chips: ["PMS", "Motor de reservas", "Sites", "Revenue", "LinkHub", "Bookfer IA"],
+    },
   },
 
   nav: {

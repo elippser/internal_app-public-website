@@ -21,16 +21,18 @@ import styles from "./LeadForm.module.css";
  */
 export default function LeadForm({
   locale,
-  dict,
+  t,
   className,
   buttonLabel,
 }: {
   locale: Locale;
-  dict: Dictionary;
+  /** Sólo la sección del formulario, no el diccionario entero: esto es un
+      client component y sus props viajan serializadas en el payload de
+      hidratación de la página. */
+  t: Dictionary["leadForm"];
   className?: string;
   buttonLabel?: string;
 }) {
-  const t = dict.leadForm;
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
 

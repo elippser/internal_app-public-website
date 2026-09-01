@@ -10,7 +10,8 @@ import {
 } from "@/components/site/Sections";
 import { SpaceSwitcher, TapeChart } from "@/components/site/Vignettes";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
+import BreadcrumbsLd from "@/components/site/BreadcrumbsLd";
 import { getDictionary } from "@/i18n/get-dictionary";
 
 export async function generateMetadata({
@@ -20,11 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.reservas.meta.title,
-    description: dict.reservas.meta.description,
-    alternates: alternatesFor(lang, "/producto/reservas"),
-  };
+  return pageMetadata(lang, "/producto/reservas", dict.reservas.meta.title, dict.reservas.meta.description);
 }
 
 export default async function ReservasPage({
@@ -135,6 +132,14 @@ export default async function ReservasPage({
         title={t.cta.title}
         lead={t.cta.lead}
         steps={t.cta.steps}
+      />
+
+      <BreadcrumbsLd
+        lang={lang}
+        trail={[
+          { name: dict.producto.meta.title, href: "/producto" },
+          { name: dict.reservas.meta.title, href: "/producto/reservas" },
+        ]}
       />
     </>
   );

@@ -35,9 +35,13 @@ function Frame({
     // `data-fx`: al entrar en viewport, el FxObserver marca `data-fx-in` y el
     // CSS de este módulo "dibuja" el contenido — las barras crecen, las líneas
     // de la transcripción aparecen en orden. El estado base es el final.
+    // `aria-hidden`: la viñeta es la FOTO de una pantalla, con datos de
+    // ejemplo; para un lector de pantalla es ruido sin contexto (el argumento
+    // real está en el copy que la rodea). Nada adentro es focuseable.
     <div
       className={[styles.frame, tone === "ink" ? styles.frameInk : ""].join(" ")}
       data-fx=""
+      aria-hidden
     >
       <div className={styles.bar}>
         <span className={styles.dots} aria-hidden>
@@ -380,7 +384,7 @@ export function SpaceSwitcher({ v }: { v: V }) {
 export function AgentSurface({ v }: { v: V }) {
   const s = v.surface;
   return (
-    <div className={[styles.frame, styles.frameInk].join(" ")} data-fx="">
+    <div className={[styles.frame, styles.frameInk].join(" ")} data-fx="" aria-hidden>
       <div className={styles.bar}>
         <span className={styles.dots} aria-hidden>
           <i />

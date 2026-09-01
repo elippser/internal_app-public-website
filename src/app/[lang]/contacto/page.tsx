@@ -4,7 +4,7 @@ import { Headline } from "@/components/site/RichText";
 import { ArrowRight, CheckList } from "@/components/site/Sections";
 import SamePageLink from "@/components/site/SamePageLink";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { contact, whatsappUrlFor } from "@/lib/siteConfig";
 import styles from "./contacto.module.css";
@@ -16,11 +16,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.contacto.meta.title,
-    description: dict.contacto.meta.description,
-    alternates: alternatesFor(lang, "/contacto"),
-  };
+  return pageMetadata(lang, "/contacto", dict.contacto.meta.title, dict.contacto.meta.description);
 }
 
 export default async function ContactoPage({
@@ -74,7 +70,7 @@ export default async function ContactoPage({
 
             {/* ---------------------------------------------------- el form */}
             <div className={styles.card}>
-              <LeadForm locale={lang} dict={dict} />
+              <LeadForm locale={lang} t={dict.leadForm} />
             </div>
           </div>
         </div>

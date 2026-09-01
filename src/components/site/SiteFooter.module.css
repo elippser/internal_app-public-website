@@ -5,6 +5,9 @@
 }
 
 .top {
+    /* OJO: nada de `content-visibility` en el footer (ni acá ni en el
+       <footer>): axe deja de ver el fondo de tinta detrás del texto claro y
+       reporta falsos positivos de contraste. Ya se probó dos veces. */
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 2.6fr);
     gap: clamp(32px, 5vw, 72px);

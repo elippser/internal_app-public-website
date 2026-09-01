@@ -59,23 +59,23 @@
     font-size: 11.5px;
     font-weight: 600;
     letter-spacing: -0.01em;
-    color: var(--text-3);
+    color: #63665a;
 }
 
 .frameInk .barLabel {
-    color: var(--text-ink-3);
+    color: var(--text-ink-2);
 }
 
 .barTag {
     margin-left: auto;
     font-family: var(--mono);
     font-size: 10.5px;
-    color: var(--text-3);
+    color: #63665a;
     letter-spacing: -0.01em;
 }
 
 .frameInk .barTag {
-    color: var(--text-ink-3);
+    color: var(--text-ink-2);
 }
 
 .body {
@@ -95,7 +95,7 @@
     font-family: var(--mono);
     font-size: 9.5px;
     text-align: center;
-    color: var(--text-3);
+    color: #63665a;
     padding-bottom: 2px;
 }
 
@@ -265,7 +265,8 @@
 }
 
 .calMuted {
-    opacity: 0.35;
+    /* 0.65 y no 0.35: mas abajo el texto del dia pasado cae de 4.5:1. */
+    opacity: 0.65;
 }
 
 .calHint {
@@ -554,9 +555,12 @@
 }
 
 .menuOff {
+    /* Apagado por color y desaturación, no por opacity: la opacity licuaba el
+       texto por debajo de 4.5:1 (WCAG AA). El grayscale mata el punto verde
+       del ítem, que es lo que lo distinguía del activo. */
     background: transparent;
     color: var(--text-3);
-    opacity: 0.55;
+    filter: grayscale(1);
 }
 
 .menuOff i {
@@ -801,7 +805,9 @@
 }
 
 .ruleOff {
-    opacity: 0.5;
+    /* Ídem .menuOff: desaturar mantiene la luminancia (y el contraste AA);
+       la opacity de antes dejaba el texto en ~2:1. */
+    filter: grayscale(1);
 }
 
 .ruleOrder {

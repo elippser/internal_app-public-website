@@ -32,7 +32,8 @@ const PASSTHROUGH = new Set([
   "/llms.txt",
   "/robots.txt",
   "/sitemap.xml",
-  "/manifest.json",
+  // Lo genera `src/app/manifest.ts`; Next lo publica con esta extensión.
+  "/manifest.webmanifest",
 ]);
 
 function chooseLocale(request: NextRequest): Locale {
@@ -72,7 +73,11 @@ export function middleware(request: NextRequest) {
   if (rest.replace(/\/$/, "") !== own.replace(/\/$/, "") && rest !== "/") {
     const url = request.nextUrl.clone();
     url.pathname = publicPath(locale, key);
-    return NextResponse.redirect(url);
+    // 308 (permanente) y no 307: `/en/producto/ia` es SIEMPRE la URL
+    // equivocada de `/en/platform/ai` — que el buscador consolide la señal en
+    // la buena y deje de pedir la otra. La detección de idioma de arriba sí
+    // queda en 307: depende de cookie y Accept-Language, no es permanente.
+    return NextResponse.redirect(url, 308);
   }
 
   // --------------------------------------------------------- 2. traducir

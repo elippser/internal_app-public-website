@@ -17,6 +17,13 @@ const es = {
     description:
       "PMS, motor de reservas, sitio web, revenue management y un asistente de IA que opera el sistema. Todo sobre una sola base de datos, para hoteles, cabañas, hostels y alquileres.",
     tagline: "Sistema operativo hotelero",
+    /* La tarjeta OG (imagen de compartidos): titular, bajada y chips van por
+       diccionario para que un share de /de/plattform no muestre castellano. */
+    og: {
+      title: "Un alojamiento entero, en un solo sistema.",
+      lead: "Reservas, habitaciones, motor propio, sitio web, revenue management y un asistente que opera todo eso con vos.",
+      chips: ["PMS", "Motor de reservas", "Sitios web", "Revenue", "LinkHub", "Bookfer IA"],
+    },
   },
 
   nav: {

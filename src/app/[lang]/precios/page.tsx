@@ -11,7 +11,7 @@ import {
   SmartLink,
 } from "@/components/site/Sections";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
 import { getDictionary } from "@/i18n/get-dictionary";
 
 export async function generateMetadata({
@@ -21,11 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.precios.meta.title,
-    description: dict.precios.meta.description,
-    alternates: alternatesFor(lang, "/precios"),
-  };
+  return pageMetadata(lang, "/precios", dict.precios.meta.title, dict.precios.meta.description);
 }
 
 export default async function PreciosPage({
@@ -50,7 +46,7 @@ export default async function PreciosPage({
         notes={t.hero.notes}
       />
 
-      <PlansMkt dict={dict} />
+      <PlansMkt dict={dict} planHeading="h2" />
 
       {/* --------------------------------------------------------- matriz -- */}
       <section className="section section-tight">

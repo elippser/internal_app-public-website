@@ -8,15 +8,17 @@
  * - La tipografía es la del sistema nuevo: Inter 600 con tracking -0.035em y
  *   la línea final en Instrument Serif itálica verde, como el resto del sitio
  *   (el original era Inter 800 a secas).
- * - El chip y la píldora ya NO nacen en `scale(0)` desde CSS: ese estado lo
- *   pone GSAP al iniciar. Sin JavaScript, el hero se ve completo y quieto.
  * - `.monax` scopea lo poco que queda de tokens del template para no pisar
  *   los del sistema.
- *
- * El movimiento vive en `src/components/home.animation.js` (GSAP +
- * ScrollTrigger de CDN, disparado por `HomeScripts.tsx`): máscaras de palabra
- * que suben, chip y píldora con pop elástico, flotación continua, hover con
- * rebote y el fade del headline al scrollear.
+ * - El movimiento ya NO es GSAP de CDN: vive al final de este archivo, en CSS
+ *   puro (ver el bloque "movimiento"). Mismas coreografías — máscaras de
+ *   palabra que suben, pop elástico del chip y la píldora, flotación continua,
+ *   hover con rebote y el fade del headline al scrollear — sin terceros ni
+ *   main thread. Truco central: los keyframes animan `scale`/`translate`/
+ *   `rotate` como propiedades independientes, así el pop (scale), el bob
+ *   (translate+rotate) y el hover (scale) conviven en el mismo elemento sin
+ *   pisarse; y con sólo `from` interpolan hacia el valor natural del elemento,
+ *   lo que respeta el achique del pill en mobile.
  * ========================================================================== */
 
 .monax {
@@ -236,6 +238,147 @@
     }
 
     .monax .idea-pill {
-        transform: scale(0.82);
+        /* Se achica vía la variable (no `transform`): la intro y el hover
+           también escalan por acá y todos parten de esta base. */
+        --mx-pill-scale: 0.82;
+    }
+}
+
+/* ------------------------------------------------------------ movimiento --
+ * La coreografía que antes ponía GSAP, en CSS. Ventaja extra sobre la versión
+ * de CDN: corre también sin JavaScript (antes, sin JS el hero quedaba quieto).
+ * Con `prefers-reduced-motion: reduce` nada de esto aplica y el hero se ve
+ * completo y quieto, igual que antes.
+ * ------------------------------------------------------------------------- */
+
+.monax .idea-pill {
+    --mx-pill-scale: 1;
+    scale: var(--mx-pill-scale);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+    /* Intro. `backwards` sostiene el estado inicial durante el delay y suelta
+       el control al terminar (si no, el hover no podría volver a escalar). */
+    @keyframes mx-rise {
+        from {
+            translate: 0 105%;
+        }
+    }
+
+    @keyframes mx-pop {
+        from {
+            scale: 0;
+        }
+    }
+
+    @keyframes mx-cta {
+        from {
+            /* 0.01 y no 0: un elemento con opacity 0 no se pinta y Chrome
+               recién lo cuenta para LCP cuando se vuelve visible; con 0.01 el
+               paint (y la métrica) corren desde el primer frame. */
+            opacity: 0.01;
+            translate: 0 24px;
+        }
+    }
+
+    /* Flotación continua: sólo translate+rotate, nunca scale. */
+    @keyframes mx-bob-img {
+        to {
+            translate: 0 6px;
+            rotate: 2deg;
+        }
+    }
+
+    @keyframes mx-bob-pill {
+        to {
+            translate: 0 5px;
+            rotate: -1.5deg;
+        }
+    }
+
+    .monax .line-1 .word>span {
+        animation: mx-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards;
+    }
+
+    .monax .line-1 .word:nth-of-type(2)>span {
+        animation-delay: 0.3s;
+    }
+
+    .monax .line-2 .word>span {
+        animation: mx-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.45s backwards;
+    }
+
+    .monax .line-3 .word>span {
+        animation: mx-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.65s backwards;
+    }
+
+    .monax .line-3 .word:nth-of-type(2)>span {
+        animation-delay: 0.75s;
+    }
+
+    .monax .inline-img {
+        animation:
+            mx-pop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s backwards,
+            mx-bob-img 2.8s ease-in-out 1.8s infinite alternate;
+    }
+
+    .monax .idea-pill {
+        animation:
+            mx-pop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s backwards,
+            mx-bob-pill 3.2s ease-in-out 2s infinite alternate;
+    }
+
+    /* El bloque de CTA es el candidato a LCP de la página: el delay corto y
+       arrancar de opacity 0.01 (pintado, no invisible) evitan castigar la
+       métrica por la entrada. */
+    .monax .monax-cta {
+        animation: mx-cta 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.5s backwards;
+    }
+
+    /* Hover con rebote (ex back.out/elastic.out). Sólo `scale`: translate y
+       rotate quedan en manos del bob sin conflicto. */
+    .monax .inline-img,
+    .monax .idea-pill {
+        transition: scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .monax .inline-img:hover {
+        scale: 1.08;
+    }
+
+    .monax .idea-pill:hover {
+        scale: calc(var(--mx-pill-scale) * 1.06);
+    }
+
+    .monax .idea-pill .leaf {
+        transition: rotate 0.8s ease-in-out;
+    }
+
+    .monax .idea-pill:hover .leaf {
+        rotate: 360deg;
+    }
+
+    /* El headline se corre y apaga al scrollear (ex ScrollTrigger con scrub).
+       `@supports` es imprescindible: sin él, un navegador sin scroll-driven
+       animations correría esto como animación de tiempo al cargar y dejaría
+       el headline apagado para siempre. */
+    @supports (animation-timeline: view()) {
+        .monax {
+            view-timeline: --mx-hero block;
+        }
+
+        .monax .headline {
+            animation: mx-exit linear both;
+            animation-timeline: --mx-hero;
+            animation-range: exit 0% exit 100%;
+        }
+    }
+
+    @keyframes mx-exit {
+        to {
+            translate: 0 -50px;
+            opacity: 0.6;
+        }
     }
 }

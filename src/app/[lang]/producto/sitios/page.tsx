@@ -14,7 +14,8 @@ import {
 } from "@/components/site/Vignettes";
 import { PRODUCT_HREFS } from "@/components/site/nav";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
+import BreadcrumbsLd from "@/components/site/BreadcrumbsLd";
 import { getDictionary } from "@/i18n/get-dictionary";
 
 export async function generateMetadata({
@@ -24,11 +25,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.sitios.meta.title,
-    description: dict.sitios.meta.description,
-    alternates: alternatesFor(lang, "/producto/sitios"),
-  };
+  return pageMetadata(lang, "/producto/sitios", dict.sitios.meta.title, dict.sitios.meta.description);
 }
 
 export default async function SitiosPage({
@@ -114,6 +111,14 @@ export default async function SitiosPage({
         title={t.cta.title}
         lead={t.cta.lead}
         steps={t.cta.steps}
+      />
+
+      <BreadcrumbsLd
+        lang={lang}
+        trail={[
+          { name: dict.producto.meta.title, href: "/producto" },
+          { name: dict.sitios.meta.title, href: "/producto/sitios" },
+        ]}
       />
     </>
   );

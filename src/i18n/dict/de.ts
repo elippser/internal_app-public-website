@@ -13,6 +13,11 @@ const de: Dictionary = {
     description:
       "PMS, Buchungsmaschine, Website, Revenue Management und ein KI-Assistent, der das System bedient. Alles auf einer einzigen Datenbank, für Hotels, Hütten, Hostels und Ferienwohnungen.",
     tagline: "Hotellerie-Betriebssystem",
+    og: {
+      title: "Eine ganze Unterkunft, in einem einzigen System.",
+      lead: "Reservierungen, Zimmer, eigene Booking-Engine, Website, Revenue Management und ein Assistent, der all das mit Ihnen bedient.",
+      chips: ["PMS", "Booking-Engine", "Websites", "Revenue", "LinkHub", "Bookfer KI"],
+    },
   },
 
   nav: {

@@ -80,6 +80,10 @@ interface Props {
   ctaHref?: string;
   /** Planes ya resueltos. Si no vienen, el componente los busca solo. */
   plans?: MktPlan[];
+  /** Nivel del nombre de cada plan. En /precios el componente va pegado al
+      h1 y sin `title`, así que el nombre tiene que ser h2 — con el h3 por
+      defecto el outline salta de nivel (falla heading-order de axe). */
+  planHeading?: "h2" | "h3";
 }
 
 export default async function PlansMkt({
@@ -88,6 +92,7 @@ export default async function PlansMkt({
   subtitle = "",
   ctaHref,
   plans: given,
+  planHeading: PlanHeading = "h3",
 }: Props) {
   const d = dict.plans;
   const plans = given ?? (await fetchPlans());
@@ -121,7 +126,7 @@ export default async function PlansMkt({
               >
                 {plan.highlighted && <span className={styles.ribbon}>{d.ribbon}</span>}
 
-                <h3 className={styles.planName}>{plan.name}</h3>
+                <PlanHeading className={styles.planName}>{plan.name}</PlanHeading>
                 <p className={styles.planTagline}>{plan.tagline || plan.description}</p>
 
                 <div className={styles.priceRow}>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import HomeScripts from "@/components/HomeScripts";
 import PlansMkt from "@/components/plans/PlansMkt";
+import { fetchPlans } from "@/components/plans/plansApi";
 import Faq from "@/components/site/Faq";
 import { Headline } from "@/components/site/RichText";
 import Ticker from "@/components/site/Ticker";
@@ -29,17 +29,17 @@ import {
 import { PRODUCT_HREFS } from "@/components/site/nav";
 import { localizedHref as localePath } from "@/i18n/routes";
 import { readLocale } from "@/i18n/params";
-import { alternatesFor } from "@/i18n/routes";
+import { pageMetadata } from "@/lib/meta";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { siteUrl } from "@/lib/siteConfig";
 import styles from "./home.module.css";
 import "./monax.css";
 
 /**
- * La home. El hero es el del template original (el headline animado con GSAP:
+ * La home. El hero es el del template original (el headline animado:
  * palabras enmascaradas, el chip naranja y la píldora verde), con la
- * tipografía del sistema nuevo — ver `monax.css` y `home.animation.js`. Todo
- * lo que sigue son las secciones del sistema del sitio.
+ * tipografía del sistema nuevo — todo el movimiento vive en `monax.css`, en
+ * CSS puro. Lo que sigue son las secciones del sistema del sitio.
  */
 
 export async function generateMetadata({
@@ -49,11 +49,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return {
-    title: dict.site.title,
-    description: dict.site.description,
-    alternates: alternatesFor(lang, "/"),
-  };
+  return pageMetadata(lang, "/", dict.site.title, dict.site.description);
 }
 
 /* Los seis módulos, con su icono y el tinte que le toca. */
@@ -115,6 +111,26 @@ export default async function HomePage({
   const t = dict.home;
   const v = dict.vignettes;
   const path = (href: string) => localePath(lang, href);
+
+  // Para el `offers` del JSON-LD: los MISMOS planes que pinta la sección de
+  // precios de esta página (mismo fetch, misma revalidación de 5 minutos).
+  // Antes iba hardcodeado y podía contradecir la tabla de al lado hasta el
+  // siguiente deploy; si el API no contesta, mejor no declarar precios que
+  // declarar precios inventados.
+  const plans = await fetchPlans();
+  const prices = plans.map((p) => p.price.amount).filter((n) => Number.isFinite(n));
+  const offers =
+    prices.length > 0
+      ? {
+          offers: {
+            "@type": "AggregateOffer",
+            priceCurrency: plans[0].price.currency,
+            lowPrice: String(Math.min(...prices)),
+            highPrice: String(Math.max(...prices)),
+            offerCount: String(plans.length),
+          },
+        }
+      : {};
 
   return (
     <>
@@ -184,7 +200,6 @@ export default async function HomePage({
             </p>
           </div>
         </section>
-        <HomeScripts />
       </div>
 
       {/* ------------------------------------------- captura del producto -- */}
@@ -513,13 +528,7 @@ export default async function HomePage({
             url: `${siteUrl}/${lang}`,
             inLanguage: ["es", "en", "pt", "fr", "de"],
             description: dict.site.description,
-            offers: {
-              "@type": "AggregateOffer",
-              priceCurrency: "USD",
-              lowPrice: "0",
-              highPrice: "199",
-              offerCount: "3",
-            },
+            ...offers,
           }),
         }}
       />
