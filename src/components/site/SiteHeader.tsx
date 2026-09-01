@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { localizedHref as localePath } from "@/i18n/routes";
 import type { Dictionary } from "@/i18n/dict/es";
-import { loginUrl, registerUrl } from "@/lib/siteConfig";
+import SamePageLink from "./SamePageLink";
 import LangSwitcher from "./LangSwitcher";
 import Logo from "./Logo";
 import { MAIN_NAV, PRODUCT_GROUPS, PRODUCT_HREFS } from "./nav";
@@ -149,12 +149,12 @@ export default function SiteHeader({
 
         <div className={styles.actions}>
           <LangSwitcher locale={locale} label={dict.nav.language} />
-          <a className={styles.login} href={loginUrl}>
+          <SamePageLink className={styles.login}>
             {dict.nav.login}
-          </a>
-          <a className={["btn", "btn-primary", styles.cta].join(" ")} href={registerUrl}>
+          </SamePageLink>
+          <SamePageLink className={["btn", "btn-primary", styles.cta].join(" ")}>
             {dict.nav.signup}
-          </a>
+          </SamePageLink>
           <button
             type="button"
             className={styles.burger}
@@ -239,12 +239,12 @@ export default function SiteHeader({
             </Link>
           </div>
           <div className={styles.drawerActions}>
-            <a className={["btn", "btn-primary", "btn-lg"].join(" ")} href={registerUrl}>
+            <SamePageLink className={["btn", "btn-primary", "btn-lg"].join(" ")}>
               {dict.nav.signup}
-            </a>
-            <a className={["btn", "btn-ghost", "btn-lg"].join(" ")} href={loginUrl}>
+            </SamePageLink>
+            <SamePageLink className={["btn", "btn-ghost", "btn-lg"].join(" ")}>
               {dict.nav.login}
-            </a>
+            </SamePageLink>
           </div>
         </div>
       )}

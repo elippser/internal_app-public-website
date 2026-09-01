@@ -144,13 +144,12 @@ Copiar `example.env` a `.env.local`.
 |---|---|
 | `NEXT_PUBLIC_INTERNAL_API_URL` | API de internal-laupser: ahí postea `LeadForm` y de ahí salen los planes |
 | `NEXT_PUBLIC_SITE_URL` | Base pública, para `canonical`, OG y `sitemap.xml` |
-| `NEXT_PUBLIC_APP_URL` | El PMS. Todos los CTA de "empezar" e "ingresar" apuntan ahí |
 
 La preferencia de idioma se guarda en la cookie `bookfer_lang` (un año). Es la
 única cookie propia del sitio público y está declarada en la política de
 cookies; la lee el `middleware` para no devolver a alguien al idioma equivocado.
 
-En Coolify los tres van como variables **buildtime**: si no, quedan sin valor
+En Coolify las dos van como variables **buildtime**: si no, quedan sin valor
 en el bundle.
 
 ## Precios

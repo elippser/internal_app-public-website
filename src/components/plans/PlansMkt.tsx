@@ -1,5 +1,5 @@
 import type { Dictionary } from "@/i18n/dict/es";
-import { registerUrl } from "@/lib/siteConfig";
+import SamePageLink from "@/components/site/SamePageLink";
 import { fetchPlans, type MktPlan } from "./plansApi";
 import styles from "./PlansMkt.module.css";
 
@@ -76,7 +76,7 @@ interface Props {
   /** Encabezado de la sección. Vacío = sin encabezado. */
   title?: string;
   subtitle?: string;
-  /** A dónde lleva el botón de cada plan. */
+  /** A dónde lleva el botón de cada plan. Sin valor no lleva a ningún lado. */
   ctaHref?: string;
   /** Planes ya resueltos. Si no vienen, el componente los busca solo. */
   plans?: MktPlan[];
@@ -86,7 +86,7 @@ export default async function PlansMkt({
   dict,
   title = "",
   subtitle = "",
-  ctaHref = registerUrl,
+  ctaHref,
   plans: given,
 }: Props) {
   const d = dict.plans;
@@ -106,6 +106,9 @@ export default async function PlansMkt({
         <div className={styles.grid}>
           {plans.map((plan) => {
             const { amount, period } = priceLabel(plan, d);
+            const ctaClass = [styles.cta, plan.highlighted ? "" : styles.ctaGhost]
+              .filter(Boolean)
+              .join(" ");
             return (
               <article
                 key={plan.planId}
@@ -170,14 +173,13 @@ export default async function PlansMkt({
                   </span>
                 </div>
 
-                <a
-                  href={ctaHref}
-                  className={[styles.cta, plan.highlighted ? "" : styles.ctaGhost]
-                    .filter(Boolean)
-                    .join(" ")}
-                >
-                  {d.cta}
-                </a>
+                {ctaHref ? (
+                  <a href={ctaHref} className={ctaClass}>
+                    {d.cta}
+                  </a>
+                ) : (
+                  <SamePageLink className={ctaClass}>{d.cta}</SamePageLink>
+                )}
               </article>
             );
           })}

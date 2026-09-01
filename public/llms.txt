@@ -86,4 +86,4 @@ Con los slugs en español; para los otros idiomas, ver la lista de arriba.
 ## Contacto
 
 Email: hola@bookfer.com
-Alta autogestionada y gratuita: https://app.bookfer.com/register
+Formulario de contacto: https://bookfer.com/es/contacto

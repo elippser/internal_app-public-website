@@ -45,15 +45,16 @@ export const internalApiUrl =
   process.env.NEXT_PUBLIC_INTERNAL_API_URL ?? "http://localhost:8600";
 
 /**
- * El PMS. Todos los CTA de "empezar" e "ingresar" salen del sitio hacia acá:
- * el alta real vive en pms-core, este repo no tiene formulario de registro y
- * no debería tenerlo nunca (dos altas distintas = dos verdades).
+ * El sitio público NO enlaza al PMS.
+ *
+ * Acá vivían `appUrl`, `registerUrl` y `loginUrl`, que apuntaban a
+ * app.bookfer.com. Se quitaron a propósito: los CTA de "empezar gratis" e
+ * "ingresar" siguen en la página porque son parte del diseño, pero no llevan a
+ * ningún lado (los dibuja `SamePageLink`, que apunta a la página actual).
+ *
+ * No volver a agregar una `NEXT_PUBLIC_APP_URL`: el punto es que el dominio
+ * del PMS no se pueda reintroducir desde una variable de entorno.
  */
-export const appUrl =
-  process.env.NEXT_PUBLIC_APP_URL ?? "https://app.bookfer.com";
-
-export const registerUrl = `${appUrl}/register`;
-export const loginUrl = `${appUrl}/login`;
 
 /**
  * Datos de contacto públicos. Están acá y no repartidos por las páginas para

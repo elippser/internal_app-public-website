@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import LeadForm from "@/components/LeadForm";
 import { Headline } from "@/components/site/RichText";
 import { ArrowRight, CheckList } from "@/components/site/Sections";
+import SamePageLink from "@/components/site/SamePageLink";
 import { readLocale } from "@/i18n/params";
 import { alternatesFor } from "@/i18n/routes";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { contact, registerUrl, whatsappUrlFor } from "@/lib/siteConfig";
+import { contact, whatsappUrlFor } from "@/lib/siteConfig";
 import styles from "./contacto.module.css";
 
 export async function generateMetadata({
@@ -91,10 +92,10 @@ export default async function ContactoPage({
                 {t.shortcutText}
               </p>
             </div>
-            <a className="btn btn-primary btn-lg" href={registerUrl}>
+            <SamePageLink className="btn btn-primary btn-lg">
               {dict.common.startFree}
               <ArrowRight />
-            </a>
+            </SamePageLink>
           </div>
         </div>
       </section>

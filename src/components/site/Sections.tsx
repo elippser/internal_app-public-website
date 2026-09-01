@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 import type { Locale } from "@/i18n/config";
 import { localizedHref as localePath } from "@/i18n/routes";
 import type { Dictionary } from "@/i18n/dict/es";
-import { registerUrl } from "@/lib/siteConfig";
+import SamePageLink from "./SamePageLink";
 import { Headline, renderRich } from "./RichText";
 import CountUp from "./CountUp";
 import styles from "./Sections.module.css";
@@ -42,8 +42,11 @@ export function Check() {
 /**
  * Enlace que no le hace pensar a quien escribe la página si el destino es
  * interno o externo. `/precios` navega con el router y con el idioma puesto;
- * `https://app.bookfer.com` sale del sitio y `<Link>` ahí sólo agregaría
- * prefetch de algo que no controlamos.
+ * `https://algo.externo` sale del sitio y `<Link>` ahí sólo agregaría prefetch
+ * de algo que no controlamos.
+ *
+ * Sin `href` el botón se dibuja igual pero no lleva a ningún lado: es el caso
+ * de los CTA que antes iban al PMS (ver `SamePageLink`).
  */
 export function SmartLink({
   href,
@@ -51,11 +54,14 @@ export function SmartLink({
   className,
   children,
 }: {
-  href: string;
+  href?: string;
   locale: Locale;
   className?: string;
   children: ReactNode;
 }) {
+  if (!href) {
+    return <SamePageLink className={className}>{children}</SamePageLink>;
+  }
   if (href.startsWith("http") || href.startsWith("mailto:")) {
     return (
       <a className={className} href={href}>
@@ -138,7 +144,7 @@ export function HeroActions({
   locale,
   dict,
   primaryLabel,
-  primaryHref = registerUrl,
+  primaryHref,
   secondaryLabel,
   secondaryHref = "/contacto",
 }: {
@@ -222,7 +228,7 @@ export function CtaBand({
   lead,
   steps,
   primaryLabel,
-  primaryHref = registerUrl,
+  primaryHref,
   secondaryLabel,
   secondaryHref = "/contacto",
 }: {
