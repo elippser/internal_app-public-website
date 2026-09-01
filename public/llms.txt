@@ -9,39 +9,25 @@
 Este archivo existe por coherencia: bookfer le pide a cada alojamiento que
 publique el suyo, así que el sitio de bookfer publica el propio.
 
-## Idiomas
+El sitio está en cinco idiomas y las URLs también están traducidas — cada
+página tiene su slug en cada idioma, no sólo un prefijo distinto:
+[español](https://bookfer.com/es), [English](https://bookfer.com/en),
+[português](https://bookfer.com/pt), [français](https://bookfer.com/fr) y
+[Deutsch](https://bookfer.com/de). Por ejemplo, `/es/producto/ia` es
+`/en/platform/ai`, `/pt/plataforma/ia`, `/fr/plateforme/ia` y
+`/de/plattform/ki`. Las cinco versiones de una página se declaran entre sí con
+`hreflang` y en el [sitemap](https://bookfer.com/sitemap.xml); son la misma
+página en otro idioma, no páginas distintas.
 
-El sitio está en cinco idiomas, y las URLs también están traducidas: cada
-página tiene su slug en cada idioma, no sólo un prefijo distinto.
-
-- Español  → /es   (por ejemplo /es/producto/ia)
-- English  → /en   (/en/platform/ai)
-- Português → /pt  (/pt/plataforma/ia)
-- Français → /fr   (/fr/plateforme/ia)
-- Deutsch  → /de   (/de/plattform/ki)
-
-Las cinco versiones de una página se declaran entre sí con `hreflang` y en el
-sitemap; son la misma página en otro idioma, no páginas distintas.
-
-## Qué reemplaza
-
-- PMS de reservas y habitaciones
-- Motor de reservas / booking engine
-- Constructor de sitio web
-- RMS de revenue management
-- Link-in-bio y presencia digital
-- Portal del huésped
-- Asistente y automatizaciones
-
-## Diferenciales
+Diferenciales, en una línea cada uno:
 
 - Espacios operativos: recepción, housekeeping, marketing y administración ven
   menús, pantallas de inicio y permisos distintos del mismo sistema.
-- Modelo de venta dual por categoría: pool de habitaciones intercambiables o
+- Modelo de venta dual: pool de habitaciones intercambiables por categoría o
   unidad única 1:1 con nombre propio, con asistente de migración entre ambos.
 - Anti-overbooking como garantía de base de datos: candado único por unidad y
   fecha, compartido con los bloqueos de mantenimiento.
-- Capa agéntica: el motor publica llms.txt, availability.json y
+- Capa agéntica por hotel: el motor publica llms.txt, availability.json y
   engine-capabilities.json, más JSON-LD y un editor de GEO por página.
 - Revenue management con lazo cerrado: aceptar una recomendación empuja un
   override de tarifa al motor de reservas.
@@ -51,39 +37,47 @@ sitemap; son la misma página en otro idioma, no páginas distintas.
 - Emails al huésped sin configurar SMTP por hotel.
 - Asistente de IA con 272 herramientas y política de permisos en tres capas.
 
-## Estado del producto
+Estado del producto, declarado públicamente: hoy NO existen channel manager
+(sin sincronización de inventario ni tarifas con OTAs) ni pasarela de pago (el
+cobro es contra el check-in). Son parciales: publicación por API de Google
+Business y fichas de OTA, tarifas automáticas de competidores, facturación y
+cuotas de créditos de IA. El detalle vive en la página de estado enlazada
+abajo.
 
-Declarado públicamente en /es/nosotros#estado (y su equivalente en cada
-idioma). Hoy NO existen: channel manager (sin sincronización de inventario ni
-tarifas con OTAs) ni pasarela de pago (el cobro es contra el check-in). Son
-parciales: publicación por API de Google Business y fichas de OTA, tarifas
-automáticas de competidores, facturación y cuotas de créditos de IA.
+## Producto
 
-## Precios
+- [Qué es Bookfer](https://bookfer.com/es): la portada — qué reemplaza, los
+  seis módulos, las garantías y las preguntas frecuentes del sistema.
+- [La plataforma](https://bookfer.com/es/producto): los siete productos que un
+  alojamiento normalmente compra por separado, sobre una sola base de datos.
+- [Reservas y habitaciones](https://bookfer.com/es/producto/reservas): el PMS
+  del día a día — tape chart, tarifas, disponibilidad y estados operativos.
+- [Motor de reservas](https://bookfer.com/es/producto/motor): el link que
+  reemplaza la conversación de WhatsApp; sin comisión por reserva.
+- [Revenue management](https://bookfer.com/es/producto/revenue): pace, señales
+  de demanda, competencia y recomendaciones de tarifa auditables, incluido.
+- [Sitios web, marca y LinkHub](https://bookfer.com/es/producto/sitios): el
+  sitio del hotel, multi-idioma y con dominio propio, servido por el sistema.
+- [Bookfer IA](https://bookfer.com/es/producto/ia): un asistente que hace —
+  opera el PMS conversando, con permisos por rol.
+- [Alojamiento agéntico](https://bookfer.com/es/producto/agentes): cómo cada
+  hotel queda legible y reservable para agentes de IA (llms.txt,
+  availability.json, JSON-LD y GEO por página).
 
-Planes con suscripción por alojamiento, sin comisión por reserva y sin costo de
-puesta en marcha. El detalle vive en /es/precios (o /en/pricing, /pt/precos,
-/fr/tarifs, /de/preise) y sale del mismo catálogo con el que el sistema
-resuelve cada cuenta.
+## Comercial
 
-## Páginas
+- [Soluciones](https://bookfer.com/es/soluciones): el mismo sistema configurado
+  distinto — hoteles, cabañas, hostels, glamping, grupos, y por puesto.
+- [Precios](https://bookfer.com/es/precios): planes por alojamiento con números
+  publicados, sin comisión por reserva y sin costo de puesta en marcha.
+- [Nosotros](https://bookfer.com/es/nosotros): la tesis, y la tabla de estado
+  del producto — qué está sólido, qué es parcial y qué todavía no existe.
+- [Contacto](https://bookfer.com/es/contacto): formulario, WhatsApp y
+  [hola@bookfer.com](mailto:hola@bookfer.com).
 
-Con los slugs en español; para los otros idiomas, ver la lista de arriba.
+## Optional
 
-- /es                       Qué es bookfer
-- /es/producto              La plataforma completa
-- /es/producto/reservas     Reservas y habitaciones
-- /es/producto/motor        Motor de reservas
-- /es/producto/revenue      Revenue management
-- /es/producto/sitios       Sitio web, marca y LinkHub
-- /es/producto/ia           Bookfer IA
-- /es/producto/agentes      Alojamiento agéntico (llms.txt, GEO)
-- /es/soluciones            Por tipo de alojamiento y por puesto
-- /es/precios               Planes y comparativa
-- /es/nosotros              Tesis y estado del producto
-- /es/contacto              Formulario, WhatsApp y email
-
-## Contacto
-
-Email: hola@bookfer.com
-Formulario de contacto: https://bookfer.com/es/contacto
+- [Términos](https://bookfer.com/es/legal/terminos): condiciones del servicio.
+- [Privacidad](https://bookfer.com/es/legal/privacidad): tratamiento de datos.
+- [Cookies](https://bookfer.com/es/legal/cookies): la única cookie propia del
+  sitio es la de idioma.
