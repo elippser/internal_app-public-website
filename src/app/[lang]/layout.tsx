@@ -71,12 +71,12 @@ export async function generateMetadata({
     },
     description: dict.site.description,
     robots: siteConfig.seo.noindex ? { index: false, follow: false } : undefined,
-    /* UN solo favicon: Chrome ignora el atributo `media` en <link rel=icon>
-       y se queda con el último — con dos links terminaba mostrando la b de
-       papel sobre pestaña clara (invisible). El cambio claro/oscuro lo hace
-       el media query INTERNO de icon.svg, que Chrome/Edge/Firefox sí aplican.
-       El `?v=2` revienta el cache de favicons, que es eterno. */
-    icons: siteConfig.favicon ? { icon: `${siteConfig.favicon}?v=2` } : undefined,
+    /* UN solo favicon, determinístico: icon.svg es la placa de tinta con la
+       b en papel y el punto pistacho, sin media queries — los renderers de
+       favicons los aplican de manera inconsistente (Chrome ignora además el
+       atributo `media` del link). La versión revienta el cache de favicons,
+       que es eterno: subirla si el ícono vuelve a cambiar. */
+    icons: siteConfig.favicon ? { icon: `${siteConfig.favicon}?v=3` } : undefined,
     /* hreflang de la home. Cada página pone el suyo con su propio slug
        traducido; acá va el del layout, que es la portada. */
     alternates: alternatesFor(lang, "/"),

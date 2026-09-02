@@ -1,7 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="673 215 630 627" width="32" height="32">
   <!--
     Variante oscura del favicon: la "b" en papel y el punto en pistacho
-    (#c8e293, el mismo verde claro del logo del footer — var(--brand-bright)).
+    (#c8e293, el mismo verde claro del logo del footer: el token "brand-bright"
+    de globals.css). OJO: nada de doble guion dentro de comentarios XML — un
+    "menos menos" literal rompe el parseo del SVG entero y el favicon
+    desaparece; fue exactamente el bug que tuvo icon.svg en produccion.
 
     Existe como archivo aparte porque el media query interno de icon.svg no lo
     aplican todos los renderers de favicons; el <link rel="icon"
