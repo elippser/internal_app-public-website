@@ -71,20 +71,12 @@ export async function generateMetadata({
     },
     description: dict.site.description,
     robots: siteConfig.seo.noindex ? { index: false, follow: false } : undefined,
-    /* Dos favicons elegidos por `media`, no por el media query interno del
-       SVG: varios renderers de favicons ignoran el <style> del archivo y ahí
-       el punto quedaba en musgo sobre pestaña oscura. icon-dark.svg lleva la
-       "b" en papel y el punto en pistacho (el verde claro del footer),
-       hardcodeados. icon.svg conserva su media query como red de seguridad
-       para quien ignore el atributo `media` del link. */
-    icons: siteConfig.favicon
-      ? {
-          icon: [
-            { url: siteConfig.favicon, media: "(prefers-color-scheme: light)" },
-            { url: "/icon-dark.svg", media: "(prefers-color-scheme: dark)" },
-          ],
-        }
-      : undefined,
+    /* UN solo favicon: Chrome ignora el atributo `media` en <link rel=icon>
+       y se queda con el último — con dos links terminaba mostrando la b de
+       papel sobre pestaña clara (invisible). El cambio claro/oscuro lo hace
+       el media query INTERNO de icon.svg, que Chrome/Edge/Firefox sí aplican.
+       El `?v=2` revienta el cache de favicons, que es eterno. */
+    icons: siteConfig.favicon ? { icon: `${siteConfig.favicon}?v=2` } : undefined,
     /* hreflang de la home. Cada página pone el suyo con su propio slug
        traducido; acá va el del layout, que es la portada. */
     alternates: alternatesFor(lang, "/"),
