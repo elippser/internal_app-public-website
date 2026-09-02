@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="673 215 630 627" width="32" height="32">
+  <!--
+    Variante oscura del favicon: la "b" en papel y el punto en pistacho
+    (#c8e293, el mismo verde claro del logo del footer — var(--brand-bright)).
+
+    Existe como archivo aparte porque el media query interno de icon.svg no lo
+    aplican todos los renderers de favicons; el <link rel="icon"
+    media="(prefers-color-scheme: dark)"> del layout elige este archivo sin
+    depender de eso. Colores fijos a propósito: acá no hay nada que adivinar.
+
+    Mismos trazados que icon.svg (src/components/site/logoPaths.ts).
+  -->
+  <path fill="#f2efe8" fill-rule="evenodd" d="M 676.296 432.750 C 676.675 669.600, 676.194 651.796, 682.904 677.454 C 714.142 796.910, 839.500 866.326, 956.462 828.935 C 1060.331 795.728, 1123.017 691.418, 1103.418 584.395 C 1091.307 518.263, 1047.781 460.708, 987 430.453 C 920.523 397.363, 840.187 401.340, 777.250 440.836 L 769 446.014 769 332.007 L 769 218 722.476 218 L 675.951 218 676.296 432.750 M 878.519 502.106 C 794.467 510.954, 744.135 603.291, 782.450 678.350 C 820.924 753.722, 920.889 768.686, 979.533 707.853 C 1012.303 673.858, 1022.447 623.743, 1005.460 579.758 C 988.598 536.098, 949.247 506.478, 902.173 502.014 C 890.414 500.899, 889.973 500.900, 878.519 502.106"/>
+  <circle fill="#c8e293" cx="1223" cy="762" r="77"/>
+</svg>

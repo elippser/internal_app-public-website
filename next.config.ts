@@ -37,9 +37,9 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // El favicon no cambia entre deploys; un día de cache alcanza y evita
-        // el request en cada navegación.
-        source: "/icon.svg",
+        // Los favicons no cambian entre deploys; un día de cache alcanza y
+        // evita el request en cada navegación.
+        source: "/:icon(icon|icon-dark).svg",
         headers: [{ key: "Cache-Control", value: "public, max-age=86400" }],
       },
     ];
