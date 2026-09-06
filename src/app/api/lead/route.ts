@@ -9,8 +9,8 @@ import { isLocale } from "@/i18n/config";
  * decorativo: posteando derecho desde el navegador el pedido no llega nunca.
  *
  * 1. **CORS.** El API interno sólo autoriza el origen del panel (`WEB_URL`).
- *    Desde `bookfer.com` el preflight devuelve
- *    `Access-Control-Allow-Origin: https://internal.bookfer.com`, el browser
+ *    Desde `roombir.com` el preflight devuelve
+ *    `Access-Control-Allow-Origin: https://internal.roombir.com`, el browser
  *    corta el POST y el visitante ve "Error de red" con el lead perdido. Del
  *    lado del servidor no hay origen que validar: es la misma llamada que ya
  *    hace `plansApi` para traer los precios, y por eso ésa sí funciona.

@@ -12,7 +12,7 @@ import styles from "./LeadForm.module.css";
  *
  * Postea a `/api/lead`, de este mismo sitio, y desde ahí el servidor reenvía
  * al API interno. El rodeo es obligatorio: el API interno sólo autoriza por
- * CORS el origen del panel, así que un POST directo desde `bookfer.com` lo
+ * CORS el origen del panel, así que un POST directo desde `roombir.com` lo
  * corta el navegador y el lead se pierde en silencio. El porqué completo está
  * en `src/app/api/lead/route.ts`.
  *

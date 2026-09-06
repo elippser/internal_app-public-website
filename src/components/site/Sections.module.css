@@ -223,7 +223,7 @@
 
 /* --------------------------------------------------- fila de contraste ---- */
 
-/* "Lo que reemplaza" → "En bookfer". Es la sección que más rápido explica el
+/* "Lo que reemplaza" → "En roombir". Es la sección que más rápido explica el
    producto y la que más levanta de la comparación con la competencia. */
 .swap {
     border: 1px solid var(--line);
@@ -389,5 +389,358 @@
     from {
         opacity: 0;
         transform: translateY(12px);
+    }
+}
+
+/* Tilde gris: la lista que habla del competidor, no de nosotros. */
+.checksMuted .check svg {
+    color: var(--text-3);
+}
+
+/* ------------------------------------------------------- compromisos ---- */
+
+/* Seis sellos propios en banda de tinta. Reemplazan a las badges ajenas que
+   no tenemos: cada uno certifica algo que el lector puede ir a comprobar. */
+.seals {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--line-ink);
+    border: 1px solid var(--line-ink);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.seal {
+    background: var(--ink);
+    padding: clamp(20px, 2.4vw, 30px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.sealRing {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--brand-bright);
+    display: grid;
+    place-items: center;
+    color: var(--brand-bright);
+    margin-bottom: 4px;
+}
+
+.sealRing svg {
+    width: 16px;
+    height: 16px;
+}
+
+.sealTitle {
+    font-size: clamp(17px, 1.8vw, 20px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: var(--text-ink);
+}
+
+.sealText {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-ink-2);
+    flex: 1;
+}
+
+@media (max-width: 980px) {
+    .seals {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .seals {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .seals[data-fx-in] .seal {
+        animation: statIn 0.5s ease backwards;
+        animation-delay: var(--d, 0s);
+    }
+}
+
+/* ------------------------------------------------------ un día con/sin -- */
+
+.day {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--card);
+}
+
+.dayRow {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+    padding: 15px clamp(14px, 2vw, 22px);
+    border-top: 1px solid var(--line);
+    align-items: start;
+}
+
+.dayRow:first-child {
+    border-top: 0;
+}
+
+.dayHead {
+    background: var(--paper-2);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-3);
+}
+
+.dayTime {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-3);
+    padding-top: 3px;
+}
+
+.dayOld,
+.dayNew {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.dayOld {
+    color: var(--text-3);
+}
+
+.dayNew {
+    color: var(--text);
+    font-weight: 500;
+}
+
+.dayOld i,
+.dayNew i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex: none;
+    margin-top: 8px;
+}
+
+.dayOld i {
+    background: var(--clay);
+}
+
+.dayNew i {
+    background: var(--brand);
+}
+
+.dayHead .dayOld,
+.dayHead .dayNew {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+}
+
+@media (max-width: 700px) {
+    .dayRow {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .dayTime {
+        padding-top: 0;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .day[data-fx-in] .dayRow:not(.dayHead) {
+        animation: statIn 0.45s ease backwards;
+        animation-delay: var(--d, 0s);
+    }
+}
+
+/* ---------------------------------------------------------- comparativa -- */
+
+.cmpWrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+}
+
+.cmp {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.cmp th,
+.cmp td {
+    text-align: left;
+    vertical-align: top;
+    padding: 13px clamp(14px, 1.6vw, 20px);
+    border-top: 1px solid var(--line);
+}
+
+.cmp thead th {
+    border-top: 0;
+    background: var(--paper-2);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-3);
+}
+
+.cmp th[scope="row"] {
+    width: 26%;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+/* La columna de Roombir lleva un tinte de musgo apenas visible: se distingue
+   sin que parezca "la columna buena". Las celdas dicen lo que dicen. */
+.cmpUs {
+    background: rgba(223, 234, 196, 0.22);
+}
+
+.cmp thead .cmpUs {
+    background: rgba(223, 234, 196, 0.5);
+    color: var(--brand);
+}
+
+.cmpCell {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    color: var(--text-2);
+    line-height: 1.5;
+}
+
+.tone {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex: none;
+    margin-top: 7px;
+}
+
+.toneOk {
+    background: var(--brand);
+}
+
+.toneMid {
+    background: var(--amber);
+}
+
+.toneNo {
+    background: var(--clay);
+}
+
+.toneInfo {
+    background: var(--line-2);
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--text-3);
+}
+
+.legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.legend .tone {
+    margin-top: 0;
+}
+
+.choice {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(14px, 1.6vw, 20px);
+}
+
+.choiceUs {
+    border-color: var(--brand-soft);
+    background: #fff;
+}
+
+@media (max-width: 760px) {
+    .choice {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.teaser {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(14px, 1.6vw, 20px);
+}
+
+.teaserCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.teaserVs {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--text-3);
+}
+
+.teaserName {
+    font-size: clamp(21px, 2vw, 26px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin: 8px 0 10px;
+    color: var(--text);
+}
+
+.teaserName em {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    color: var(--brand);
+}
+
+.teaserText {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-2);
+    flex: 1;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 980px) {
+    .teaser {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .teaser {
+        grid-template-columns: minmax(0, 1fr);
     }
 }

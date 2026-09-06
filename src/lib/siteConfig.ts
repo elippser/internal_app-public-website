@@ -48,7 +48,7 @@ export const internalApiUrl =
  * El sitio público NO enlaza al PMS.
  *
  * Acá vivían `appUrl`, `registerUrl` y `loginUrl`, que apuntaban a
- * app.bookfer.com. Se quitaron a propósito: los CTA de "empezar gratis" e
+ * app.roombir.com. Se quitaron a propósito: los CTA de "empezar gratis" e
  * "ingresar" siguen en la página porque son parte del diseño, pero no llevan a
  * ningún lado (los dibuja `SamePageLink`, que apunta a la página actual).
  *
@@ -61,11 +61,11 @@ export const internalApiUrl =
  * que cambiar un teléfono sea un archivo y no una búsqueda por todo el repo.
  */
 export const contact = {
-  email: "hola@bookfer.com",
+  email: "hola@roombir.com",
   /** E.164 sin espacios, como pide la convención de teléfonos de la plataforma. */
   whatsapp: "+5492611234567",
-  instagram: "https://www.instagram.com/bookfer.app/",
-  linkedin: "https://www.linkedin.com/company/bookfer/",
+  instagram: "https://www.instagram.com/roombir.app/",
+  linkedin: "https://www.linkedin.com/company/roombir/",
 };
 
 /**

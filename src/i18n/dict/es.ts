@@ -13,16 +13,20 @@
 
 const es = {
   site: {
-    title: "Bookfer · El sistema operativo de tu alojamiento",
+    /* "Sistema operativo" era el sub literal de Mews y "todo en uno" el de
+       media categoría (ver MANUAL-DE-MARCA-roombir.md §2.3). La tesis va en
+       forma de dolor —sin cinco proveedores— y los dos claims que nadie del
+       sector publica van explícitos: precio y permanencia. */
+    title: "Roombir · PMS, motor, web y revenue sin cinco proveedores",
     description:
-      "PMS, motor de reservas, sitio web, revenue management y un asistente de IA que opera el sistema. Todo sobre una sola base de datos, para hoteles, cabañas, hostels y alquileres.",
-    tagline: "Sistema operativo hotelero",
+      "Reservas, motor sin comisión, sitio web, revenue management incluido y un asistente de IA que ejecuta, sobre una sola base de datos. Precio publicado y sin permanencia, para hoteles, cabañas, hostels y alquileres de LATAM.",
+    tagline: "Software hotelero sin cinco proveedores",
     /* La tarjeta OG (imagen de compartidos): titular, bajada y chips van por
        diccionario para que un share de /de/plattform no muestre castellano. */
     og: {
-      title: "Un alojamiento entero, en un solo sistema.",
-      lead: "Reservas, habitaciones, motor propio, sitio web, revenue management y un asistente que opera todo eso con vos.",
-      chips: ["PMS", "Motor de reservas", "Sitios web", "Revenue", "LinkHub", "Bookfer IA"],
+      title: "Tu alojamiento entero, sin cinco proveedores.",
+      lead: "Reservas, habitaciones, motor propio, sitio web, revenue y un asistente que ejecuta. Con el precio a la vista y sin permanencia.",
+      chips: ["PMS", "Motor de reservas", "Sitios web", "Revenue", "LinkHub", "Roombir IA"],
     },
   },
 
@@ -32,7 +36,7 @@ const es = {
     contact: "Contacto",
     login: "Ingresar",
     signup: "Empezar gratis",
-    home: "bookfer, inicio",
+    home: "roombir, inicio",
     openMenu: "Abrir menú",
     closeMenu: "Cerrar menú",
     more: "Más",
@@ -69,7 +73,7 @@ const es = {
         desc: "Builder con dominio propio, LinkHub, galerías y reseñas.",
       },
       ia: {
-        title: "Bookfer IA",
+        title: "Roombir IA",
         desc: "Un asistente con 272 herramientas que opera el sistema con vos.",
       },
       agentes: {
@@ -81,7 +85,7 @@ const es = {
 
   footer: {
     claim:
-      "El sistema operativo de tu alojamiento. Reservas, habitaciones, motor, sitio web, revenue y un asistente que opera todo eso, sobre una sola base de datos.",
+      "Reservas, habitaciones, motor propio, sitio web, revenue y un asistente que ejecuta, sobre una sola base de datos. Precio publicado, sin permanencia, hecho en Argentina.",
     nav: "Pie de página",
     columns: {
       product: "Producto",
@@ -92,6 +96,7 @@ const es = {
     company: {
       about: "Quiénes somos",
       status: "Estado del producto",
+      compare: "Comparativas",
       pricing: "Precios",
       contact: "Contacto",
     },
@@ -110,8 +115,8 @@ const es = {
     madeIn: "Hecho en Argentina",
     agentNote: "este sitio también tiene llms.txt",
     social: {
-      instagram: "bookfer en Instagram",
-      linkedin: "bookfer en LinkedIn",
+      instagram: "Roombir en Instagram",
+      linkedin: "Roombir en LinkedIn",
       email: "Escribirnos por email",
     },
   },
@@ -131,16 +136,18 @@ const es = {
     inSpanish: "En español, hecho en Argentina",
   },
 
+  /* Nueve afirmaciones cortas. Cada una tiene una fila en la lista blanca de
+     claims del manual de marca (§8.1): si no se puede verificar, no va. */
   ticker: [
-    "Motor propio, 0% de comisión",
+    "Precio publicado, sin permanencia",
     "Tape chart con vista previa",
-    "Revenue con lazo cerrado",
-    "llms.txt · reservable por una IA",
-    "272 herramientas del asistente",
-    "Multi-moneda de verdad",
-    "Emails sin configurar SMTP",
+    "Revenue incluido, no un módulo aparte",
+    "llms.txt · legible por una IA",
+    "272 herramientas que ejecutan",
+    "10 monedas, cambio congelado al check-in",
+    "Emails al huésped sin configurar SMTP",
     "LinkHub con QR",
-    "Alta guiada en una tarde",
+    "38 recorridos sobre la pantalla real",
   ],
 
   /* Los textos que aparecen DENTRO de las viñetas de producto. Son etiquetas
@@ -207,7 +214,7 @@ const es = {
       reject: "Rechazar",
     },
     agent: {
-      label: "Bookfer IA",
+      label: "Roombir IA",
       tag: "recepción",
       ask: "Pasá a García a la 203 desde el jueves y avisale por mail",
       trace: [
@@ -271,7 +278,7 @@ const es = {
       label: "Revenue · Competencia",
       tag: "sáb 21/03",
       mine: "Hotel del Parque · vos",
-      sources: { own: "propia", bookfer: "bookfer", manual: "manual", none: "sin dato" },
+      sources: { own: "propia", roombir: "roombir", manual: "manual", none: "sin dato" },
       rivals: ["Posada del Lago", "Hostería Los Álamos", "Cabañas Ruca Hue", "Apart Cordillera"],
       note:
         "Descubrimiento automático por cercanía y similitud. Las tarifas externas se cargan a mano: no inventamos un número que no tenemos.",
@@ -284,7 +291,7 @@ const es = {
     signals: {
       revenue: "revenue · sáb 21/03",
       applied: "aplicada al motor",
-      agent: "bookfer ia",
+      agent: "Roombir ia",
       agentText: "Moví a García a la 203 y le mandé el aviso por mail.",
       agentFoot: "4 herramientas · con tus permisos",
     },
@@ -309,7 +316,7 @@ const es = {
     homeSubtitle:
       "Todo lo que un alojamiento necesita para operar y vender, sin cinco proveedores y sin comisión por reserva.",
     matrix: {
-      caption: "Qué productos incluye cada plan de bookfer",
+      caption: "Qué productos incluye cada plan de roombir",
       product: "Producto",
       limits: "Límites",
       properties: "Propiedades",
@@ -321,6 +328,103 @@ const es = {
       days: "{n} días",
       note:
         "Los precios y lo que incluye cada plan salen del mismo catálogo que usa el sistema para cobrar. Lo que ves acá es lo que se aplica en tu cuenta.",
+    },
+  },
+
+  /* ------------------------------------------------------- crear cuenta */
+  /* El alta. Es la unica puerta de entrada a la plataforma: de este formulario
+     sale el correo con el enlace que habilita el /register del PMS. */
+  createAccount: {
+    meta: {
+      title: "Crear cuenta · roombir",
+      description:
+        "Contanos de tu alojamiento y te mandamos por correo el acceso para crear tu cuenta. Gratis y sin tarjeta.",
+    },
+    eyebrow: "Empezar",
+    title: "Contanos de tu *alojamiento*.",
+    lead: "Cuatro datos y te mandamos el acceso por correo. El alta se completa en una tarde y no pedimos tarjeta.",
+    checks: [
+      "Plan gratis para empezar, **sin tarjeta**",
+      "Migramos tus reservas y tus tarifas con vos",
+      "Motor de reservas propio, sin comisión por reserva",
+      "En español y con gente que atiende",
+    ],
+    steps: [
+      { title: "Completás el formulario", text: "Cuatro datos del alojamiento y tu correo." },
+      { title: "Te llega el acceso", text: "Un enlace personal, de un solo uso, que abre el alta." },
+      { title: "Creás tu contraseña", text: "Y entrás al sistema con el alta guiada de nueve pasos." },
+    ],
+    form: {
+      groupProperty: "Tu alojamiento",
+      groupContact: "Tus datos",
+      hotelName: "Nombre del alojamiento",
+      hotelNamePlaceholder: "Hotel Los Álamos",
+      lodgingType: "Tipo",
+      lodgingTypes: {
+        hotel: "Hotel",
+        apart_hotel: "Apart hotel",
+        hostel: "Hostel",
+        cabins: "Cabañas",
+        inn_bnb: "Posada o B&B",
+        apartment: "Departamentos",
+        house: "Casa",
+        country_house: "Casa de campo",
+        resort: "Resort",
+        lodge: "Lodge",
+        glamping: "Glamping",
+        camping: "Camping",
+        villas: "Villas",
+        other: "Otro",
+      },
+      units: "Habitaciones o unidades",
+      unitsPlaceholder: "12",
+      unitsHint: "Las que podés vender hoy.",
+      country: "País",
+      countryCommon: "Más frecuentes",
+      countryAll: "Todos los países",
+      city: "Ciudad",
+      cityPlaceholder: "San Martín de los Andes",
+      contactName: "Tu nombre",
+      contactNamePlaceholder: "Nombre y apellido",
+      email: "Tu correo",
+      emailPlaceholder: "vos@tualojamiento.com",
+      emailHint: "Ahí te mandamos el acceso, así que tiene que ser uno que leas.",
+      phone: "Teléfono o WhatsApp",
+      phonePlaceholder: "+54 9 11 …",
+      optional: "opcional",
+      choose: "Elegí una opción",
+      honeypot: "No completar",
+      submit: "Recibir el acceso",
+      sending: "Enviando…",
+      legal:
+        "Usamos tus datos sólo para darte acceso y acompañarte en el alta. Podés pedirnos que los borremos cuando quieras. Más en la [política de privacidad](/legal/privacidad).",
+      errors: {
+        hotelName: "Escribí el nombre de tu alojamiento.",
+        lodgingType: "Elegí el tipo de alojamiento.",
+        units: "Indicá cuántas habitaciones o unidades tenés.",
+        country: "Elegí el país.",
+        city: "Escribí la ciudad.",
+        contactName: "Escribí tu nombre.",
+        emailRequired: "Escribí tu correo.",
+        emailInvalid: "Ese correo no parece válido.",
+        disposable: "Usá una dirección permanente: el acceso se manda ahí.",
+        rate: "Demasiados intentos seguidos. Probá de nuevo en unos minutos.",
+        mail: "No pudimos enviarte el correo. Probá de nuevo en unos minutos.",
+        generic: "No pudimos enviarlo. Escribinos a hola@roombir.com.",
+        network: "No pudimos conectarnos. Revisá tu conexión y probá de nuevo.",
+      },
+      done: {
+        title: "Revisá tu correo",
+        /* El {email} lo reemplaza el formulario: una función no puede viajar
+           como prop a un componente cliente. */
+        text: "Te mandamos el acceso a {email}. El enlace es personal y sirve una sola vez.",
+        textNoEmail: "Te mandamos el acceso por correo. El enlace es personal y sirve una sola vez.",
+        notes: [
+          "Si no aparece en unos minutos, mirá en spam o promociones.",
+          "El enlace vence en 7 días.",
+          "Si te equivocaste de dirección, completá el formulario otra vez.",
+        ],
+      },
     },
   },
 
@@ -342,9 +446,9 @@ const es = {
     honeypot: "No completar",
     errorGeneric: "No pudimos enviarlo.",
     errorRate: "Demasiados envíos seguidos.",
-    errorTail: "Si sigue fallando, escribinos a hola@bookfer.com.",
+    errorTail: "Si sigue fallando, escribinos a hola@roombir.com.",
     legal:
-      "Usamos tus datos sólo para contactarte sobre bookfer. Podés pedirnos que los borremos cuando quieras. Más en la [política de privacidad](/legal/privacidad).",
+      "Usamos tus datos sólo para contactarte sobre roombir. Podés pedirnos que los borremos cuando quieras. Más en la [política de privacidad](/legal/privacidad).",
     doneTitle: "Listo, nos llegó.",
     doneText:
       "Te escribimos en las próximas horas. Si preferís no esperar, podés empezar el alta ahora mismo: es gratis y no pide tarjeta.",
@@ -352,29 +456,39 @@ const es = {
 
   /* ------------------------------------------------------------------ home */
   home: {
+    /* El titular animado del template: dos palabras, una palabra con la
+       píldora al lado, y la línea final en serif itálica. Dice la tesis como
+       dolor —sin cinco proveedores— y no como metáfora de plataforma; la
+       píldora lleva el claim que nadie del sector publica. */
     hero: {
       l1a: "Tu",
-      l1b: "alojamiento",
-      l2: "entero",
-      pill: "Detrás de cada\ngran estadía",
-      l3a: "en un solo",
-      l3b: "sistema.",
+      l1b: "alojamiento,",
+      l2: "entero,",
+      pill: "y con el precio\na la vista",
+      l3a: "sin cinco",
+      l3b: "proveedores.",
+      notes: [
+        "Precio publicado",
+        "Sin permanencia",
+        "Sin tarjeta ni instalación",
+        "En español, hecho en Argentina",
+      ],
     },
     swap: {
       eyebrow: "Por qué existe",
       title: "Siete productos que *comprás por separado*.",
       lead:
-        "Un alojamiento chico o mediano no debería necesitar cinco proveedores y un consultor para operar digitalmente. La tesis de bookfer es exactamente esa, y es lo que decide cada decisión de producto adentro.",
+        "Un alojamiento chico o mediano no debería necesitar cinco proveedores y un consultor para operar digitalmente. La tesis de Roombir es exactamente esa, y es lo que decide cada decisión de producto adentro.",
       headOld: "Lo que hoy comprás aparte",
-      headNew: "En bookfer",
+      headNew: "En roombir",
       rows: [
-        { old: "PMS de reservas y habitaciones", now: "Hubs Reservas + Habitaciones" },
+        { old: "PMS de reservas y habitaciones", now: "Áreas Reservas + Habitaciones" },
         { old: "Motor de reservas / booking engine", now: "Motor público + Estudio del Motor" },
         { old: "Constructor de sitio web", now: "Builder + renderer con dominio propio" },
-        { old: "RMS de revenue management", now: "Hub Revenue" },
+        { old: "RMS de revenue management", now: "Área Revenue" },
         { old: "Link-in-bio y presencia digital", now: "LinkHub + Presencia Online" },
         { old: "Portal del huésped", now: "StayPass" },
-        { old: "Asistente / automatizaciones", now: "Bookfer IA" },
+        { old: "Asistente / automatizaciones", now: "Roombir IA" },
       ],
     },
     modules: {
@@ -404,7 +518,7 @@ const es = {
           desc: "Constructor visual con dominio propio y multi-idioma, galerías, reseñas, identidad de marca y link-in-bio.",
         },
         ia: {
-          title: "Bookfer IA",
+          title: "Roombir IA",
           desc: "Un asistente con 272 herramientas que consulta y opera el sistema, siempre con tus permisos y no con los suyos.",
         },
       },
@@ -415,7 +529,7 @@ const es = {
       lead:
         "Recepción, housekeeping, marketing y administración trabajan sobre los mismos datos, pero cada espacio de trabajo tiene su propio menú, su propia pantalla de inicio y sus propios permisos. Nadie aprende a ignorar la mitad de una aplicación.",
       items: [
-        "El menú se arma solo: un espacio de marketing **no muestra** el hub Reservas.",
+        "El menú se arma solo: un espacio de marketing **no muestra** el área Reservas.",
         "La pantalla de inicio se recompone: recepción ve check-ins, housekeeping ve unidades en limpieza.",
         "Los permisos son por app y por nivel: **operar**, **configurar** o nada.",
         "La inducción de una persona nueva se arma con lo que ese espacio tiene, y con nada más.",
@@ -476,7 +590,7 @@ const es = {
       link: "Ver Revenue",
     },
     ia: {
-      eyebrow: "Bookfer IA",
+      eyebrow: "Roombir IA",
       title: "Un asistente que *opera*, no que sugiere.",
       lead:
         "No es un chat que te explica dónde hacer clic. Consulta disponibilidad, crea reservas, mueve una estadía con vista previa, ajusta tarifas, aprueba eventos del RMS o publica un sitio. Y hace todo eso con tus permisos, no con los suyos.",
@@ -486,7 +600,7 @@ const es = {
         "Responde con tarjetas accionables, no sólo con texto.",
         "Tres capas de permisos: filtrado antes del turno, contexto en el prompt y evaluación en cada llamada.",
       ],
-      link: "Ver Bookfer IA",
+      link: "Ver Roombir IA",
     },
     guarantees: {
       eyebrow: "Tres cosas que no vas a tener que pensar",
@@ -503,9 +617,9 @@ const es = {
           text: "Los precios viven en una moneda base, cobrás en otra, y el huésped puede mirar en una tercera. La conversión se muestra viva hasta el check-in y ahí se congela. Para pesos argentinos elegís qué cotización usar: blue, MEP, CCL u oficial.",
         },
         {
-          key: "reservations@bookfer.com",
+          key: "reservations@roombir.com",
           title: "No configurás un servidor de correo",
-          text: "Todos los mails al huésped —confirmación, token, aviso de cambio— salen del dominio de bookfer con tu casilla como responder-a. Es una de las fricciones clásicas del alta de un PMS y se eliminó a propósito.",
+          text: "Todos los mails al huésped —confirmación, token, aviso de cambio— salen del dominio de Roombir con tu casilla como responder-a. Es una de las fricciones clásicas del alta de un PMS y se eliminó a propósito.",
         },
       ],
     },
@@ -513,11 +627,11 @@ const es = {
       eyebrow: "El tamaño real",
       title: "No son promesas: *ya está construido*.",
       lead:
-        "bookfer está en piloto de mercado, así que todavía no vamos a mostrarte un contador de hoteles inflado. Lo que sí podemos mostrar es lo que hay adentro del producto hoy.",
+        "Roombir está en piloto de mercado, así que todavía no vamos a mostrarte un contador de hoteles inflado. Lo que sí podemos mostrar es lo que hay adentro del producto hoy.",
       items: [
         { value: "23", label: "apps activables por espacio de trabajo" },
         { value: "272", label: "herramientas que maneja el asistente" },
-        { value: "37", label: "recorridos guiados sobre la pantalla real" },
+        { value: "38", label: "recorridos guiados sobre la pantalla real" },
         { value: "10", label: "monedas, con blue, MEP, CCL u oficial para ARS" },
         { value: "5", label: "idiomas de plataforma" },
         { value: "1", label: "sola base de datos para todo el sistema" },
@@ -559,11 +673,107 @@ const es = {
         },
       ],
     },
+    /* Los sellos propios. Cada ítem tiene un `href` donde se comprueba lo
+       que afirma; `/llms.txt` va sin idioma porque vive en public/. */
+    commitments: {
+      eyebrow: "Lo que otros no dicen",
+      title: "Seis cosas que *podés verificar* antes de hablar con nadie.",
+      lead:
+        "En esta categoría el precio se pide por formulario, la permanencia se descubre en la segunda factura y lo que falta se entera en la tercera semana. Acá va al revés: cada una de estas seis líneas tiene un lugar donde se comprueba.",
+      verify: "Verificar",
+      items: [
+        {
+          key: "precio",
+          title: "Precio publicado",
+          text: "Los planes y lo que incluye cada uno están en la web, en HTML, con número. Salen del **mismo catálogo con el que se cobra** tu cuenta.",
+          href: "/precios",
+        },
+        {
+          key: "permanencia",
+          title: "Sin permanencia",
+          text: "Mensual. Si en dos semanas no te cambió nada, no hay nada que cancelar ni nadie que te llame para retenerte.",
+          href: "/legal/terminos",
+        },
+        {
+          key: "comision",
+          title: "0% sobre lo que vende tu motor",
+          text: "Lo que entra por tu link es tuyo entero. No hay porcentaje por reserva ni cargo por transacción.",
+          href: "/precios",
+        },
+        {
+          key: "rms",
+          title: "Revenue en el catálogo, no aparte",
+          text: "En casi todos lados el RMS es un módulo que se cotiza por separado. Acá es un producto más y la comparativa de planes te dice en cuál entra.",
+          href: "/producto/revenue",
+        },
+        {
+          key: "estado",
+          title: "Estado del producto público",
+          text: "Qué anda, qué anda a medias y qué no existe, área por área. **Channel manager y pagos, por ejemplo, todavía no.**",
+          href: "/nosotros#estado",
+        },
+        {
+          key: "ia",
+          title: "Este sitio lo puede leer una IA",
+          text: "Tiene su `llms.txt` con los mismos números que esta página. Predicamos con el ejemplo antes de pedírtelo a vos.",
+          href: "/llms.txt",
+        },
+      ],
+    },
+    /* Un martes de recepción, hoy y con el sistema. Cada fila de la derecha
+       nombra un mecanismo real del producto, no un beneficio. */
+    day: {
+      eyebrow: "Un martes cualquiera",
+      title: "El mismo día, *con y sin* roombir.",
+      lead:
+        "No es una promesa de más reservas: es un día de recepción de un alojamiento de doce unidades. Lo de la izquierda es lo que nos cuentan en la primera llamada; lo de la derecha, lo que hace el sistema en cada uno de esos momentos.",
+      headOld: "Hoy",
+      headNew: "Con roombir",
+      rows: [
+        {
+          time: "08:10",
+          old: "Tres WhatsApp preguntando disponibilidad para el finde. Abrís el Excel para contestar uno por uno.",
+          now: "Las tres consultas ya miraron el calendario del motor: precio y unidades restantes, día por día. Dos reservaron solas.",
+        },
+        {
+          time: "09:30",
+          old: "Un huésped señó en pesos hace un mes. Hay que recalcular a mano cuánto falta, con el dólar de hoy.",
+          now: "La reserva guarda la conversión y se congela al check-in. El importe pendiente no se movió.",
+        },
+        {
+          time: "11:00",
+          old: "Llegó García y no sabés en qué habitación va. Housekeeping tampoco.",
+          now: "Recepción le pide al asistente que lo pase a la 203 y avise por mail. Housekeeping lo ve en su tablero sin que nadie le escriba.",
+        },
+        {
+          time: "14:20",
+          old: "Descubrís que la cabaña Alerce se vendió dos veces para el sábado.",
+          now: "Imposible: cada noche de cada unidad es un candado único en la base de datos. La segunda reserva nunca entró.",
+        },
+        {
+          time: "17:00",
+          old: "El que hizo la web no contesta y el precio de la suite sigue viejo en el sitio.",
+          now: "Cambiaste el precio en Tarifas y ya está en el motor, en la web y en el LinkHub. No publicaste nada.",
+        },
+        {
+          time: "19:45",
+          old: "Te preguntás si el sábado conviene subir. Lo decidís por corazonada.",
+          now: "Revenue te muestra +15% con el motivo escrito: ocupación, pace y un evento a tres días. Aceptás y va al motor.",
+        },
+      ],
+    },
+    compare: {
+      eyebrow: "Si estás comparando",
+      title: "Roombir *contra* los que ya conocés.",
+      lead:
+        "Comparativas escritas para que sirvan aunque no nos elijas: qué hace mejor cada uno, qué no hacemos todavía y en qué caso conviene el otro. Verificadas contra su web pública, con fecha.",
+      link: "Ver todas las comparativas",
+    },
     honest: {
       eyebrow: "Estado del producto",
       title: "Lo que *todavía no* hacemos.",
       lead:
-        "Estamos en piloto de mercado y preferimos que lo sepas antes de empezar y no en la segunda semana. Estas son las cuatro cosas que un competidor grande tiene y bookfer no, hoy.",
+        "Estamos en piloto de mercado y preferimos que lo sepas antes de empezar y no en la segunda semana. Estas son las cuatro cosas que un competidor grande tiene y Roombir no, hoy.",
       link: "Ver el estado completo, área por área",
       states: { none: "no existe", partial: "parcial" },
       items: [
@@ -595,8 +805,8 @@ const es = {
         a: "Para los dos, y no con el mismo truco. Una categoría se puede vender como **pool** —diez dobles intercambiables, el huésped compra “una doble”— o como **unidad única 1:1**, donde la categoría envuelve una sola unidad con nombre propio. Se elige por categoría, no por sistema, así que un complejo con seis cabañas y dos habitaciones estándar convive sin forzar nada.",
       },
       {
-        q: "¿Necesito un channel manager para usar bookfer?",
-        a: "No para operar, pero hay que decirlo derecho: **bookfer todavía no tiene channel manager**. Si vendés en Booking o Expedia, esa disponibilidad hoy se concilia a mano. El sistema está pensado para que la reserva directa —tu web, tu LinkHub, tu motor— deje de perderse en un chat, que es de donde sale la mayor parte del ingreso que hoy no estás controlando.",
+        q: "¿Necesito un channel manager para usar roombir?",
+        a: "No para operar, pero hay que decirlo derecho: **Roombir todavía no tiene channel manager**. Si vendés en Booking o Expedia, esa disponibilidad hoy se concilia a mano. El sistema está pensado para que la reserva directa —tu web, tu LinkHub, tu motor— deje de perderse en un chat, que es de donde sale la mayor parte del ingreso que hoy no estás controlando.",
       },
       {
         q: "¿Cómo cobro las reservas?",
@@ -604,7 +814,7 @@ const es = {
       },
       {
         q: "¿Tengo que instalar o configurar algo?",
-        a: "Se entra por el navegador. El alta son nueve pasos guiados que se guardan en el servidor —podés dejarla por la mitad y seguirla desde el teléfono— y no hay que configurar un servidor de correo: **todos los mails al huésped salen del dominio bookfer** con tu casilla como responder-a.",
+        a: "Se entra por el navegador. El alta son nueve pasos guiados que se guardan en el servidor —podés dejarla por la mitad y seguirla desde el teléfono— y no hay que configurar un servidor de correo: **todos los mails al huésped salen del dominio roombir** con tu casilla como responder-a.",
       },
       {
         q: "¿Puedo usar mi propio dominio?",
@@ -613,6 +823,18 @@ const es = {
       {
         q: "¿La IA puede hacer cualquier cosa dentro de mi sistema?",
         a: "No, y es a propósito. El asistente opera **suplantando tu identidad real** con un permiso de vida corta que se vuelve a emitir en cada llamada. Antes del turno se le sacan de la mano las herramientas que tu usuario no puede usar, y cada operación se vuelve a evaluar contra la política del servicio. Si a mitad de la conversación te revocan un acceso, la siguiente acción falla y el asistente te explica por qué.",
+      },
+      {
+        q: "¿Por qué publican el precio si nadie más lo hace?",
+        a: "Porque la alternativa es que lo pidas por formulario, te llame alguien y te enteres del número en la segunda reunión. Los planes salen del **mismo catálogo con el que se cobra tu cuenta** y están en HTML, así que también los puede leer un modelo de IA cuando alguien pregunta cuánto cuesta un PMS. [Ver precios](/precios).",
+      },
+      {
+        q: "¿Hay permanencia?",
+        a: "No. El plan es mensual y no hay penalidad por dar de baja: escribís a hola@roombir.com, te damos un plazo razonable para descargar lo que quieras conservar, y listo. Está en los [términos](/legal/terminos), no en un llamado.",
+      },
+      {
+        q: "¿En qué se diferencia de Cloudbeds o de Little Hotelier?",
+        a: "En tres cosas que se pueden verificar: el precio está publicado, no hay permanencia, y el revenue management y el asistente de IA están en el catálogo en vez de cotizarse aparte. Y en dos que ellos tienen y nosotros todavía no: **channel manager** y **pasarela de pago**. Lo pusimos por escrito, con fecha, en las [comparativas](/comparar).",
       },
     ],
     cta: {
@@ -726,12 +948,12 @@ const es = {
         "Bloques de respuesta ricos: tarjetas de reserva y de revenue con botones que ejecutan, sujetos a la misma verificación de permisos.",
         "Historial de sesiones filtrado por el espacio de trabajo activo.",
       ],
-      link: "Ver Bookfer IA",
+      link: "Ver Roombir IA",
     },
     stats: [
       { value: "23", label: "apps activables" },
       { value: "30", label: "widgets del tablero adaptativo" },
-      { value: "37", label: "recorridos guiados" },
+      { value: "38", label: "recorridos guiados" },
       { value: "272", label: "herramientas del agente" },
     ],
     ask: "¿Buscabas algo puntual?",
@@ -986,7 +1208,7 @@ const es = {
         },
         {
           title: "Sale el email",
-          desc: "Desde el dominio de bookfer, con tu casilla como responder-a. Sin configurar SMTP, sin dominio verificado, sin un proveedor de correo más en la lista.",
+          desc: "Desde el dominio de roombir, con tu casilla como responder-a. Sin configurar SMTP, sin dominio verificado, sin un proveedor de correo más en la lista.",
         },
         {
           title: "Queda registrada la búsqueda",
@@ -1026,7 +1248,7 @@ const es = {
       },
       {
         q: "¿Tengo que configurar un servidor de correo?",
-        a: "No. Todos los emails al huésped salen del dominio de bookfer, con la casilla del alojamiento como **responder-a**. Es una decisión deliberada: configurar SMTP por hotel es una de las fricciones clásicas del alta de un PMS y acá directamente no existe.",
+        a: "No. Todos los emails al huésped salen del dominio de roombir, con la casilla del alojamiento como **responder-a**. Es una decisión deliberada: configurar SMTP por hotel es una de las fricciones clásicas del alta de un PMS y acá directamente no existe.",
       },
     ],
     cta: {
@@ -1082,7 +1304,7 @@ const es = {
       eyebrow: "Competencia",
       title: "Un comp-set *mixto y honesto*.",
       lead:
-        "Los competidores que también usan bookfer aportan tarifa real. Los externos se descubren solos por cercanía y score de similitud, y su tarifa la cargás vos —como referencia fija o por fecha, que tiene prioridad—.",
+        "Los competidores que también usan Roombir aportan tarifa real. Los externos se descubren solos por cercanía y score de similitud, y su tarifa la cargás vos —como referencia fija o por fecha, que tiene prioridad—.",
       items: [
         "Score de similitud por tipo, categoría, tamaño, gama y zona.",
         "Perfil de tu propio hotel, sincronizado desde el PMS salvo que lo pises a mano.",
@@ -1127,7 +1349,7 @@ const es = {
       },
       {
         q: "¿De dónde salen las tarifas de la competencia?",
-        a: "De dos lugares. Si el competidor también usa bookfer, la tarifa es real. Si es externo, el sistema lo **descubre solo** por geolocalización y score de similitud —tipo, categoría, tamaño, gama, zona— pero **la tarifa la cargás vos**, como referencia fija o por fecha. La conexión con proveedores automáticos está preparada y todavía no conectada; no vamos a decirte que sí hasta que lo esté.",
+        a: "De dos lugares. Si el competidor también usa roombir, la tarifa es real. Si es externo, el sistema lo **descubre solo** por geolocalización y score de similitud —tipo, categoría, tamaño, gama, zona— pero **la tarifa la cargás vos**, como referencia fija o por fecha. La conexión con proveedores automáticos está preparada y todavía no conectada; no vamos a decirte que sí hasta que lo esté.",
       },
       {
         q: "Si acepto una recomendación, ¿tengo que copiar el precio a otro lado?",
@@ -1290,15 +1512,15 @@ const es = {
   /* -------------------------------------------------------------------- ia */
   ia: {
     meta: {
-      title: "Bookfer IA",
+      title: "Roombir IA",
       description:
         "Un asistente con 272 herramientas que consulta y opera el PMS con los permisos reales del usuario: filtrado antes del turno, contexto en el prompt y evaluación en cada llamada.",
     },
     hero: {
-      eyebrow: "Bookfer IA",
+      eyebrow: "Roombir IA",
       title: "Un asistente que *hace*, no que explica dónde hacer clic.",
       lead:
-        "Está embebido en el escritorio, tiene sesiones persistentes y 272 herramientas que cubren prácticamente toda la superficie del producto. Consulta disponibilidad, crea reservas, mueve una estadía con vista previa, ajusta tarifas, aprueba eventos o publica un sitio.",
+        "Toda la categoría vende IA que analiza: un panel que resume y sugiere. Esta ejecuta. Está embebida en el escritorio, tiene sesiones persistentes y 272 herramientas que cubren prácticamente toda la superficie del producto: consulta disponibilidad, crea reservas, mueve una estadía con vista previa, ajusta tarifas, aprueba eventos o publica un sitio.",
     },
     perms: {
       eyebrow: "Permisos",
@@ -1402,7 +1624,7 @@ const es = {
         "El asistente sirve de verdad cuando tiene un sistema cargado abajo. Empezá por el alta, cargá una propiedad y preguntale algo que hoy resolverías abriendo cuatro pestañas.",
       steps: [
         "Te das de alta y cargás la propiedad.",
-        "Entrás a Bookfer IA desde el escritorio.",
+        "Entrás a Roombir IA desde el escritorio.",
         "Le pedís algo real y mirás la transcripción.",
       ],
     },
@@ -1419,7 +1641,7 @@ const es = {
       eyebrow: "Alojamiento agéntico",
       title: "Que una máquina pueda *entenderte y reservarte*.",
       lead:
-        "Cada vez más gente le pregunta a un modelo antes de buscar. Ese modelo no ve tu carrusel de fotos: ve texto, datos estructurados y rutas. El motor de bookfer publica las tres cosas, y el editor de GEO te deja declarar qué sos con tus palabras.",
+        "Cada vez más gente le pregunta a un modelo antes de buscar. Ese modelo no ve tu carrusel de fotos: ve texto, datos estructurados y rutas. El motor de Roombir publica las tres cosas, y el editor de GEO te deja declarar qué sos con tus palabras.",
       secondary: "Ver el motor",
     },
     shift: {
@@ -1435,6 +1657,23 @@ const es = {
         { old: "Palabras clave en la página", now: "Casos de uso, audiencias y alcance geográfico" },
         { old: "Enlaces entrantes", now: "Señales de confianza declaradas y verificables" },
         { old: "Un formulario de contacto", now: "Una ruta de reserva que un agente puede seguir" },
+      ],
+    },
+    /* Los distribuidores grandes empezaron a conectar SU inventario a los
+       asistentes de IA (SiteMinder, sep-2026). Es otra capa, y hay que decir
+       la diferencia o "visible para una IA" suena a copia. */
+    layers: {
+      eyebrow: "Dos capas distintas",
+      title: "Que te *encuentren* y que te *lean* no es lo mismo.",
+      lead:
+        "Los grandes distribuidores empezaron a conectar su inventario a los asistentes de IA: el hotel aparece porque está en su catálogo. Es útil y no lo reemplazamos. La capa de Roombir es la otra: que tu propia web y tu propio motor sean legibles y reservables sin intermediario, con tus palabras y tu tarifa.",
+      headOld: "Distribución vía intermediario",
+      headNew: "Tu web, legible por sí misma",
+      rows: [
+        { old: "Aparecés porque el distribuidor te listó", now: "Aparecés porque tu dominio publica quién sos y qué vendés" },
+        { old: "La tarifa y la comisión pasan por su plataforma", now: "La tarifa es la tuya y la reserva entra directo a tu motor" },
+        { old: "Se activa cuando ellos conectan cada plataforma", now: "Se activa con un interruptor en tu configuración" },
+        { old: "La descripción la escribe su catálogo", now: "La descripción la escribís vos, en el editor de GEO" },
       ],
     },
     surfaces: {
@@ -1524,7 +1763,7 @@ const es = {
     meta: {
       title: "Soluciones",
       description:
-        "Hoteles, cabañas y departamentos, hostels, glamping y villas, y grupos chicos: cómo se configura bookfer para cada tipo de alojamiento y para cada puesto de trabajo.",
+        "Hoteles, cabañas y departamentos, hostels, glamping y villas, y grupos chicos: cómo se configura Roombir para cada tipo de alojamiento y para cada puesto de trabajo.",
     },
     hero: {
       eyebrow: "Soluciones",
@@ -1608,7 +1847,7 @@ const es = {
         },
         {
           title: "Marketing",
-          desc: "Builder, sitios, galerías, reseñas, marca y LinkHub. La home muestra score de reseñas, visibilidad y estado del LinkHub. Ni asoma el hub Reservas.",
+          desc: "Builder, sitios, galerías, reseñas, marca y LinkHub. La home muestra score de reseñas, visibilidad y estado del LinkHub. Ni asoma el área Reservas.",
         },
         {
           title: "Revenue y dueño",
@@ -1624,6 +1863,20 @@ const es = {
         },
       ],
     },
+    faq: [
+      {
+        q: "Tengo cabañas y también dos habitaciones estándar. ¿Qué modelo elijo?",
+        a: "Los dos. El modo de venta se define por **categoría**, no por sistema: las cabañas van como unidad única 1:1, con nombre propio, y las habitaciones como pool intercambiable. Conviven en el mismo calendario y en el mismo motor, y hay un asistente para migrar una categoría de un modo al otro cuando ya tiene reservas adentro.",
+      },
+      {
+        q: "Somos tres personas que rotan turnos. ¿Cómo entrenamos a alguien nuevo?",
+        a: "Cada persona entra a su espacio de trabajo y ve sólo lo suyo. La inducción se arma con las apps de ese espacio, y los **38 recorridos guiados** se dibujan encima de la pantalla real, resaltando el elemento del que hablan. No hay manual que leer ni video que mirar: se aprende en el primer turno.",
+      },
+      {
+        q: "Tengo dos propiedades en ciudades distintas.",
+        a: "Una compañía puede tener varias propiedades, y cada membresía se puede acotar: el encargado de una ve la suya y nada más. Con las **plantillas de propiedad**, la segunda arranca con los espacios de trabajo y las apps ya configurados como la primera.",
+      },
+    ],
     cta: {
       title: "Contanos cómo *operás vos*.",
       lead:
@@ -1666,7 +1919,7 @@ const es = {
         },
         {
           title: "Envío de emails",
-          desc: "Los mails al huésped salen del dominio de bookfer, sin servicio de correo aparte ni configuración de SMTP por hotel.",
+          desc: "Los mails al huésped salen del dominio de roombir, sin servicio de correo aparte ni configuración de SMTP por hotel.",
         },
         {
           title: "Puesta en marcha",
@@ -1688,10 +1941,34 @@ const es = {
     },
     honest: {
       eyebrow: "Antes de que decidas",
-      title: "Lo que un plan de bookfer todavía no incluye",
+      title: "Lo que un plan de Roombir todavía no incluye",
       text: "No está en ningún plan porque no existe todavía, no porque sea un extra: **channel manager** —no hay sincronización de inventario ni tarifas con OTAs— y **pasarela de pago** —no se cobra online—. Las tarifas de competidores externos se cargan a mano, y las fichas de Google Business y de OTAs se editan adentro pero se copian al destino a mano.",
       link: "Ver el estado completo del producto",
     },
+    /* De los cinco sistemas más grandes del mundo ninguno publica un número
+       en su web (medido el 2-sep-2026). Esta sección dice por qué nosotros sí. */
+    why: {
+      eyebrow: "Por qué está publicado",
+      title: "El precio *no se pide*: se lee.",
+      lead:
+        "De los cinco sistemas hoteleros más grandes del mundo, ninguno publica un número en su web: se pide por formulario y aparece en la segunda reunión. Un alojamiento de doce unidades no tiene tiempo para eso.",
+      items: [
+        {
+          title: "Mismo catálogo que cobra",
+          desc: "Las tarjetas y la comparativa salen del endpoint que usa el sistema para resolver tu cuenta. No hay una versión de marketing de los planes.",
+        },
+        {
+          title: "Sin permanencia",
+          desc: "Mensual, sin penalidad y sin llamado de retención. Lo dicen los [términos](/legal/terminos), no un vendedor.",
+        },
+        {
+          title: "Lo que no está, no se cobra",
+          desc: "Channel manager y pagos no aparecen en ningún plan porque no existen todavía. Cuando existan van a estar acá, con su número.",
+        },
+      ],
+    },
+    compareAsk: "¿Estás comparando con otro sistema?",
+    compareLink: "Ver las comparativas, con fecha",
     faqTitle: "Preguntas sobre precios",
     faq: [
       {
@@ -1714,6 +1991,10 @@ const es = {
         q: "¿El revenue management se paga aparte?",
         a: "En los sistemas grandes casi siempre sí: el RMS es un módulo adicional que se cotiza por separado. Acá es un producto más del catálogo y entra o no según el plan — la comparativa de arriba te lo dice fila por fila.",
       },
+      {
+        q: "¿Por qué los otros sistemas no publican precio?",
+        a: "Porque el precio por habitación baja con el tamaño y les conviene negociar caso por caso. Es legítimo, pero traslada el trabajo al hotelero: formulario, llamada, cotización, segunda llamada. Preferimos perder alguna negociación y que el número esté a la vista. Si querés ver cómo queda frente a cada uno, está en las [comparativas](/comparar).",
+      },
     ],
     cta: {
       title: "Empezá gratis y *después vemos*.",
@@ -1732,20 +2013,20 @@ const es = {
     meta: {
       title: "Nosotros",
       description:
-        "Por qué existe bookfer, cómo trabajamos y en qué estado está cada parte del producto — incluido lo que todavía no hace.",
+        "Por qué existe roombir, cómo trabajamos y en qué estado está cada parte del producto — incluido lo que todavía no hace.",
     },
     hero: {
       eyebrow: "Nosotros",
       title: "Software para el alojamiento que *no tiene un área de sistemas*.",
       lead:
-        "bookfer nació de una observación simple: un hotel de veinte habitaciones o un complejo de seis cabañas necesita exactamente las mismas siete piezas que una cadena, y ninguna de las opciones del mercado se las da juntas a un precio que tenga sentido a esa escala.",
+        "Roombir nació de una observación simple: un hotel de veinte habitaciones o un complejo de seis cabañas necesita exactamente las mismas siete piezas que una cadena, y ninguna de las opciones del mercado se las da juntas a un precio que tenga sentido a esa escala.",
       secondary: "Ver el producto",
     },
     thesis: {
       eyebrow: "La tesis",
       title: "Un alojamiento chico no debería necesitar *cinco proveedores y un consultor*.",
       p1: "Hoy la salida típica es un PMS por un lado, un motor por otro, una web hecha por alguien que ya no contesta, un Excel de tarifas y las consultas cayendo en un WhatsApp que nadie ordena. Cada pieza funciona; el conjunto no. Y el trabajo de mantener el conjunto alineado lo termina haciendo, a mano, la persona de recepción.",
-      p2: "La apuesta de bookfer es que ese conjunto sea un solo sistema con una sola base de datos, que se pueda dar de alta sin ayuda, y que cada puesto de trabajo vea únicamente lo suyo. Todo lo demás —el RMS, la capa de agentes, el asistente— sale de ahí: son cosas que sólo se pueden hacer bien cuando los datos ya son uno solo.",
+      p2: "La apuesta de Roombir es que ese conjunto sea un solo sistema con una sola base de datos, que se pueda dar de alta sin ayuda, y que cada puesto de trabajo vea únicamente lo suyo. Todo lo demás —el RMS, la capa de agentes, el asistente— sale de ahí: son cosas que sólo se pueden hacer bien cuando los datos ya son uno solo.",
     },
     principles: {
       eyebrow: "Cómo trabajamos",
@@ -1812,12 +2093,12 @@ const es = {
               desc: "Diez tipos de bloque, temas, programación por fecha, QR y analítica de visitas y clics.",
             },
             {
-              name: "Bookfer IA",
+              name: "Roombir IA",
               desc: "272 herramientas y política de permisos en tres capas, con suplantación de identidad y permiso de vida corta.",
             },
             {
               name: "Soporte y alta",
-              desc: "37 recorridos guiados, inducción por espacio de trabajo y alta de nueve pasos con reanudación en otro dispositivo.",
+              desc: "38 recorridos guiados, inducción por espacio de trabajo y alta de nueve pasos con reanudación en otro dispositivo.",
             },
           ],
         },
@@ -1884,7 +2165,7 @@ const es = {
     cta: {
       title: "Si algo de esto *te suena a tu problema*.",
       lead:
-        "Escribinos y lo charlamos sin vueltas. Si bookfer todavía no sirve para tu caso, te lo vamos a decir en esa misma conversación.",
+        "Escribinos y lo charlamos sin vueltas. Si Roombir todavía no sirve para tu caso, te lo vamos a decir en esa misma conversación.",
       steps: [
         "Nos contás cómo operás hoy.",
         "Te decimos qué resuelve y qué no.",
@@ -1898,12 +2179,12 @@ const es = {
     meta: {
       title: "Contacto",
       description:
-        "Escribinos y lo charlamos sin vueltas: qué resuelve bookfer para tu alojamiento y qué todavía no. También podés empezar el alta gratis vos mismo.",
+        "Escribinos y lo charlamos sin vueltas: qué resuelve Roombir para tu alojamiento y qué todavía no. También podés empezar el alta gratis vos mismo.",
     },
     eyebrow: "Contacto",
     title: "Contanos cómo *recibís reservas hoy*.",
     lead:
-      "No hace falta que sepas qué módulo necesitás. Con saber cuántas unidades tenés, si vendés en OTAs y qué parte del día se te va contestando disponibilidad, ya alcanza para decirte si bookfer te sirve — o si todavía no.",
+      "No hace falta que sepas qué módulo necesitás. Con saber cuántas unidades tenés, si vendés en OTAs y qué parte del día se te va contestando disponibilidad, ya alcanza para decirte si Roombir te sirve — o si todavía no.",
     checks: [
       "Te contestamos dentro del día hábil.",
       "Si algo que necesitás todavía no existe, te lo decimos ahí mismo.",
@@ -1913,7 +2194,7 @@ const es = {
     shortcutTitle: "¿Preferís no esperar una respuesta?",
     shortcutText:
       "El alta es autogestionada, gratuita y no pide tarjeta. Podés tener el motor funcionando antes de que contestemos este formulario.",
-    whatsappMessage: "Hola, quiero conocer bookfer para mi alojamiento.",
+    whatsappMessage: "Hola, quiero conocer Roombir para mi alojamiento.",
   },
 
   /* ----------------------------------------------------------------- legal */
@@ -1924,21 +2205,21 @@ const es = {
       meta: {
         title: "Política de privacidad",
         description:
-          "Qué datos toma bookfer en este sitio y en la plataforma, con qué proveedores los procesa y cómo pedir que se borren.",
+          "Qué datos toma Roombir en este sitio y en la plataforma, con qué proveedores los procesa y cómo pedir que se borren.",
       },
       title: "Política de privacidad",
       lead: "Qué datos tomamos, para qué, con quién los procesamos y cómo pedir que se borren.",
       blocks: [
         { h: "1. Quiénes somos" },
         {
-          p: "bookfer es una plataforma de gestión para alojamientos operada desde Argentina. Para cualquier cuestión relacionada con tus datos personales podés escribirnos a [hola@bookfer.com](mailto:hola@bookfer.com).",
+          p: "Roombir es una plataforma de gestión para alojamientos operada desde Argentina. Para cualquier cuestión relacionada con tus datos personales podés escribirnos a [hola@roombir.com](mailto:hola@roombir.com).",
         },
         { h: "2. Dos roles distintos" },
         { p: "Conviene separarlos porque las obligaciones no son las mismas:" },
         {
           ul: [
             "**Este sitio y la relación comercial con vos.** Acá somos responsables de los datos: los tomamos para contactarte y para entender de dónde llegan las consultas.",
-            "**La plataforma.** Cuando un alojamiento carga los datos de sus huéspedes en bookfer, el responsable de esos datos es el alojamiento; nosotros los procesamos por su cuenta y según sus instrucciones.",
+            "**La plataforma.** Cuando un alojamiento carga los datos de sus huéspedes en roombir, el responsable de esos datos es el alojamiento; nosotros los procesamos por su cuenta y según sus instrucciones.",
           ],
         },
         { h: "3. Qué datos tomamos en este sitio" },
@@ -1951,7 +2232,7 @@ const es = {
           ],
         },
         {
-          p: "No usamos los datos del formulario para nada que no sea contactarte sobre bookfer, y no los vendemos ni los cedemos con fines publicitarios a terceros.",
+          p: "No usamos los datos del formulario para nada que no sea contactarte sobre roombir, y no los vendemos ni los cedemos con fines publicitarios a terceros.",
         },
         { h: "4. Qué datos toma la plataforma" },
         {
@@ -1976,7 +2257,7 @@ const es = {
         },
         { h: "7. Tus derechos" },
         {
-          p: "Podés pedirnos acceso a tus datos, su corrección, su actualización o su supresión escribiéndonos a [hola@bookfer.com](mailto:hola@bookfer.com). En Argentina, la Agencia de Acceso a la Información Pública es la autoridad de control en materia de protección de datos personales y atiende los reclamos de quien considere vulnerados sus derechos.",
+          p: "Podés pedirnos acceso a tus datos, su corrección, su actualización o su supresión escribiéndonos a [hola@roombir.com](mailto:hola@roombir.com). En Argentina, la Agencia de Acceso a la Información Pública es la autoridad de control en materia de protección de datos personales y atiende los reclamos de quien considere vulnerados sus derechos.",
         },
         { h: "8. Seguridad" },
         {
@@ -1992,14 +2273,14 @@ const es = {
       meta: {
         title: "Términos y condiciones",
         description:
-          "Condiciones de uso de la plataforma bookfer: qué incluye el servicio, qué está en piloto, responsabilidades de cada parte y cómo se da de baja una cuenta.",
+          "Condiciones de uso de la plataforma roombir: qué incluye el servicio, qué está en piloto, responsabilidades de cada parte y cómo se da de baja una cuenta.",
       },
       title: "Términos y condiciones",
       lead: "Las reglas de uso de la plataforma, escritas para que se entiendan.",
       blocks: [
         { h: "1. Qué es el servicio" },
         {
-          p: "bookfer es una plataforma en la nube para gestionar un alojamiento: reservas, habitaciones, motor de reservas público, sitios web, revenue management, portal del huésped y un asistente de inteligencia artificial. Se accede por navegador; no se entrega software para instalar.",
+          p: "Roombir es una plataforma en la nube para gestionar un alojamiento: reservas, habitaciones, motor de reservas público, sitios web, revenue management, portal del huésped y un asistente de inteligencia artificial. Se accede por navegador; no se entrega software para instalar.",
         },
         { h: "2. Estado del producto" },
         {
@@ -2021,7 +2302,7 @@ const es = {
           p: "Cada plan define qué productos incluye y qué topes de propiedades y de usuarios tiene; lo publicado en [Precios](/precios) sale del mismo catálogo con el que se resuelve tu cuenta. Los períodos gratuitos y las pruebas tienen la duración que ahí se indique. No hay permanencia mínima ni penalidad por dar de baja.",
         },
         {
-          p: "El motor de reservas no cobra comisión por reserva. El cobro al huésped no pasa por bookfer: hoy se hace contra el check-in, entre el alojamiento y el huésped.",
+          p: "El motor de reservas no cobra comisión por reserva. El cobro al huésped no pasa por roombir: hoy se hace contra el check-in, entre el alojamiento y el huésped.",
         },
         { h: "6. Uso aceptable" },
         { p: "No se puede usar la plataforma para:" },
@@ -2043,11 +2324,11 @@ const es = {
         },
         { h: "9. Propiedad intelectual" },
         {
-          p: "El software, la marca y la documentación de bookfer son nuestros. El contenido que cargues —textos, fotos, logo, diseño de tu sitio— es tuyo, y nos autorizás a alojarlo y mostrarlo únicamente para prestar el servicio.",
+          p: "El software, la marca y la documentación de Roombir son nuestros. El contenido que cargues —textos, fotos, logo, diseño de tu sitio— es tuyo, y nos autorizás a alojarlo y mostrarlo únicamente para prestar el servicio.",
         },
         { h: "10. Baja" },
         {
-          p: "Podés dar de baja tu cuenta cuando quieras escribiéndonos a [hola@bookfer.com](mailto:hola@bookfer.com). Antes de cerrarla te damos un plazo razonable para que descargues lo que necesites conservar.",
+          p: "Podés dar de baja tu cuenta cuando quieras escribiéndonos a [hola@roombir.com](mailto:hola@roombir.com). Antes de cerrarla te damos un plazo razonable para que descargues lo que necesites conservar.",
         },
         { h: "11. Responsabilidad" },
         {
@@ -2063,14 +2344,14 @@ const es = {
       meta: {
         title: "Política de cookies",
         description:
-          "Qué cookies y tecnologías de medición usa el sitio de bookfer, cuáles son necesarias y cómo desactivar el resto.",
+          "Qué cookies y tecnologías de medición usa el sitio de roombir, cuáles son necesarias y cómo desactivar el resto.",
       },
       title: "Política de cookies",
       lead: "Qué guarda este sitio en tu navegador y qué podés desactivar.",
       blocks: [
         { h: "1. El sitio público" },
         {
-          p: "Las páginas de `bookfer.com` son estáticas y no necesitan cookies para funcionar. No usamos cookies propias para perfilarte ni para recordar quién sos entre visitas. La única que puede aparecer es la que guarda el **idioma que elegiste** en el selector, para no devolverte a otro en la próxima visita.",
+          p: "Las páginas de `roombir.com` son estáticas y no necesitan cookies para funcionar. No usamos cookies propias para perfilarte ni para recordar quién sos entre visitas. La única que puede aparecer es la que guarda el **idioma que elegiste** en el selector, para no devolverte a otro en la próxima visita.",
         },
         { h: "2. Medición y publicidad" },
         {
@@ -2084,7 +2365,7 @@ const es = {
         },
         { h: "3. La plataforma" },
         {
-          p: "La aplicación en `app.bookfer.com` sí usa cookies **necesarias**: son las que mantienen tu sesión iniciada. Sin ellas no se puede usar el sistema, y no se pueden desactivar sin cerrar la sesión.",
+          p: "La aplicación en `app.roombir.com` sí usa cookies **necesarias**: son las que mantienen tu sesión iniciada. Sin ellas no se puede usar el sistema, y no se pueden desactivar sin cerrar la sesión.",
         },
         {
           p: "La plataforma también guarda algunas preferencias en el almacenamiento local de tu navegador —el tema visual, el estado de la barra lateral, el progreso de los recorridos guiados—. Eso vive en tu equipo y no viaja a ningún lado.",
@@ -2095,9 +2376,323 @@ const es = {
         },
         { h: "5. Consultas" },
         {
-          p: "Cualquier duda sobre esto, escribinos a [hola@bookfer.com](mailto:hola@bookfer.com). Ver también la [política de privacidad](/legal/privacidad).",
+          p: "Cualquier duda sobre esto, escribinos a [hola@roombir.com](mailto:hola@roombir.com). Ver también la [política de privacidad](/legal/privacidad).",
         },
       ],
+    },
+  },
+
+  /* ------------------------------------------------------------ comparar */
+  /* Las comparativas con nombre y apellido. Dos reglas que no se negocian:
+     (1) los datos del competidor salen de SU web pública, leída en la fecha
+     que se muestra, y si no publica algo la celda dice "no lo declara" —nunca
+     una estimación de terceros, que es donde más se inventa en este sector—;
+     (2) la tarjeta "elegí a X si…" va primero y con la misma generosidad que
+     la nuestra. Los tonos: ok / mid / no / info (ver `toneOf` en Sections). */
+  comparar: {
+    meta: {
+      title: "Comparativas",
+      description:
+        "Roombir frente a Cloudbeds, Little Hotelier, Amenitiz y Mews: precio publicado, permanencia, comisión, revenue, channel manager, pagos e IA. Verificado contra sus webs, con fecha, y con en qué caso conviene el otro.",
+    },
+    hero: {
+      eyebrow: "Comparativas",
+      title: "Comparado *con nombre y apellido*.",
+      lead:
+        "Cuatro comparativas escritas con una regla: sólo lo que dice la web pública de cada uno, leída en una fecha concreta y citada tal cual. Sin estimaciones de terceros ni capturas viejas. Cada una dice en qué caso conviene el otro, porque una comparativa que siempre gana no le sirve a nadie.",
+      notes: ["Sólo su web pública", "Con fecha de verificación", "Con “cuándo elegir al otro”"],
+    },
+    vsPrefix: "Roombir vs",
+    read: "Leer la comparativa",
+    verified: "Verificado el {date} contra la web pública de {name}",
+    verifiedDate: "2 de septiembre de 2026",
+    chooseThem: "Elegí {name} si…",
+    chooseUs: "Elegí Roombir si…",
+    table: {
+      eyebrow: "Criterio por criterio",
+      title: "Roombir y {name}, *en la misma tabla*.",
+      lead:
+        "Las filas de Roombir salen del estado del producto que publicamos en Nosotros, incluidas las que dicen “no existe todavía”. Las del otro, de su web pública en la fecha indicada. Si algo cambió, avisanos y lo corregimos con la fecha nueva.",
+      headCriterion: "Criterio",
+      headUs: "roombir",
+    },
+    legend: {
+      ok: "Sí, incluido o declarado",
+      mid: "Parcial, add-on o con condiciones",
+      no: "No, o no lo declara",
+      info: "Dato sin valoración",
+    },
+    sourcesNote:
+      "Datos de {name} tomados de su sitio público el {date}. Los de roombir, del [estado del producto](/nosotros#estado) de esa misma fecha. Si encontrás algo desactualizado, escribinos a hola@roombir.com. Fuente:",
+    method: {
+      eyebrow: "Cómo comparamos",
+      title: "Sólo lo que dice su web, *con fecha*.",
+      lead:
+        "Es la única forma de que una comparativa escrita por una de las partes sirva para algo. Tres reglas, y se aplican también a la columna nuestra.",
+      items: [
+        "**Fuente única:** el sitio público de cada competidor, leído el 2 de septiembre de 2026. Si un dato no está en su web, la celda dice “no lo declara”; no lo inventamos.",
+        "**Sin precios de terceros:** los números que circulan en directorios de software son estimaciones. Si el competidor no publica precio, la fila dice exactamente eso.",
+        "**Nuestras filas salen del estado del producto:** las mismas que dicen que no tenemos channel manager ni pagos. Si mejoramos, cambia ahí y cambia acá en el mismo commit.",
+      ],
+    },
+    cta: {
+      title: "Si después de leer *seguís acá*.",
+      lead:
+        "El alta es gratuita, guiada y no pide tarjeta. Y si la comparativa te dejó claro que necesitás lo que todavía no tenemos, también sirvió.",
+      steps: [
+        "Te das de alta y cargás una propiedad.",
+        "Probás el motor y el asistente con tus datos.",
+        "Elegís plan sólo si te cambió algo.",
+      ],
+    },
+    /* La columna de roombir, común a las cuatro comparativas. */
+    criteria: {
+      price: { label: "Precio publicado en la web", us: "Sí: en HTML, con número, del mismo catálogo con el que se cobra la cuenta", tone: "ok" },
+      trial: { label: "Probar sin tarjeta", us: "Sí: plan gratis y alta autogestionada, sin llamada previa", tone: "ok" },
+      lockin: { label: "Permanencia", us: "Sin permanencia: plan mensual, baja sin penalidad", tone: "ok" },
+      commission: { label: "Comisión sobre el motor de reservas", us: "0%. Lo que entra por tu motor es tuyo entero", tone: "ok" },
+      rms: { label: "Revenue management", us: "Incluido en el catálogo de productos, según plan; no es un módulo aparte", tone: "ok" },
+      channel: { label: "Channel manager (OTAs)", us: "No existe todavía. Sólo una bitácora de eventos para cuando se conecte", tone: "no" },
+      payments: { label: "Cobro online al huésped", us: "No existe todavía: el cobro es contra el check-in", tone: "no" },
+      ai: { label: "Asistente de IA", us: "Ejecuta: 272 herramientas con tus permisos, transcripción del turno visible", tone: "ok" },
+      fx: { label: "Multimoneda", us: "10 monedas; conversión congelada al check-in; blue, MEP, CCL u oficial para ARS", tone: "ok" },
+      dual: { label: "Modelo de venta pool y unidad 1:1", us: "Sí, elegible por categoría, conviviendo en el mismo calendario", tone: "ok" },
+      website: { label: "Sitio web con dominio propio", us: "Incluido: builder, multi-idioma, LinkHub con QR", tone: "ok" },
+      fiscal: { label: "Facturación fiscal local", us: "No todavía", tone: "no" },
+      languages: { label: "Idiomas de la plataforma", us: "5: español, inglés, portugués, francés, alemán", tone: "info" },
+      segment: { label: "Segmento típico", us: "Independientes y boutique de LATAM: hoteles, cabañas, hostels, glamping", tone: "info" },
+      support: { label: "Alta y soporte", us: "Alta guiada en 9 pasos, 38 recorridos, carga de habitaciones acompañada sin cargo", tone: "info" },
+      llms: { label: "Su propio sitio, legible por IA (llms.txt)", us: "Sí: curado, con los mismos números y precios que la web", tone: "ok" },
+    },
+    rivals: {
+      cloudbeds: {
+        name: "Cloudbeds",
+        site: "cloudbeds.com",
+        oneLiner: "El all-in-one global: 20.000+ propiedades, channel manager de 450+ canales, precio bajo cotización.",
+        meta: {
+          title: "Roombir vs Cloudbeds",
+          description:
+            "Cloudbeds y Roombir comparados criterio por criterio: precio publicado, permanencia, comisión, revenue, channel manager, pagos e IA. Verificado contra cloudbeds.com el 2 de septiembre de 2026.",
+        },
+        hero: {
+          title: "Roombir vs *Cloudbeds*",
+          lead:
+            "Cloudbeds es el sistema más completo del segmento independiente a escala global: channel manager, pagos, marketing y una capa de IA analítica, en más de 150 países. Roombir es más chico, más nuevo y hecho para LATAM, con dos cosas que Cloudbeds no publica —el precio y la permanencia— y dos que Cloudbeds tiene y nosotros todavía no: channel manager y pasarela de pago.",
+        },
+        them: [
+          "Vendés fuerte en OTAs y necesitás un channel manager hoy, no cuando lo lancemos.",
+          "Querés cobrar online con tarjeta desde el motor.",
+          "Operás varias propiedades en varios países y necesitás un marketplace de 450 integraciones.",
+        ],
+        us: [
+          "Querés saber cuánto cuesta antes de hablar con un vendedor, y no firmar permanencia.",
+          "Tu problema es la venta directa: las consultas se pierden en el chat y no hay web ni motor propio.",
+          "Vendés en pesos con tipo de cambio inestable, o mezclás cabañas con habitaciones y ningún sistema te deja.",
+        ],
+        rows: {
+          price: { v: "No: cuatro planes y los cuatro terminan en “Request a quote”", tone: "no" },
+          trial: { v: "No: la entrada es “Get a demo”", tone: "no" },
+          lockin: { v: "No lo declara en su página de precios", tone: "mid" },
+          commission: { v: "0% en motor y channel manager (declarado); comisión de metasearch después de la estadía", tone: "ok" },
+          rms: { v: "Add-on: Revenue Intelligence, dentro de Revenue Marketing", tone: "mid" },
+          channel: { v: "Sí, 450+ canales", tone: "ok" },
+          payments: { v: "Sí, Cloudbeds Payments", tone: "ok" },
+          ai: { v: "Signals y Ask Signals: IA conversacional para consultar datos", tone: "mid" },
+          fx: { v: "No lo declara", tone: "mid" },
+          dual: { v: "Hoteles y alquileres como segmentos; sin modo mixto declarado", tone: "mid" },
+          website: { v: "Add-on: Websites, dentro de Revenue Marketing", tone: "mid" },
+          fiscal: { v: "No lo declara", tone: "mid" },
+          languages: { v: "Web en 4: inglés, español, portugués, francés", tone: "info" },
+          segment: { v: "Independientes y grupos, 150+ países, 20.000+ propiedades", tone: "info" },
+          support: { v: "Onboarding, Customer Success y Cloudbeds University", tone: "info" },
+          llms: { v: "Sin llms.txt (404 al verificar)", tone: "no" },
+        },
+        faq: [
+          {
+            q: "¿Cloudbeds es mejor que roombir?",
+            a: "En cobertura, sí: tiene channel manager, pagos y 450 integraciones que nosotros no tenemos. En transparencia y en foco, creemos que no: su precio se pide por formulario, y el revenue y el sitio web son módulos aparte. Si tu problema hoy es la distribución en OTAs, Cloudbeds. Si es la reserva directa y saber cuánto vas a pagar, roombir.",
+          },
+          {
+            q: "¿Cuánto cuesta Cloudbeds?",
+            a: "No lo publica. Su página de precios tiene cuatro planes —Flex, One, Experience y Enterprise— y los cuatro terminan en “Request a quote”. Los números que circulan en internet son estimaciones de terceros, no de Cloudbeds, y por eso no los repetimos acá.",
+          },
+          {
+            q: "¿Puedo migrar de Cloudbeds a roombir?",
+            a: "Sí, y acompañamos la carga de habitaciones y tarifas sin cargo. Lo que conviene saber antes: si dependés de su channel manager, en Roombir esa sincronización con OTAs hoy se hace a mano. Está en el [estado del producto](/nosotros#estado).",
+          },
+        ],
+      },
+      littlehotelier: {
+        name: "Little Hotelier",
+        site: "littlehotelier.com",
+        oneLiner: "La marca de SiteMinder para 1–30 habitaciones: 30 días de prueba, calculadora de precio y tarifa variable por reserva.",
+        meta: {
+          title: "Roombir vs Little Hotelier",
+          description:
+            "Little Hotelier y Roombir comparados: precio, prueba gratis, tarifa por reserva, revenue, channel manager, pagos e IA. Verificado contra littlehotelier.com el 2 de septiembre de 2026.",
+        },
+        hero: {
+          title: "Roombir vs *Little Hotelier*",
+          lead:
+            "Little Hotelier es el sistema chico de SiteMinder, el mayor distribuidor hotelero del mundo, y el más parecido a Roombir en tamaño de cliente: propiedades de 1 a 30 habitaciones. Publica una calculadora de precio, da 30 días de prueba y tiene channel manager y pagos. Cobra además una tarifa variable por reserva, y el revenue, el sitio web y el metasearch son add-ons.",
+        },
+        them: [
+          "Necesitás channel manager y pagos hoy: los dos están y funcionan a escala global.",
+          "Querés el respaldo de la red de distribución de SiteMinder: 450+ canales, GDS, metasearch.",
+          "Operás en inglés, alemán, italiano, tailandés o indonesio: es donde localiza.",
+        ],
+        us: [
+          "Querés una cuota fija, sin un porcentaje por cada reserva que entra.",
+          "Querés el revenue y el sitio web dentro del plan, no como add-ons.",
+          "Vendés cabañas con nombre propio junto a habitaciones, o cobrás en pesos y necesitás congelar el tipo de cambio.",
+        ],
+        rows: {
+          price: { v: "Sí: calculadora por cantidad de habitaciones (el número se carga por JavaScript)", tone: "ok" },
+          trial: { v: "Sí: 30 días gratis", tone: "ok" },
+          lockin: { v: "No lo declara en la página de precios", tone: "mid" },
+          commission: { v: "Tarifa variable por reserva sobre el total de reservas, además de la suscripción (según su página de precios)", tone: "no" },
+          rms: { v: "Add-on: Dynamic Revenue Plus", tone: "mid" },
+          channel: { v: "Sí", tone: "ok" },
+          payments: { v: "Sí, Little Hotelier Payments, con tarifas por transacción", tone: "ok" },
+          ai: { v: "No declara un asistente que opere el sistema", tone: "no" },
+          fx: { v: "No lo declara", tone: "mid" },
+          dual: { v: "Hoteles, B&B, cabañas y más como tipos; sin modo mixto declarado", tone: "mid" },
+          website: { v: "Add-on: Website Builder", tone: "mid" },
+          fiscal: { v: "No lo declara", tone: "mid" },
+          languages: { v: "Web en 6: inglés, alemán, español, italiano, tailandés, indonesio", tone: "info" },
+          segment: { v: "Propiedades de 1 a 30 habitaciones, global", tone: "info" },
+          support: { v: "Soporte 24/7 por chat, email y teléfono; especialista de onboarding", tone: "info" },
+          llms: { v: "Sí, generado automáticamente: un listado de páginas", tone: "mid" },
+        },
+        faq: [
+          {
+            q: "¿Little Hotelier cobra comisión?",
+            a: "Su página de precios dice que aplican **tarifas de reserva variables**, calculadas sobre el total de reservas netas de cancelaciones, además de la cuota mensual. Roombir no cobra porcentaje sobre lo que vende tu motor.",
+          },
+          {
+            q: "¿Cuál es más barato?",
+            a: "Depende de cuánto vendas. Con una tarifa variable por reserva, Little Hotelier cuesta más cuanto mejor te va; Roombir es una cuota fija por alojamiento. Su calculadora y [nuestros planes](/precios) están publicados: hacé la cuenta con tus números.",
+          },
+          {
+            q: "¿Little Hotelier tiene channel manager y Roombir no?",
+            a: "Correcto, y es la diferencia más importante si hoy vendés en Booking o Expedia. Está en nuestro [estado del producto](/nosotros#estado) y no vamos a decirte lo contrario.",
+          },
+        ],
+      },
+      amenitiz: {
+        name: "Amenitiz",
+        site: "amenitiz.com",
+        oneLiner: "All-in-one europeo para independientes de 3–30 habitaciones, con web incluida. Contrato anual y precio bajo cotización.",
+        meta: {
+          title: "Roombir vs Amenitiz",
+          description:
+            "Amenitiz y Roombir comparados: precio, permanencia, comisión, revenue, channel manager, pagos, facturación fiscal e IA. Verificado contra amenitiz.com el 2 de septiembre de 2026.",
+        },
+        hero: {
+          title: "Roombir vs *Amenitiz*",
+          lead:
+            "Amenitiz es el sistema más parecido a Roombir en idea: todo en un solo lugar, con sitio web incluido, para alojamientos independientes de 3 a 30 habitaciones. Es europeo —España, Francia, Italia, Portugal— y trae dos cosas que nosotros no: channel manager y pagos, más certificaciones fiscales de esos cuatro países. Pide contrato de un año y el precio se confirma en una llamada.",
+        },
+        them: [
+          "Estás en España, Francia, Italia o Portugal y necesitás facturación fiscal certificada: VeriFactu, NF525, FatturaPA, SEF.",
+          "Necesitás channel manager y cobro con tarjeta desde el primer día.",
+          "Preferís que un equipo te construya el sitio web en vez de armarlo vos.",
+        ],
+        us: [
+          "No querés firmar un año antes de saber si te sirve.",
+          "Querés el precio en la web y no “confirmado en la demo”.",
+          "Estás en LATAM, vendés en pesos o reales, y necesitás multimoneda con tipo de cambio congelado y un asistente que ejecute.",
+        ],
+        rows: {
+          price: { v: "No en la página de precios (“precio a consultar”); su llms.txt menciona desde €5 por habitación al mes", tone: "mid" },
+          trial: { v: "No: la entrada es “Book a demo”", tone: "no" },
+          lockin: { v: "Contrato de 1 año (según su propio llms.txt)", tone: "no" },
+          commission: { v: "0% en reservas directas (declarado)", tone: "ok" },
+          rms: { v: "Add-on: PriceAdvisor", tone: "mid" },
+          channel: { v: "Sí, 150+ OTAs", tone: "ok" },
+          payments: { v: "Sí, AmenitizPay: 1,5% + €0,25 por transacción (según su web)", tone: "ok" },
+          ai: { v: "PriceAdvisor para precios; sin asistente que opere el sistema declarado", tone: "mid" },
+          fx: { v: "No lo declara", tone: "mid" },
+          dual: { v: "Hoteles y B&B; sin modo mixto declarado", tone: "mid" },
+          website: { v: "Sí, incluido y construido por su equipo", tone: "ok" },
+          fiscal: { v: "Sí: NF525 (Francia), VeriFactu (España), FatturaPA (Italia), SEF (Portugal)", tone: "ok" },
+          languages: { v: "Web en 5: inglés, francés, español, italiano, portugués", tone: "info" },
+          segment: { v: "Independientes de 3 a 30 habitaciones en España, Francia, Italia y Portugal", tone: "info" },
+          support: { v: "Soporte nativo en 5 idiomas, migración gratis, “operativo en 30 días o el primer mes es gratis”", tone: "info" },
+          llms: { v: "Sí, curado: con precio y comparativas contra competidores", tone: "ok" },
+        },
+        faq: [
+          {
+            q: "¿Amenitiz tiene permanencia?",
+            a: "Según su propio archivo llms.txt, el contrato es de **un año** y el precio final se confirma en la demo. Roombir es mensual y sin permanencia, y el precio está en la web.",
+          },
+          {
+            q: "¿Amenitiz sirve en Argentina o en México?",
+            a: "Su web y su llms.txt describen un producto para España, Francia, Italia y Portugal, con certificaciones fiscales de esos países. No encontramos precios, monedas ni cumplimiento para LATAM. Roombir nació acá: pesos, reales, cotización blue, MEP o CCL, y horarios de este lado.",
+          },
+          {
+            q: "¿Qué hace mejor Amenitiz?",
+            a: "Tres cosas que no vamos a minimizar: channel manager con 150+ OTAs, pagos integrados y facturación fiscal certificada en sus cuatro países. Y una promesa de implementación —“en 30 días o el primer mes es gratis”— que nos parece un buen estándar.",
+          },
+        ],
+      },
+      mews: {
+        name: "Mews",
+        site: "mews.com",
+        oneLiner: "El PMS mid-market y enterprise mejor valuado del mundo. API abierta sólo en Enterprise, precio bajo cotización.",
+        meta: {
+          title: "Roombir vs Mews",
+          description:
+            "Mews y Roombir comparados: precio, prueba, permanencia, revenue, API abierta, pagos e IA. Verificado contra mews.com el 2 de septiembre de 2026.",
+        },
+        hero: {
+          title: "Roombir vs *Mews*",
+          lead:
+            "Mews es el PMS moderno de referencia para hoteles urbanos, cadenas y hostels, con pagos embebidos, POS y un marketplace de 1.000 integraciones. Es otro tamaño de cliente y otro precio. La comparación importa por una razón: su página de precios pone el API abierta y el marketplace completo en el plan Enterprise, mientras que el plan de entrada trae ocho integraciones y soporte por chatbot.",
+        },
+        them: [
+          "Sos una cadena, un hotel urbano grande o un grupo con equipo de finanzas y de sistemas.",
+          "Necesitás POS, pagos embebidos y contabilidad integrados a escala.",
+          "Vas a usar el marketplace de 1.000 integraciones y podés pagar el plan que lo habilita.",
+        ],
+        us: [
+          "Tenés entre 1 y 50 unidades y no hay nadie de sistemas.",
+          "Querés saber el precio antes de la demo y no firmar permanencia.",
+          "Querés que la capa abierta —llms.txt, disponibilidad legible, asistente que ejecuta— esté en todos los planes y no sólo en el más caro.",
+        ],
+        rows: {
+          price: { v: "No: tres planes con “Get Pricing”", tone: "no" },
+          trial: { v: "No: la entrada es “Book a demo”", tone: "no" },
+          lockin: { v: "No lo declara en su página de precios", tone: "mid" },
+          commission: { v: "No declara comisión sobre el motor", tone: "ok" },
+          rms: { v: "Producto aparte (Mews RMS); no figura en los tres planes publicados", tone: "mid" },
+          channel: { v: "Vía Marketplace: 8 integraciones en Essentials (con Booking.com y Expedia); ilimitado sólo en Enterprise", tone: "mid" },
+          payments: { v: "Sí, pagos embebidos desde Essentials", tone: "ok" },
+          ai: { v: "Resúmenes de IA de preferencias del huésped (Advanced); sin asistente que opere declarado", tone: "mid" },
+          fx: { v: "Multicurrency como funcionalidad; sin congelamiento declarado", tone: "mid" },
+          dual: { v: "Hoteles, hostels, extended stay; sin modo mixto declarado", tone: "mid" },
+          website: { v: "No: motor de reservas sí, sitio web no", tone: "no" },
+          fiscal: { v: "No lo declara", tone: "mid" },
+          languages: { v: "Web en 7: inglés (US y GB), francés, alemán, español, neerlandés, italiano", tone: "info" },
+          segment: { v: "Hoteles, grupos y cadenas, hostels; 15.000 propiedades en 85 países", tone: "info" },
+          support: { v: "Chatbot 24/7 en Essentials; Mews University; comunidad pública", tone: "info" },
+          llms: { v: "Sin llms.txt (404 al verificar)", tone: "no" },
+        },
+        faq: [
+          {
+            q: "¿Por qué comparar Roombir con Mews si son tamaños distintos?",
+            a: "Porque cuando un hotelero busca “el mejor PMS”, Mews aparece primero, y conviene saber qué se lleva: un sistema excelente para hoteles con equipo, cuyo plan de entrada trae ocho integraciones y cuya API abierta vive en Enterprise. Si tu hotel tiene doce habitaciones, ese no es tu tramo.",
+          },
+          {
+            q: "¿Mews es más completo que roombir?",
+            a: "Sí, en pagos, POS, contabilidad e integraciones. Roombir no tiene pagos ni channel manager. Lo que sí tenemos en todos los planes es lo que Mews reserva para el más caro: la capa abierta —llms.txt, disponibilidad legible— y un asistente que ejecuta.",
+          },
+          {
+            q: "¿Cuánto cuesta Mews?",
+            a: "No lo publica: Essentials, Advanced y Enterprise, los tres con “Get Pricing”. Las cifras que circulan son estimaciones de terceros y no las repetimos.",
+          },
+        ],
+      },
     },
   },
 

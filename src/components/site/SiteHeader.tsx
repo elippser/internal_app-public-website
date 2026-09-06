@@ -155,9 +155,15 @@ export default function SiteHeader({
           <SamePageLink className={styles.login}>
             {nav.login}
           </SamePageLink>
-          <SamePageLink className={["btn", "btn-primary", styles.cta].join(" ")}>
+          {/* El unico CTA del header que lleva a algun lado. "Ingresar" sigue
+              quieto: el sitio no enlaza al dominio del PMS, y al alta se entra
+              por este formulario. */}
+          <Link
+            href={path("/crear-cuenta")}
+            className={["btn", "btn-primary", styles.cta].join(" ")}
+          >
             {nav.signup}
-          </SamePageLink>
+          </Link>
           <button
             type="button"
             className={styles.burger}
@@ -242,9 +248,12 @@ export default function SiteHeader({
             </Link>
           </div>
           <div className={styles.drawerActions}>
-            <SamePageLink className={["btn", "btn-primary", "btn-lg"].join(" ")}>
+            <Link
+              href={path("/crear-cuenta")}
+              className={["btn", "btn-primary", "btn-lg"].join(" ")}
+            >
               {nav.signup}
-            </SamePageLink>
+            </Link>
             <SamePageLink className={["btn", "btn-ghost", "btn-lg"].join(" ")}>
               {nav.login}
             </SamePageLink>

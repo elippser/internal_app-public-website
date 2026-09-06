@@ -124,6 +124,59 @@ export const ROUTES = {
       de: "/preise",
     },
   },
+  /* Las comparativas. El índice tiene slug traducido; los nombres de los
+     competidores no se traducen: son marcas, y "cloudbeds" es lo que la
+     persona escribe en cualquier idioma. */
+  comparar: {
+    path: "/comparar",
+    slugs: {
+      es: "/comparar",
+      en: "/compare",
+      pt: "/comparar",
+      fr: "/comparer",
+      de: "/vergleich",
+    },
+  },
+  compararCloudbeds: {
+    path: "/comparar/cloudbeds",
+    slugs: {
+      es: "/comparar/cloudbeds",
+      en: "/compare/cloudbeds",
+      pt: "/comparar/cloudbeds",
+      fr: "/comparer/cloudbeds",
+      de: "/vergleich/cloudbeds",
+    },
+  },
+  compararLittleHotelier: {
+    path: "/comparar/little-hotelier",
+    slugs: {
+      es: "/comparar/little-hotelier",
+      en: "/compare/little-hotelier",
+      pt: "/comparar/little-hotelier",
+      fr: "/comparer/little-hotelier",
+      de: "/vergleich/little-hotelier",
+    },
+  },
+  compararAmenitiz: {
+    path: "/comparar/amenitiz",
+    slugs: {
+      es: "/comparar/amenitiz",
+      en: "/compare/amenitiz",
+      pt: "/comparar/amenitiz",
+      fr: "/comparer/amenitiz",
+      de: "/vergleich/amenitiz",
+    },
+  },
+  compararMews: {
+    path: "/comparar/mews",
+    slugs: {
+      es: "/comparar/mews",
+      en: "/compare/mews",
+      pt: "/comparar/mews",
+      fr: "/comparer/mews",
+      de: "/vergleich/mews",
+    },
+  },
   nosotros: {
     path: "/nosotros",
     slugs: {
@@ -142,6 +195,19 @@ export const ROUTES = {
       pt: "/contato",
       fr: "/contact",
       de: "/kontakt",
+    },
+  },
+  /* El alta. Es la unica puerta de entrada a la plataforma: el /register
+     del PMS no abre sin el invite que sale de este formulario. Por eso el CTA
+     "empezar gratis" de todo el sitio apunta aca y no al dominio del PMS. */
+  crearCuenta: {
+    path: "/crear-cuenta",
+    slugs: {
+      es: "/crear-cuenta",
+      en: "/create-account",
+      pt: "/criar-conta",
+      fr: "/creer-compte",
+      de: "/konto-erstellen",
     },
   },
   privacidad: {

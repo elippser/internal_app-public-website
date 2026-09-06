@@ -8,7 +8,10 @@ import Ticker from "@/components/site/Ticker";
 import {
   ArrowRight,
   Check,
+  Commitments,
+  CompareTeaser,
   CtaBand,
+  DayCompare,
   HeroActions,
   Split,
   SplitHead,
@@ -26,7 +29,7 @@ import {
   SpaceSwitcher,
   TapeChart,
 } from "@/components/site/Vignettes";
-import { PRODUCT_HREFS } from "@/components/site/nav";
+import { PRODUCT_HREFS, RIVAL_HREFS, RIVAL_KEYS } from "@/components/site/nav";
 import { localizedHref as localePath } from "@/i18n/routes";
 import { readLocale } from "@/i18n/params";
 import { pageMetadata } from "@/lib/meta";
@@ -180,23 +183,16 @@ export default async function HomePage({
               secondaryLabel={dict.common.seePlatform}
               secondaryHref="/producto"
             />
+            {/* Las notas bajo el hero son las cuatro cosas que el sector no
+                dice: precio publicado, sin permanencia. Las de "sin tarjeta"
+                siguen en `common` para el resto de las portadas. */}
             <p className={styles.heroNotes}>
-              <span>
-                <Check />
-                {dict.common.noCard}
-              </span>
-              <span>
-                <Check />
-                {dict.common.noInstall}
-              </span>
-              <span>
-                <Check />
-                {dict.common.guidedSignup}
-              </span>
-              <span>
-                <Check />
-                {dict.common.inSpanish}
-              </span>
+              {t.hero.notes.map((note) => (
+                <span key={note}>
+                  <Check />
+                  {note}
+                </span>
+              ))}
             </p>
           </div>
         </section>
@@ -229,6 +225,19 @@ export default async function HomePage({
 
       <Ticker items={dict.ticker} />
 
+      {/* ---------------------------------------------------- compromisos -- */}
+      {/* Va antes que cualquier feature: lo primero que el sector esconde
+          (precio, permanencia, lo que falta) es lo primero que decimos. */}
+      <Commitments
+        locale={lang}
+        id="compromisos"
+        eyebrow={t.commitments.eyebrow}
+        title={t.commitments.title}
+        lead={t.commitments.lead}
+        verify={t.commitments.verify}
+        items={t.commitments.items}
+      />
+
       {/* ------------------------------------------------------ reemplazo -- */}
       <section className="section section-tight">
         <div className="container container-wide">
@@ -243,6 +252,26 @@ export default async function HomePage({
               rows={t.swap.rows}
               headOld={t.swap.headOld}
               headNew={t.swap.headNew}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------- un martes ------ */}
+      <section className="section section-tight">
+        <div className="container container-wide">
+          <SplitHead
+            locale={lang}
+            eyebrow={t.day.eyebrow}
+            title={t.day.title}
+            lead={t.day.lead}
+          />
+          <div data-reveal>
+            <DayCompare
+              locale={lang}
+              headOld={t.day.headOld}
+              headNew={t.day.headNew}
+              rows={t.day.rows}
             />
           </div>
         </div>
@@ -465,8 +494,25 @@ export default async function HomePage({
       {/* -------------------------------------------------------- precios -- */}
       <PlansMkt
         dict={dict}
+        locale={lang}
         title={dict.plans.homeTitle}
         subtitle={dict.plans.homeSubtitle}
+      />
+
+      {/* --------------------------------------------------- comparativas -- */}
+      <CompareTeaser
+        locale={lang}
+        tone="paper2"
+        eyebrow={t.compare.eyebrow}
+        title={t.compare.title}
+        lead={t.compare.lead}
+        link={{ href: "/comparar", label: t.compare.link }}
+        cards={RIVAL_KEYS.map((key) => ({
+          href: RIVAL_HREFS[key],
+          vs: dict.comparar.vsPrefix,
+          name: dict.comparar.rivals[key].name,
+          text: dict.comparar.rivals[key].oneLiner,
+        }))}
       />
 
       {/* ----------------------------------------------------- honestidad -- */}
@@ -521,7 +567,7 @@ export default async function HomePage({
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            name: "Bookfer",
+            name: "roombir",
             applicationCategory: "BusinessApplication",
             applicationSubCategory: "Property Management System",
             operatingSystem: "Web",

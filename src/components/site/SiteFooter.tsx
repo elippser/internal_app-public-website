@@ -129,7 +129,7 @@ export default function SiteFooter({
 
         <div className={styles.bottom}>
           <span>
-            © {year} bookfer · {dict.footer.madeIn}
+            © {year} Roombir · {dict.footer.madeIn}
           </span>
           <div className={styles.bottomRight}>
             <a className={styles.agentNote} href="/llms.txt">

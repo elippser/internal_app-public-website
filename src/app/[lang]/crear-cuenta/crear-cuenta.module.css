@@ -1,0 +1,87 @@
+.wrap {
+    padding-top: clamp(112px, 13vw, 168px);
+    padding-bottom: clamp(48px, 6vw, 80px);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(30px, 5vw, 72px);
+    align-items: start;
+}
+
+.aside {
+    max-width: 52ch;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: clamp(20px, 3vw, 32px);
+    box-shadow: var(--shadow);
+}
+
+/* Los tres pasos del alta. Van en `ol` de verdad: el orden es información, no
+   decoración, y así se lee igual con un lector de pantalla. */
+.steps {
+    display: grid;
+    gap: 14px;
+    margin: 32px 0 0;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.stepNum {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 24px;
+    height: 24px;
+    margin-top: 1px;
+    border-radius: 999px;
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.stepTitle {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.stepText {
+    display: block;
+    margin-top: 2px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-3);
+}
+
+@media (max-width: 880px) {
+    .grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* En móvil el formulario va primero: quien llega desde "empezar gratis" ya
+       decidió, y hacerlo scrollear tres pantallas de copia lo pierde. */
+    .aside {
+        order: 2;
+        max-width: none;
+    }
+
+    .card {
+        order: 1;
+    }
+}

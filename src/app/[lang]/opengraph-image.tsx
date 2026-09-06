@@ -21,7 +21,7 @@ import { readLocale } from "@/i18n/params";
  */
 // El alt es sólo la marca: es el único texto de este archivo que no puede
 // variar por idioma (Next lo exige como constante del segmento).
-export const alt = "Bookfer";
+export const alt = "roombir";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

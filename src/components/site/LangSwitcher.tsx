@@ -76,7 +76,7 @@ export default function LangSwitcher({
 
   const remember = (next: Locale) => {
     // Un año: es una preferencia, no una sesión.
-    document.cookie = `bookfer_lang=${next}; path=/; max-age=31536000; samesite=lax`;
+    document.cookie = `roombir_lang=${next}; path=/; max-age=31536000; samesite=lax`;
   };
 
   return (

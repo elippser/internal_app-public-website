@@ -1,10 +1,12 @@
 import type { Dictionary } from "@/i18n/dict/es";
+import type { Locale } from "@/i18n/config";
+import { localizedHref } from "@/i18n/routes";
 import SamePageLink from "@/components/site/SamePageLink";
 import { fetchPlans, type MktPlan } from "./plansApi";
 import styles from "./PlansMkt.module.css";
 
 /**
- * `<PlansMkt/>` — la sección de precios del sitio público de bookfer.
+ * `<PlansMkt/>` — la sección de precios del sitio público de roombir.
  *
  * Se pone en cualquier página del sitio (la home, `/precios`, una landing) y se
  * dibuja sola: los planes salen del mismo catálogo que alimenta la pantalla de
@@ -73,10 +75,16 @@ function priceLabel(
 
 interface Props {
   dict: Dictionary;
+  /** Idioma activo. Con el, el boton de cada plan lleva al alta traducida. */
+  locale?: Locale;
   /** Encabezado de la sección. Vacío = sin encabezado. */
   title?: string;
   subtitle?: string;
-  /** A dónde lleva el botón de cada plan. Sin valor no lleva a ningún lado. */
+  /**
+   * A dónde lleva el botón de cada plan. Por defecto, al alta del sitio
+   * (`/crear-cuenta`) en el idioma activo; sin `locale` ni `ctaHref` el botón
+   * se dibuja igual pero no lleva a ningún lado, como antes.
+   */
   ctaHref?: string;
   /** Planes ya resueltos. Si no vienen, el componente los busca solo. */
   plans?: MktPlan[];
@@ -88,6 +96,7 @@ interface Props {
 
 export default async function PlansMkt({
   dict,
+  locale,
   title = "",
   subtitle = "",
   ctaHref,
@@ -95,6 +104,7 @@ export default async function PlansMkt({
   planHeading: PlanHeading = "h3",
 }: Props) {
   const d = dict.plans;
+  const signupHref = ctaHref ?? (locale ? localizedHref(locale, "/crear-cuenta") : undefined);
   const plans = given ?? (await fetchPlans());
   if (plans.length === 0) return null;
 
@@ -178,8 +188,8 @@ export default async function PlansMkt({
                   </span>
                 </div>
 
-                {ctaHref ? (
-                  <a href={ctaHref} className={ctaClass}>
+                {signupHref ? (
+                  <a href={signupHref} className={ctaClass}>
                     {d.cta}
                   </a>
                 ) : (

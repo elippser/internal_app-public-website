@@ -213,7 +213,7 @@
 
 /* ------------------------------------------------------------ responsive -- */
 
-/* Los textos de bookfer son más largos que los del template original
+/* Los textos de Roombir son más largos que los del template original
    ("alojamiento" contra "Teams"): en pantallas chicas el headline envuelve en
    vez de cortarse. */
 @media (max-width: 700px) {

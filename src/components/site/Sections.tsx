@@ -139,12 +139,19 @@ export function PageHero({
   );
 }
 
-/** Los dos botones que van en toda portada. */
+/**
+ * Los dos botones que van en toda portada.
+ *
+ * El primario apunta al alta (`/crear-cuenta`) por defecto, y ese default es
+ * el que hace que "empezar gratis" lleve al mismo lugar en las quince paginas
+ * sin que ninguna lo declare. El sitio sigue sin enlazar al PMS: la pagina de
+ * destino es del sitio, y el dominio de la app solo aparece en el correo.
+ */
 export function HeroActions({
   locale,
   dict,
   primaryLabel,
-  primaryHref,
+  primaryHref = "/crear-cuenta",
   secondaryLabel,
   secondaryHref = "/contacto",
 }: {
@@ -202,13 +209,22 @@ export function CheckList({
   items,
   locale,
   tone = "paper",
+  muted = false,
 }: {
   items: readonly string[];
   locale: Locale;
   tone?: "paper" | "ink";
+  /** Tilde gris en vez de musgo: la lista que habla del otro, no de nosotros. */
+  muted?: boolean;
 }) {
   return (
-    <ul className={[styles.checks, tone === "ink" ? styles.checksInk : ""].join(" ")}>
+    <ul
+      className={[
+        styles.checks,
+        tone === "ink" ? styles.checksInk : "",
+        muted ? styles.checksMuted : "",
+      ].join(" ")}
+    >
       {items.map((item, i) => (
         <li key={i} className={styles.check}>
           <Check />
@@ -228,7 +244,7 @@ export function CtaBand({
   lead,
   steps,
   primaryLabel,
-  primaryHref,
+  primaryHref = "/crear-cuenta",
   secondaryLabel,
   secondaryHref = "/contacto",
 }: {
@@ -457,6 +473,319 @@ export function SplitHead({
       </div>
       <p className="lead">{renderRich(lead, locale)}</p>
     </div>
+  );
+}
+
+/* ------------------------------------------------------- compromisos ---- */
+
+function RingCheck() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <polyline points="19 7 10 17 5 12" />
+    </svg>
+  );
+}
+
+/**
+ * Los sellos propios. El sector tapiza la home con badges de terceros
+ * (HotelTechReport, Booking.com Partner); nosotros no las tenemos y no las
+ * inventamos. En su lugar, seis afirmaciones que se pueden ir a comprobar,
+ * cada una con el enlace al lugar donde se comprueba. Es la sección que
+ * responde a la queja #1 de las reseñas de la categoría: precio opaco,
+ * permanencia escondida, módulos que aparecen en la segunda factura.
+ */
+export function Commitments({
+  locale,
+  eyebrow,
+  title,
+  lead,
+  verify,
+  items,
+  id,
+}: {
+  locale: Locale;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  verify: string;
+  items: readonly { key: string; title: string; text: string; href: string }[];
+  id?: string;
+}) {
+  return (
+    <section className="section section-ink" id={id}>
+      <div className="container container-wide">
+        <SplitHead locale={locale} eyebrow={eyebrow} title={title} lead={lead} />
+        <div className={styles.seals} data-reveal data-fx="">
+          {items.map((item, i) => (
+            <article key={item.key} className={styles.seal} style={rise(i * 0.08)}>
+              <span className={styles.sealRing} aria-hidden>
+                <RingCheck />
+              </span>
+              <h3 className={styles.sealTitle}>{item.title}</h3>
+              <p className={styles.sealText}>{renderRich(item.text, locale)}</p>
+              {/* `/llms.txt` vive en `public/` y no tiene idioma: no pasa por
+                  el router ni por el prefijo. */}
+              {item.href.endsWith(".txt") ? (
+                <a className="link-arrow" href={item.href}>
+                  {verify}
+                  <ArrowRight />
+                </a>
+              ) : (
+                <SmartLink locale={locale} className="link-arrow" href={item.href}>
+                  {verify}
+                  <ArrowRight />
+                </SmartLink>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------ un día con/sin -- */
+
+/**
+ * Un martes de recepción en seis horas, a la izquierda como es hoy y a la
+ * derecha con el sistema. Es el "con / sin" que usa Amenitiz, pero contado
+ * como jornada y no como lista de features: cada fila de la derecha nombra un
+ * mecanismo real (el calendario del motor, el candado, la conversión
+ * congelada), no un beneficio.
+ */
+export function DayCompare({
+  locale,
+  headOld,
+  headNew,
+  rows,
+}: {
+  locale: Locale;
+  headOld: string;
+  headNew: string;
+  rows: readonly { time: string; old: string; now: string }[];
+}) {
+  return (
+    <div className={styles.day} data-fx="">
+      <div className={[styles.dayRow, styles.dayHead].join(" ")}>
+        <span className={styles.dayTime} aria-hidden />
+        <span className={styles.dayOld}>{headOld}</span>
+        <span className={styles.dayNew}>{headNew}</span>
+      </div>
+      {rows.map((row, i) => (
+        <div key={row.time} className={styles.dayRow} style={rise(i * 0.09)}>
+          <span className={styles.dayTime}>{row.time}</span>
+          <span className={styles.dayOld}>
+            <i aria-hidden />
+            <span>{renderRich(row.old, locale)}</span>
+          </span>
+          <span className={styles.dayNew}>
+            <i aria-hidden />
+            <span>{renderRich(row.now, locale)}</span>
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------- comparativa -- */
+
+/**
+ * La tríada de estado del sitio: musgo = sí, ámbar = parcial o con
+ * condiciones, barro = no o no declarado, gris = un dato sin valoración. Es
+ * la misma que usa el estado del producto en /nosotros, a propósito: la fila
+ * de Roombir que dice "no existe todavía" se pinta con el mismo punto que la
+ * del competidor.
+ */
+export type Tone = "ok" | "mid" | "no" | "info";
+
+const TONES: readonly Tone[] = ["ok", "mid", "no", "info"];
+
+/** Los diccionarios guardan el tono como string; acá se estrecha una vez. */
+export function toneOf(value: string): Tone {
+  return (TONES as readonly string[]).includes(value) ? (value as Tone) : "info";
+}
+
+const TONE_CLASS: Record<Tone, string> = {
+  ok: styles.toneOk,
+  mid: styles.toneMid,
+  no: styles.toneNo,
+  info: styles.toneInfo,
+};
+
+export function ToneDot({ tone }: { tone: Tone }) {
+  return <i className={[styles.tone, TONE_CLASS[tone]].join(" ")} aria-hidden />;
+}
+
+/**
+ * Criterio · Roombir · competidor. Es una `<table>` de verdad, con `scope`,
+ * porque es la sección con más chance de que la cite un modelo y las tablas
+ * HTML son lo que mejor extraen. El punto de color acompaña al texto, nunca
+ * lo reemplaza: cada celda dice con palabras lo que el punto dice con color.
+ */
+export function CompareTable({
+  headCriterion,
+  headUs,
+  headThem,
+  rows,
+  legend,
+}: {
+  headCriterion: string;
+  headUs: string;
+  headThem: string;
+  rows: readonly {
+    label: string;
+    us: string;
+    usTone: Tone;
+    them: string;
+    themTone: Tone;
+  }[];
+  legend: { ok: string; mid: string; no: string; info: string };
+}) {
+  return (
+    <div>
+      <div className={styles.cmpWrap}>
+        <table className={styles.cmp}>
+          <thead>
+            <tr>
+              <th scope="col">{headCriterion}</th>
+              <th scope="col" className={styles.cmpUs}>
+                {headUs}
+              </th>
+              <th scope="col">{headThem}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.label}>
+                <th scope="row">{row.label}</th>
+                <td className={styles.cmpUs}>
+                  <span className={styles.cmpCell}>
+                    <ToneDot tone={row.usTone} />
+                    <span>{row.us}</span>
+                  </span>
+                </td>
+                <td>
+                  <span className={styles.cmpCell}>
+                    <ToneDot tone={row.themTone} />
+                    <span>{row.them}</span>
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className={styles.legend}>
+        <span>
+          <ToneDot tone="ok" />
+          {legend.ok}
+        </span>
+        <span>
+          <ToneDot tone="mid" />
+          {legend.mid}
+        </span>
+        <span>
+          <ToneDot tone="no" />
+          {legend.no}
+        </span>
+        <span>
+          <ToneDot tone="info" />
+          {legend.info}
+        </span>
+      </p>
+    </div>
+  );
+}
+
+/**
+ * "Elegí a X si…" / "Elegí Roombir si…". La tarjeta del otro va primero y
+ * con la misma generosidad: una comparativa que siempre gana no la cita nadie
+ * y no la cree nadie.
+ */
+export function ChoiceCards({
+  locale,
+  them,
+  us,
+}: {
+  locale: Locale;
+  them: { title: string; items: readonly string[] };
+  us: { title: string; items: readonly string[] };
+}) {
+  return (
+    <div className={styles.choice} data-reveal>
+      <article className="card">
+        <h3 className="h3" style={{ marginBottom: 14 }}>
+          {them.title}
+        </h3>
+        <CheckList items={them.items} locale={locale} muted />
+      </article>
+      <article className={["card", styles.choiceUs].join(" ")}>
+        <h3 className="h3" style={{ marginBottom: 14 }}>
+          {us.title}
+        </h3>
+        <CheckList items={us.items} locale={locale} />
+      </article>
+    </div>
+  );
+}
+
+/**
+ * Las tarjetas que llevan a cada comparativa. Sirven solas (en el índice) o
+ * con encabezado y enlace (en la home y en precios).
+ */
+export function CompareTeaser({
+  locale,
+  eyebrow,
+  title,
+  lead,
+  link,
+  cards,
+  tone = "paper",
+}: {
+  locale: Locale;
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+  link?: { href: string; label: string };
+  cards: readonly { href: string; vs: string; name: string; text: string }[];
+  tone?: "paper" | "paper2";
+}) {
+  return (
+    <section className={["section", tone === "paper2" ? "section-paper2" : ""].join(" ")}>
+      <div className="container container-wide">
+        {eyebrow && title && lead && (
+          <SplitHead locale={locale} eyebrow={eyebrow} title={title} lead={lead} />
+        )}
+        <div className={styles.teaser} data-reveal>
+          {cards.map((card) => (
+            <Link
+              key={card.href}
+              href={localePath(locale, card.href)}
+              className={["card", "card-hover", styles.teaserCard].join(" ")}
+            >
+              <span className={styles.teaserVs}>{card.vs}</span>
+              <span className={styles.teaserName}>
+                <em>{card.name}</em>
+              </span>
+              <span className={styles.teaserText}>{card.text}</span>
+              <span className="link-arrow">
+                {link?.label ?? ""}
+                <ArrowRight />
+              </span>
+            </Link>
+          ))}
+        </div>
+        {link && (
+          <p style={{ marginTop: 22 }}>
+            <SmartLink locale={locale} className="link-arrow" href={link.href}>
+              {link.label}
+              <ArrowRight />
+            </SmartLink>
+          </p>
+        )}
+      </div>
+    </section>
   );
 }
 

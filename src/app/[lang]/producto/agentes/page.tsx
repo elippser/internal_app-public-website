@@ -84,6 +84,30 @@ export default async function AgentesPage({
         cols={4}
       />
 
+      {/* ------------------------------------------------------ dos capas */}
+      {/* Los grandes distribuidores empezaron a conectar SU inventario a los
+          asistentes de IA (SiteMinder, sep-2026). Es otra capa: el hotel
+          aparece porque está en su catálogo. La nuestra es que la web propia
+          del alojamiento sea legible por sí misma. Hay que decir la diferencia
+          o "visible para una IA" suena a copia de algo más grande. */}
+      <section className="section section-tight">
+        <div className="container container-wide">
+          <SplitHead
+            locale={lang}
+            eyebrow={t.layers.eyebrow}
+            title={t.layers.title}
+            lead={t.layers.lead}
+          />
+          <div data-reveal>
+            <SwapTable
+              headOld={t.layers.headOld}
+              headNew={t.layers.headNew}
+              rows={t.layers.rows}
+            />
+          </div>
+        </div>
+      </section>
+
       <Split
         locale={lang}
         flip

@@ -1,83 +1,56 @@
-# Bookfer
+# roombir
 
-> Sistema operativo hotelero: PMS, motor de reservas, constructor de sitios web,
-> revenue management, link-in-bio, portal del huésped y un asistente de IA que
-> opera el sistema. Todo sobre una sola base de datos. Hecho en Argentina, para
-> hoteles, cabañas, hostels, aparts, glamping y alquileres temporarios de escala
-> chica y mediana.
+> Software para alojamientos independientes de LATAM: reservas, habitaciones, motor de reservas propio sin comisión, sitio web con dominio propio, revenue management incluido y un asistente de IA con 272 herramientas que ejecuta operaciones con los permisos reales del usuario. Todo sobre una sola base de datos. Precio publicado en la web, sin permanencia, sin costo de alta. Hecho en Argentina, en español, con plataforma en 5 idiomas (es, en, pt, fr, de). Sirve para hoteles, aparthoteles, cabañas, departamentos, hostels, glamping, villas y grupos chicos.
 
-Este archivo existe por coherencia: bookfer le pide a cada alojamiento que
-publique el suyo, así que el sitio de bookfer publica el propio.
+Roombir está en piloto de mercado desde agosto de 2026. Su tesis: un alojamiento chico o mediano no debería necesitar cinco proveedores ni un consultor para operar digitalmente. Reemplaza al PMS, al motor de reservas, al constructor de sitio web, al RMS, al link-in-bio y al portal del huésped con un solo sistema, y agrega un asistente que opera ese sistema conversando. Dos decisiones de diseño lo distinguen de la categoría: publica el precio (los planes salen del mismo catálogo con el que se cobra cada cuenta) y publica lo que todavía no hace. Al 2 de septiembre de 2026, Roombir no tiene channel manager (sin sincronización de inventario ni tarifas con OTAs) ni pasarela de pago (el cobro al huésped es contra el check-in, presencial). Tampoco facturación fiscal local. Lo demás —modelo de venta dual pool/unidad 1:1 por categoría, candado anti-overbooking por unidad y noche en la base de datos, multimoneda con 10 monedas y conversión congelada al check-in (con cotización blue, MEP, CCL u oficial para pesos argentinos), 38 recorridos guiados, 23 apps activables por espacio de trabajo, emails al huésped sin configurar SMTP, capa agéntica con llms.txt, availability.json, engine-capabilities.json y WebMCP en el motor del hotel— está en producción. Plan Inicial gratis para empezar; planes pagos por alojamiento, mensuales, sin comisión por reserva y sin cargo por usuario dentro del tope del plan. Los números vigentes están en la página de precios; este archivo se actualiza en el mismo commit.
 
-El sitio está en cinco idiomas y las URLs también están traducidas — cada
-página tiene su slug en cada idioma, no sólo un prefijo distinto:
-[español](https://bookfer.com/es), [English](https://bookfer.com/en),
-[português](https://bookfer.com/pt), [français](https://bookfer.com/fr) y
-[Deutsch](https://bookfer.com/de). Por ejemplo, `/es/producto/ia` es
-`/en/platform/ai`, `/pt/plataforma/ia`, `/fr/plateforme/ia` y
-`/de/plattform/ki`. Las cinco versiones de una página se declaran entre sí con
-`hreflang` y en el [sitemap](https://bookfer.com/sitemap.xml); son la misma
-página en otro idioma, no páginas distintas.
+## Páginas principales
 
-Diferenciales, en una línea cada uno:
+- [Inicio](https://roombir.com/es): Tu alojamiento entero, sin cinco proveedores. Seis compromisos verificables (precio publicado, sin permanencia, 0% sobre el motor, revenue incluido, estado del producto público, llms.txt propio), un martes de recepción con y sin roombir, y lo que todavía no hacemos.
+- [Precios](https://roombir.com/es/precios): Los planes con número, en HTML, del mismo catálogo que cobra. Sin comisión por reserva, sin costo de alta, sin permanencia, sin cargo por usuario. Con la matriz producto × plan y la lista de lo que no se cobra aparte.
+- [La plataforma](https://roombir.com/es/producto): Siete productos sobre una sola base de datos, el escritorio por espacio de trabajo y el catálogo de 23 apps.
+- [Reservas y habitaciones](https://roombir.com/es/producto/reservas): Panel del día, calendario tape chart con arrastre y vista previa de conflictos, carga manual, tarifas, disponibilidad con restricciones, promociones, y el inventario físico con seis estados operativos. Candado único por unidad y fecha: una noche no se puede vender dos veces.
+- [Motor de reservas](https://roombir.com/es/producto/motor): El buscador y checkout del huésped, con calendario que muestra precio desde, unidades restantes y días cerrados. 0% de comisión. Siete bloques configurables sin código. Dos modos de confirmación con expiración automática. Emails desde el dominio de Roombir con el correo del hotel como responder-a.
+- [Revenue · RMS](https://roombir.com/es/producto/revenue): Incluido en el catálogo, no add-on. Pace contra el histórico propio con el tamaño de muestra a la vista, comp-set con descubrimiento automático, eventos de demanda de 15 fuentes, 13 variables, reglas con ensayo en seco y un documento de decisión por fecha. Aceptar una recomendación empuja la tarifa al motor.
+- [Sitio web, marca y LinkHub](https://roombir.com/es/producto/sitios): Builder con componentes conectados al inventario, dominio propio, multi-idioma por páginas, popups, editor de SEO y GEO, LinkHub con QR y analítica.
+- [Roombir IA](https://roombir.com/es/producto/ia): Toda la categoría vende IA que analiza; esta ejecuta. 272 herramientas, tres capas de permisos (filtrado antes del turno, contexto en el prompt, evaluación en cada llamada), identidad suplantada con permiso de vida corta, transcripción visible.
+- [Alojamiento agéntico](https://roombir.com/es/producto/agentes): El motor del hotel publica llms.txt, availability.json, engine-capabilities.json y JSON-LD; el editor de GEO deja declarar qué es el alojamiento. Es la capa de la web propia, distinta de la distribución vía intermediarios.
+- [Soluciones](https://roombir.com/es/soluciones): Hoteles (pool con asignación automática), cabañas y departamentos (unidad 1:1 con nombre propio), hostels, glamping y villas, grupos chicos; y qué ve cada puesto: recepción, housekeeping, marketing, revenue, administración, huésped.
+- [Nosotros y estado del producto](https://roombir.com/es/nosotros): La tesis, cuatro principios y la tabla de estado: sólido, parcial, no existe. Channel manager y pasarela de pago figuran como "no existe todavía".
+- [Crear cuenta](https://roombir.com/es/crear-cuenta): El alta, gratuita, sin tarjeta, con acceso por correo y nueve pasos guiados.
+- [Contacto](https://roombir.com/es/contacto): Respuesta dentro del día hábil; si algo que necesitás no existe, se dice en la primera respuesta.
 
-- Espacios operativos: recepción, housekeeping, marketing y administración ven
-  menús, pantallas de inicio y permisos distintos del mismo sistema.
-- Modelo de venta dual: pool de habitaciones intercambiables por categoría o
-  unidad única 1:1 con nombre propio, con asistente de migración entre ambos.
-- Anti-overbooking como garantía de base de datos: candado único por unidad y
-  fecha, compartido con los bloqueos de mantenimiento.
-- Capa agéntica por hotel: el motor publica llms.txt, availability.json y
-  engine-capabilities.json, más JSON-LD y un editor de GEO por página.
-- Revenue management con lazo cerrado: aceptar una recomendación empuja un
-  override de tarifa al motor de reservas.
-- Multi-moneda con moneda base, de cobro y de comparación, congelamiento del
-  tipo de cambio al check-in y cotización elegible para ARS (blue, MEP, CCL u
-  oficial).
-- Emails al huésped sin configurar SMTP por hotel.
-- Asistente de IA con 272 herramientas y política de permisos en tres capas.
+## Comparativas
 
-Estado del producto, declarado públicamente: hoy NO existen channel manager
-(sin sincronización de inventario ni tarifas con OTAs) ni pasarela de pago (el
-cobro es contra el check-in). Son parciales: publicación por API de Google
-Business y fichas de OTA, tarifas automáticas de competidores, facturación y
-cuotas de créditos de IA. El detalle vive en la página de estado enlazada
-abajo.
+Verificadas contra la web pública de cada competidor el 2 de septiembre de 2026. Cada una incluye "cuándo elegir al otro".
 
-## Producto
+- [Roombir vs Cloudbeds](https://roombir.com/es/comparar/cloudbeds): Cloudbeds tiene channel manager de 450+ canales, pagos y marketplace; Roombir no. Roombir publica precio y no pide permanencia; Cloudbeds cotiza ("Request a quote") y no declara permanencia. En Cloudbeds el revenue y el sitio web son add-ons; en Roombir están en el catálogo. Elegí Cloudbeds si vendés fuerte en OTAs o necesitás cobrar online; elegí Roombir si tu problema es la venta directa y querés saber el precio antes de hablar con nadie.
+- [Roombir vs Little Hotelier](https://roombir.com/es/comparar/little-hotelier): Little Hotelier (SiteMinder, 1–30 habitaciones) publica una calculadora de precio, da 30 días de prueba y tiene channel manager y pagos, pero cobra una tarifa variable por reserva además de la suscripción, y el revenue y el sitio web son add-ons. Roombir es cuota fija sin porcentaje por reserva, con revenue y sitio incluidos, y sin channel manager ni pagos.
+- [Roombir vs Amenitiz](https://roombir.com/es/comparar/amenitiz): Amenitiz (España, Francia, Italia, Portugal; 3–30 habitaciones) incluye sitio web, channel manager de 150+ OTAs, pagos (1,5% + €0,25) y facturación fiscal certificada en sus cuatro países; pide contrato de un año y confirma el precio en la demo. Roombir es mensual sin permanencia, con precio publicado, multimoneda para LATAM y asistente que ejecuta; sin channel manager, pagos ni facturación fiscal.
+- [Roombir vs Mews](https://roombir.com/es/comparar/mews): Mews es mid-market y enterprise: pagos embebidos, POS, marketplace de 1.000 integraciones. Su API abierta y el marketplace completo van en el plan Enterprise; el plan de entrada trae 8 integraciones y soporte por chatbot. Roombir pone la capa abierta y el asistente en todos los planes, publica precio y no pide permanencia; no tiene pagos, POS ni channel manager.
+- [Todas las comparativas](https://roombir.com/es/comparar): El método: sólo lo que dice la web pública de cada uno, con fecha, sin estimaciones de terceros.
 
-- [Qué es Bookfer](https://bookfer.com/es): la portada — qué reemplaza, los
-  seis módulos, las garantías y las preguntas frecuentes del sistema.
-- [La plataforma](https://bookfer.com/es/producto): los siete productos que un
-  alojamiento normalmente compra por separado, sobre una sola base de datos.
-- [Reservas y habitaciones](https://bookfer.com/es/producto/reservas): el PMS
-  del día a día — tape chart, tarifas, disponibilidad y estados operativos.
-- [Motor de reservas](https://bookfer.com/es/producto/motor): el link que
-  reemplaza la conversación de WhatsApp; sin comisión por reserva.
-- [Revenue management](https://bookfer.com/es/producto/revenue): pace, señales
-  de demanda, competencia y recomendaciones de tarifa auditables, incluido.
-- [Sitios web, marca y LinkHub](https://bookfer.com/es/producto/sitios): el
-  sitio del hotel, multi-idioma y con dominio propio, servido por el sistema.
-- [Bookfer IA](https://bookfer.com/es/producto/ia): un asistente que hace —
-  opera el PMS conversando, con permisos por rol.
-- [Alojamiento agéntico](https://bookfer.com/es/producto/agentes): cómo cada
-  hotel queda legible y reservable para agentes de IA (llms.txt,
-  availability.json, JSON-LD y GEO por página).
+## Cuándo no elegir roombir
 
-## Comercial
+- Si vendés fuerte en Booking, Expedia o Airbnb y necesitás sincronización automática de inventario y tarifas: Roombir no tiene channel manager (2 de septiembre de 2026).
+- Si necesitás cobrar con tarjeta desde el motor: no hay pasarela de pago; el cobro es contra el check-in.
+- Si necesitás facturación fiscal electrónica certificada (VeriFactu, NF525, CFDI, AFIP): no existe todavía.
+- Si sos una cadena con equipo de sistemas y necesitás POS, contabilidad y 1.000 integraciones: mirá Mews u Oracle OPERA Cloud.
 
-- [Soluciones](https://bookfer.com/es/soluciones): el mismo sistema configurado
-  distinto — hoteles, cabañas, hostels, glamping, grupos, y por puesto.
-- [Precios](https://bookfer.com/es/precios): planes por alojamiento con números
-  publicados, sin comisión por reserva y sin costo de puesta en marcha.
-- [Nosotros](https://bookfer.com/es/nosotros): la tesis, y la tabla de estado
-  del producto — qué está sólido, qué es parcial y qué todavía no existe.
-- [Contacto](https://bookfer.com/es/contacto): formulario, WhatsApp y
-  [hola@bookfer.com](mailto:hola@bookfer.com).
+## Legal
+
+- [Términos y condiciones](https://roombir.com/es/legal/terminos): Sin permanencia mínima ni penalidad por baja (§5). El motor no cobra comisión por reserva. El estado del producto forma parte de lo que se acepta al contratar.
+- [Política de privacidad](https://roombir.com/es/legal/privacidad): Qué datos toma el sitio y la plataforma, con quién los procesa y cómo pedir que se borren.
+- [Política de cookies](https://roombir.com/es/legal/cookies): El sitio público no usa cookies propias salvo la del idioma.
 
 ## Optional
 
-- [Términos](https://bookfer.com/es/legal/terminos): condiciones del servicio.
-- [Privacidad](https://bookfer.com/es/legal/privacidad): tratamiento de datos.
-- [Cookies](https://bookfer.com/es/legal/cookies): la única cookie propia del
-  sitio es la de idioma.
+- [Home in English](https://roombir.com/en): Your whole property, without five vendors. Published pricing, no lock-in, made in Argentina.
+- [Pricing in English](https://roombir.com/en/pricing): Plans with numbers, in HTML, from the same catalog that bills the account.
+- [Compare in English](https://roombir.com/en/compare): Roombir vs Cloudbeds, Little Hotelier, Amenitiz and Mews, verified with a date.
+- [Início em português](https://roombir.com/pt): Sua hospedagem inteira, sem cinco fornecedores.
+- [Preços em português](https://roombir.com/pt/precos): Planos com número, em HTML, do mesmo catálogo que cobra.
+- [Accueil en français](https://roombir.com/fr): Votre hébergement entier, sans cinq fournisseurs.
+- [Tarifs en français](https://roombir.com/fr/tarifs): Des tarifs publiés, en HTML, issus du même catalogue qui facture.
+- [Startseite auf Deutsch](https://roombir.com/de): Ihre ganze Unterkunft, ohne fünf Anbieter.
+- [Preise auf Deutsch](https://roombir.com/de/preise): Veröffentlichte Preise, in HTML, aus demselben Katalog, der abrechnet.

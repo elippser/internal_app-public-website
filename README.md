@@ -1,6 +1,6 @@
 # mkt-renderer
 
-El sitio público de bookfer. Next 16 (App Router), sin CMS: **el contenido es el
+El sitio público de roombir. Next 16 (App Router), sin CMS: **el contenido es el
 código de este repo**.
 
 ```
@@ -28,8 +28,8 @@ resuelve solo, en un deploy separado hay que montarlo y apuntar
 ## Cómo llega a producción
 
 El sitio se sirve desde **Coolify** (VPS propio), buildeado **desde este repo en
-GitHub**: `elippser/internal_app-public-website`, rama `master`. `bookfer.com` y
-`www.bookfer.com` son registros A al VPS.
+GitHub**: `elippser/internal_app-public-website`, rama `master`. `roombir.com` y
+`www.roombir.com` son registros A al VPS.
 
 Guardar un archivo —desde el panel o desde tu editor— **no publica nada**:
 escribe el working tree y ahí queda. Publicar es commit + push + build, y el
@@ -77,7 +77,7 @@ public/
 ```
 
 Una página **es** una carpeta, y la carpeta va **en castellano**: la página de
-Bookfer IA vive en `src/app/[lang]/producto/ia/page.tsx` aunque en inglés se
+Roombir IA vive en `src/app/[lang]/producto/ia/page.tsx` aunque en inglés se
 sirva como `/en/platform/ai`. No hay una tabla de páginas en ningún lado.
 
 ## Los cinco idiomas
@@ -145,7 +145,7 @@ Copiar `example.env` a `.env.local`.
 | `NEXT_PUBLIC_INTERNAL_API_URL` | API de internal-laupser: ahí postea `LeadForm` y de ahí salen los planes |
 | `NEXT_PUBLIC_SITE_URL` | Base pública, para `canonical`, OG y `sitemap.xml` |
 
-La preferencia de idioma se guarda en la cookie `bookfer_lang` (un año). Es la
+La preferencia de idioma se guarda en la cookie `roombir_lang` (un año). Es la
 única cookie propia del sitio público y está declarada en la política de
 cookies; la lee el `middleware` para no devolver a alguien al idioma equivocado.
 
@@ -169,7 +169,7 @@ plan**, no en la tabla.
 `LeadForm` postea a `/api/lead` —de este mismo sitio— y esa route handler
 reenvía al API interno desde el servidor. **No postea directo**, y el rodeo no
 es opcional: el API interno sólo autoriza por CORS el origen del panel, así que
-un POST desde `bookfer.com` lo corta el navegador y el lead se pierde sin dejar
+un POST desde `roombir.com` lo corta el navegador y el lead se pierde sin dejar
 rastro. Es el mismo camino que ya usan los precios, que por eso sí funcionan.
 
 De paso, la handler resuelve dos cosas más: pone su propio rate-limit contra la

@@ -46,7 +46,21 @@ export default async function PreciosPage({
         notes={t.hero.notes}
       />
 
-      <PlansMkt dict={dict} planHeading="h2" />
+      <PlansMkt dict={dict} locale={lang} planHeading="h2" />
+
+      {/* ------------------------------------------- por qué está publicado */}
+      {/* De los cinco sistemas más grandes del mundo, ninguno publica un
+          número en su web (medido el 2-sep-2026). Esta sección dice por qué
+          nosotros sí, y es la que más chance tiene de que la cite un modelo
+          cuando alguien pregunta cuánto cuesta un PMS. */}
+      <FeatureGrid
+        locale={lang}
+        tone="paper2"
+        eyebrow={t.why.eyebrow}
+        title={t.why.title}
+        lead={t.why.lead}
+        items={t.why.items}
+      />
 
       {/* --------------------------------------------------------- matriz -- */}
       <section className="section section-tight">
@@ -93,6 +107,12 @@ export default async function PreciosPage({
               {t.honest.link}
             </SmartLink>
           </div>
+          <p className="small" style={{ marginTop: 16 }}>
+            {t.compareAsk}{" "}
+            <SmartLink locale={lang} className="link-arrow" href="/comparar">
+              {t.compareLink}
+            </SmartLink>
+          </p>
         </div>
       </section>
 

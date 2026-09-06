@@ -23,7 +23,7 @@ import { ROUTES, internalPath, publicPath, routeKeyOf } from "@/i18n/routes";
  *    índice, que es justo lo que las URLs traducidas vienen a evitar.
  */
 
-export const LOCALE_COOKIE = "bookfer_lang";
+export const LOCALE_COOKIE = "roombir_lang";
 
 /** Rutas que sirve el filesystem y no pasan por el idioma. */
 const PASSTHROUGH = new Set([

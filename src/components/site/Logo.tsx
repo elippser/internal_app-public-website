@@ -10,7 +10,7 @@ import {
 } from "./logoPaths";
 
 /**
- * El logotipo de bookfer: la palabra "bookfer" con el punto verde
+ * El logotipo de roombir: la palabra "roombir" con el punto verde
  * (brand/logotype.png), vectorizada en logoPaths.ts. Con `showWordmark`
  * en false se dibuja el isotipo: la "b." sola (brand/isotype.png).
  *

@@ -1,11 +1,11 @@
 {
-  "name": "Bookfer",
+  "name": "roombir",
   "lang": "es",
   "siteId": "site-9d6aa53c-b486-4a9e-8013-6dd435b51275",
   "favicon": "/icon.svg",
   "seo": {
-    "title": "Bookfer · El sistema operativo de tu alojamiento",
-    "description": "PMS, motor de reservas, sitio web, revenue management y un asistente de IA que opera el sistema. Todo sobre una sola base de datos, para hoteles, cabañas, hostels y alquileres.",
+    "title": "Roombir · PMS, motor, web y revenue sin cinco proveedores",
+    "description": "Reservas, motor sin comisión, sitio web, revenue management incluido y un asistente de IA que ejecuta, sobre una sola base de datos. Precio publicado y sin permanencia, para hoteles, cabañas, hostels y alquileres de LATAM.",
     "ogImage": "",
     "noindex": false
   },

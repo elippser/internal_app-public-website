@@ -142,7 +142,7 @@ export default async function RootLayout({
             Sin él la página se ve igual, sólo que quieta. */}
         <FxObserver />
         <Pixels />
-        {/* La entidad "Bookfer" para los grafos de conocimiento: quién es la
+        {/* La entidad "roombir" para los grafos de conocimiento: quién es la
             organización detrás del dominio y cuáles son sus otros perfiles
             (`sameAs` es lo que le permite a un motor unir el sitio, el
             Instagram y el LinkedIn en una sola identidad). Va en el layout

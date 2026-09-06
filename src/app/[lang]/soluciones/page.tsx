@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Faq from "@/components/site/Faq";
 import {
   CtaBand,
   FeatureGrid,
@@ -115,6 +116,8 @@ export default async function SolucionesPage({
         lead={t.roles.lead}
         items={t.roles.items}
       />
+
+      <Faq items={t.faq} title={dict.common.faqTitle} locale={lang} />
 
       <CtaBand
         locale={lang}

@@ -61,9 +61,40 @@ export const SOLUTION_KEYS = [
 
 export type SolutionKey = (typeof SOLUTION_KEYS)[number];
 
+/**
+ * Las comparativas con nombre y apellido. La clave es lo que indexa el
+ * diccionario (`comparar.rivals.<clave>`); el slug es lo que va en la URL y
+ * en `routes.ts`. Son distintos porque "little-hotelier" no puede ser una
+ * clave de objeto sin comillas y "littlehotelier" no es una URL que alguien
+ * escriba.
+ */
+export const RIVAL_KEYS = ["cloudbeds", "littlehotelier", "amenitiz", "mews"] as const;
+
+export type RivalKey = (typeof RIVAL_KEYS)[number];
+
+export const RIVAL_SLUGS: Record<RivalKey, string> = {
+  cloudbeds: "cloudbeds",
+  littlehotelier: "little-hotelier",
+  amenitiz: "amenitiz",
+  mews: "mews",
+};
+
+export const RIVAL_HREFS: Record<RivalKey, string> = {
+  cloudbeds: "/comparar/cloudbeds",
+  littlehotelier: "/comparar/little-hotelier",
+  amenitiz: "/comparar/amenitiz",
+  mews: "/comparar/mews",
+};
+
+export function rivalFromSlug(slug: string): RivalKey | null {
+  const hit = RIVAL_KEYS.find((key) => RIVAL_SLUGS[key] === slug);
+  return hit ?? null;
+}
+
 export const COMPANY_LINKS = [
   { key: "about", href: "/nosotros" },
   { key: "status", href: "/nosotros#estado" },
+  { key: "compare", href: "/comparar" },
   { key: "pricing", href: "/precios" },
   { key: "contact", href: "/contacto" },
 ] as const;

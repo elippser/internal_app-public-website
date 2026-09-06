@@ -298,7 +298,7 @@ export function RateDecision({ v, locale }: { v: V; locale: Locale }) {
 
 /* ------------------------------------------------------ turno del agente -- */
 
-/** Un turno de Bookfer IA, con la transcripción de lo que ejecutó. */
+/** Un turno de Roombir IA, con la transcripción de lo que ejecutó. */
 export function AgentTurn({ v }: { v: V }) {
   const a = v.agent;
   return (
@@ -460,7 +460,7 @@ export function RulesList({ v, locale }: { v: V; locale: Locale }) {
 export function CompSet({ v }: { v: V }) {
   const c = v.comp;
   const rates = ["$104.200", "$101.400", "$88.000", "—"];
-  const sources = [c.sources.bookfer, c.sources.manual, c.sources.manual, c.sources.none];
+  const sources = [c.sources.roombir, c.sources.manual, c.sources.manual, c.sources.none];
 
   return (
     <Frame label={c.label} tag={c.tag}>
