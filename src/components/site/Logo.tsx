@@ -39,11 +39,17 @@ export default function Logo({
   // El tope de ancho manda sobre `size`: con `height: auto` el alto sale de la
   // proporción del dibujo, así el logo se achica entero en vez de quedar
   // centrado dentro de una caja más ancha.
+  //
+  // OJO con la contracara: como el tope es de ANCHO, ensanchar el lockup lo
+  // achica de ALTO. Cada vez que se agranda el aire entre el isotipo y la
+  // palabra sube el ratio y el logo entero se encoge, aunque nadie haya tocado
+  // `size`. Con el isotipo solo el dibujo es cuadrado y el tope no llega a
+  // morder, así que sólo aplica al logotipo.
   const style = {
     display: "block",
     flex: "none",
     color,
-    maxWidth: 96,
+    maxWidth: showWordmark ? 128 : 96,
     height: "auto",
   } as const;
 
