@@ -45,16 +45,22 @@ export const internalApiUrl =
   process.env.NEXT_PUBLIC_INTERNAL_API_URL ?? "http://localhost:8600";
 
 /**
- * El sitio público NO enlaza al PMS.
+ * El sitio enlaza al PMS en UN solo lugar: "Ingresar".
  *
- * Acá vivían `appUrl`, `registerUrl` y `loginUrl`, que apuntaban a
- * app.roombir.com. Se quitaron a propósito: los CTA de "empezar gratis" e
- * "ingresar" siguen en la página porque son parte del diseño, pero no llevan a
- * ningún lado (los dibuja `SamePageLink`, que apunta a la página actual).
+ * Antes no enlazaba en ninguno. `appUrl`, `registerUrl` y `loginUrl` se habían
+ * quitado y todos los CTA los dibujaba `SamePageLink`, que apunta a la página
+ * actual. Para "empezar gratis" eso sigue siendo correcto —al alta se entra por
+ * el formulario de `/crear-cuenta` y el enlace del correo, no por el PMS—, pero
+ * para "ingresar" era un botón que no hacía nada: quien YA es cliente no tiene
+ * por dónde entrar, y desde `/crear-cuenta` el clic ni siquiera cambiaba de
+ * página, así que parecía que "Ingresar" llevaba al alta.
  *
- * No volver a agregar una `NEXT_PUBLIC_APP_URL`: el punto es que el dominio
- * del PMS no se pueda reintroducir desde una variable de entorno.
+ * Sigue sin haber una `NEXT_PUBLIC_APP_URL` genérica, y esa parte de la
+ * decisión original se mantiene: esta variable nombra UN destino concreto y no
+ * una base sobre la que se puedan colgar rutas nuevas del PMS.
  */
+export const loginUrl =
+  process.env.NEXT_PUBLIC_APP_LOGIN_URL ?? "https://app.roombir.com/login";
 
 /**
  * Datos de contacto públicos. Están acá y no repartidos por las páginas para

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { localizedHref as localePath } from "@/i18n/routes";
 import type { Dictionary } from "@/i18n/dict/es";
-import SamePageLink from "./SamePageLink";
+import { loginUrl } from "@/lib/siteConfig";
 import LangSwitcher from "./LangSwitcher";
 import Logo from "./Logo";
 import { MAIN_NAV, PRODUCT_GROUPS, PRODUCT_HREFS } from "./nav";
@@ -152,12 +152,14 @@ export default function SiteHeader({
 
         <div className={styles.actions}>
           <LangSwitcher locale={locale} label={nav.language} />
-          <SamePageLink className={styles.login}>
+          {/* "Ingresar" sale del sitio: es el unico enlace al PMS. Va como <a>
+              y no como <Link> porque es otro dominio — el router de Next no
+              puede prefetchearlo ni navegarlo del lado del cliente. */}
+          <a href={loginUrl} className={styles.login}>
             {nav.login}
-          </SamePageLink>
-          {/* El unico CTA del header que lleva a algun lado. "Ingresar" sigue
-              quieto: el sitio no enlaza al dominio del PMS, y al alta se entra
-              por este formulario. */}
+          </a>
+          {/* Al alta se entra por este formulario, no por el PMS: el registro
+              es por invitacion y el enlace lo emite el correo. */}
           <Link
             href={path("/crear-cuenta")}
             className={["btn", "btn-primary", styles.cta].join(" ")}
@@ -254,9 +256,9 @@ export default function SiteHeader({
             >
               {nav.signup}
             </Link>
-            <SamePageLink className={["btn", "btn-ghost", "btn-lg"].join(" ")}>
+            <a href={loginUrl} className={["btn", "btn-ghost", "btn-lg"].join(" ")}>
               {nav.login}
-            </SamePageLink>
+            </a>
           </div>
         </div>
       )}
