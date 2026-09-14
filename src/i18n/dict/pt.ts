@@ -2643,6 +2643,157 @@ const pt: Dictionary = {
     },
   },
 
+  video: {
+    meta: {
+      title: "Vídeo",
+      description:
+        "Roombir em um minuto: reserva, check-in, estadia e fechamento. E depois o mesmo, pedido em uma conversa.",
+    },
+    hook: ["Seu hotel roda no WhatsApp,", "no Excel e na memória."],
+    punchline: { pre: "Chega de ", struck: "planilhas soltas", post: "." },
+    brand: "Um único *sistema*.",
+    hinge: "E se você só *pedisse*?",
+    outro: "Roombir. Seu hotel, em uma *conversa*.",
+    scenes: {
+      home: "Início",
+      booking: "Reservas · Nova",
+      rooms: "Quartos · Status",
+      stay: "StayPass · Hóspede",
+      reports: "Relatórios",
+      chat: "Roombir IA",
+    },
+    booking: {
+      tag: "hoje",
+      guest: "Martina García",
+      detail: "19 → 22 mar · 3 noites · Duplo Superior",
+      amount: "$ 288.000",
+    },
+    rooms: {
+      tag: "andar 2",
+      floor: "Andar 2",
+      superior: "Duplo Superior",
+      double: "Duplo",
+      short: {
+        available: "Livre",
+        occupied: "In",
+        cleaning: "Limp.",
+        maintenance: "Manut.",
+        blocked: "Bloq.",
+        checkoutPending: "C/O",
+      },
+      legend: { available: "Disponível", occupied: "Ocupado", cleaning: "Limpeza" },
+    },
+    stay: {
+      tag: "hospedada",
+      greeting: "Olá, Martina",
+      sub: "Sua estadia no Hotel del Parque",
+      badge: "Hospedada",
+      codeLabel: "Código para trâmites",
+      copy: "Copiar",
+      stayLabel: "Hospedagem e estadia",
+      hotel: "Hotel del Parque · 103 Duplo Superior",
+      dates: "19 → 22 de março · 3 noites",
+    },
+    status: {
+      pending: "Pendente",
+      confirmed: "Confirmada",
+      checkedIn: "Hospedada",
+      checkedOut: "Check-out",
+      cancelled: "Cancelada",
+      noShow: "No show",
+    },
+    reports: {
+      tag: "março",
+      closed: "Check-out feito · ciclo fechado",
+      kpis: [
+        { label: "Ocupação", value: "78%", hint: "fev: 71%" },
+        { label: "ADR", value: "$ 96.600", hint: "por noite" },
+        { label: "RevPAR", value: "$ 75.300", hint: "" },
+        { label: "Receita", value: "$ 4,1 M", hint: "127 noites" },
+      ],
+    },
+    chat: {
+      placeholder: "Peça algo à Roombir IA",
+      thinking: "Roombir IA está pensando",
+      wait: "Consultando o sistema",
+      turns: [
+        {
+          ask: "Cadastra uma reserva para hoje, 2 noites, duplo superior",
+          steps: [
+            { label: "Disponibilidade", tool: "buscar disponibilidade" },
+            { label: "Reserva criada", tool: "criar reserva" },
+          ],
+          answer: "Pronto. Ficou a #BK-4821: hoje, 2 noites, Duplo Superior.",
+        },
+        {
+          ask: "Atribui uma unidade e faz o check-in",
+          steps: [
+            { label: "Unidade 103", tool: "atribuir unidade" },
+            { label: "Check-in feito", tool: "check-in" },
+          ],
+          answer: "Feito. Está no 103 e já aparece como hospedada.",
+        },
+        {
+          ask: "Como está a ocupação do fim de semana?",
+          steps: [{ label: "Sábado e domingo", tool: "resumo de revenue" }],
+          answer: "Forte no sábado, fraca no domingo. Deixo o resumo.",
+        },
+        {
+          ask: "Sobe 10% a tarifa de sábado",
+          steps: [
+            { label: "Tarifa de sábado", tool: "ler tarifas" },
+            { label: "+10% aplicado", tool: "aplicar tarifa" },
+          ],
+          answer: "Feito. O sábado passa de $ 96.600 para $ 106.260 no motor.",
+        },
+      ],
+      bookingBlock: {
+        guest: "Martina García",
+        detail: "hoje → +2 · 2 noites · Duplo Superior",
+        amount: "$ 193.200",
+      },
+      revenueBlock: {
+        title: "Ocupação do fim de semana",
+        meta: "sáb 21 · dom 22",
+        kpis: [
+          { label: "Sábado", value: "92%", hint: "2 livres" },
+          { label: "Domingo", value: "64%", hint: "9 livres" },
+          { label: "ADR sáb/dom", value: "$ 101.400", hint: "+5% vs. semana" },
+          { label: "Pickup 7d", value: "+6", hint: "reservas" },
+        ],
+      },
+      ruleBlock: {
+        title: "Tarifa aplicada",
+        meta: "sáb 21",
+        kpis: [
+          { label: "Antes", value: "$ 96.600", hint: "por noite" },
+          { label: "Agora", value: "$ 106.260", hint: "por noite" },
+          { label: "Mudança", value: "+10%", hint: "sábado" },
+        ],
+      },
+      rates: { old: "$96.600", next: "$106.260", delta: "+10%" },
+    },
+    chaos: { chat: "chat", sheet: "planilha", notes: "notas", mail: "e-mail", agenda: "agenda" },
+    callouts: {
+      booking: "Reserva criada",
+      checkin: "Check-in feito",
+      stay: "O hóspede recebe seu passe",
+      closed: "Ciclo fechado",
+    },
+    actions: { create: "Nova reserva · 3 noites", checkin: "Check-in" },
+    url: "roombir.com",
+    hud: {
+      play: "Reproduzir",
+      pause: "Pausar",
+      restart: "Reiniciar",
+      language: "Idioma",
+      scene: "Cena",
+      fullscreen: "Tela cheia",
+      exitFullscreen: "Sair da tela cheia",
+      replay: "Assistir de novo",
+    },
+  },
+
   notFound: {
     eyebrow: "Erro 404",
     title: "Esta página *não existe*.",

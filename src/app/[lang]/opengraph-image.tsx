@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/og";
 import {
   LOGOTYPE_DOT,
+  LOGOTYPE_PATH,
   LOGOTYPE_RATIO,
-  LOGOTYPE_TEXT_PATH,
   LOGOTYPE_VIEWBOX,
 } from "@/components/site/logoPaths";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -48,14 +48,14 @@ export default async function OpengraphImage({
         }}
       >
         {/* La marca: el logotipo real (mismos paths que el header), en claro
-            sobre tinta, con el punto en pistacho como en el footer. */}
+            sobre tinta, con el círculo en pistacho como en el footer. */}
         <div style={{ display: "flex" }}>
           <svg
             width={Math.round(52 * LOGOTYPE_RATIO)}
             height={52}
             viewBox={LOGOTYPE_VIEWBOX}
           >
-            <path fill="#f2efe8" fillRule="evenodd" d={LOGOTYPE_TEXT_PATH} />
+            <path fill="#f2efe8" fillRule="evenodd" d={LOGOTYPE_PATH} />
             <circle
               fill="#c8e293"
               cx={LOGOTYPE_DOT.cx}

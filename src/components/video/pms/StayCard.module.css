@@ -1,0 +1,162 @@
+/* Copia de `HomeDashboard.module.css` y `CopyField.module.css` del portal
+   StayPass, con los tokens de su globals.css declarados en la raíz. */
+
+.portal {
+    --bg: #f4f2ed;
+    --bg2: #ffffff;
+    --bg3: #eceae3;
+    --ink: #1a1916;
+    --ink2: #7a7870;
+    --ink3: #b0ada5;
+    --green: #1d6b52;
+    --green-lt: #e8f2ee;
+    --border: rgba(26, 25, 22, 0.09);
+    --r-sm: 7px;
+
+    background: var(--bg);
+    color: var(--ink);
+    padding: 12px 12px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.homeHeader {
+    padding: 2px 2px 0;
+}
+
+.homeGreeting {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 3px;
+    line-height: 1.1;
+}
+
+.homeSub {
+    font-size: 13px;
+    color: var(--ink2);
+}
+
+.reservaCard {
+    background: var(--bg2);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+
+.reservaCardTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.reservaNum {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--ink3);
+    min-width: 26px;
+    text-align: left;
+    line-height: 1;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.badgeOk {
+    background: var(--green-lt);
+    color: var(--green);
+    border: 1px solid rgba(29, 107, 82, 0.15);
+}
+
+.reservaBlock {
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    background: var(--bg);
+}
+
+.copyRoot {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 10px;
+}
+
+.copyLabelRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.copyLabel,
+.reservaBlockLabel {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--ink3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.reservaBlockLabel {
+    margin: 0 0 8px;
+}
+
+.copyBtn {
+    flex-shrink: 0;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--green);
+    background: var(--green-lt);
+    border: 1px solid rgba(29, 107, 82, 0.2);
+    border-radius: 999px;
+}
+
+.copyValue {
+    display: block;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.4;
+}
+
+.reservaBlockMuted {
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    padding: 10px 12px;
+    background: var(--bg2);
+    box-shadow:
+        0 1px 2px rgba(26, 25, 22, 0.06),
+        0 2px 8px rgba(26, 25, 22, 0.04);
+}
+
+.reservaHotel {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0 0 4px;
+}
+
+.reservaDates {
+    font-size: 12px;
+    color: var(--ink2);
+    margin: 0;
+}

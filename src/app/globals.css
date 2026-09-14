@@ -177,6 +177,27 @@ select {
     translate: -50% 0;
 }
 
+/* La página del video (`/video`) es un escenario de 16:9 a pantalla completa:
+   sin header, sin pie y sin salto al contenido. El layout raíz los monta en
+   todas las rutas, así que se apagan desde acá con `:has()`, que es lo único
+   que llega del hijo al hermano sin JS. */
+body:has([data-page="video"]) > header,
+body:has([data-page="video"]) > footer,
+body:has([data-page="video"]) > .skip-link,
+body:has([data-page="video"]) > [aria-hidden]:not(.grain) {
+    display: none;
+}
+
+body:has([data-page="video"]) {
+    overflow: hidden;
+}
+
+/* El indicador de `next dev` (la "N" flotante) se pintaba encima del video y
+   salía en las grabaciones. En producción no existe. */
+body:has([data-page="video"]) nextjs-portal {
+    display: none;
+}
+
 /* ------------------------------------------------------------ tipografía -- */
 
 .display,

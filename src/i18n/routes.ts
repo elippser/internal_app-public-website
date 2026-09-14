@@ -240,6 +240,20 @@ export const ROUTES = {
       de: "/legal/cookies",
     },
   },
+  /* El video de portada como página: una línea de tiempo en HTML que se
+     reproduce sola (y se graba con Playwright). "video" se escribe igual en los
+     cinco idiomas; no va al sitemap ni al menú, es una pieza de marketing que
+     se enlaza a mano. */
+  video: {
+    path: "/video",
+    slugs: {
+      es: "/video",
+      en: "/video",
+      pt: "/video",
+      fr: "/video",
+      de: "/video",
+    },
+  },
   /* La vista previa del módulo de precios que embebe el panel interno. No se
      traduce: no es una página del sitio y su URL está escrita en
      `planscode.service.ts` del API. */
@@ -257,9 +271,9 @@ export const ROUTES = {
 
 export type RouteKey = keyof typeof ROUTES;
 
-/** Las páginas que van al sitemap: todas menos la vista previa interna. */
+/** Las páginas que van al sitemap: todas menos la vista previa interna y el video. */
 export const PUBLIC_ROUTE_KEYS = (Object.keys(ROUTES) as RouteKey[]).filter(
-  (key) => key !== "previewPlans",
+  (key) => key !== "previewPlans" && key !== "video",
 );
 
 /** Ruta interna → clave. Es como se resuelve un `href` escrito en el código. */

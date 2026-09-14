@@ -1,25 +1,19 @@
-import {
-  ISOTYPE_DOT,
-  ISOTYPE_RATIO,
-  ISOTYPE_TEXT_PATH,
-  ISOTYPE_VIEWBOX,
-  LOGOTYPE_DOT,
-  LOGOTYPE_RATIO,
-  LOGOTYPE_TEXT_PATH,
-  LOGOTYPE_VIEWBOX,
-} from "./logoPaths";
+import { roombirMarkGeometry } from "./logoPaths";
 
 /**
- * El logotipo de roombir: la palabra "roombir" con el punto verde
- * (brand/logotype.png), vectorizada en logoPaths.ts. Con `showWordmark`
- * en false se dibuja el isotipo: la "b." sola (brand/isotype.png).
+ * La marca de roombir en el sitio: el logotipo (isotipo + "roombir") o, con
+ * `showWordmark` en false, el isotipo solo (las cuatro formas). Los trazados
+ * viven en logoPaths.ts, que genera scripts/brand/sync-roombir-brand.mjs desde
+ * brand/ en la raíz.
  *
- * El texto sale de `currentColor` para servir sobre papel (tinta) y sobre
- * tinta (papel). El punto es siempre de marca, pero en dos claridades
- * —musgo sobre papel, pistacho sobre tinta— siguiendo la misma regla que
- * el resto del sitio (ver tokens en globals.css).
+ * Las formas y la palabra salen de `currentColor` para servir sobre papel
+ * (tinta) y sobre tinta (papel). El círculo es siempre de marca, pero en dos
+ * claridades —musgo sobre papel, pistacho sobre tinta— siguiendo la misma regla
+ * que el resto del sitio (ver tokens en globals.css).
  *
- * `size` es la altura; el ancho lo da la proporción real del dibujo.
+ * `size` es la altura; el ancho lo da la proporción real del dibujo. Por debajo
+ * de 32 px se dibuja la versión reducida del isotipo (más aire entre formas),
+ * que a ese tamaño se lee mejor que la reducción lineal.
  */
 export default function Logo({
   tone = "ink",
@@ -53,21 +47,19 @@ export default function Logo({
     height: "auto",
   } as const;
 
-  const viewBox = showWordmark ? LOGOTYPE_VIEWBOX : ISOTYPE_VIEWBOX;
-  const ratio = showWordmark ? LOGOTYPE_RATIO : ISOTYPE_RATIO;
-  const textPath = showWordmark ? LOGOTYPE_TEXT_PATH : ISOTYPE_TEXT_PATH;
-  const dot = showWordmark ? LOGOTYPE_DOT : ISOTYPE_DOT;
+  const g = roombirMarkGeometry(size, showWordmark);
 
   return (
     <svg
-      width={size * ratio}
+      width={size * g.ratio}
       height={size}
-      viewBox={viewBox}
+      viewBox={g.viewBox}
       aria-hidden="true"
       style={style}
     >
-      <path fill="currentColor" fillRule="evenodd" d={textPath} />
-      <circle fill={dotFill} cx={dot.cx} cy={dot.cy} r={dot.r} />
+      <path fill="currentColor" fillRule="evenodd" d={g.d} />
+      {/* Por `style`: var() no vale en el atributo `fill`. */}
+      <circle style={{ fill: dotFill }} cx={g.dot.cx} cy={g.dot.cy} r={g.dot.r} />
     </svg>
   );
 }

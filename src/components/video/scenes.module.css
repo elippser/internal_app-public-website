@@ -1,0 +1,767 @@
+/* ============================================================================
+ * Las escenas del video: composición, tipografía cinética y las piezas que
+ * operan la UI reciclada (cursor, selección, etiquetas, ventanas sueltas).
+ *
+ * Todo el movimiento propio lo escribe el reloj en `style`; acá van formas,
+ * colores y las pocas animaciones que laten solas (pulso de la selección).
+ * Las pantallas traen sus estilos (Vignettes.module.css y ./pms).
+ * ========================================================================== */
+
+.scene {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.layer {
+    position: absolute;
+    inset: 0;
+}
+
+.ink {
+    background: var(--ink);
+    color: var(--text-ink);
+}
+
+.paper {
+    background: radial-gradient(120% 70% at 50% -5%, #f8f5ef 0%, var(--paper) 58%, var(--paper-2) 100%);
+    color: var(--text);
+}
+
+/* Trama de puntos muy tenue sobre el papel: el "escritorio" de las pantallas. */
+.paperGrid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(20, 21, 15, 0.14) 1px, transparent 1.2px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(70% 70% at 50% 50%, #000 30%, transparent 100%);
+}
+
+/* ------------------------------------------------------------ tipografía -- */
+
+.typeBlock {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 0 104px;
+    text-align: center;
+    transform-origin: center;
+    perspective: 900px;
+}
+
+.display,
+.displaySm {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.06;
+    text-wrap: balance;
+    transform-style: preserve-3d;
+}
+
+.display {
+    font-size: 74px;
+}
+
+.displaySm {
+    font-size: 60px;
+}
+
+.word {
+    display: inline-block;
+    white-space: pre;
+    will-change: transform, opacity, filter;
+    transform-origin: 50% 100%;
+}
+
+/* La palabra en itálica es el argumento: serif, color de marca y un subrayado
+   que se dibuja al llegar (`--u`, 0→1). */
+.wordEm {
+    position: relative;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    color: var(--brand);
+    font-size: 1.08em;
+    padding: 0 0.04em;
+}
+
+.ink .wordEm {
+    color: var(--brand-bright);
+}
+
+.wordEm::after {
+    content: "";
+    position: absolute;
+    left: 0.02em;
+    right: 0.02em;
+    bottom: -0.02em;
+    height: 0.075em;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.55;
+    transform: scaleX(var(--u, 0));
+    transform-origin: left center;
+}
+
+.dimInk {
+    color: var(--text-ink-2);
+}
+
+/* El tachado se dibuja de izquierda a derecha, en pistacho. */
+.struck {
+    position: relative;
+    color: color-mix(in srgb, var(--text-ink) calc(100% - var(--strike, 0) * 45%), #6f7166);
+}
+
+.struck::after {
+    content: "";
+    position: absolute;
+    left: -1.5%;
+    right: -1.5%;
+    top: 55%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--brand-bright);
+    transform: scaleX(var(--strike, 0));
+    transform-origin: left center;
+}
+
+.tabular {
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------- aurora -- */
+
+.aurora {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+}
+
+.blobA,
+.blobB {
+    position: absolute;
+    width: 640px;
+    height: 640px;
+    border-radius: 50%;
+    filter: blur(110px);
+}
+
+.blobA {
+    left: 18%;
+    top: 16%;
+    background: #c8e293;
+    opacity: 0.2;
+}
+
+.blobB {
+    right: 14%;
+    bottom: 12%;
+    background: #b8762f;
+    opacity: 0.16;
+}
+
+/* --------------------------------------------------- las cinco ventanas --- */
+
+.wins {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.win {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 12px;
+    border: 1px solid rgba(242, 239, 232, 0.16);
+    background: rgba(242, 239, 232, 0.06);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    transform-origin: center;
+    overflow: hidden;
+    backdrop-filter: blur(2px);
+}
+
+.winBar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 11px;
+    border-bottom: 1px solid rgba(242, 239, 232, 0.1);
+}
+
+.winDots {
+    display: flex;
+    gap: 4px;
+}
+
+.winDots i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(242, 239, 232, 0.22);
+}
+
+.winLabel {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: rgba(242, 239, 232, 0.5);
+}
+
+.winChat {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 12px;
+}
+
+.winChat i {
+    display: block;
+    height: 14px;
+    border-radius: 9px 9px 9px 3px;
+    background: rgba(242, 239, 232, 0.16);
+}
+
+.winChat i[data-me] {
+    align-self: flex-end;
+    border-radius: 9px 9px 3px 9px;
+    background: rgba(200, 226, 147, 0.35);
+}
+
+.winSheet {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3px;
+    padding: 10px;
+}
+
+.winSheet i {
+    height: 16px;
+    border-radius: 3px;
+    background: rgba(242, 239, 232, 0.07);
+}
+
+.winSheet i[data-on] {
+    background: rgba(242, 239, 232, 0.2);
+}
+
+.winNotes {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin: 12px;
+    padding: 12px;
+    border-radius: 6px;
+    background: rgba(184, 118, 47, 0.32);
+}
+
+.winNotes i {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(242, 239, 232, 0.35);
+}
+
+.winMail {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 12px;
+}
+
+.winMail > div {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(242, 239, 232, 0.08);
+}
+
+.winMail b {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(242, 239, 232, 0.2);
+    flex: none;
+}
+
+.winMail i {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(242, 239, 232, 0.22);
+}
+
+.winAgenda {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 64px;
+    padding: 0 12px 10px;
+}
+
+.winAgenda i {
+    flex: 1;
+    border-radius: 3px 3px 0 0;
+    background: rgba(242, 239, 232, 0.18);
+}
+
+/* ---------------------------------------------------------------- cursor -- */
+
+.cursor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 30;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.pointer {
+    position: absolute;
+    left: -4.6px;
+    top: -2.8px;
+    width: 22px;
+    height: 22px;
+    /* El reset global pone `max-width: 100%` a todo svg; dentro de un
+       contenedor sin ancho eso es 0 y el puntero desaparecía. */
+    max-width: none;
+    filter: drop-shadow(0 2px 4px rgba(20, 21, 15, 0.35));
+    transform-origin: 4.6px 2.8px;
+    transition: transform 0.08s ease;
+}
+
+.ripple {
+    position: absolute;
+    left: -14px;
+    top: -14px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--brand);
+    background: rgba(200, 226, 147, 0.25);
+}
+
+/* La selección de arrastre del calendario real: verde tenue con borde
+   punteado; retenida (después de soltar) late hasta que se crea la reserva. */
+.selection {
+    position: absolute;
+    z-index: 20;
+    border-radius: 6px;
+    border: 1.5px dashed var(--brand);
+    background: rgba(78, 107, 40, 0.16);
+    pointer-events: none;
+}
+
+.selectionHeld {
+    animation: selHeld 1.1s ease-in-out infinite;
+}
+
+@keyframes selHeld {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.createChip,
+.popover {
+    position: absolute;
+    z-index: 25;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    transform-origin: left top;
+    pointer-events: none;
+}
+
+.createChip {
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: 0 12px 30px rgba(20, 21, 15, 0.24);
+}
+
+.createChip b {
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--brand-bright);
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1;
+}
+
+/* El botón de acción del chat real (`rowAction`): acento suave con borde. */
+.popover {
+    height: 28px;
+    padding: 0 11px;
+    border-radius: 8px;
+    border: 1px solid var(--brand);
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-size: 12px;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(20, 21, 15, 0.14);
+    transform-origin: right top;
+}
+
+.ring {
+    position: absolute;
+    z-index: 22;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 2px solid var(--brand-bright);
+    pointer-events: none;
+}
+
+/* --------------------------------------------------------------- callout -- */
+
+.callout {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 26;
+    pointer-events: none;
+}
+
+.calloutDot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--brand);
+    box-shadow: 0 0 0 4px rgba(78, 107, 40, 0.18);
+}
+
+.calloutLine {
+    position: absolute;
+    left: 0;
+    top: -0.5px;
+    height: 1.5px;
+    background: var(--brand);
+    transform-origin: left center;
+}
+
+.calloutPill {
+    position: absolute;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    box-shadow: 0 12px 30px rgba(20, 21, 15, 0.22);
+}
+
+/* ---------------------------------------------------------- 2 · marca ----- */
+
+.brandGroup {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1000px;
+    margin: -160px 0 0 -500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+    text-align: center;
+    transform-origin: center;
+    z-index: 2;
+}
+
+.homeShot {
+    position: absolute;
+    left: 190px;
+    top: 262px;
+    width: 900px;
+    transform-origin: center top;
+    z-index: 3;
+}
+
+.homeFloatRight {
+    position: absolute;
+    right: -44px;
+    top: -34px;
+    width: 220px;
+}
+
+.homeFloatLeft {
+    position: absolute;
+    left: -54px;
+    top: 196px;
+    width: 250px;
+}
+
+/* ------------------------------------------------------ 3 · recorrido ----- */
+
+.flowRail {
+    position: absolute;
+    left: 26px;
+    right: 26px;
+    top: 110px;
+    height: 1px;
+    background: var(--line);
+}
+
+.flowRail i {
+    position: absolute;
+    inset: 0;
+    background: var(--brand);
+    transform-origin: left center;
+}
+
+.stepHead {
+    position: absolute;
+    top: 74px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    white-space: nowrap;
+}
+
+.stepDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--brand);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.stepNum {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-3);
+}
+
+.stepText {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    transition: color 0.3s ease;
+}
+
+.track {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+}
+
+.screen {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transform-origin: center center;
+}
+
+.tapeWrap {
+    position: relative;
+}
+
+/* El contenedor de tokens del chat, usado sólo como paleta: sin alto ni fondo. */
+.tokens {
+    height: auto !important;
+    background: transparent !important;
+}
+
+.rowCard {
+    width: 470px;
+    border-radius: 12px;
+    box-shadow: 0 14px 36px rgba(20, 21, 15, 0.12);
+}
+
+/* El teléfono del portal, con las medidas de la viñeta LinkHub del sitio. */
+.phone {
+    position: absolute;
+    width: 284px;
+    border-radius: 34px;
+    border: 8px solid var(--ink);
+    background: var(--ink);
+    box-shadow: 0 30px 70px rgba(20, 21, 15, 0.28);
+    overflow: hidden;
+    transform-origin: left center;
+}
+
+.phoneNotch {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    width: 72px;
+    height: 6px;
+    margin-left: -36px;
+    border-radius: 999px;
+    background: rgba(242, 239, 232, 0.16);
+    z-index: 2;
+}
+
+.phoneScreen {
+    border-radius: 26px;
+    background: #f4f2ed;
+    padding: 30px 0 10px;
+    min-height: 420px;
+}
+
+/* ------------------------------------------------------- 4 · informes ----- */
+
+.reportShot {
+    position: absolute;
+    left: 250px;
+    top: 196px;
+    width: 780px;
+    transform-origin: center center;
+}
+
+.reportShot .tokens {
+    display: flex;
+    flex-direction: column;
+}
+
+/* El badge de check-out entra como un sello. */
+.stampWrap :global([data-status="checked-out"]) {
+    animation: stamp 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.35) both;
+}
+
+@keyframes stamp {
+    from {
+        transform: scale(1.7);
+        opacity: 0;
+    }
+}
+
+/* -------------------------------------------------------- 5 · bisagra ----- */
+
+.hingeStack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* ----------------------------------------------------------- 6 · chat ----- */
+
+.chatWin {
+    position: absolute;
+    left: 72px;
+    top: 52px;
+    width: 560px;
+    height: 616px;
+    z-index: 2;
+}
+
+/* El Frame de las viñetas a alto completo: barra arriba, chat abajo. */
+.chatWin > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 30px 80px rgba(20, 21, 15, 0.16), 0 2px 6px rgba(20, 21, 15, 0.05);
+}
+
+.chatWin > div > div:last-child {
+    flex: 1;
+    min-height: 0;
+    padding: 0;
+}
+
+.viewport {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, transparent 0, #000 46px);
+}
+
+.thread {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px 20px 6px;
+}
+
+.emptyOrb {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.behindWin {
+    position: absolute;
+    left: 664px;
+    top: 118px;
+    width: 586px;
+    z-index: 1;
+    border-radius: 16px;
+    transform-origin: left center;
+}
+
+.behindLayer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.behindLayer:first-child {
+    position: relative;
+}
+
+/* --------------------------------------------------------- 7 · cierre ----- */
+
+.outroStack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+}
+
+.outroLogo svg {
+    width: 240px !important;
+    max-width: none !important;
+    height: auto !important;
+}
+
+.tagline {
+    margin: 4px 0 0;
+    font-size: 40px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--text);
+    text-wrap: balance;
+    max-width: 980px;
+    perspective: 700px;
+}
+
+.tagline .wordEm {
+    font-size: 1.08em;
+}
+
+.url {
+    margin: 6px 0 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--text-3);
+}

@@ -71,12 +71,13 @@ export async function generateMetadata({
     },
     description: dict.site.description,
     robots: siteConfig.seo.noindex ? { index: false, follow: false } : undefined,
-    /* UN solo favicon, determinístico: icon.svg es la placa de tinta con la
-       b en papel y el punto pistacho, sin media queries — los renderers de
-       favicons los aplican de manera inconsistente (Chrome ignora además el
-       atributo `media` del link). La versión revienta el cache de favicons,
-       que es eterno: subirla si el ícono vuelve a cambiar. */
-    icons: siteConfig.favicon ? { icon: `${siteConfig.favicon}?v=3` } : undefined,
+    /* UN solo favicon: icon.svg, el isotipo en su versión reducida y
+       transparente. El cambio de tema va por media query DENTRO del SVG
+       (tinta y musgo en pestaña clara, papel y pistacho en oscura); lo que
+       Chrome ignora es el atributo `media` del link, por eso no hay dos
+       links. Lo genera scripts/brand en la raíz. La versión revienta el cache
+       de favicons, que es eterno: subirla si el ícono vuelve a cambiar. */
+    icons: siteConfig.favicon ? { icon: `${siteConfig.favicon}?v=4` } : undefined,
     /* hreflang de la home. Cada página pone el suyo con su propio slug
        traducido; acá va el del layout, que es la portada. */
     alternates: alternatesFor(lang, "/"),

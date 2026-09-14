@@ -1,0 +1,6 @@
+/* El canvas del loader del isotipo. La sombra es la del PMS
+   (`.fragmentCanvas`), un poco más suave porque acá va grande. */
+.canvas {
+    display: block;
+    filter: drop-shadow(0 2px 6px rgba(20, 21, 15, 0.14));
+}

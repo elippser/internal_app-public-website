@@ -20,7 +20,12 @@ import styles from "./Vignettes.module.css";
 
 type V = Dictionary["vignettes"];
 
-function Frame({
+/**
+ * El marco de "ventana" de todas las viñetas. Exportado porque el video de
+ * portada (`components/video`) encuadra con él las pantallas que recicla; no
+ * es para armar viñetas nuevas fuera de este archivo.
+ */
+export function Frame({
   label,
   tag,
   tone = "paper",
@@ -64,12 +69,16 @@ function delay(seconds: number): React.CSSProperties {
 
 /* ---------------------------------------------------------- tape chart ---- */
 
-type Seg = {
+export type Seg = {
   start: number;
   span: number;
   kind: "confirmed" | "pending" | "block" | "live";
   label?: string;
+  /** Retardo de entrada explícito (segundos). Si falta, sale de fila y día. */
+  delay?: number;
 };
+
+export type TapeRowSpec = { unit: string; segs: Seg[] };
 
 const SEG_CLASS = {
   confirmed: styles.barConfirmed,
@@ -94,7 +103,10 @@ function TapeRow({ unit, segs, row = 0 }: { unit: string; segs: Seg[]; row?: num
         className={[styles.tapeBar, SEG_CLASS[seg.kind]].join(" ")}
         // La cascada del dibujo: cada barra entra según su fila y su día de
         // inicio, como si el calendario se cargara de arriba a la izquierda.
-        style={{ gridColumn: `span ${seg.span}`, ...delay(row * 0.1 + seg.start * 0.035) }}
+        style={{
+          gridColumn: `span ${seg.span}`,
+          ...delay(seg.delay ?? row * 0.1 + seg.start * 0.035),
+        }}
       >
         {seg.label}
       </div>,
@@ -107,59 +119,67 @@ function TapeRow({ unit, segs, row = 0 }: { unit: string; segs: Seg[]; row?: num
   }
   return (
     <>
-      <div className={styles.tapeUnit}>{unit}</div>
+      {/* `data-tape-row`: el video mide dónde cae cada fila para mover el
+          cursor y dibujar la selección de arrastre encima. */}
+      <div className={styles.tapeUnit} data-tape-row={row}>
+        {unit}
+      </div>
       {cells}
     </>
   );
 }
 
-/** El calendario del hub Reservas: unidades por fila, noches por columna. */
-export function TapeChart({ v }: { v: V }) {
+/** Las filas del calendario de la portada: lo que se ve si nadie pasa otras. */
+export function defaultTapeRows(t: V["tape"]): TapeRowSpec[] {
+  return [
+    {
+      unit: t.units.r101,
+      segs: [
+        { start: 1, span: 4, kind: "confirmed", label: t.bars.garcia },
+        { start: 7, span: 4, kind: "pending", label: t.bars.perez },
+      ],
+    },
+    { unit: t.units.r102, segs: [{ start: 2, span: 6, kind: "confirmed", label: t.bars.sosa }] },
+    {
+      unit: t.units.r103,
+      segs: [
+        { start: 1, span: 3, kind: "block", label: t.bars.paint },
+        { start: 8, span: 7, kind: "confirmed", label: t.bars.ruiz },
+      ],
+    },
+    { unit: t.units.cabin, segs: [{ start: 4, span: 6, kind: "live", label: t.bars.fresh }] },
+    {
+      unit: t.units.suite,
+      segs: [
+        { start: 5, span: 4, kind: "confirmed", label: t.bars.bianchi },
+        { start: 11, span: 4, kind: "pending", label: t.bars.engine },
+      ],
+    },
+  ];
+}
+
+/**
+ * El calendario del hub Reservas: unidades por fila, noches por columna.
+ *
+ * `rows` es opcional: la portada usa las filas de `defaultTapeRows`; el video
+ * pasa las suyas para que una reserva "entre" en vivo en el mismo calendario.
+ */
+export function TapeChart({ v, rows }: { v: V; rows?: TapeRowSpec[] }) {
   const t = v.tape;
+  const list = rows ?? defaultTapeRows(t);
   return (
     <Frame label={t.label} tag={t.tag}>
-      <div className={styles.tape}>
+      <div className={styles.tape} data-tape-grid="">
         <div />
         {Array.from({ length: DAYS }, (_, i) => (
-          <div key={i} className={styles.tapeHead}>
+          <div key={i} className={styles.tapeHead} data-tape-head={i + 1}>
             {12 + i}
           </div>
         ))}
 
-        <TapeRow
-          row={0}
-          unit={t.units.r101}
-          segs={[
-            { start: 1, span: 4, kind: "confirmed", label: t.bars.garcia },
-            { start: 7, span: 4, kind: "pending", label: t.bars.perez },
-          ]}
-        />
-        <TapeRow
-          row={1}
-          unit={t.units.r102}
-          segs={[{ start: 2, span: 6, kind: "confirmed", label: t.bars.sosa }]}
-        />
-        <TapeRow
-          row={2}
-          unit={t.units.r103}
-          segs={[
-            { start: 1, span: 3, kind: "block", label: t.bars.paint },
-            { start: 8, span: 7, kind: "confirmed", label: t.bars.ruiz },
-          ]}
-        />
-        <TapeRow
-          row={3}
-          unit={t.units.cabin}
-          segs={[{ start: 4, span: 6, kind: "live", label: t.bars.fresh }]}
-        />
-        <TapeRow
-          row={4}
-          unit={t.units.suite}
-          segs={[
-            { start: 5, span: 4, kind: "confirmed", label: t.bars.bianchi },
-            { start: 11, span: 4, kind: "pending", label: t.bars.engine },
-          ]}
-        />
+        {list.map((r, i) => (
+          <TapeRow key={r.unit} row={i} unit={r.unit} segs={r.segs} />
+        ))}
       </div>
 
       <div className={styles.tapeFoot}>
@@ -254,8 +274,23 @@ export function EngineCalendar({ v }: { v: V }) {
 
 /* ------------------------------------------------------ decisión del RMS -- */
 
-/** El documento de decisión: por qué el motor sugiere esa tarifa y no otra. */
-export function RateDecision({ v, locale }: { v: V; locale: Locale }) {
+/**
+ * El documento de decisión: por qué el motor sugiere esa tarifa y no otra.
+ *
+ * `rates` y `applied` son del video: la misma tarjeta con otra tarifa y ya
+ * aplicada (el agente acaba de subirla). En el sitio no se pasan.
+ */
+export function RateDecision({
+  v,
+  locale,
+  rates,
+  applied,
+}: {
+  v: V;
+  locale: Locale;
+  rates?: { old: string; next: string; delta: string };
+  applied?: string;
+}) {
   const d = v.decision;
   const rows = [
     { key: d.keys.occupancy, val: d.values.occupancy },
@@ -272,9 +307,9 @@ export function RateDecision({ v, locale }: { v: V; locale: Locale }) {
         <div>
           <p className={styles.decisionDate}>{d.subject}</p>
           <div className={styles.decisionRates}>
-            <span className={styles.rateOld}>$84.000</span>
-            <span className={styles.rateNew}>$96.600</span>
-            <span className={styles.rateDelta}>+15%</span>
+            <span className={styles.rateOld}>{rates?.old ?? "$84.000"}</span>
+            <span className={styles.rateNew}>{rates?.next ?? "$96.600"}</span>
+            <span className={styles.rateDelta}>{rates?.delta ?? "+15%"}</span>
           </div>
         </div>
       </div>
@@ -289,8 +324,17 @@ export function RateDecision({ v, locale }: { v: V; locale: Locale }) {
       </div>
 
       <div className={styles.decisionActions}>
-        <span className={styles.miniBtn}>{d.accept}</span>
-        <span className={[styles.miniBtn, styles.miniBtnGhost].join(" ")}>{d.reject}</span>
+        {applied ? (
+          <span className={styles.signalFoot}>
+            <SignalCheck />
+            {applied}
+          </span>
+        ) : (
+          <>
+            <span className={styles.miniBtn}>{d.accept}</span>
+            <span className={[styles.miniBtn, styles.miniBtnGhost].join(" ")}>{d.reject}</span>
+          </>
+        )}
       </div>
     </Frame>
   );

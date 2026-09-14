@@ -1,0 +1,414 @@
+/* ============================================================================
+ * El reproductor del video de portada.
+ *
+ * La página es un fondo oscuro con un reproductor 16:9 centrado. Adentro, un
+ * escenario fijo de 1280×720 que se escala entero al tamaño del reproductor.
+ * Las escenas y sus estilos viven en scenes.tsx / scenes.module.css.
+ * ========================================================================== */
+
+.page {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    padding-block: 24px;
+    padding-inline: 24px;
+    background: radial-gradient(90% 70% at 50% 40%, #1e2019 0%, #0d0e0a 100%);
+    overflow: hidden;
+}
+
+/* ------------------------------------------------------------ reproductor -- */
+
+.player {
+    position: relative;
+    width: min(100%, calc((100vh - 48px) * 16 / 9), 1600px);
+    aspect-ratio: 16 / 9;
+    max-width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--ink);
+    box-shadow:
+        0 0 0 1px rgba(242, 239, 232, 0.08),
+        0 40px 120px rgba(0, 0, 0, 0.55);
+    container-type: inline-size;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.isFullscreen {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    aspect-ratio: auto;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Reproduciendo y sin mover el mouse: fuera el cursor, como en un video. */
+.idle,
+.idle .surface {
+    cursor: none;
+}
+
+/* En pausa se congelan también las animaciones CSS de las pantallas. Sólo las
+   del escenario: con el selector sobre todo el reproductor, el fundido de la
+   pantalla final nacía congelado en opacidad 0 y "volver a ver" no se veía. */
+.paused .stage :global(*),
+.paused .stage :global(*)::before,
+.paused .stage :global(*)::after {
+    animation-play-state: paused !important;
+}
+
+.stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1280px;
+    height: 720px;
+    transform-origin: 0 0;
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    pointer-events: none;
+}
+
+.surface {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background: transparent;
+    cursor: pointer;
+}
+
+.sceneWrap {
+    position: absolute;
+    inset: 0;
+    will-change: opacity, transform, filter, clip-path;
+}
+
+/* ------------------------------------------------------- póster y final --- */
+
+.poster,
+.endCard {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    pointer-events: none;
+}
+
+/* El póster deja ver el cuadro del video, apenas velado para que el play mande. */
+.poster {
+    background: radial-gradient(70% 80% at 50% 50%, rgba(20, 21, 15, 0.18) 0%, rgba(20, 21, 15, 0.5) 100%);
+}
+
+/* El final no tapa el logo ni la frase: la píldora va entre la frase y los
+   controles. Con `top` en % (relativo al ALTO del reproductor): un
+   `padding-bottom` en % se calcula sobre el ANCHO y la dejaba encima de la
+   frase. */
+.endCard {
+    display: block;
+    background: linear-gradient(to top, rgba(20, 21, 15, 0.28) 0%, transparent 40%);
+    animation: fadeIn 0.4s ease both;
+}
+
+.replayPill {
+    position: absolute;
+    left: 50%;
+    top: 82%;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    height: 44px;
+    padding: 0 20px 0 15px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    box-shadow: 0 14px 36px rgba(20, 21, 15, 0.28);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.replayPill:hover {
+    background: var(--ink-3);
+    transform: translate(-50%, -50%) scale(1.03);
+}
+
+.replayPill svg {
+    width: 18px;
+    height: 18px;
+    color: var(--brand-bright);
+}
+
+.bigPlay {
+    pointer-events: auto;
+    width: clamp(56px, 9cqw, 88px);
+    height: clamp(56px, 9cqw, 88px);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--ink);
+    background: var(--brand-bright);
+    box-shadow:
+        0 0 0 10px rgba(200, 226, 147, 0.14),
+        0 18px 50px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bigPlay:hover {
+    transform: scale(1.06);
+    box-shadow:
+        0 0 0 14px rgba(200, 226, 147, 0.18),
+        0 18px 50px rgba(0, 0, 0, 0.35);
+}
+
+.bigPlay svg {
+    width: 38%;
+    height: 38%;
+}
+
+/* El triángulo del play se ve corrido a la izquierda si se centra por caja. */
+.poster .bigPlay svg {
+    margin-left: 6%;
+}
+
+.posterMeta {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--text-ink);
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(20, 21, 15, 0.62);
+}
+
+/* ------------------------------------------------------------- controles --- */
+
+.controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    padding: 40px 16px 10px;
+    background: linear-gradient(to top, rgba(10, 11, 8, 0.72) 0%, rgba(10, 11, 8, 0.38) 55%, transparent 100%);
+    color: var(--text-ink);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.controlsOn {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+
+.track {
+    position: relative;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    touch-action: none;
+}
+
+.trackRail {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(242, 239, 232, 0.24);
+    overflow: hidden;
+    transition: height 0.15s ease;
+}
+
+.track:hover .trackRail,
+.trackActive .trackRail {
+    height: 6px;
+}
+
+.trackFill {
+    position: absolute;
+    inset: 0;
+    background: var(--brand-bright);
+    transform-origin: left center;
+}
+
+.chapter {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    margin-left: -1.5px;
+    background: rgba(10, 11, 8, 0.7);
+}
+
+.thumb {
+    position: absolute;
+    top: 50%;
+    width: 13px;
+    height: 13px;
+    margin: -6.5px 0 0 -6.5px;
+    border-radius: 50%;
+    background: var(--brand-bright);
+    box-shadow: 0 0 0 3px rgba(200, 226, 147, 0.25);
+    transform: scale(0);
+    transition: transform 0.15s ease;
+    pointer-events: none;
+}
+
+.track:hover .thumb,
+.trackActive .thumb,
+.track:focus-visible .thumb {
+    transform: scale(1);
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.ctrlBtn {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--text-ink);
+    transition: background 0.2s ease;
+}
+
+.ctrlBtn:hover {
+    background: rgba(242, 239, 232, 0.12);
+}
+
+.ctrlBtn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.time {
+    flex: none;
+    margin-left: 6px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-ink);
+}
+
+.timeTotal {
+    color: var(--text-ink-2);
+}
+
+.chapterName {
+    margin-left: 12px;
+    font-size: 12px;
+    color: var(--text-ink-2);
+    white-space: nowrap;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.langs {
+    flex: none;
+    display: flex;
+    gap: 2px;
+    margin-right: 4px;
+}
+
+.lang {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 5px 8px;
+    border-radius: 999px;
+    color: var(--text-ink-2);
+}
+
+.lang:hover {
+    color: var(--text-ink);
+}
+
+.langOn {
+    background: rgba(242, 239, 232, 0.16);
+    color: var(--text-ink);
+}
+
+/* Reproductor angosto (teléfono): sólo lo esencial. */
+@container (max-width: 620px) {
+    .restartBtn,
+    .chapterName {
+        display: none;
+    }
+
+    .controls {
+        padding: 28px 8px 4px;
+    }
+}
+
+@container (max-width: 440px) {
+    .langs {
+        display: none;
+    }
+
+    .controls {
+        padding: 14px 6px 0;
+        background: linear-gradient(to top, rgba(10, 11, 8, 0.7) 0%, transparent 100%);
+    }
+
+    .track {
+        height: 12px;
+    }
+
+    .ctrlBtn {
+        width: 30px;
+        height: 30px;
+    }
+
+    .ctrlBtn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .time {
+        font-size: 11px;
+    }
+
+    /* A este alto la píldora caería sobre los controles; el play de la barra
+       ya reinicia desde el final. */
+    .posterMeta,
+    .replayPill {
+        display: none;
+    }
+}
+
+@media (max-width: 560px) {
+    .page {
+        padding-inline: 16px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+}
