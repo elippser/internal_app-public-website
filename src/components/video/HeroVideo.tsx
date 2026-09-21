@@ -3,83 +3,46 @@
 import {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
-  type CSSProperties,
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dict/es";
-import { SCENES } from "./scenes";
-import { buildBeats, clamp01, easeIn, easeInOut, easeOut, easeOutQuint, planChat, seg, type Beat } from "./timeline";
+import VideoStage, { useStageFit } from "./VideoStage";
+import { useVoAudio } from "./editor/useVoAudio";
+import type { Voiceover } from "@/lib/videoVo";
+import { buildBeats, clamp01, planChat, totalMs } from "./timeline";
 import s from "./HeroVideo.module.css";
 
 /**
  * El video de portada de roombir: motion graphics sobre la UI real, servido
  * como un reproductor de video en la página.
  *
- * Dos actos (ver `video-spec.md` en la raíz). En el primero se ven las
- * pantallas: reserva, check-in, estadía y cierre, operadas por un cursor. En
- * el segundo, el mismo flujo pedido en el chat de Roombir IA, con la pantalla
- * de atrás cambiando a medida que el agente responde. Dura un minuto justo.
+ * Calca beat por beat al video de referencia (`video-reference.mp4` en la
+ * raíz, desmenuzado en VIDEO-REFERENCIA-ANALISIS.md): el mapa mental con zoom,
+ * la línea con punto, las apps y los proveedores, el laberinto, los
+ * zoom-through por el ojo de una letra, las letras que se rompen, "conocé",
+ * las tarjetas con estela, la grilla, la pila, el logo que despliega la UI,
+ * "precisión", la bisagra, el chat de Roombir IA (nuestro agregado), el roller
+ * con el caret, el anillo, la estrella, la rueda, la fila y el end card. Dura
+ * lo que suman los beats (≈ 84 s).
  *
- * Este archivo es el reproductor: el reloj, las transiciones entre escenas y
- * los controles. Las escenas viven en `scenes.tsx`; el reparto del tiempo en
- * `timeline.ts`.
+ * Este archivo es el reproductor: el reloj y los controles. El escenario —el
+ * premontaje de las escenas y el escalado a 1280×720— es `VideoStage`, que
+ * comparte con el editor de la voz en off. Las escenas viven en `acts/`; el
+ * reparto del tiempo en `timeline.ts`; las piezas compartidas en `fx.tsx`.
  */
 
 type VideoDict = Dictionary["video"];
-type VignetteDict = Dictionary["vignettes"];
 
 export type LangLink = { locale: Locale; short: string; href: string };
-
-const STAGE_W = 1280;
-const STAGE_H = 720;
 
 /** 21045 → "0:21". */
 function clock(ms: number): string {
   const secs = Math.max(0, Math.floor(ms / 1000));
   return `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
-}
-
-/**
- * Cómo entra y cómo sale cada escena. La que entra se dibuja por encima de
- * la anterior, que sigue montada hasta que la transición termina.
- */
-function sceneStyle(b: Beat, next: Beat | undefined, t: number): CSSProperties {
-  const style: CSSProperties = {};
-  if (t < b.start + b.enterDur) {
-    if (b.enter === "fade") {
-      const p = easeOut(seg(t, b.start, b.start + b.enterDur));
-      style.opacity = p;
-      style.filter = `blur(${((1 - p) * 10).toFixed(2)}px)`;
-      style.transform = `scale(${(1.02 - 0.02 * p).toFixed(4)})`;
-    } else if (b.enter === "circle") {
-      const p = easeInOut(seg(t, b.start, b.start + b.enterDur));
-      style.clipPath = `circle(${(p * 78).toFixed(2)}% at 50% 50%)`;
-    } else if (b.enter === "push") {
-      // Entra desde abajo con profundidad: sube, se agranda y se enfoca.
-      const p = easeOutQuint(seg(t, b.start, b.start + b.enterDur));
-      style.opacity = clamp01(p * 1.3);
-      style.transform = `translate3d(0, ${((1 - p) * 7).toFixed(3)}%, 0) scale(${(0.955 + 0.045 * p).toFixed(4)})`;
-      style.filter = `blur(${((1 - p) * 8).toFixed(2)}px)`;
-    }
-  }
-  if (t > b.end) {
-    if (b.exit === "circleOut") {
-      const q = easeInOut(seg(t, b.end, b.end + (b.exitDur ?? 0)));
-      style.clipPath = `circle(${((1 - q) * 78).toFixed(2)}% at 50% 50%)`;
-    } else if (next?.enter === "push") {
-      // La que se va cede el lugar: se aleja apenas y se desenfoca.
-      const q = easeIn(seg(t, b.end, b.end + next.enterDur));
-      style.opacity = 1 - q;
-      style.transform = `translate3d(0, ${(-q * 4).toFixed(3)}%, 0) scale(${(1 + 0.03 * q).toFixed(4)})`;
-      style.filter = `blur(${(q * 10).toFixed(2)}px)`;
-    }
-  }
-  return style;
 }
 
 function PlayIcon() {
@@ -111,17 +74,29 @@ function RestartIcon() {
 export default function HeroVideo({
   locale,
   v,
-  vg,
   langs,
+  vo,
 }: {
   locale: Locale;
   v: VideoDict;
-  vg: VignetteDict;
   langs: LangLink[];
+  /** El montaje de la voz en off, ya leído en el servidor. */
+  vo?: Voiceover | null;
 }) {
+  /**
+   * Las pistas y las escalas del montaje. Si el API interno no contestó, el
+   * video se ve igual: sin voz y con las escenas en su duración natural.
+   *
+   * Sin versión en la URL (el `?v=` que sí usa el editor): acá el archivo es un
+   * estático más y lo cachea el navegador como corresponde. Reemplazar un audio
+   * en producción puede tardar en verse hasta que caduque esa caché.
+   */
+  const tracks = useMemo(() => vo?.tracks ?? [], [vo]);
+  const versiones = useMemo(() => new Map<string, number | null>(), []);
+  const { sync, stopAll } = useVoAudio(tracks, versiones);
   const chatDuration = useMemo(() => planChat(v.chat).duration, [v.chat]);
-  const beats = useMemo(() => buildBeats(chatDuration), [chatDuration]);
-  const total = beats[beats.length - 1].end;
+  const beats = useMemo(() => buildBeats(chatDuration, vo?.scenes), [chatDuration, vo]);
+  const total = totalMs(beats);
 
   const [t, setT] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -129,34 +104,27 @@ export default function HeroVideo({
   const [started, setStarted] = useState(false);
   const [ended, setEnded] = useState(false);
   const [epoch, setEpoch] = useState(0);
-  const [box, setBox] = useState({ scale: 1, x: 0, y: 0 });
   const [awake, setAwake] = useState(true);
   const [fullscreen, setFullscreen] = useState(false);
   const [scrubbing, setScrubbing] = useState(false);
 
   const playerRef = useRef<HTMLDivElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
   const tRef = useRef(0);
   const playingRef = useRef(false);
   const loopRef = useRef(false);
   const resumeAfterScrub = useRef(false);
   const startedRef = useRef(false);
-  // Al remontar por un salto, las animaciones CSS de las pantallas terminan de
-  // una: si no, en pausa quedaban congeladas en su primer cuadro (el chat se
-  // veía vacío) y al reproducir todo lo visible volvía a entrar. Arranca en
-  // true para que el póster se vea entero.
-  const finishRef = useRef(true);
 
   const markStarted = useCallback(() => {
     startedRef.current = true;
     setStarted(true);
   }, []);
 
-  // El póster es un cuadro del propio video: el cierre del chat, con las dos
-  // pantallas a la vista y el hueco entre ellas justo donde cae el play.
+  // El póster es un cuadro del propio video: el producto entero recién
+  // desplegado, con "un solo sistema" arriba y el play en el medio.
   const posterT = useMemo(() => {
-    const chat = beats.find((b) => b.id === "chat");
-    return chat ? chat.end - 120 : 0;
+    const b = beats.find((x) => x.id === "unfold");
+    return b ? b.start + 1650 : 0;
   }, [beats]);
 
   /**
@@ -171,10 +139,7 @@ export default function HeroVideo({
       tRef.current = next;
       setT(next);
       setEnded(false);
-      if (remount) {
-        finishRef.current = true;
-        setEpoch((e) => e + 1);
-      }
+      if (remount) setEpoch((e) => e + 1);
     },
     [total],
   );
@@ -194,8 +159,9 @@ export default function HeroVideo({
       }
       playingRef.current = on;
       setPlaying(on);
+      if (!on) stopAll();
     },
-    [total, markStarted],
+    [total, markStarted, stopAll],
   );
 
   // Parámetros: ?t=segundos, ?autoplay=1, ?loop=1.
@@ -235,45 +201,16 @@ export default function HeroVideo({
         tRef.current = next;
         setT(next);
       }
+      // El audio sigue al reloj del video, igual que en el editor. Antes del
+      // primer play no suena nada: `playingRef` está en false y `sync` pausa.
+      sync(tRef.current, playingRef.current);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [total]);
+  }, [total, sync]);
 
-  // Después de un salto (o al montar el póster), las animaciones finitas de lo
-  // que quedó a la vista terminan en su estado final. Las infinitas (el giro
-  // del orbe, los pulsos) siguen su curso.
-  useLayoutEffect(() => {
-    if (!finishRef.current) return;
-    finishRef.current = false;
-    const stage = stageRef.current;
-    if (!stage) return;
-    for (const a of stage.getAnimations({ subtree: true })) {
-      if (a.effect?.getComputedTiming().endTime === Infinity) continue;
-      try {
-        a.finish();
-      } catch {
-        /* una animación sin fin declarado: se deja */
-      }
-    }
-  }, [epoch]);
-
-  // El escenario es de 1280×720 y se escala entero al tamaño del reproductor:
-  // un video no reacomoda, se agranda o se achica.
-  useEffect(() => {
-    const el = playerRef.current;
-    if (!el) return;
-    const fit = () => {
-      const { width, height } = el.getBoundingClientRect();
-      const scale = Math.min(width / STAGE_W, height / STAGE_H);
-      setBox({ scale, x: (width - STAGE_W * scale) / 2, y: (height - STAGE_H * scale) / 2 });
-    };
-    fit();
-    const ro = new ResizeObserver(fit);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const fit = useStageFit(playerRef);
 
   const toggleFullscreen = useCallback(() => {
     const el = playerRef.current;
@@ -400,31 +337,16 @@ export default function HeroVideo({
         onPointerDown={wake}
       >
         {/* ------------------------------------------------ el video */}
-        <div
-          ref={stageRef}
-          className={s.stage}
-          style={{ transform: `translate(${box.x}px, ${box.y}px) scale(${box.scale})` }}
-          aria-label={v.meta.description}
-          role="img"
-          data-stage=""
-        >
-          {beats.map((b, i) => {
-            if (shown < b.start || shown >= b.until) return null;
-            const Scene = SCENES[b.id];
-            // Las escenas piensan en su propio reloj; el chat puede ir apenas apretado.
-            const lt = (shown - b.start) / b.factor;
-            const z = b.exit && shown > b.end ? 40 : i * 2;
-            return (
-              <div
-                key={`${b.id}-${epoch}`}
-                className={s.sceneWrap}
-                style={{ zIndex: z, ...sceneStyle(b, beats[i + 1], shown) }}
-              >
-                <Scene lt={lt} v={v} vg={vg} locale={locale} paused={started && !playing} />
-              </div>
-            );
-          })}
-        </div>
+        <VideoStage
+          beats={beats}
+          t={shown}
+          epoch={epoch}
+          paused={started && !playing}
+          v={v}
+          locale={locale}
+          fit={fit}
+          label={v.meta.description}
+        />
 
         {/* Superficie de click: un click reproduce o pausa, doble click pantalla
             completa. Es un atajo de mouse: fuera del árbol accesible, porque el

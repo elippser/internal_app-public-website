@@ -1,0 +1,361 @@
+/* Copia de `rooms-app/web/src/components/EstadoHabitaciones/EstadoHabitaciones.module.css`
+   + los tokens de estado de su globals.css. Los tokens de tema los declara PmsShell. */
+
+.root {
+    --status-available: #22c55e;
+    --status-occupied: #ef4444;
+    --status-cleaning: #eab308;
+    --status-maintenance: #f97316;
+    --status-blocked: #6b7280;
+    --status-checkout-pending: #a855f7;
+    --st-available-bg: rgba(34, 197, 94, 0.12);
+    --st-occupied-bg: rgba(239, 68, 68, 0.12);
+    --st-cleaning-bg: rgba(234, 179, 8, 0.13);
+    --st-maintenance-bg: rgba(249, 115, 22, 0.13);
+    --st-blocked-bg: rgba(107, 114, 128, 0.15);
+    --st-checkout-pending-bg: rgba(168, 85, 247, 0.13);
+    --card-bg: var(--bg-surface);
+    --card-border: rgba(0, 0, 0, 0.08);
+    --text-faint: #94a3b8;
+    --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    min-height: 0;
+}
+
+/* ------------------------------------------------------------ toolbar ---- */
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.toolbarGroup {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg-surface) 93%, var(--text-primary));
+}
+
+.groupLabel {
+    padding: 0 6px 0 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.rangeBtn {
+    padding: 0 11px;
+    height: 26px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.rangeBtnActive {
+    background: var(--accent-color);
+    color: var(--accent-contrast);
+}
+
+.countChip {
+    height: 24px;
+    padding: 0 11px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent-color);
+    display: inline-flex;
+    align-items: center;
+}
+
+.countLabel {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+    padding: 0 11px 0 5px;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.search,
+.pickerBtn,
+.ghostBtn {
+    height: 30px;
+    padding: 0 13px;
+    font-size: 12.5px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: color-mix(in srgb, var(--bg-surface) 93%, var(--text-primary));
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search {
+    min-width: 150px;
+    color: var(--text-muted);
+}
+
+.pickerBtn {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.ghostBtn {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.ghostBtn svg {
+    width: 13px;
+    height: 13px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.chev {
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    opacity: 0.7;
+    margin-left: 4px;
+}
+
+/* --------------------------------------------------------------- tablero -- */
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    overflow: hidden;
+    align-items: stretch;
+    flex: 1;
+    min-height: 200px;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    position: relative;
+    border-right: 1px solid var(--border-default);
+    --card-surface: color-mix(in srgb, var(--bg-surface) 94%, var(--text-primary));
+    --card-surface-sel: color-mix(in srgb, var(--bg-surface) 87%, var(--text-primary));
+}
+
+.col:last-child {
+    border-right: none;
+}
+
+.col_available {
+    --col-accent: var(--status-available);
+    --col-bg: var(--st-available-bg);
+}
+.col_occupied {
+    --col-accent: var(--status-occupied);
+    --col-bg: var(--st-occupied-bg);
+}
+.col_cleaning {
+    --col-accent: var(--status-cleaning);
+    --col-bg: var(--st-cleaning-bg);
+}
+.col_maintenance {
+    --col-accent: var(--status-maintenance);
+    --col-bg: var(--st-maintenance-bg);
+}
+.col_blocked {
+    --col-accent: var(--status-blocked);
+    --col-bg: var(--st-blocked-bg);
+}
+.col_checkout_pending {
+    --col-accent: var(--status-checkout-pending);
+    --col-bg: var(--st-checkout-pending-bg);
+}
+
+.colHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border-default);
+    gap: 6px;
+}
+
+.colTitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--col-accent);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.colIcon {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--col-bg);
+    color: var(--col-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+}
+
+.colIcon svg,
+.emptyArt svg {
+    width: 13px;
+    height: 13px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.colCount {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-family: var(--font-mono);
+    background: var(--col-bg);
+    color: var(--col-accent);
+}
+
+.cardsList {
+    --bg-surface: var(--card-surface);
+    --bg-surface-hover: var(--card-surface-sel);
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.pop {
+    animation: pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+@keyframes pop {
+    from {
+        transform: scale(0.92);
+        opacity: 0.4;
+    }
+}
+
+.empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 30px 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.emptyArt {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--col-bg);
+    color: var(--col-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.85;
+}
+
+.emptyArt svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* --------------------------------------------------------------- leyenda -- */
+
+.legend {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.legendItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.legendSwatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--chip-accent);
+}
+
+.legendCount {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--chip-accent);
+}
+
+.legendHint {
+    margin-left: auto;
+}
+
+.s_available {
+    --chip-accent: var(--status-available);
+}
+.s_occupied {
+    --chip-accent: var(--status-occupied);
+}
+.s_cleaning {
+    --chip-accent: var(--status-cleaning);
+}
+.s_maintenance {
+    --chip-accent: var(--status-maintenance);
+}
+.s_blocked {
+    --chip-accent: var(--status-blocked);
+}
+.s_checkout_pending {
+    --chip-accent: var(--status-checkout-pending);
+}

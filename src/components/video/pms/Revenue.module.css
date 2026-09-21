@@ -1,0 +1,336 @@
+/* Copia de rms-app/web (página Recomendaciones: Tailwind + tokens --rms-*)
+   y del bloque RecommendationsBlock de RoombirRevenueBlocks.module.css. */
+
+.page {
+    --rms-accent: #2f74df;
+    --rms-muted: #64748b;
+    --rms-border: rgba(0, 0, 0, 0.08);
+    --card-border: #e5e7eb;
+    --text: #0f172a;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 6px 6px 0;
+    color: var(--text);
+}
+
+.head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.sub {
+    margin: 0;
+    font-size: 11.5px;
+    color: var(--rms-accent);
+}
+
+.tabs {
+    display: flex;
+    gap: 6px;
+}
+
+.tab {
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--rms-muted);
+    border: 1px solid var(--rms-border);
+}
+
+.tabActive {
+    background: var(--rms-accent);
+    color: #fff;
+    border-color: var(--rms-accent);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--card-border);
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.cardMain {
+    min-width: 0;
+}
+
+.cardTop {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.pill {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.rates {
+    margin-top: 4px;
+    font-size: 14px;
+}
+
+.rates strong {
+    font-weight: 700;
+}
+
+.reason {
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--rms-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 520px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    flex: none;
+}
+
+.accept,
+.reject {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: transform 0.12s ease;
+}
+
+.accept {
+    background: #10b981;
+    color: #fff;
+}
+
+.reject {
+    border: 1px solid var(--rms-border);
+    color: #ef4444;
+}
+
+/* -------------------------------------------------------- bloque del chat -- */
+
+.block {
+    --rev-bg: #ffffff;
+    --rev-bg-soft: #f8fafc;
+    --rev-border: #e2e8f0;
+    --rev-text: #0f172a;
+    --rev-text-muted: #64748b;
+    --rev-axis: #cbd5e1;
+    border: 1px solid var(--rev-border);
+    border-radius: 12px;
+    background: var(--rev-bg);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    padding: 14px;
+    color: var(--rev-text);
+    text-align: left;
+}
+
+.blockIn {
+    animation: blockIn 0.45s ease both;
+}
+
+@keyframes blockIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+}
+
+.blockHead {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.blockTitle {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.blockMeta {
+    font-size: 12px;
+    color: var(--rev-text-muted);
+    margin-left: auto;
+}
+
+.recGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(212px, 1fr));
+    gap: 10px;
+}
+
+.recCard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid var(--rev-border);
+    border-radius: 12px;
+    background: var(--rev-bg-soft);
+}
+
+.recHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.recDate {
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    border: 1px solid transparent;
+}
+
+.tonePositive {
+    background: rgba(22, 163, 74, 0.1);
+    border-color: rgba(22, 163, 74, 0.22);
+    color: #15803d;
+}
+
+.toneWarn {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: rgba(245, 158, 11, 0.26);
+    color: #b45309;
+}
+
+.toneMuted {
+    background: var(--rev-bg-soft);
+    border-color: var(--rev-border);
+    color: var(--rev-text-muted);
+}
+
+.recRates {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    color: var(--rev-text-muted);
+}
+
+.recRates svg {
+    width: 14px;
+    height: 14px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.recFrom {
+    font-size: 12px;
+    text-decoration: line-through;
+    text-decoration-color: rgba(100, 116, 139, 0.5);
+}
+
+.recTo {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--rev-text);
+    letter-spacing: -0.02em;
+}
+
+.recDeltaUp {
+    font-size: 12px;
+    font-weight: 650;
+    color: #15803d;
+}
+
+.recDeltaDown {
+    font-size: 12px;
+    font-weight: 650;
+    color: #dc2626;
+}
+
+.recReason {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--rev-text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.recActions {
+    display: flex;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.btnPrimary,
+.btnGhost {
+    flex: 1;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid transparent;
+}
+
+.btnPrimary {
+    background: var(--accent-color, #4e6b28);
+    color: var(--accent-text, #fff);
+}
+
+.btnGhost {
+    background: var(--rev-bg);
+    border-color: var(--rev-border);
+    color: var(--rev-text-muted);
+}
+
+.footnote {
+    margin: 8px 0 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--rev-text-muted);
+}

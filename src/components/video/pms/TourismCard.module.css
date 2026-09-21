@@ -1,0 +1,237 @@
+/* La tarjeta del estado turístico: copia de TourismStatusCard.module.css
+   (pms-core/app) sobre los tokens --ch-* de `.shell` (ChatUi). Las métricas
+   entran una por una con el mismo fade del original. */
+
+@keyframes tsFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes tsPulse {
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes tsCaret {
+    50% {
+        opacity: 0;
+    }
+}
+
+.card {
+    margin: 0;
+    padding: 14px 16px 12px;
+    border: 1px solid var(--ch-border, #e2e8f0);
+    border-radius: var(--ch-r-lg, 12px);
+    background: var(--ch-surface, #ffffff);
+    box-shadow: var(--ch-shadow-card, none);
+    animation: tsFadeIn 0.35s ease both;
+    text-align: left;
+}
+
+.block {
+    margin: 4px 0 14px;
+}
+
+.head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 12px;
+}
+
+.titleWrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    flex: none;
+    color: var(--ch-accent-ink, currentColor);
+}
+
+.icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ch-text-strong, #0f172a);
+}
+
+.updated {
+    font-size: 12px;
+    color: var(--ch-text-3, #64748b);
+    white-space: nowrap;
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.metric {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--ch-divider, #eef1f6);
+    border-radius: var(--ch-r-md, 10px);
+    background: var(--ch-surface-2, #f8fafc);
+    animation: tsFadeIn 0.4s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+}
+
+.value {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 17px;
+    font-weight: 650;
+    line-height: 1.25;
+    color: var(--ch-text-strong, #0f172a);
+    font-variant-numeric: tabular-nums;
+}
+
+.trendUp,
+.trendDown {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    flex: none;
+}
+
+.trendUp svg,
+.trendDown svg {
+    width: 16px;
+    height: 16px;
+}
+
+.trendUp {
+    color: var(--ch-ok, #16a34a);
+}
+
+.trendDown {
+    color: var(--ch-danger, #dc2626);
+}
+
+.label {
+    font-size: 12px;
+    color: var(--ch-text-2, #475569);
+}
+
+.hint {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 11.5px;
+    line-height: 1.35;
+    color: var(--ch-text-3, #64748b);
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 8px 10px;
+    border-radius: var(--ch-r-md, 10px);
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: #b45309;
+    background: #fef3c7;
+    animation: tsFadeIn 0.35s ease both;
+}
+
+.alertIcon {
+    display: inline-flex;
+    width: 15px;
+    height: 15px;
+    flex: none;
+    margin-top: 1px;
+}
+
+.alertIcon svg {
+    width: 15px;
+    height: 15px;
+}
+
+.synthesis {
+    margin-top: 12px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ch-text, #0f172a);
+}
+
+.synthesis p {
+    margin: 0;
+}
+
+.streaming::after {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 0.95em;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    background: currentColor;
+    animation: tsCaret 0.9s steps(2) infinite;
+}
+
+.skeleton {
+    display: block;
+    width: 70%;
+    height: 12px;
+    border-radius: 6px;
+    background: var(--ch-surface-3, #f1f5f9);
+    animation: tsPulse 1.2s ease-in-out infinite;
+}
+
+.foot {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border: 1px solid var(--ch-border, #e2e8f0);
+    border-radius: var(--ch-r-md, 10px);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ch-accent-ink, currentColor);
+    background: var(--ch-surface, #ffffff);
+}
+
+.more svg {
+    width: 14px;
+    height: 14px;
+}

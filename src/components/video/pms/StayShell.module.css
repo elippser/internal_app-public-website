@@ -1,0 +1,102 @@
+/* Copia de GuestTopbar.module.css y HomeDashboard.module.css (StayPass, tema
+   claro) con los tokens de su globals.css. */
+
+.portal {
+    --bg: #f4f2ed;
+    --bg2: #ffffff;
+    --bg3: #eceae3;
+    --ink: #1a1916;
+    --ink2: #7a7870;
+    --ink3: #b0ada5;
+    --green: #1d6b52;
+    --green-lt: #e8f2ee;
+    --border: rgba(26, 25, 22, 0.09);
+
+    height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Instrument Sans", var(--sans), system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.topbar {
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    flex: none;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.logoStayPass {
+    color: #c6613f;
+    letter-spacing: 0.02em;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.nav {
+    display: flex;
+    gap: 2px;
+    background: var(--bg3);
+    border-radius: 20px;
+    padding: 3px;
+}
+
+.navTab {
+    padding: 3px 12px;
+    border-radius: 17px;
+    font-size: 11.5px;
+    color: var(--ink2);
+}
+
+.navTabActive {
+    background: var(--bg2);
+    color: var(--ink);
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.userPill {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+}
+
+.avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--green-lt);
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.homeWrap {
+    padding: 4px 0 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionHeader {
+    order: -1;
+    display: none;
+}

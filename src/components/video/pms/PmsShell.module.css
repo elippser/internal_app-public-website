@@ -1,0 +1,344 @@
+/* El cascarón del PMS (tema claro, riel colapsado). Medidas de
+   DashboardSideBar.module.css y (appLayout)/styles.css de pms-core/app. */
+
+.app {
+    --accent-color: #4e6b28;
+    --accent-soft: rgba(78, 107, 40, 0.16);
+    --accent-strong: rgba(78, 107, 40, 0.28);
+    --accent-contrast: #ffffff;
+    --accent-text: #ffffff;
+    --app-bg: #f0f0f3;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --bg-surface: #ffffff;
+    --bg-surface-hover: #f1f3f5;
+    --border-default: rgba(0, 0, 0, 0.06);
+    --border-strong: rgba(148, 163, 184, 0.3);
+    --danger: #ef4444;
+    --radius-lg: 14px;
+
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--app-bg);
+    color: var(--text-primary);
+    font-family: "DM Sans", var(--sans), system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: left;
+    font-variant-numeric: tabular-nums;
+}
+
+/* La ventana grande de las escenas 10, 16 y 18 (el usuario pidió "redondear más
+   los bordes de la interfaz" ahí). Las tarjetas de módulo siguen en 12. */
+.app.round {
+    border-radius: 26px;
+}
+
+/* ------------------------------------------------------------- riel ------ */
+
+.rail {
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    left: 5px;
+    width: 50px;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 8px 0;
+    color: #fff;
+    /* La foto de Mojave de noche bajo el velo rgba(14,16,24,.7): un azul
+       profundo con un leve degradado. */
+    background: linear-gradient(180deg, #1b2032 0%, #0f1220 55%, #0b0d14 100%);
+    z-index: 3;
+}
+
+.railTop,
+.railBottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+}
+
+.railNav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    width: 100%;
+}
+
+.iconBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+}
+
+.iconBtn svg {
+    width: 15px;
+    height: 15px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.logoBtn {
+    background: #fff;
+    border-color: transparent;
+}
+
+.navBtn {
+    background: transparent;
+    border-color: transparent;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* La ficha activa, de vidrio (navThumb). */
+.navActive {
+    color: #fff;
+    background-color: rgba(109, 109, 109, 0.2);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+        inset 2px 1px 0 -1px rgba(255, 255, 255, 0.17),
+        inset -1.5px -1px 0 -1px rgba(255, 255, 255, 0.34);
+}
+
+/* El botón de Roombir IA con sus dos brillos (aiHubLink::before/::after). */
+.aiHub {
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+}
+
+.aiHub::before,
+.aiHub::after {
+    content: "";
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(9px);
+    pointer-events: none;
+}
+
+.aiHub::before {
+    width: 40px;
+    height: 26px;
+    left: 70%;
+    top: -12px;
+    transform: translateX(-50%);
+    background: rgba(255, 118, 226, 0.5);
+}
+
+.aiHub::after {
+    width: 52px;
+    height: 34px;
+    left: 30%;
+    bottom: -16px;
+    transform: translateX(-50%);
+    background: rgba(164, 197, 253, 0.6);
+}
+
+.aiIcon {
+    position: relative;
+    z-index: 1;
+    width: 18px !important;
+    height: 18px !important;
+    stroke: none !important;
+}
+
+/* --------------------------------------------------------- barra arriba --- */
+
+.top {
+    position: absolute;
+    top: 0;
+    left: 65px;
+    right: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 0 10px;
+}
+
+.topLeft,
+.topRight {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.scopeChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(14, 16, 24, 0.14);
+    background: rgba(14, 16, 24, 0.06);
+    color: #0b0d14;
+    font-size: 12.5px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.scopeChip svg {
+    width: 13px;
+    height: 13px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.chev {
+    width: 6px;
+    height: 6px;
+    margin-left: 2px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    opacity: 0.7;
+}
+
+.navIconBtn {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(14, 16, 24, 0.06);
+    color: #0b0d14;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navIconBtn svg {
+    width: 15px;
+    height: 15px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.bell b {
+    position: absolute;
+    top: -3px;
+    right: -6px;
+    padding: 1px 4px;
+    border-radius: 999px;
+    background: #e11d48;
+    color: #fff;
+    font-size: 8.5px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.profile {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    display: grid;
+    place-items: center;
+    border: 2px solid rgba(14, 16, 24, 0.14);
+}
+
+/* ----------------------------------------------------------- contenido --- */
+
+.shell {
+    position: absolute;
+    top: 50px;
+    left: 60px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fbfbfc;
+    border-top: 1px solid #ededed;
+    display: flex;
+    flex-direction: column;
+}
+
+/* La barra de pestañas de las apps embebidas (NavTabs): gris, la activa se
+   funde con la página. */
+.tabs {
+    display: flex;
+    gap: 2px;
+    padding: 7px 10px 0 16px;
+    background: #e9eae9;
+    flex: none;
+}
+
+.tab {
+    position: relative;
+    padding: 6px 16px 9px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-radius: 10px 10px 0 0;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+}
+
+.tabActive {
+    color: var(--accent-color);
+    font-weight: 700;
+    background: #fbfbfc;
+    margin-bottom: -1px;
+}
+
+.tabActive::before,
+.tabActive::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.tabActive::before {
+    left: -18px;
+    box-shadow: 9px 9px 0 #fbfbfc;
+}
+
+.tabActive::after {
+    right: -18px;
+    box-shadow: -9px 9px 0 #fbfbfc;
+}
+
+.page {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    padding: 10px;
+    overflow: hidden;
+}

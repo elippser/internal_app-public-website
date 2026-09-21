@@ -1,0 +1,825 @@
+/* LinkHub público (linkhub.module.css + themeToVars con el tema real del hotel
+   de prueba: plantilla degradé, botones blancos, texto vino) y el motor de
+   reservas en móvil (motorCss.ts: msearch overlay, calendario, resultados). */
+
+.root {
+    --lh-bg: linear-gradient(160deg, #d3a6ab, #ffffff);
+    --lh-text: #0a0a0a;
+    --lh-text-secondary: rgba(10, 10, 10, 0.82);
+    --lh-primary: #ffffff;
+    --lh-radius: 999px;
+    --lh-radius-media: 18px;
+    --lh-btn-bg: #ffffff;
+    --lh-btn-text: #5e1313;
+    --lh-btn-invert-bg: #5e1313;
+    --lh-btn-invert-text: #ffffff;
+    --lh-chip-bg: rgba(18, 18, 22, 0.5);
+    --lh-chip-text: #ffffff;
+    --lh-avatar-ring: rgba(255, 255, 255, 0.45);
+    --motor-primary: #5e1313;
+    --motor-border: #e2e8f0;
+    --motor-surface: #f1f5f9;
+    --motor-muted: #64748b;
+    --motor-fg: #0f172a;
+
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--lh-text);
+    text-align: center;
+}
+
+.stage {
+    position: relative;
+    height: 100%;
+    background: var(--lh-bg);
+    overflow: hidden;
+}
+
+.stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+}
+
+.topBar {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chip {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--lh-chip-bg);
+    color: var(--lh-chip-text);
+    backdrop-filter: blur(8px);
+}
+
+.chip svg {
+    width: 15px;
+    height: 15px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 56px 18px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.avatar {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 0 3px var(--lh-avatar-ring), 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.avatarFallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--lh-btn-text);
+    background: var(--lh-btn-bg);
+}
+
+.nameRow {
+    margin-top: 2px;
+}
+
+.displayName {
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+}
+
+.bio {
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--lh-text-secondary);
+    max-width: 30ch;
+}
+
+.links {
+    width: 100%;
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.block {
+    width: 100%;
+}
+
+.button,
+.motorBar {
+    width: 100%;
+    background: var(--lh-btn-bg);
+    color: var(--lh-btn-text);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    box-sizing: border-box;
+    transition: transform 0.14s ease, filter 0.15s ease;
+}
+
+.button {
+    min-height: 50px;
+    padding: 10px 12px;
+    border-radius: var(--lh-radius);
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    align-items: center;
+}
+
+.btnIcon,
+.btnTypeIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnIcon svg {
+    width: 19px;
+    height: 19px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.btnBody {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btnTitle {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.motorBar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 8px 10px 10px;
+    border-radius: var(--lh-radius-media);
+}
+
+.motorHead {
+    width: 100%;
+    min-height: 36px;
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    align-items: center;
+}
+
+.motorFields {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.motorField {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    padding: 8px 9px;
+    border-radius: 10px;
+    background: color-mix(in srgb, currentColor 9%, transparent);
+    text-align: left;
+}
+
+.motorLabel {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    white-space: nowrap;
+}
+
+.motorValue {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.motorSearch {
+    width: 100%;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: var(--lh-radius);
+    background: var(--lh-btn-invert-bg);
+    color: var(--lh-btn-invert-text);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.motorSearchIcon {
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+}
+
+.motorSearchIcon svg {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.socialRow {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.socialLink {
+    color: var(--lh-text);
+    opacity: 0.9;
+    display: inline-flex;
+}
+
+.socialLink svg {
+    width: 21px;
+    height: 21px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.footer {
+    margin-top: auto;
+    padding-top: 26px;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: var(--lh-text-secondary);
+}
+
+/* ---------------------------------------------------- motor: búsqueda ---- */
+
+.msearch {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: color-mix(in srgb, #fff 62%, transparent);
+    backdrop-filter: blur(8px);
+    color: var(--motor-fg);
+    text-align: left;
+}
+
+.msTop {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.idcard {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 30px;
+    border: 1px solid var(--motor-border);
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1);
+}
+
+.idIcon {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    color: var(--motor-primary);
+    background: color-mix(in srgb, var(--motor-primary) 12%, transparent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+}
+
+.idIcon svg,
+.msClose svg,
+.summaryBtn svg {
+    width: 16px;
+    height: 16px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.idText {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.idTitle {
+    font-size: 13.5px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.idSub {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--motor-muted);
+}
+
+.msClose {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--motor-border);
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #334155;
+    flex: none;
+}
+
+.calModal {
+    flex: 1;
+    min-height: 0;
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.14);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.calTabs {
+    position: relative;
+    display: flex;
+    background: var(--motor-surface);
+    border-radius: 999px;
+    padding: 4px;
+    margin: 12px auto 0;
+    width: 240px;
+}
+
+.calThumb {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    background: #fff;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.calTab {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--motor-muted);
+    padding: 6px 0;
+}
+
+.calTabActive {
+    color: var(--motor-fg);
+}
+
+.calHeader {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px 6px;
+}
+
+.calNav {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--motor-border);
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    font-size: 16px;
+    color: #171717;
+}
+
+.calTitle {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.calWeekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 0 12px;
+}
+
+.calWeekdays span {
+    text-align: center;
+    height: 28px;
+    line-height: 28px;
+    font-size: 10.5px;
+    font-weight: 600;
+    opacity: 0.55;
+    text-transform: uppercase;
+}
+
+.calGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 2px;
+    padding: 0 12px 10px;
+}
+
+.calDay {
+    --cal-disc: 82%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    aspect-ratio: 1;
+    width: 100%;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--motor-fg);
+    z-index: 0;
+}
+
+.calDay::before,
+.calDay::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.calDisabled {
+    opacity: 0.32;
+}
+
+.calInRange::before {
+    left: 0;
+    right: 0;
+    height: var(--cal-disc);
+    background: color-mix(in srgb, var(--motor-primary) 14%, transparent);
+    z-index: 0;
+}
+
+.calStart::before {
+    left: 50%;
+    right: 0;
+    height: var(--cal-disc);
+    background: color-mix(in srgb, var(--motor-primary) 14%, transparent);
+}
+
+.calEnd::before {
+    left: 0;
+    right: 50%;
+    height: var(--cal-disc);
+    background: color-mix(in srgb, var(--motor-primary) 14%, transparent);
+}
+
+.calSelected {
+    color: #fff;
+    font-weight: 600;
+}
+
+.calSelected::after {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--cal-disc);
+    height: var(--cal-disc);
+    border-radius: 9999px;
+    background: var(--motor-primary);
+    z-index: 1;
+}
+
+.calUnits {
+    z-index: 2;
+    font-size: 7.5px;
+    line-height: 1;
+    font-weight: 400;
+    color: color-mix(in srgb, var(--motor-fg) 60%, var(--motor-muted));
+}
+
+.calNum {
+    z-index: 2;
+    line-height: 1;
+    font-size: 14px;
+}
+
+.calPrice {
+    z-index: 2;
+    font-size: 8.5px;
+    line-height: 1;
+    color: color-mix(in srgb, var(--motor-primary) 80%, var(--motor-fg));
+}
+
+.calSelected .calUnits,
+.calSelected .calPrice {
+    color: #fff;
+    opacity: 0.9;
+}
+
+.calDot {
+    position: absolute;
+    top: 6px;
+    right: 7px;
+    z-index: 2;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #22c55e;
+}
+
+.msActions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.msBtn {
+    height: 44px;
+    border-radius: 30px;
+    font-size: 13.5px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+    transition: transform 0.12s ease;
+}
+
+.msBtnGhost {
+    background: #fff;
+    border: 1px solid var(--motor-border);
+    color: #475569;
+}
+
+.msBtnAccent {
+    background: var(--motor-primary);
+    border: 1px solid var(--motor-primary);
+    color: #fff;
+}
+
+/* --------------------------------------------------- motor: resultados ---- */
+
+.sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 5%;
+    z-index: 6;
+    background: #fff;
+    border-radius: 19px 19px 0 0;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    padding: 24px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: var(--motor-fg);
+    text-align: left;
+    overflow: hidden;
+}
+
+.dragHandle {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 6px;
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.msearchBar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    padding: 6px 6px 6px 14px;
+    border-radius: 30px;
+    border: 1px solid var(--motor-border);
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+}
+
+.summaryText {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.summaryTitle {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.summarySub {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--motor-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.summaryBtn {
+    flex: none;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+    border-radius: 30px;
+    background: var(--motor-primary);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+}
+
+.summaryBtn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.resultsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.resultCard {
+    border-radius: 12px;
+    background: rgba(134, 134, 134, 0.14);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.resultChosen {
+    box-shadow: 0 0 0 2px var(--motor-primary);
+    transform: translateY(-2px);
+}
+
+.resultImg {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    background: var(--motor-surface);
+    overflow: hidden;
+    border-radius: 12px 12px 0 0;
+}
+
+.resultImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.resultBody {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.resultName {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.resultSub {
+    font-size: 10.5px;
+    color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.resultPrice {
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.resultUnit {
+    font-size: 11px;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.bookBar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px 14px 14px;
+    background: linear-gradient(to top, #fff 70%, rgba(255, 255, 255, 0));
+    display: flex;
+    justify-content: center;
+}
+
+.bookBtn {
+    width: 100%;
+    padding: 12px 24px;
+    border-radius: 100px;
+    background: var(--motor-primary);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}

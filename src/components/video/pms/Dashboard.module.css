@@ -1,0 +1,522 @@
+/* Copia de `pms-core/app/src/components/appComponents/dashboardView/DashboardView.module.css`
+   (tema claro, riel a la izquierda). */
+
+.root {
+    --dash-card: #ffffff;
+    --dash-dark: #0e1018;
+    --dash-green: #269a52;
+    --dash-pink: #f43f8e;
+    --dash-text: #111827;
+    --dash-muted: #8b8fa8;
+    --dash-border: #e5e7eb;
+    --dash-radius: 16px;
+    --dash-purple-lt: color-mix(in srgb, var(--accent-color) 45%, white);
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 16px;
+    padding: 0;
+    height: 100%;
+    color: var(--dash-text);
+    font-family: "DM Sans", var(--sans), system-ui, sans-serif;
+}
+
+.left,
+.right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 0;
+}
+
+.statRow {
+    display: grid;
+    grid-template-columns: 120px 120px repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.actionCard {
+    position: relative;
+    border-radius: 12px;
+    border: 1px solid rgba(14, 16, 24, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 10px;
+    font-weight: 700;
+    font-size: 13.5px;
+    min-height: 118px;
+}
+
+.actionCard svg {
+    width: 26px;
+    height: 26px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cardCheckin {
+    color: #166534;
+    background-color: rgba(22, 255, 110, 0.48);
+}
+
+.cardCheckin svg {
+    color: var(--dash-green);
+}
+
+.cardCheckout {
+    color: var(--dash-text);
+    background: rgba(134, 193, 245, 0.62);
+}
+
+.actionCount {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(14, 16, 24, 0.1);
+    border-radius: 999px;
+    padding: 3px 9px;
+    min-width: 22px;
+    text-align: center;
+}
+
+.metricCard {
+    position: relative;
+    background: var(--dash-card);
+    border: 1px solid var(--dash-border);
+    border-radius: var(--dash-radius);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 118px;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.metricLabel {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.metricSub {
+    font-size: 10.5px;
+    color: var(--dash-muted);
+}
+
+.metricVal {
+    font-size: 30px;
+    font-weight: 800;
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin-top: 6px;
+    letter-spacing: -0.5px;
+}
+
+.badgeUp {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dash-green);
+}
+
+.spark {
+    width: 100%;
+    height: 44px;
+    margin-top: 6px;
+    max-width: none;
+}
+
+/* ------------------------------------------------------------- tabla ---- */
+
+.tableCard {
+    background: var(--dash-card);
+    border: 1px solid var(--dash-border);
+    border-radius: var(--dash-radius);
+    padding: 18px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.tableHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.tableTitle {
+    font-size: 14.5px;
+    font-weight: 700;
+}
+
+.tableSubtitle {
+    font-size: 11px;
+    color: var(--dash-muted);
+    margin-top: 2px;
+}
+
+.filterBtn {
+    border: 1px solid var(--dash-border);
+    border-radius: 8px;
+    padding: 5px 11px;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.filterBtn svg {
+    width: 11px;
+    height: 11px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+}
+
+.table th {
+    text-align: left;
+    color: var(--dash-muted);
+    font-weight: 500;
+    padding: 0 10px 10px;
+    white-space: nowrap;
+}
+
+.table td {
+    padding: 9px 10px;
+    vertical-align: middle;
+    white-space: nowrap;
+    border-top: 1px solid var(--dash-border);
+}
+
+.resCode {
+    display: block;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.cellSub {
+    display: block;
+    margin-top: 2px;
+    font-size: 10.5px;
+    color: var(--dash-muted);
+    max-width: 18ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.guestCell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatarMini {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--dash-purple-lt);
+    color: #14150f;
+    font-size: 11px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--dash-border);
+    flex: none;
+}
+
+.guestText {
+    display: flex;
+    flex-direction: column;
+}
+
+.guestName {
+    font-weight: 600;
+}
+
+.amountCell {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.statusPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.statusDot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.sPending {
+    background: rgba(234, 179, 8, 0.14);
+    color: #a16207;
+}
+
+.sConfirmed {
+    background: rgba(34, 197, 94, 0.13);
+    color: #15803d;
+}
+
+.sCheckedIn {
+    background: rgba(71, 197, 255, 0.14);
+    color: #0369a1;
+}
+
+.arrowCell {
+    width: 1%;
+}
+
+.arrowBtn {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    color: var(--dash-muted);
+    font-size: 16px;
+}
+
+.tableFooter {
+    margin-top: auto;
+    padding-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.seeMore {
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--accent-color);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* --------------------------------------------------------- columna ------ */
+
+.chartCard,
+.catCard,
+.quickCard {
+    background: var(--dash-card);
+    border: 1px solid var(--dash-border);
+    border-radius: var(--dash-radius);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.cardTop {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 8px;
+}
+
+.cardTopTitle {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.cardTopSub {
+    font-size: 10.5px;
+    color: var(--dash-muted);
+    margin-top: 2px;
+}
+
+.topBtn {
+    border: 1px solid var(--dash-border);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 11.5px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.deltaChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.deltaUp {
+    color: var(--dash-green);
+    background: color-mix(in srgb, var(--dash-green) 14%, transparent);
+}
+
+.barsWrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 18px;
+    height: 118px;
+    padding: 0 8px;
+    border-bottom: 1px dashed var(--dash-border);
+}
+
+.barCol {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    width: 46px;
+}
+
+.barVal {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--dash-muted);
+    margin-bottom: 4px;
+}
+
+.barFill {
+    display: block;
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    background: var(--accent-color);
+    animation: growBar 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    transform-origin: bottom;
+}
+
+@keyframes growBar {
+    from {
+        transform: scaleY(0);
+    }
+}
+
+.barMonth {
+    position: absolute;
+    top: 100%;
+    margin-top: 6px;
+    font-size: 10.5px;
+    color: var(--dash-muted);
+    white-space: nowrap;
+}
+
+.catList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.catRow {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.catRowHead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.catName {
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.catNums {
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+.catTrack {
+    height: 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+    overflow: hidden;
+}
+
+.catFill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--accent-color);
+}
+
+.quickGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.quickItem {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 10px;
+    border: 1px solid var(--dash-border);
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.quickIcon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+    color: var(--accent-color);
+    display: grid;
+    place-items: center;
+    flex: none;
+}
+
+.quickIcon svg {
+    width: 14px;
+    height: 14px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}

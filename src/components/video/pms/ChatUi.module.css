@@ -11,26 +11,26 @@
 
 .shell {
     /* superficies */
-    --ch-surface: #fbfaf7;
-    --ch-surface-2: #f5f2ea;
-    --ch-surface-3: #ece8dd;
-    --ch-page: #fbfaf7;
+    --ch-surface: #ffffff;
+    --ch-surface-2: #f8fafc;
+    --ch-surface-3: #f1f5f9;
+    --ch-page: #ffffff;
     /* bordes */
-    --ch-border: #ddd8ca;
-    --ch-border-strong: #cec8b6;
-    --ch-divider: #e9e5db;
+    --ch-border: #e2e8f0;
+    --ch-border-strong: #cbd5e1;
+    --ch-divider: #eef1f6;
     /* texto */
-    --ch-text: #242424;
-    --ch-text-strong: #14150f;
-    --ch-text-2: #242424;
-    --ch-text-3: #63665a;
-    --ch-text-4: #8b8d80;
-    /* acento: el del sitio (tinta para la burbuja, musgo como tinta de acento) */
-    --accent-color: #14150f;
-    --accent-text: #f2efe8;
-    --accent-soft: #dfeac4;
-    --accent-strong: #4e6b28;
-    --ch-accent-ink: #4e6b28;
+    --ch-text: #1e293b;
+    --ch-text-strong: #0f172a;
+    --ch-text-2: #475569;
+    --ch-text-3: #64748b;
+    --ch-text-4: #94a3b8;
+    /* acento: el del PMS por defecto (themeBoot DEFAULT_ACCENT) */
+    --accent-color: #4e6b28;
+    --accent-text: #ffffff;
+    --accent-soft: rgba(78, 107, 40, 0.16);
+    --accent-strong: rgba(78, 107, 40, 0.28);
+    --ch-accent-ink: var(--accent-color);
     /* sombras y radios: los del chat */
     --ch-shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04);
     --ch-r-sm: 8px;
@@ -118,6 +118,17 @@
 
 .placeholder {
     color: var(--ch-text-4);
+}
+
+/* El espejo de medición: hereda la tipografía del campo pero no ocupa lugar
+   ni se ve. `pre` a propósito, que lo que se mide es el ancho de UNA línea. */
+.ghost {
+    position: absolute;
+    left: 0;
+    top: 0;
+    visibility: hidden;
+    pointer-events: none;
+    white-space: pre;
 }
 
 .caret {
@@ -599,4 +610,35 @@
     to {
         transform: none;
     }
+}
+
+/* Adjuntar (izquierda) y dictar (junto al enviar): RoombirChatView.module.css */
+.attachBtn,
+.micBtn {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--ch-text-3);
+}
+
+.attachBtn svg,
+.micBtn svg {
+    width: 17px;
+    height: 17px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.micBtn {
+    width: 36px;
+    height: 36px;
+    background: var(--ch-surface-3);
+    color: var(--ch-text-2);
 }

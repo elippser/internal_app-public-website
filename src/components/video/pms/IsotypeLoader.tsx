@@ -231,6 +231,7 @@ export default function IsotypeLoader({
     let ticker = 0;
     let request = 0;
     let lastTime = 0;
+    let stillDrawn = false;
     const interval = 1000 / 60;
 
     const animate = () => {
@@ -239,7 +240,21 @@ export default function IsotypeLoader({
       const diff = now - lastTime;
       if (diff < interval) return;
       lastTime = now - (diff % interval);
-      if (pausedRef.current) return;
+      if (pausedRef.current) {
+        // Pausado antes de dibujar nada —el video quieto, o alguien que salta
+        // justo acá con la barra— se pinta el isotipo ENTERO una vez. Sin esto
+        // el canvas queda en blanco y la app parece rota en vez de arrancando.
+        if (!stillDrawn && ticker === 0) {
+          stillDrawn = true;
+          ctx.clearRect(0, 0, width, height);
+          for (const pixel of pixels) {
+            pixel.rest();
+            pixel.draw(ctx);
+          }
+        }
+        return;
+      }
+      stillDrawn = false;
 
       ctx.clearRect(0, 0, width, height);
       if (phase === "show") {

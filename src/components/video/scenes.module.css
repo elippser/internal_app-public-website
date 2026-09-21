@@ -1,6 +1,7 @@
 /* ============================================================================
- * Las escenas del video: composición, tipografía cinética y las piezas que
- * operan la UI reciclada (cursor, selección, etiquetas, ventanas sueltas).
+ * Las escenas del video: composición, tipografía cinética, la línea que se
+ * enreda, las tarjetas 3D sobre el degradado y las piezas que operan la UI
+ * reciclada (cursor, toque, selección).
  *
  * Todo el movimiento propio lo escribe el reloj en `style`; acá van formas,
  * colores y las pocas animaciones que laten solas (pulso de la selección).
@@ -18,8 +19,8 @@
     inset: 0;
 }
 
-.ink {
-    background: var(--ink);
+.inkBg {
+    background: #151a10;
     color: var(--text-ink);
 }
 
@@ -28,14 +29,72 @@
     color: var(--text);
 }
 
-/* Trama de puntos muy tenue sobre el papel: el "escritorio" de las pantallas. */
-.paperGrid {
+/* El resplandor arcilla al pie del primer plano: el "dolor" tiene color. */
+.clayGlow {
     position: absolute;
     inset: 0;
+    background: radial-gradient(60% 45% at 50% 108%, rgba(167, 84, 50, 0.34) 0%, rgba(167, 84, 50, 0) 100%);
     pointer-events: none;
-    background-image: radial-gradient(rgba(20, 21, 15, 0.14) 1px, transparent 1.2px);
-    background-size: 26px 26px;
-    mask-image: radial-gradient(70% 70% at 50% 50%, #000 30%, transparent 100%);
+}
+
+.svgLayer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    pointer-events: none;
+    overflow: visible;
+}
+
+/* ------------------------------------------------------------ degradado -- */
+
+.gradient {
+    background: #17200f;
+    overflow: hidden;
+}
+
+.gA,
+.gB,
+.gC {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    will-change: transform;
+}
+
+.gA {
+    left: -8%;
+    top: -22%;
+    width: 760px;
+    height: 640px;
+    background: #9dc25a;
+    opacity: 0.85;
+}
+
+.gB {
+    right: -12%;
+    top: 10%;
+    width: 720px;
+    height: 620px;
+    background: #d9a24c;
+    opacity: 0.8;
+}
+
+.gC {
+    left: 26%;
+    bottom: -34%;
+    width: 820px;
+    height: 620px;
+    background: #a75432;
+    opacity: 0.75;
+}
+
+.gGrain {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(80% 60% at 50% 40%, rgba(255, 255, 255, 0.06) 0%, rgba(0, 0, 0, 0) 60%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(21, 26, 16, 0.5) 100%);
 }
 
 /* ------------------------------------------------------------ tipografía -- */
@@ -45,28 +104,47 @@
     inset: 0;
     display: grid;
     place-items: center;
-    padding: 0 104px;
+    padding: 0 96px;
     text-align: center;
     transform-origin: center;
     perspective: 900px;
 }
 
+.corner {
+    position: absolute;
+    text-align: left;
+}
+
 .display,
-.displaySm {
+.displaySm,
+.displayXl {
     margin: 0;
     font-weight: 600;
     letter-spacing: -0.035em;
-    line-height: 1.06;
+    line-height: 1.08;
     text-wrap: balance;
     transform-style: preserve-3d;
 }
 
 .display {
-    font-size: 74px;
+    font-size: 72px;
 }
 
 .displaySm {
-    font-size: 60px;
+    font-size: 58px;
+}
+
+.displayXl {
+    font-size: 88px;
+    letter-spacing: -0.04em;
+}
+
+.dim {
+    color: #7d8074;
+}
+
+.onInk {
+    color: var(--text-ink);
 }
 
 .word {
@@ -89,7 +167,9 @@
     padding: 0 0.04em;
 }
 
-.ink .wordEm {
+.onInk .wordEm,
+.ink .wordEm,
+.inkBg .wordEm {
     color: var(--brand-bright);
 }
 
@@ -107,207 +187,71 @@
     transform-origin: left center;
 }
 
-.dimInk {
-    color: var(--text-ink-2);
+/* El titular que NO quiere el argumento en itálica: la palabra marcada con
+   `*así*` queda IGUAL que el resto —Outfit, mismo peso, mismo tamaño, blanca y
+   sin el subrayado—. Lo pidió el usuario para "Un solo sistema." (`unfold`,
+   20-09-2026). `color: inherit` tiene que ir sí o sí: sin él gana
+   `.inkBg .wordEm`, que la pinta con el verde de marca. */
+.plainEm .wordEm {
+    font-family: inherit;
+    font-style: normal;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    font-size: 1em;
+    padding: 0;
+    color: inherit;
 }
 
-/* El tachado se dibuja de izquierda a derecha, en pistacho. */
-.struck {
+.plainEm .wordEm::after {
+    content: none;
+}
+
+/* Lo tachado a mano: el garabato se dibuja encima. */
+.struckWrap {
     position: relative;
-    color: color-mix(in srgb, var(--text-ink) calc(100% - var(--strike, 0) * 45%), #6f7166);
-}
-
-.struck::after {
-    content: "";
-    position: absolute;
-    left: -1.5%;
-    right: -1.5%;
-    top: 55%;
-    height: 6px;
-    border-radius: 3px;
-    background: var(--brand-bright);
-    transform: scaleX(var(--strike, 0));
-    transform-origin: left center;
+    display: inline-block;
 }
 
 .tabular {
     font-variant-numeric: tabular-nums;
 }
 
-/* ---------------------------------------------------------------- aurora -- */
-
-.aurora {
-    position: absolute;
-    inset: -20%;
-    pointer-events: none;
-}
-
-.blobA,
-.blobB {
-    position: absolute;
-    width: 640px;
-    height: 640px;
-    border-radius: 50%;
-    filter: blur(110px);
-}
-
-.blobA {
-    left: 18%;
-    top: 16%;
-    background: #c8e293;
-    opacity: 0.2;
-}
-
-.blobB {
-    right: 14%;
-    bottom: 12%;
-    background: #b8762f;
-    opacity: 0.16;
-}
-
-/* --------------------------------------------------- las cinco ventanas --- */
-
-.wins {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-}
-
-.win {
+.rider {
     position: absolute;
     left: 0;
     top: 0;
-    border-radius: 12px;
-    border: 1px solid rgba(242, 239, 232, 0.16);
-    background: rgba(242, 239, 232, 0.06);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-    transform-origin: center;
-    overflow: hidden;
-    backdrop-filter: blur(2px);
+    width: 0;
+    height: 0;
+    pointer-events: none;
 }
 
-.winBar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 11px;
-    border-bottom: 1px solid rgba(242, 239, 232, 0.1);
-}
-
-.winDots {
-    display: flex;
-    gap: 4px;
-}
-
-.winDots i {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(242, 239, 232, 0.22);
-}
-
-.winLabel {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.04em;
-    color: rgba(242, 239, 232, 0.5);
-}
-
-.winChat {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    padding: 12px;
-}
-
-.winChat i {
-    display: block;
-    height: 14px;
-    border-radius: 9px 9px 9px 3px;
-    background: rgba(242, 239, 232, 0.16);
-}
-
-.winChat i[data-me] {
-    align-self: flex-end;
-    border-radius: 9px 9px 3px 9px;
-    background: rgba(200, 226, 147, 0.35);
-}
-
-.winSheet {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 3px;
-    padding: 10px;
-}
-
-.winSheet i {
-    height: 16px;
-    border-radius: 3px;
-    background: rgba(242, 239, 232, 0.07);
-}
-
-.winSheet i[data-on] {
-    background: rgba(242, 239, 232, 0.2);
-}
-
-.winNotes {
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-    margin: 12px;
-    padding: 12px;
-    border-radius: 6px;
-    background: rgba(184, 118, 47, 0.32);
-}
-
-.winNotes i {
-    display: block;
-    height: 6px;
-    border-radius: 3px;
-    background: rgba(242, 239, 232, 0.35);
-}
-
-.winMail {
-    display: flex;
-    flex-direction: column;
-    padding: 6px 12px;
-}
-
-.winMail > div {
-    display: flex;
+/* Los proveedores: pastillas sobre la onda, en tinta clara. */
+.chip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-flex;
     align-items: center;
     gap: 9px;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(242, 239, 232, 0.08);
+    height: 40px;
+    padding: 0 16px 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(242, 239, 232, 0.22);
+    background: rgba(242, 239, 232, 0.08);
+    backdrop-filter: blur(6px);
+    color: var(--text-ink);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
 }
 
-.winMail b {
-    width: 16px;
-    height: 16px;
+.chip i {
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background: rgba(242, 239, 232, 0.2);
     flex: none;
-}
-
-.winMail i {
-    display: block;
-    height: 6px;
-    border-radius: 3px;
-    background: rgba(242, 239, 232, 0.22);
-}
-
-.winAgenda {
-    display: flex;
-    align-items: flex-end;
-    gap: 6px;
-    height: 64px;
-    padding: 0 12px 10px;
-}
-
-.winAgenda i {
-    flex: 1;
-    border-radius: 3px 3px 0 0;
-    background: rgba(242, 239, 232, 0.18);
 }
 
 /* ---------------------------------------------------------------- cursor -- */
@@ -346,14 +290,15 @@
     background: rgba(200, 226, 147, 0.25);
 }
 
-/* La selección de arrastre del calendario real: verde tenue con borde
-   punteado; retenida (después de soltar) late hasta que se crea la reserva. */
-.selection {
+/* El toque en el teléfono. */
+.tap {
     position: absolute;
-    z-index: 20;
-    border-radius: 6px;
-    border: 1.5px dashed var(--brand);
-    background: rgba(78, 107, 40, 0.16);
+    z-index: 30;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px solid var(--brand-bright);
+    background: rgba(200, 226, 147, 0.35);
     pointer-events: none;
 }
 
@@ -367,237 +312,148 @@
     }
 }
 
-.createChip,
-.popover {
+/* ------------------------------------------------------------- la marca --- */
+
+.mark {
     position: absolute;
-    z-index: 25;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    height: 32px;
-    padding: 0 12px;
-    border-radius: 999px;
-    font-size: 12.5px;
-    font-weight: 600;
-    white-space: nowrap;
-    transform-origin: left top;
+    right: 30px;
+    bottom: 26px;
+    z-index: 50;
+    opacity: 0.6;
     pointer-events: none;
 }
 
-.createChip {
-    background: var(--ink);
-    color: var(--paper);
-    box-shadow: 0 12px 30px rgba(20, 21, 15, 0.24);
+.mark svg {
+    max-width: none !important;
 }
 
-.createChip b {
-    display: grid;
-    place-items: center;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--brand-bright);
-    color: var(--ink);
-    font-size: 13px;
-    line-height: 1;
-}
-
-/* El botón de acción del chat real (`rowAction`): acento suave con borde. */
-.popover {
-    height: 28px;
-    padding: 0 11px;
-    border-radius: 8px;
-    border: 1px solid var(--brand);
-    background: var(--brand-soft);
-    color: var(--brand);
-    font-size: 12px;
-    font-weight: 700;
-    box-shadow: 0 10px 24px rgba(20, 21, 15, 0.14);
-    transform-origin: right top;
-}
-
-.ring {
-    position: absolute;
-    z-index: 22;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    border: 2px solid var(--brand-bright);
-    pointer-events: none;
-}
-
-/* --------------------------------------------------------------- callout -- */
-
-.callout {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 26;
-    pointer-events: none;
-}
-
-.calloutDot {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--brand);
-    box-shadow: 0 0 0 4px rgba(78, 107, 40, 0.18);
-}
-
-.calloutLine {
-    position: absolute;
-    left: 0;
-    top: -0.5px;
-    height: 1.5px;
-    background: var(--brand);
-    transform-origin: left center;
-}
-
-.calloutPill {
-    position: absolute;
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: var(--ink);
-    color: var(--paper);
-    font-size: 12.5px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    white-space: nowrap;
-    box-shadow: 0 12px 30px rgba(20, 21, 15, 0.22);
-}
-
-/* ---------------------------------------------------------- 2 · marca ----- */
-
-.brandGroup {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 1000px;
-    margin: -160px 0 0 -500px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 26px;
-    text-align: center;
-    transform-origin: center;
-    z-index: 2;
-}
-
-.homeShot {
-    position: absolute;
-    left: 190px;
-    top: 262px;
-    width: 900px;
-    transform-origin: center top;
-    z-index: 3;
-}
-
-.homeFloatRight {
-    position: absolute;
-    right: -44px;
-    top: -34px;
-    width: 220px;
-}
-
-.homeFloatLeft {
-    position: absolute;
-    left: -54px;
-    top: 196px;
-    width: 250px;
-}
-
-/* ------------------------------------------------------ 3 · recorrido ----- */
-
-.flowRail {
-    position: absolute;
-    left: 26px;
-    right: 26px;
-    top: 110px;
-    height: 1px;
-    background: var(--line);
-}
-
-.flowRail i {
-    position: absolute;
-    inset: 0;
-    background: var(--brand);
-    transform-origin: left center;
-}
-
-.stepHead {
-    position: absolute;
-    top: 74px;
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    white-space: nowrap;
-}
-
-.stepDot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--brand);
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.stepNum {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-3);
-}
-
-.stepText {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    transition: color 0.3s ease;
-}
-
-.track {
-    position: absolute;
-    inset: 0;
-    will-change: transform;
-}
-
-.screen {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    transform-origin: center center;
-}
-
-.tapeWrap {
+.lockup {
     position: relative;
 }
 
-/* El contenedor de tokens del chat, usado sólo como paleta: sin alto ni fondo. */
-.tokens {
-    height: auto !important;
-    background: transparent !important;
+.isotype {
+    display: block;
+    max-width: none !important;
+    overflow: visible;
 }
 
-.rowCard {
-    width: 470px;
-    border-radius: 12px;
-    box-shadow: 0 14px 36px rgba(20, 21, 15, 0.12);
+.isotype path,
+.isotype circle {
+    transform-box: fill-box;
+    transform-origin: center;
 }
 
-/* El teléfono del portal, con las medidas de la viñeta LinkHub del sitio. */
-.phone {
+.wordmarkMask {
     position: absolute;
+    display: block;
+    overflow: hidden;
+}
+
+.wordmarkMask svg {
+    display: block;
+    max-width: none !important;
+}
+
+/* `shot`: el titular arriba del PMS de frente. */
+.shotHead {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 58px;
+    margin: 0;
+    text-align: center;
+    font-size: 46px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
+}
+
+.shotHeadLine {
+    display: block;
+    white-space: nowrap;
+}
+
+/* El PMS plano, centrado, cortado por el borde de abajo como una captura que sube. */
+.shotFlat {
+    position: absolute;
+    left: 50%;
+    top: 196px;
+    width: 1120px;
+    margin-left: -560px;
+    transform-origin: 50% 0;
+    border-radius: 26px;
+    box-shadow: 0 34px 80px rgba(20, 21, 15, 0.16), 0 3px 10px rgba(20, 21, 15, 0.06);
+}
+
+.card {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-origin: center;
+    will-change: transform, opacity;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.42), 0 2px 8px rgba(0, 0, 0, 0.2);
+    background: var(--card);
+}
+
+.card > div:first-child {
+    height: 100%;
+}
+
+.cardPhone {
+    border-radius: 34px;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* -------------------------------------------------------- 4 · precisión --- */
+
+.precisionStage {
+    position: absolute;
+    left: 330px;
+    top: 330px;
+    width: 1120px;
+    transform-origin: 0 0;
+    filter: drop-shadow(0 40px 70px rgba(0, 0, 0, 0.45));
+}
+
+/* Una capa del progressive blur. El `filter` de `.precisionStage` la vuelve la
+   raíz del backdrop, así que cada capa desenfoca SÓLO lo que la tarjeta pintó
+   debajo; el recorte lo pone la escena (máscara radial, en px de esta caja).
+   Al vivir dentro del contenedor 3D, el desenfoque se inclina con la tarjeta.
+   `z-index` alto A PROPÓSITO: va por encima de TODA la UI —cursor (30), menú
+   (25) y selección (20) incluidos—, que también están sobre el plano de la
+   tarjeta y por lo tanto también se desenfocan. */
+.precisionSoft {
+    position: absolute;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+}
+
+/* La guía punteada va en coordenadas de la escena (1280×720) y POR ENCIMA de la
+   tarjeta: termina justo sobre su borde de arriba. */
+.precisionLeader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 40;
+    max-width: none !important;
+    overflow: visible;
+    pointer-events: none;
+}
+
+/* ----------------------------------------------------------- teléfonos --- */
+
+.phone {
+    position: relative;
     width: 284px;
     border-radius: 34px;
     border: 8px solid var(--ink);
     background: var(--ink);
     box-shadow: 0 30px 70px rgba(20, 21, 15, 0.28);
     overflow: hidden;
-    transform-origin: left center;
 }
 
 .phoneNotch {
@@ -615,69 +471,293 @@
 .phoneScreen {
     border-radius: 26px;
     background: #f4f2ed;
-    padding: 30px 0 10px;
-    min-height: 420px;
+    padding: 26px 0 0;
+    height: 604px;
+    overflow: hidden;
 }
 
-/* ------------------------------------------------------- 4 · informes ----- */
-
-.reportShot {
-    position: absolute;
-    left: 250px;
-    top: 196px;
-    width: 780px;
-    transform-origin: center center;
+/* La pantalla del LinkHub: el renderer entero adentro del teléfono. */
+.phoneScreenLh {
+    position: relative;
+    border-radius: 26px;
+    height: 604px;
+    overflow: hidden;
+    background: #d3a6ab;
 }
 
-.reportShot .tokens {
+.appRoot {
+    position: relative;
+}
+
+/* La página del chat de Roombir IA dentro del cascarón del PMS. */
+.chatPage {
+    height: 100% !important;
+    background: transparent !important;
+    justify-content: flex-end;
+}
+
+.chatPageThread {
     display: flex;
     flex-direction: column;
+    gap: 16px;
+    padding: 14px 24px 6px;
 }
 
-/* El badge de check-out entra como un sello. */
-.stampWrap :global([data-status="checked-out"]) {
-    animation: stamp 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.35) both;
+/* Roombir IA: el hilo ocupa lo que sobra y el campo de escritura queda al pie. */
+.iaStage {
+    position: absolute;
+    inset: 0 -12px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
 }
 
-@keyframes stamp {
-    from {
-        transform: scale(1.7);
-        opacity: 0;
-    }
+.iaStage .chatPageThread {
+    height: 100%;
+    gap: 0;
+    padding: 12px 20px 2px;
 }
 
-/* -------------------------------------------------------- 5 · bisagra ----- */
-
-.hingeStack {
+/* La cara de Roombir IA es el ESTADO VACÍO del chat real (`.empty` de
+   RoombirChatView): orbe, saludo, línea de ayuda y sugerencias, con el campo
+   de escritura al pie. Medidas copiadas del producto (26 / 14 / 13 px y sus
+   tokens); lo único distinto son las sugerencias, que allá van en grilla de
+   dos columnas y acá como pastillas —ver el porqué en `acts/data.tsx`—. */
+.iaEmpty {
+    position: relative;
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    justify-content: center;
+    text-align: center;
+    /* El bloque queda centrado un poco MÁS ABAJO: arriba manda la cabecera
+       de la tarjeta y el resplandor, y el saludo tiene que caer a media cara. */
+    padding: 44px 6px 10px;
 }
 
-/* ----------------------------------------------------------- 6 · chat ----- */
-
-.chatWin {
+/* El resplandor pastel detrás del saludo: la cara no es un rectángulo blanco. */
+.iaEmptyGlow {
     position: absolute;
-    left: 72px;
-    top: 52px;
-    width: 560px;
-    height: 616px;
-    z-index: 2;
+    inset: -8% -14%;
+    border-radius: 50%;
+    background:
+        radial-gradient(48% 42% at 26% 28%, rgba(200, 226, 147, 0.55), transparent 70%),
+        radial-gradient(46% 40% at 78% 24%, rgba(201, 138, 148, 0.44), transparent 72%),
+        radial-gradient(52% 46% at 58% 84%, rgba(158, 166, 226, 0.42), transparent 72%);
+    filter: blur(26px);
+    pointer-events: none;
 }
 
-/* El Frame de las viñetas a alto completo: barra arriba, chat abajo. */
-.chatWin > div {
-    height: 100%;
+.iaEmptyMark {
+    position: relative;
+    display: inline-flex;
+    margin-bottom: 14px;
+}
+
+.iaEmptyTitle {
+    position: relative;
+    margin: 0 0 6px;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ch-text-strong);
+}
+
+.iaEmptyText {
+    position: relative;
+    margin: 0 0 18px;
+    max-width: 280px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ch-text-3);
+}
+
+.iaChips {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.iaChip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--ch-border);
+    background: var(--ch-surface-2);
+    color: var(--ch-text-2);
+    font-size: 13px;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.iaTurn {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 0;
+}
+
+/* La selección de arrastre y el menú de crear del calendario real. */
+.createSelection {
+    position: absolute;
+    z-index: 20;
+    border-radius: 4px;
+    background: var(--accent-soft);
+    border: 1.5px dashed var(--accent-color);
+    pointer-events: none;
+}
+
+.createMenu {
+    position: absolute;
+    z-index: 25;
+    min-width: 212px;
+    padding: 10px 12px 12px;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.14);
     display: flex;
     flex-direction: column;
-    box-shadow: 0 30px 80px rgba(20, 21, 15, 0.16), 0 2px 6px rgba(20, 21, 15, 0.05);
+    gap: 4px;
+    transform-origin: left top;
+    color: #0f172a;
+    font-size: 12px;
+    text-align: left;
 }
 
-.chatWin > div > div:last-child {
-    flex: 1;
-    min-height: 0;
-    padding: 0;
+.createMenu b {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.createMenu span {
+    color: #64748b;
+    font-size: 11.5px;
+}
+
+.createMenu i {
+    margin-top: 6px;
+    align-self: flex-start;
+    height: 28px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: var(--accent-color);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    font-style: normal;
+    display: inline-flex;
+    align-items: center;
+}
+
+.sheet {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 86%;
+    border-radius: 22px 22px 26px 26px;
+    background: #fbfaf7;
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    color: var(--text);
+    will-change: transform;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-2);
+}
+
+.resultPrice {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------- chat ---- */
+
+/* El escenario de la demostracion: todo lo que sigue vive DENTRO de la camara
+   (`Camera`), asi que las coordenadas son las del escenario de 1280 x 720 y el
+   acercamiento las escala solo. Las medidas del recuadro las pone la escena en
+   linea, porque son las mismas constantes con las que calcula el encuadre. */
+/* Sin `opacity`, `filter` ni `will-change` de ninguno de los dos: los tres
+   crean un "backdrop root" y el `backdrop-filter` del input de vidrio se
+   quedaría sin fondo que difuminar. Cada pieza de adentro hace su entrada. */
+.demoStage {
+    position: absolute;
+    inset: 0;
+}
+
+/* La sombra va aparte: `clip-path` recorta tambien la sombra del elemento. */
+.demoShadow {
+    position: absolute;
+    pointer-events: none;
+}
+
+.demoApp {
+    position: absolute;
+    will-change: clip-path;
+}
+
+/* EL INPUT SUELTO DEL PRÓLOGO, en vidrio líquido.
+
+   Ojo: esto NO es el compositor del PMS. El de la app se ve tal cual es en la
+   app, porque el video muestra el producto real; éste es una pieza de
+   escenografía que vive sólo mientras el input flota solo, y se funde con el
+   otro cuando la UI se compone. Son el mismo componente, con el mismo ancho y
+   en el mismo lugar, así que el cruce se lee como un cambio de material.
+
+   El vidrio necesita que haya algo pintado DETRÁS para difuminarlo: acá es el
+   degradado claro de la escena. Cualquier `opacity`, `filter` o `will-change`
+   en un ancestro corta ese fondo y el vidrio queda en nada. */
+.demoGlass {
+    position: absolute;
+    --accent-color: #4e6b28;
+    --accent-soft: rgba(78, 107, 40, 0.2);
+    --accent-strong: rgba(78, 107, 40, 0.28);
+    --accent-contrast: #ffffff;
+    --accent-text: #ffffff;
+}
+
+/* El `ChatShell` está sólo por los tokens `--ch-*` que define; su caja no. */
+.demoGlassShell {
+    background: transparent !important;
+    height: auto !important;
+    display: block !important;
+}
+
+/* Sobre un fondo claro el vidrio NO se lee por ser más blanco —se borra—,
+   se lee por el canto y por la sombra de contacto. De ahí el borde oscuro al
+   14 %, el filo especular de arriba y las tres sombras: uno finito pegado, uno
+   medio y uno largo. El cuerpo deja pasar el degradado y lo satura. */
+.demoGlass [data-pill] {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.2) 46%, rgba(255, 255, 255, 0.4) 100%);
+    backdrop-filter: blur(26px) saturate(2) brightness(1.04);
+    -webkit-backdrop-filter: blur(26px) saturate(2) brightness(1.04);
+    border-color: rgba(31, 41, 24, 0.14);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -1px 1px rgba(31, 41, 24, 0.07),
+        inset 0 -16px 26px -16px rgba(255, 255, 255, 0.72),
+        0 1px 2px rgba(20, 21, 15, 0.05),
+        0 10px 20px rgba(20, 21, 15, 0.07),
+        0 26px 52px rgba(20, 21, 15, 0.12);
 }
 
 .viewport {
@@ -698,48 +778,24 @@
     padding: 18px 20px 6px;
 }
 
-.emptyOrb {
-    position: absolute;
-    left: 50%;
-    top: 46%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+.slotWord .wordEm {
+    font-size: 1.04em;
+    color: var(--brand-bright);
 }
 
-.behindWin {
-    position: absolute;
-    left: 664px;
-    top: 118px;
-    width: 586px;
-    z-index: 1;
-    border-radius: 16px;
-    transform-origin: left center;
-}
-
-.behindLayer {
-    position: absolute;
-    left: 0;
-    top: 0;
+/* El cruce del cierre: el texto y el logo ocupan el MISMO lugar (uno se apaga
+   mientras el otro aparece), así que la caja tiene que medir lo que mide el más alto. */
+.outroSwap {
+    display: grid;
+    place-items: center;
     width: 100%;
 }
-
-.behindLayer:first-child {
-    position: relative;
-}
-
-/* --------------------------------------------------------- 7 · cierre ----- */
 
 .outroStack {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 22px;
-}
-
-.outroLogo svg {
-    width: 240px !important;
-    max-width: none !important;
-    height: auto !important;
+    gap: 26px;
 }
 
 .tagline {
@@ -758,10 +814,1509 @@
     font-size: 1.08em;
 }
 
-.url {
-    margin: 6px 0 0;
-    font-family: var(--mono);
+/* ==================================================================== */
+/* El calco de la referencia: fondos, tipografía y piezas nuevas          */
+/* ==================================================================== */
+
+/* ------------------------------------------------------------ fondos -- */
+
+/* El oscuro de "demasiadas IA" y del laberinto: tinta con un halo arcilla. */
+.night {
+    background: #14150f;
+    color: var(--text-ink);
+}
+
+/* Los resplandores del acto: van en coordenadas de mundo, dentro de la cámara. */
+.actGlow {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* El cielo de "Basta de planillas sueltas". */
+.sky {
+    background: linear-gradient(180deg, #d6e6d2 0%, #e6eee0 52%, #f2efe8 100%);
+    color: var(--text);
+}
+
+/* El lavanda de los tramos de texto: papel con una franja pistacho arriba. */
+.lavender {
+    background: linear-gradient(180deg, #e2ead4 0%, #f2efe8 30%, #f2efe8 100%);
+    color: var(--text);
+}
+
+.pastelTop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 42%;
+    background: linear-gradient(180deg, rgba(200, 226, 147, 0.6) 0%, rgba(217, 162, 76, 0.22) 45%, rgba(242, 239, 232, 0) 100%);
+    pointer-events: none;
+}
+
+.warmBlobs {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(40% 50% at 12% 22%, rgba(217, 162, 76, 0.26) 0%, rgba(217, 162, 76, 0) 70%),
+        radial-gradient(46% 56% at 86% 76%, rgba(167, 84, 50, 0.2) 0%, rgba(167, 84, 50, 0) 70%);
+    pointer-events: none;
+}
+
+/* El lavanda pálido con luz suave de la pila. */
+.stackBg {
+    background: radial-gradient(70% 88% at 72% 62%, rgba(222, 211, 255, 0.45) 0%, rgba(222, 211, 255, 0) 66%),
+        radial-gradient(64% 78% at 25% 28%, rgba(205, 226, 255, 0.5) 0%, rgba(205, 226, 255, 0) 68%),
+        linear-gradient(145deg, #f4f3fb 0%, #eeedf7 46%, #faf9f5 100%);
+    color: var(--text);
+}
+
+.blobBg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background: var(--paper);
+}
+
+.blobBg i {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(44px);
+    opacity: 0.85;
+    will-change: transform;
+}
+
+/* La variante viva del degradado (las tarjetas, la rueda, precisión). */
+.gradientBright {
+    background: #2f4d18;
+}
+
+.gradientBright .gA {
+    opacity: 1;
+    background: #b9d76a;
+}
+
+.gradientBright .gB {
+    opacity: 0.95;
+    background: #e0a94e;
+}
+
+.gradientBright .gC {
+    opacity: 0.85;
+}
+
+/* ------------------------------------------ degradado claro (escena 18) ---
+
+   El reverso de `deep`, calcado de `gradient-light-reference.png` (referencia
+   del usuario, 20-09-2026). Qué dio muestrear ese archivo a 12 × 8:
+   - Es CLARO de punta a punta: la luminancia va de 209 a 255, nunca baja. Por
+     eso no lleva la viñeta oscura del grano: sobre un fondo así se lee como
+     suciedad, no como profundidad.
+   - La columna izquierda entera es blanco con un tiro celeste (#f9fdfc arriba,
+     #e9f8ff abajo). Contra ese borde NO hay verde.
+   - Hay DOS masas y no tres: una verde a la izquierda-centro (centro en
+     27,6 % × 48,7 %, y ahí está lo más saturado del archivo, #bde0b6) y una
+     amarilla al centro-derecha (60 % × 45 %, #dde5b6 → #e4e7ba).
+   - El pie es amarillo muy lavado (#eef5d4) y el borde derecho se enfría
+     (#dbe9db).
+
+   Las manchas son los mismos `<i>` de las otras variantes: heredan el blur de
+   90 px y la deriva lenta, así que el fondo respira igual que el oscuro. */
+.gradientLight {
+    background: #e7f0d6;
+}
+
+/* 1 · la masa verde */
+.gradientLight .gA {
+    left: 60px;
+    top: 60px;
+    width: 620px;
+    height: 580px;
+    background: #96cc86;
+    opacity: 0.95;
+}
+
+/* 2 · la masa amarilla */
+.gradientLight .gB {
+    left: 430px;
+    right: auto;
+    top: 10px;
+    width: 720px;
+    height: 640px;
+    background: #e3e795;
+    opacity: 0.9;
+}
+
+/* 3 · el lavado blanco-celeste del borde izquierdo. Va DESPUÉS de las dos
+   masas en el DOM, así que las tapa: si se agranda, se come el verde entero y
+   el fondo queda amarillo de punta a punta. Tiene que morir antes del 20 % del
+   ancho, que es donde la referencia ya es verde. */
+.gradientLight .gC {
+    left: -560px;
+    top: -140px;
+    bottom: auto;
+    width: 820px;
+    height: 1000px;
+    background: #f2fdff;
+    opacity: 1;
+}
+
+/* El grano sobre claro: `overlay` sigue sirviendo —en un fondo de 0,93 abre
+   un rango de ~9/255— pero necesita bastante más opacidad que sobre el oscuro. */
+.gradientLight .gFilm {
+    opacity: 0.3;
+}
+
+/* Los destellos hay que darlos vuelta. La textura es campo negro con puntos
+   blancos, que con `screen` sobre casi blanco no se ve NADA. Invertida (campo
+   blanco, puntos negros) y en `multiply`, el campo es neutro y lo único que
+   pinta son los puntos, ahora oscuros: sobre claro el destello se lee como
+   mota, no como brillo. */
+.gradientLight .gGlitter {
+    filter: invert(1);
+    mix-blend-mode: multiply;
+}
+
+.gradientLight .gGrain {
+    background: radial-gradient(70% 55% at 20% 8%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 62%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0) 62%, rgba(255, 255, 255, 0.26) 100%);
+}
+
+/* Escena 19 (`unlock`): las dos masas —verde y amarilla— van el 70 % de su
+   alto más arriba y más separadas entre sí (el usuario, 21-09-2026: primero "al
+   50 % arriba", después "más separados y más arriba al 70 %"). La verde se abre
+   poco a la izquierda: de ese lado la tapa el lavado celeste. Con `translate` y no con
+   `top` para que valga su propia altura, y porque `transform` ya lo usa la
+   deriva en línea: las dos propiedades se suman. El lavado celeste del borde
+   izquierdo no se mueve. Sólo acá: `gradientLight` lo comparten el chat y la 21. */
+.unlockBg {
+    position: absolute;
+    inset: 0;
+}
+
+.unlockBg .gA {
+    translate: -80px -70%;
+}
+
+.unlockBg .gB {
+    translate: 170px -70%;
+}
+
+/* La naranja del medio: a la altura de las otras dos (su centro queda apenas por
+   encima del cuadro, así que se ve la mitad de abajo) y en el hueco entre ellas. */
+.unlockOrange {
+    position: absolute;
+    left: 360px;
+    top: -330px;
+    width: 560px;
+    height: 520px;
+    border-radius: 50%;
+    background: #f3b768;
+    opacity: 0.85;
+    filter: blur(90px);
+    will-change: transform;
+}
+
+/* El cierre (24) con el fondo de la 19 "con más transparencia en esos colores":
+   las tres masas a la mitad de su opacidad. Tres clases para ganarle a
+   `.gradientLight .gA` sin depender del orden del archivo. */
+.unlockBg.eraBgSoft .gA {
+    opacity: 0.48;
+}
+
+.unlockBg.eraBgSoft .gB {
+    opacity: 0.45;
+}
+
+.unlockBg.eraBgSoft .unlockOrange {
+    opacity: 0.42;
+}
+
+
+
+
+/* ------------------------------------------ degradado profundo + textura --
+
+   La variante `deep` del degradado (`Gradient deep`), la que usan `built` al
+   florecer y las escenas 12 a 16. Calca `gradient-black-reference.avif`, que el
+   usuario dio como referencia el 20-09-2026.
+
+   Qué se midió de ese archivo (muestreado a 16 × 10):
+   - Es CASI monocromo: un solo tono verde-azulado con la luminancia yendo de 36
+     a 207. El fondo plano es #012d2b y el punto más claro es #bdd6c1.
+   - La luz es una PLUMA: nace arriba, entre el 25 % y el 40 % del ancho, y baja
+     hacia la izquierda afinándose; a la derecha de una diagonal no hay nada más
+     que el fondo plano.
+   - No tiene grano (desvío local 0,28, que es el ruido del propio AVIF).
+
+   El grano acá va igual, pero bajo: sobre un fondo tan oscuro, sin ruido que
+   haga de dither, el degradado se escalona en bandas. Los destellos quedaron
+   muy por debajo de lo que estaban, porque sobre oscuro `screen` los levanta
+   mucho más que sobre el degradado claro anterior.
+
+   `isolation` es obligatoria: sin ella el `mix-blend-mode` de las texturas
+   atraviesa el degradado y se mezcla con el fondo de la escena.
+
+   Las texturas son SVG en `data:`. Al escribirlas hay que colapsar TODO el
+   espacio en blanco: un solo salto de línea adentro del `url()` y el CSS no
+   parsea (se cae el build entero, no la regla). */
+/* La FORMA sale de medir el avif celda por celda (16 × 10) y son DOS piezas,
+   no tres manchas redondas:
+
+   1. Un campo de luz elíptico centrado arriba, en x≈560, que ilumina todo el
+      borde de arriba (la fila 0 va de 136 a 207 y vuelve a 79) y baja apagándose.
+   2. Un DISCO OSCURO enorme, del color del fondo, centrado fuera de cuadro abajo
+      a la derecha (≈1600, 900, radio ≈1080). Es lo que hace el borde curvo: a la
+      derecha de esa curva no hay nada más que fondo plano, y a la izquierda la
+      luz baja lenta hasta el pie. Con manchas redondas difuminadas esa asimetría
+      no sale.
+
+   Las dos derivan con el reloj (`Gradient` les pone el `translate3d`), así que
+   la curva respira en vez de quedarse clavada. */
+.gradientDeep {
+    background: #012d2b;
+    isolation: isolate;
+}
+
+.gradientDeep .gA,
+.gradientDeep .gB,
+.gradientDeep .gC {
+    border-radius: 0;
+    filter: none;
+    right: auto;
+    bottom: auto;
+}
+
+/* 1 · el campo de luz */
+.gradientDeep .gA {
+    left: -380px;
+    top: -930px;
+    width: 1880px;
+    height: 1880px;
+    background: radial-gradient(50% 50% at 50% 50%, #cfe2d2 0%, #c8dccb 11%, #bbd1c2 22%, #a8c2b4 33%, #92b0a3 44%, #7c9e92 55%, #668c81 65%, #517a71 74%, #3d6862 83%, #2a5651 90%, #184441 96%, #012d2b00 100%);
+    opacity: 1;
+}
+
+/* 2 · el disco oscuro que recorta a la derecha */
+.gradientDeep .gB {
+    left: -210px;
+    top: -290px;
+    width: 3000px;
+    height: 2660px;
+    background: radial-gradient(50% 50% at 50% 50%, #012d2b 0%, #012d2b 58%, #012d2bfa 64%, #012d2bf0 70%, #012d2bdd 75%, #012d2bc2 80%, #012d2b9e 85%, #012d2b74 89%, #012d2b4a 93%, #012d2b23 97%, #012d2b00 100%);
+    opacity: 1;
+}
+
+/* 3 · el pie, que se cierra un poco incluso del lado claro.
+   OJO con el tamaño: `Gradient` le pone una deriva de ±60 px en x y ±40 en y a
+   cada capa. Si una capa mide lo mismo que el escenario, la deriva le mete un
+   BORDE RECTO adentro del cuadro —se ve como un cuadrado que corta al degradado
+   de atrás, sobre todo abajo a la izquierda—. Por eso todas las capas de esta
+   variante se pasan de largo: 320 px de más por lado como mínimo. */
+.gradientDeep .gC {
+    left: -320px;
+    top: auto;
+    bottom: -140px;
+    width: 1920px;
+    height: 440px;
+    background: linear-gradient(180deg, #012d2b00 0%, #012d2b7a 62%, #012d2b99 100%);
+    opacity: 1;
+}
+
+/* La viñeta común aclara el centro con un radial blanco; acá eso levantaría el
+   fondo plano justo donde tiene que quedar negro. Queda sólo el pie oscuro. */
+.gradientDeep .gGrain {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 58%, rgba(1, 22, 21, 0.55) 100%);
+}
+
+/* El grano: ~1 px, gris, quieto. `overlay` aclara y oscurece a la vez en vez de
+   lavar el color. Acá es sobre todo un dither contra el bandeo. */
+.gFilm {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    mix-blend-mode: overlay;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+/* Los destellos. La baldosa es grande (640) porque los puntos son pocos y
+   sueltos: con una chica se ve la repetición. La opacidad la pone `Gradient`. */
+.gGlitter {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='8' intercept='-5.60'/%3E%3CfeFuncG type='linear' slope='8' intercept='-5.60'/%3E%3CfeFuncB type='linear' slope='8' intercept='-5.60'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-size: 640px 640px;
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+.gGlitterB {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' seed='19' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='8' intercept='-5.60'/%3E%3CfeFuncG type='linear' slope='8' intercept='-5.60'/%3E%3CfeFuncB type='linear' slope='8' intercept='-5.60'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-position: 213px 97px;
+}
+
+/* -------------------------------------------------------- tipografía -- */
+
+.subLine {
+    display: block;
+    font-size: 0.72em;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+}
+
+.brandText {
+    color: var(--brand);
+}
+
+.stacked {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.letter {
+    display: inline-block;
+    will-change: transform;
+    transform-origin: 50% 60%;
+}
+
+.punchLine {
+    margin: 0;
+    font-size: 44px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+}
+
+.killBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    will-change: transform;
+}
+
+/* En el zoom-through TODO va en la misma tipografía: la serif itálica no aguanta el ×50. */
+.killWord .wordEm {
+    /* Del mismo color que el trazo: en esta escena no hay dos tonos. */
+    color: var(--text);
+    font-family: var(--sans);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1em;
+    letter-spacing: -0.04em;
+    padding: 0;
+}
+
+.killWord {
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.eye {
+    display: inline-block;
+}
+
+.builtLead,
+.designedLead {
+    margin: 0;
+    font-size: 44px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-shadow: 0 1px 2px rgba(1, 32, 30, 0.28), 0 8px 32px rgba(1, 32, 30, 0.55);
+}
+
+.builtLine {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.28em;
+    font-size: 54px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+}
+
+/* `built` va más grande que "Diseñado con", que comparte la regla de arriba. */
+.builtLead {
+    font-size: 54px;
+}
+
+/* Cada frase de `built` (una `GradLine`): posicionada para que el tachado se
+   ubique sobre sus palabras, sin cortar renglón y con interlineado propio (la
+   altura de la banda sale de la altura de la línea). */
+.builtPiece {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    line-height: 1.1;
+}
+
+/* Las palabras en tinta de `built` (la misma pieza que `.gradWord`, sin degradado). */
+.inkWord {
+    position: relative;
+    display: inline-block;
+    will-change: transform, opacity;
+}
+
+/* La copia en color papel de una palabra tachada, recortada con la forma de la
+   banda: el negativo del tachado. */
+.negCopy {
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: pre;
+    pointer-events: none;
+}
+
+.struckWrap {
+    position: relative;
+    display: inline-block;
+}
+
+.strike {
+    position: absolute;
+    left: 0;
+    top: 0;
+    max-width: none !important;
+    overflow: visible;
+    pointer-events: none;
+}
+
+/* Sin halo: el resplandor blanco detrás de las letras (pedido del 20-09-2026)
+   ensuciaba el rótulo sobre el degradado en vez de despegarlo. */
+.glowText {
+    margin: 0;
+    font-size: 60px;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    white-space: nowrap;
+}
+
+.leader {
+    position: absolute;
+    left: -54px;
+    top: 22px;
+    max-width: none !important;
+    overflow: visible;
+}
+
+/* --------------------------------------------------------- mapa mental -- */
+
+/* El título va POR ENCIMA de las flechas y se recorta del papel con su propio
+   halo: las líneas le pasan por detrás sin cruzarle las letras. */
+.sprawlType {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 274px;
+}
+
+.sprawlTitle {
+    margin: 0;
+    font-size: 88px;
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    white-space: nowrap;
+    text-align: center;
+    text-shadow: 0 0 12px #efebe3, 0 0 12px #efebe3, 0 0 12px #efebe3, 0 0 28px #efebe3, 0 0 28px #efebe3,
+        0 0 46px #efebe3;
+}
+
+/* El punto final del titular es un elemento propio: así se puede medir y
+   convertirlo en el punto que dibuja la escena siguiente. */
+.hookDot {
+    display: inline-block;
+    width: 0.175em;
+    height: 0.175em;
+    margin-left: 0.055em;
+    border-radius: 50%;
+    background: currentColor;
+    vertical-align: baseline;
+}
+
+/* El mismo punto, redibujado nítido por encima del desenfoque del zoom. */
+.handoffDot {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--text);
+    pointer-events: none;
+    z-index: 30;
+}
+
+.sprawlBox {
+    position: absolute;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(167, 84, 50, 0.55);
+    background: rgba(255, 251, 246, 0.95);
+    color: #6b3a24;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.34;
+    letter-spacing: -0.005em;
+    text-align: left;
+    transform-origin: center;
+    box-shadow: 0 10px 26px rgba(167, 84, 50, 0.14);
+}
+
+.sprawlEm {
+    font-weight: 800;
+    color: #8c3b1c;
+}
+
+/* Lo que entra por la puerta: más suave y centrado. */
+.sprawlIn {
+    justify-content: center;
+    text-align: center;
+    border-color: rgba(167, 84, 50, 0.38);
+    background: rgba(255, 245, 240, 0.95);
+    font-weight: 600;
+}
+
+.sprawlOut {
+    background: #fffaf6;
+}
+
+/* Las cuatro preguntas de cada pedido. */
+.sprawlAsk {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 16px;
+}
+
+.askRow {
+    display: flex;
+    gap: 6px;
+}
+
+.askRow i {
+    font-style: normal;
+    font-weight: 700;
+    opacity: 0.5;
+}
+
+/* Las apps que se pagan aparte. */
+.sprawlAppsBox {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-color: rgba(167, 84, 50, 0.45);
+    background: #fffdfb;
+}
+
+.appRow {
+    display: flex;
+    align-items: flex-end;
+    gap: 9px;
+}
+
+.appCell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+}
+
+.appTile {
+    position: relative;
+    display: block;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    box-shadow: 0 6px 14px rgba(20, 21, 15, 0.18);
+}
+
+.appTile svg {
+    display: block;
+    width: 38px;
+    height: 38px;
+    max-width: none !important;
+    border-radius: 10px;
+}
+
+.appTile img {
+    display: block;
+    width: 38px;
+    height: 38px;
+    border-radius: 22.4%;
+}
+.appPaid {
+    position: absolute;
+    right: -6px;
+    top: -6px;
+    width: 16px;
+    height: 16px;
+}
+
+.appPaid svg {
+    width: 16px;
+    height: 16px;
+    border-radius: 0;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Cuánto de cada app se usa de verdad: el medidor nunca llega al final. */
+.appMeter {
+    display: block;
+    width: 36px;
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(167, 84, 50, 0.18);
+    overflow: hidden;
+}
+
+.appMeter i {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: #a75432;
+}
+
+.appLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b3a24;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* ------------------------------------------------- línea, tiles, chips -- */
+
+.dot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 44px;
+    height: 44px;
+    margin: -22px;
+    border-radius: 50%;
+    background: #14150f;
+}
+
+.dotPaper {
+    width: 16px;
+    height: 16px;
+    margin: -8px;
+    background: #f2efe8;
+}
+
+.tile {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 10px 26px rgba(20, 21, 15, 0.14);
+    display: grid;
+    place-items: center;
+}
+
+.tile svg {
+    width: 44px;
+    height: 44px;
+    max-width: none !important;
+}
+/* Las apps con su icono REAL: el icono ES la baldosa, a sangre y sin tarjeta debajo. */
+.tileArt {
+    background: none;
+    border-radius: 22.4%;
+    box-shadow: 0 10px 24px rgba(20, 21, 15, 0.2);
+}
+.tileArt img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.badge {
+    position: absolute;
+    right: -9px;
+    top: -9px;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #e5484d;
+    color: #fff;
     font-size: 13px;
-    letter-spacing: 0.06em;
-    color: var(--text-3);
+    font-weight: 700;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.badgeWarn {
+    right: -12px;
+    top: -12px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.badgeWarn svg {
+    width: 28px;
+    height: 28px;
+    max-width: none !important;
+}
+
+.vendor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 86px;
+    height: 86px;
+    padding: 0 9px;
+    border-radius: 50%;
+    /* Vidrio: desenfoca lo que queda detrás y encima lleva el reflejo de arriba
+       a la izquierda, el tinte del proveedor y el filo blanco. El blur cuesta:
+       son cinco globos que se mueven con la cámara, así que se vuelve a
+       desenfocar en cada cuadro. */
+    background:
+        radial-gradient(118% 88% at 28% 10%, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.2) 52%, rgba(255, 255, 255, 0.1) 100%),
+        var(--vtint);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow:
+        0 18px 38px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        inset 0 -12px 22px rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+/* El rótulo del globo: una palabra larga se parte con guion en vez de salirse
+   del círculo. `hyphens` necesita el `lang` del elemento, que lo pone el TSX;
+   `overflow-wrap` es la red por si el navegador no tiene el diccionario de ese
+   idioma y no sabe dónde partirla. */
+.vendor b {
+    display: block;
+    max-width: 100%;
+    hyphens: auto;
+    overflow-wrap: break-word;
+}
+
+.vendorIcon {
+    display: block;
+    width: 22px;
+    height: 22px;
+    color: var(--vc);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+.vendorIcon svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+    max-width: none !important;
+}
+
+.mazeChip {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 30px;
+    padding: 0 12px 0 10px;
+    border-radius: 999px;
+    background: rgba(140, 140, 150, 0.42);
+    color: rgba(242, 239, 232, 0.96);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transform-origin: center;
+    backdrop-filter: blur(4px);
+}
+
+/* ----------------------------------------------------- roller y caret -- */
+
+/* La ranura de las palabras. El ancho lo da `.rollerSizer` y no cambia nunca:
+   es lo que mantiene a "Más" clavado en su lugar de punta a punta de la escena.
+   NO lleva recorte: la pila se desborda para abajo —así es en la referencia— y
+   la línea del remate se sale para arriba y para abajo. */
+.roller {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    height: 1.2em;
+}
+
+.rollerSizer {
+    display: inline-block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.rollerSizer > span {
+    display: block;
+    white-space: nowrap;
+}
+
+/* Cada palabra de la pila, alineada a la izquierda y colocada por transform.
+   `Blurred` le mete el barrido vertical, así que el elemento lleva filtro: por
+   eso el `will-change` incluye `filter`. */
+.rollerItem {
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+    will-change: transform, opacity, filter;
+}
+
+/* El remate va adentro de la ranura, en el mismo lugar donde venían las
+   palabras (de ahí el `top`, que es el mismo 0,4 em del riel). No lleva ancho
+   propio: la ranura ya lo fija, y así nada se re-centra mientras barre. */
+.caretWrap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: visible;
+}
+
+.caretOld,
+.caretNew {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.caretNew {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* La línea del remate: más gruesa y algo más alta que el renglón, pero sin
+   cruzarlo —1,5 em contra los 1,05 de antes—. Los 60 px de separación NO son
+   de alto: son el hueco horizontal al que se corre cuando termina de barrer
+   (ver `Caret` en `fx.tsx`). */
+.caret {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 8px;
+    height: 1.5em;
+    border-radius: 4px;
+    background: var(--brand);
+    transform-origin: center;
+    will-change: transform, opacity, filter;
+}
+
+/* Escena 19. Antes el bloque estaba anclado a la izquierda (x = 300); ahora va
+   centrado en el cuadro y 15 % más grande (40 → 46 px). El `top` bajó otro
+   tanto para compensar: el bloque crece hacia abajo y con 300 px la pila de
+   palabras se iba del cuadro. */
+.unlockBlock {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 268px;
+    font-size: 46px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.unlockLead {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.unlockLine {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 1.15em;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.3em;
+    white-space: nowrap;
+}
+
+/* El texto no lleva color plano sino un degradado oscuro recortado a la letra.
+   Va en CADA pieza de texto y no en el bloque: `background-clip: text` recorta
+   contra el texto del PROPIO elemento, y el bloque no tiene texto suyo (sus
+   hijos van absolutos). Por eso cada palabra lleva su propia rampa.
+   
+   Y tiene que ser el elemento que CONTIENE la letra, no un ancestro: si en el
+   medio hay un descendiente con `filter` —como el `Blurred` de `HBlur`—
+   Chromium recorta bien pero pinta el fondo corrido (la frase aparecía 340 px a
+   la izquierda de donde la ubica el layout). De ahí `.unlockInk`, que envuelve
+   el texto del lead adentro del `HBlur`. */
+.unlockInk,
+.unlockHead,
+.unlockBlock .rollerItem,
+.unlockBlock .caretOld,
+.unlockBlock .caretNew {
+    background-image: linear-gradient(174deg, #0d180a 0%, #21371a 40%, #3c5a26 72%, #587c34 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.unlockBlock .caret {
+    background: #2b4519;
+}
+
+/* -------------------------------------------------- anillo y estrella -- */
+
+.donutWrap {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 640px;
+    height: 640px;
+    margin: -320px 0 0 -320px;
+    transform-origin: center;
+    will-change: transform, filter;
+}
+
+.donutWrap svg {
+    width: 100%;
+    height: 100%;
+    max-width: none !important;
+    overflow: visible;
+}
+
+.donutText {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    z-index: 5;
+}
+
+.eraLead {
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+}
+
+.eraWord {
+    font-size: 50px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+}
+
+/* "IA" al cierre de la roseta (escena 22): Outfit como el resto del bloque, sin
+   la itálica serif ni el subrayado de `.wordEm`, y rellena con los tres colores
+   del orbe de Roombir IA (`pms/OrbLoader.module.css`). El degradado es
+   periódico —empieza y termina en el mismo azul— y mide el doble del texto:
+   la escena lo desplaza de 0 a 200 % con el reloj y así da una vuelta entera
+   sin costura. Va en el elemento que CONTIENE la letra (ver `.unlockInk`). */
+.eraIa {
+    display: inline-block;
+    padding: 0 0.06em;
+    background-image: linear-gradient(90deg, #2b7fff 0%, #7c5cf5 33%, #ec3d8f 66%, #2b7fff 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.star {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /* Otro 40 % encima de las 982: la marca desborda el escenario de 1280 × 720 por los cuatro lados. */
+    width: 1374px;
+    height: 1374px;
+    margin: -687px 0 0 -687px;
+    transform-origin: center;
+}
+
+/* La escena de la marca: fondo gris claro plano, sin las manchas de color. */
+.blobFlat {
+    background: rgb(236, 237, 237);
+}
+
+.starMark {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 26px 52px rgba(20, 21, 15, 0.18));
+}
+
+.star svg {
+    width: 100%;
+    height: 100%;
+    max-width: none !important;
+    overflow: visible;
+    filter: drop-shadow(0 30px 60px rgba(20, 21, 15, 0.16));
+}
+
+/* --------------------------------------------- tarjeta vertical de módulo -- */
+
+.moduleCard {
+    /* La tabla de colores del producto, copiada de `.shell` (pms/ChatUi.module.css):
+       las piezas reales (tarjetas de unidad, bloques, estados) la esperan y, sin
+       ella, se dibujan sin fondo ni color. Acá van SÓLO las variables: `.shell`
+       además impone su propio layout. */
+    /* superficies */
+    --ch-surface: #ffffff;
+    --ch-surface-2: #f8fafc;
+    --ch-surface-3: #f1f5f9;
+    --ch-page: #ffffff;
+    /* bordes */
+    --ch-border: #e2e8f0;
+    --ch-border-strong: #cbd5e1;
+    --ch-divider: #eef1f6;
+    /* texto */
+    --ch-text: #1e293b;
+    --ch-text-strong: #0f172a;
+    --ch-text-2: #475569;
+    --ch-text-3: #64748b;
+    --ch-text-4: #94a3b8;
+    /* acento: el del PMS por defecto (themeBoot DEFAULT_ACCENT) */
+    --accent-color: #4e6b28;
+    --accent-text: #ffffff;
+    --accent-soft: rgba(78, 107, 40, 0.16);
+    --accent-strong: rgba(78, 107, 40, 0.28);
+    --ch-accent-ink: var(--accent-color);
+    /* sombras y radios: los del chat */
+    --ch-shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --ch-r-sm: 8px;
+    --ch-r-md: 10px;
+    --ch-r-lg: 12px;
+    --ch-r-xl: 16px;
+    /* semánticos */
+    --ch-ok: #16a34a;
+    --ch-danger: #dc2626;
+
+    /* Lo que piden las tarjetas de @roombir/ui (UnitCard, badge), mapeado
+       como lo hace `.block` en RoombirBlocks.module.css. */
+    --card-bg: var(--ch-surface);
+    --card-border: var(--ch-border);
+    --radius-card: var(--ch-r-lg);
+    --bg-surface: var(--ch-surface);
+    --bg-surface-hover: var(--ch-surface-2);
+    --text-primary: var(--ch-text-strong);
+    --text-secondary: var(--ch-text-2);
+    --text-muted: var(--ch-text-3);
+    --text-faint: var(--ch-text-4);
+    --border-default: var(--ch-divider);
+    --shadow-card: var(--ch-shadow-card);
+    --status-available: #22c55e;
+    --status-occupied: #ef4444;
+    --status-cleaning: #eab308;
+    --status-maintenance: #f97316;
+    --status-blocked: #6b7280;
+    --status-checkout-pending: #a855f7;
+    --status-pending: #eab308;
+    --status-confirmed: #22c55e;
+    --status-checked-in: #47c5ff;
+    --status-checked-out: #6b7280;
+    --status-cancelled: #ef4444;
+    --status-no-show: #f97316;
+
+    position: relative;
+    width: 300px;
+    height: 400px;
+    border-radius: 22px;
+    background: #fff;
+    overflow: hidden;
+    color: #0f172a;
+    text-align: left;
+    font-family: "DM Sans", var(--sans), system-ui, sans-serif;
+    box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.8), 0 0 0 4px color-mix(in srgb, var(--mc) 50%, transparent), 0 24px 60px rgba(20, 21, 15, 0.28);
+}
+
+.moduleHead {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 20px 7px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--mc);
+}
+
+.moduleIcon {
+    width: 19px;
+    height: 19px;
+    flex: none;
+}
+
+/* Roombir IA: la marca de colores y el nombre en la tinta de la marca. */
+.moduleHeadIa {
+    color: #323232;
+}
+
+.moduleOrb {
+    display: inline-flex;
+    flex: none;
+}
+
+/* El recorte de UI real va CENTRADO en la cara, no pegado arriba a la izquierda
+   (20-09-2026: Reservas dejaba 75 px de aire abajo y Habitaciones 67). El
+   `.moduleFit` mide SIN escalar, así que el flex centra su caja completa y el
+   `scale` sobre el centro deja lo pintado justo en el medio.
+   Las caras con escenario propio (`.tsStage`, `.lhStage`, `.iaStage`) van
+   `position: absolute` y no las toca el flex. */
+.moduleBody {
+    position: relative;
+    height: 349px;
+    overflow: hidden;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.moduleFit {
+    transform-origin: center;
+    flex: none;
+}
+
+/* ----------------------------------------------- tarjetas, grilla, pila -- */
+
+.flyCard {
+    position: absolute;
+    transform-origin: center;
+    will-change: transform, opacity;
+}
+
+.gridStage {
+    position: absolute;
+    transform-origin: center;
+}
+
+/* Sin `contain: paint`: recortaba a la caja de la celda el anillo blanco, el
+   anillo de color y la sombra de `.moduleCard`, que en la rueda sí se ven. */
+.gridCell {
+    position: absolute;
+    contain: layout;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
+}
+
+/* En la grilla el anillo y la sombra los dibuja `CardLight` DETRÁS de la
+   tarjeta: la sombra propia de `.moduleCard` se pintaría encima del anillo. */
+.gridCell .moduleCard {
+    box-shadow: none;
+}
+
+/* La sombra de `.moduleCard`, quieta: se pinta una vez con la celda. */
+.cardDrop {
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    box-shadow: 0 24px 60px rgba(20, 21, 15, 0.28);
+    pointer-events: none;
+}
+
+/* El canto: capa propia porque el brillo cambia a cada cuadro, así no arrastra
+   el repintado de la UI de la tarjeta. El ancho y el radio van en línea. */
+.cardRim {
+    position: absolute;
+    border-style: solid;
+    border-color: transparent;
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* La cara del logo de `merge` y `unfold`: tapa la UI de la tarjeta del centro. */
+/* La tarjeta de LinkHub: la página entera centrada sobre blanco con degradados
+   suaves (el recorte del teléfono mostraba sólo un pedazo). Desborda el padding
+   lateral de `.moduleBody` para llegar a los bordes de la tarjeta. */
+/* Estado turístico: el globo a todo el ancho y debajo la tarjeta, con el
+   mismo padding lateral que `.moduleBody` le da al resto. */
+.tsStage {
+    position: absolute;
+    inset: 0 -12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.tsBody {
+    padding: 6px 12px 0;
+    min-height: 0;
+}
+
+.lhStage {
+    position: absolute;
+    inset: 0 -12px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background:
+        radial-gradient(120% 80% at 16% 6%, rgba(201, 138, 148, 0.26), transparent 62%),
+        radial-gradient(110% 75% at 90% 94%, rgba(124, 154, 60, 0.2), transparent 64%),
+        #fff;
+}
+
+.lhScreen {
+    overflow: hidden;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 12px 26px rgba(20, 21, 15, 0.16), 0 0 0 1px rgba(20, 21, 15, 0.06);
+}
+
+
+
+.logoFace {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 22px;
+    background: #fff;
+}
+
+.pileStage {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+}
+
+/* La pila: cada tarjeta es una PLACA con espesor —cara, borde blanco y canto de
+   su color, en capas translateZ— como las de la referencia. */
+.slab {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-style: preserve-3d;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.slabRim,
+.slabEdge,
+.slabFace,
+.slabShadow {
+    position: absolute;
+    inset: 0;
+    border-radius: 17px;
+}
+
+/* Sombra de contacto de cada placa: se ve entre los cantos cuando una card
+   cae sobre otra, además de la sombra general que ya proyecta la pila. */
+.slabShadow {
+    inset: 7px -12px -14px 12px;
+    background: radial-gradient(ellipse at 38% 38%, rgba(50, 39, 83, 0.44) 0%, rgba(50, 39, 83, 0.16) 45%, rgba(50, 39, 83, 0) 76%);
+    filter: blur(16px);
+    transform: translate3d(18px, 24px, -20px);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+.slabEdge {
+    background: linear-gradient(135deg, #ffffff 0%, #f3f1ee 38%, #d5d2d4 100%);
+    box-shadow: inset 0 0 0 1px rgba(20, 21, 15, 0.1), inset 0 -5px 8px rgba(20, 21, 15, 0.11), 0 2px 0 rgba(80, 70, 100, 0.08);
+}
+
+.slabFace {
+    overflow: hidden;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.94), inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -3px 8px rgba(20, 21, 15, 0.1), 0 7px 12px rgba(49, 39, 78, 0.08);
+}
+
+.slabFace::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(132deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.08) 28%, rgba(80, 61, 120, 0.05) 72%, rgba(42, 32, 58, 0.16) 100%);
+    mix-blend-mode: soft-light;
+}
+
+.slabLogo {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: #fff;
+}
+
+/* La sombra de la pila en el piso: blanda y fría, como la de la referencia. */
+.pileShadow {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 40px;
+    background: rgba(46, 40, 78, 0.3);
+    filter: blur(34px);
+    mix-blend-mode: multiply;
+}
+
+/* La tarjeta de módulo dentro de una placa: sin su sombra ni su halo (los da la placa). */
+.moduleFlat {
+    box-shadow: none;
+}
+
+/* La rueda: escenario 3D en el centro de la pantalla; cada tarjeta se centra
+   con translate(−50 %) y gira alrededor de su centro. */
+.wheelStage {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    perspective: 1400px;
+    transform-style: preserve-3d;
+}
+
+.wheelCard {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 300px;
+    height: 400px;
+    transform-origin: center;
+    will-change: transform;
+}
+
+/* El titular de `unfold`: 76 px en vez de los 88 de `.displayXl`, que se
+   comparte con otras escenas. Si se vuelve a tocar hay que recalcular el `top`
+   de `.unfoldStage`: la separación con la UI se mide contra la línea de base. */
+.unfoldTitle {
+    font-size: 76px;
+    text-shadow: 0 1px 2px rgba(1, 32, 30, 0.28), 0 10px 40px rgba(1, 32, 30, 0.55);
+}
+
+/* `top` se mide contra el titular, no a ojo: con `.unfoldTitle` en 76 px la
+   línea de base queda en 113 y el punto baja 1 px, y el empuje del final sube la
+   UI 12 px (`-12 * push` en `UnfoldScene`). 114 + 20 de aire + 12 = 146, así que
+   en el cuadro en el que más se acercan quedan los 20 px pedidos. */
+.unfoldStage {
+    position: absolute;
+    left: 80px;
+    top: 146px;
+    width: 1120px;
+    transform-origin: center top;
+    filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.45));
+}
+
+/* --------------------------------------------------------- rueda y fila -- */
+
+.ringStage {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+}
+
+.ringCard {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 300px;
+    height: 400px;
+    margin: -200px 0 0 -150px;
+    /* `flat` y no `preserve-3d`: las rotaciones del aspa van sobre la tarjeta,
+       no sobre sus hijos, y el contenido es UI plana. Con `preserve-3d` el
+       navegador tiene que rasterizar el subárbol entero en cada cuadro en vez
+       de mapear una textura ya dibujada — medido, eran diez tarjetas grandes
+       girando a 30 fps. El `preserve-3d` que hace falta es el del escenario. */
+    transform-style: flat;
+    will-change: transform;
+}
+
+.rowStage {
+    position: absolute;
+    inset: 0;
+    perspective: 1200px;
+    overflow: hidden;
+}
+
+.rowCard {
+    position: absolute;
+    left: 0;
+    top: 130px;
+    width: 300px;
+    height: 400px;
+    transform-origin: center;
+    will-change: transform;
+}
+
+.punchedTitle {
+    text-shadow: 0 0 12px #f1ece2, 0 0 12px #f1ece2, 0 0 12px #f1ece2, 0 0 28px #f1ece2, 0 0 28px #f1ece2,
+        0 0 46px #f1ece2;
+}
+
+.toolsTitle {
+    margin: 0;
+    font-size: 56px;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    white-space: nowrap;
+}
+
+.swapStage {
+    position: relative;
+    width: 100%;
+    height: 1.3em;
+}
+
+/* Las frases de `first`: Outfit con un degradado de la paleta (musgo profundo
+   → musgo → ámbar) recortado al texto. El tramo de cada palabra lo pone el
+   componente (`background-size`/`-position` medidos). El padding con margen
+   negativo agranda la caja sin mover nada: el recorte al texto no pinta fuera
+   de la caja y se comería las colas de la j, los acentos y la coma. */
+.gradWord {
+    display: inline-block;
+    padding: 0.16em 0.08em;
+    margin: -0.16em -0.08em;
+    background-image: linear-gradient(100deg, #2f4d18 0%, #4e6b28 45%, #8f5b20 100%);
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    will-change: transform, opacity;
+}
+
+/* Escena 9 (y la frase que arrastra la 10): el verde es el petróleo del fondo
+   de la 12 (`.gradientDeep`), no el oliva. La punta cálida se queda. */
+.gradTeal .gradWord {
+    background-image: linear-gradient(100deg, #073733 0%, #22524c 45%, #8f5b20 100%);
 }

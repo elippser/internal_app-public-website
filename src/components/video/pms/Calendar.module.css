@@ -1,0 +1,504 @@
+/* Copia de `booking-app/web/src/components/Calendario/Calendario.module.css`
+   (toolbar, grilla, encabezado, categoría, filas y barras). Los tokens
+   (--accent-*, --text-*, --bg-surface, --border-*) los declara PmsShell. */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    --cal-day-line: color-mix(in srgb, var(--border-default) 90%, var(--text-primary));
+    --cal-day-line-w: 2px;
+}
+
+/* ------------------------------------------------------------ toolbar ---- */
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.toolbarGroup {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg-surface) 93%, var(--text-primary));
+}
+
+.navCluster {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.navBtn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--border-strong);
+    border-radius: 15px 5px 5px 15px;
+    background: color-mix(in srgb, var(--bg-surface) 93%, var(--text-primary));
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.navBtnEnd {
+    border-radius: 5px 15px 15px 5px;
+}
+
+.monthPickerBtn {
+    height: 30px;
+    padding: 0 12px 0 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 5px;
+    background: color-mix(in srgb, var(--bg-surface) 93%, var(--text-primary));
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: capitalize;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chev {
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    opacity: 0.7;
+    margin-left: 4px;
+}
+
+.rangeBtn {
+    padding: 0 11px;
+    height: 26px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.rangeBtnActive {
+    background: var(--accent-color);
+    color: var(--accent-contrast);
+}
+
+.todayChip {
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 11px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent-color);
+}
+
+.monthLabel {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: capitalize;
+    padding: 0 11px 0 5px;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.search,
+.select,
+.ghostBtn {
+    height: 30px;
+    padding: 0 13px;
+    font-size: 12.5px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: color-mix(in srgb, var(--bg-surface) 93%, var(--text-primary));
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.search {
+    min-width: 170px;
+    color: var(--text-muted);
+}
+
+.select {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.ghostBtn {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.primaryBtn {
+    height: 30px;
+    padding: 0 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    border-radius: 999px;
+    border: 1px solid var(--accent-color);
+    background: var(--accent-color);
+    color: var(--accent-contrast);
+    display: inline-flex;
+    align-items: center;
+}
+
+/* --------------------------------------------------------------- grilla -- */
+
+.scroller {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+}
+
+.grid {
+    width: max-content;
+    min-width: 100%;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: var(--label-w) max-content;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.labelCell {
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-strong);
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.daysArea {
+    position: relative;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--col-w);
+}
+
+.dayCell {
+    border-right: var(--cal-day-line-w) solid var(--cal-day-line);
+    min-height: 34px;
+    display: flex;
+}
+
+.dayCell:last-child {
+    border-right: none;
+}
+
+.dayHalf {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.dayHalfPm {
+    border-left: 1px dashed rgba(100, 116, 139, 0.29);
+}
+
+.weekendCol {
+    background: rgba(148, 163, 184, 0.08);
+}
+
+.todayCol {
+    background: var(--accent-soft);
+}
+
+.headerRow {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-strong);
+}
+
+.dayHead {
+    border-right: var(--cal-day-line-w) solid var(--cal-day-line);
+    padding: 6px 2px 5px;
+    text-align: center;
+    line-height: 1.15;
+}
+
+.dayHead:last-child {
+    border-right: none;
+}
+
+.dow {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: capitalize;
+}
+
+.dayNum {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.dayHeadToday .dow,
+.dayHeadToday .dayNum {
+    color: var(--accent-color);
+}
+
+.monthTick {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.occupancyRow {
+    background: var(--bg-surface);
+}
+
+.occupancyCell {
+    border-right: var(--cal-day-line-w) solid var(--cal-day-line);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 3px 2px;
+}
+
+.occupancyCell:last-child {
+    border-right: none;
+}
+
+.miniLabel {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* ------------------------------------------------------------ categoría -- */
+
+.categoryRow {
+    background: rgba(148, 163, 184, 0.07);
+}
+
+.chevDown {
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid var(--text-muted);
+    border-bottom: 1.5px solid var(--text-muted);
+    transform: translateY(-2px) rotate(45deg);
+    flex: none;
+}
+
+.categoryDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex: none;
+}
+
+.categoryName {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.categoryCount {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.categoryStatCell {
+    border-right: var(--cal-day-line-w) solid var(--cal-day-line);
+    padding: 3px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    line-height: 1.1;
+}
+
+.categoryStatCell:last-child {
+    border-right: none;
+}
+
+.statAvail {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.statAvail svg {
+    width: 10px;
+    height: 10px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.statRate {
+    font-size: 10.5px;
+    color: #2f74df;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- filas -- */
+
+.roomRow .daysArea {
+    min-height: 34px;
+}
+
+.roomLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.barsLayer {
+    position: absolute;
+    inset: 2px 0;
+    pointer-events: none;
+}
+
+.barWrap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
+/* La barra recién creada crece desde su mediodía de llegada. */
+.barFresh {
+    animation: barIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    transform-origin: left center;
+}
+
+@keyframes barIn {
+    from {
+        transform: scaleX(0.15);
+        opacity: 0;
+    }
+}
+
+.bar {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 12px 0 20px;
+    min-width: 0;
+    border-radius: 3px;
+    color: #fff;
+    text-align: left;
+    overflow: hidden;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+    background: var(--bar-color);
+}
+
+.barName {
+    flex: 1;
+    min-width: 0;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.barTail {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.tailStat {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+    font-weight: 700;
+    opacity: 0.95;
+}
+
+.tailStat svg {
+    width: 11px;
+    height: 11px;
+    max-width: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.tailUnpaid {
+    opacity: 0.55;
+}
+
+/* -------------------------------------------------------------- leyenda -- */
+
+.legend {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.legendItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.legendSwatch {
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+}
+
+.legendHint {
+    margin-left: auto;
+}

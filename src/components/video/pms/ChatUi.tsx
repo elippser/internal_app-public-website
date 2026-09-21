@@ -22,12 +22,21 @@ export function ChatShell({ children, className }: { children: ReactNode; classN
 
 /* ------------------------------------------------------------ compositor -- */
 
+/* `data-pill`, `data-send` y `data-ghost` son ganchos de MEDICIÓN, no estilo:
+   la escena 18 mide dónde cayeron la píldora y el botón, y cuánto mide la frase
+   entera, para encuadrar la cámara y llevar el puntero (`useOffsets` en
+   `acts/chat.tsx`). Se miden UNA vez, al montar. Si se renombran, la cámara no
+   falla: encuadra mal, que es peor. (`data-caret` quedó sólo por si hace falta
+   medir el cursor de texto; hoy nadie lo mide, y así tiene que seguir: medirlo
+   letra por letra es lo que hacía temblar la cámara.) */
+
 export function Composer({
   text,
   placeholder,
   caret = false,
   pressed = false,
   sendLabel,
+  ghost,
 }: {
   text: string;
   placeholder: string;
@@ -36,18 +45,55 @@ export function Composer({
   /** El instante del envío: el botón se hunde apenas. */
   pressed?: boolean;
   sendLabel: string;
+  /**
+   * Un espejo invisible del texto completo, para MEDIRLO. Los compositores de
+   * verdad usan uno igual para saber cuánto tienen que crecer; acá lo usa la
+   * escena 18 para saber de una vez cuánto mide la frase entera, en lugar de
+   * deducirlo letra por letra mientras se escribe.
+   */
+  ghost?: string;
 }) {
   const empty = text.length === 0;
   return (
     <div className={s.composer}>
-      <div className={[s.inputWrap, caret ? s.inputWrapFocus : ""].join(" ")}>
+      <div className={[s.inputWrap, caret ? s.inputWrapFocus : ""].join(" ")} data-pill>
+        <span className={s.attachBtn} aria-hidden>
+          <svg viewBox="0 0 24 24">
+            <path d="M21.4 11.05l-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.66 5.66l-9.2 9.2a2 2 0 0 1-2.83-2.83l8.5-8.5" />
+          </svg>
+        </span>
         <div className={s.textarea} aria-hidden>
-          {empty ? <span className={s.placeholder}>{placeholder}</span> : text}
-          {caret && <span className={s.caret} />}
+          {/* Vacío, el cursor va ANTES del marcador de posición, como en un
+              input de verdad. Si va después, al entrar la primera letra salta
+              todo el ancho del marcador —y la cámara de la escena 18, que lo
+              sigue, pega el mismo salto—. */}
+          {empty ? (
+            <>
+              {caret && <span className={s.caret} data-caret />}
+              <span className={s.placeholder}>{placeholder}</span>
+            </>
+          ) : (
+            <>
+              {text}
+              {caret && <span className={s.caret} data-caret />}
+            </>
+          )}
+          {ghost !== undefined && (
+            <span className={s.ghost} data-ghost>
+              {ghost}
+            </span>
+          )}
         </div>
+        <span className={s.micBtn} aria-hidden>
+          <svg viewBox="0 0 24 24">
+            <rect x="9" y="3" width="6" height="11" rx="3" />
+            <path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6" />
+          </svg>
+        </span>
         <button
           type="button"
           className={s.sendBtn}
+          data-send
           disabled={empty && !pressed}
           aria-label={sendLabel}
           tabIndex={-1}

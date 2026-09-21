@@ -1,0 +1,810 @@
+/* ============================================================================
+ * La mesa de montaje de la voz en off (`/{lang}/video?edit=1`).
+ *
+ * Cuatro franjas de arriba abajo: transporte, video (40 vh, como se pidió),
+ * subtítulo y pistas. La última se come todo lo que sobre —`minmax(0, 1fr)` y
+ * no `1fr`, o una fila de grilla con contenido que desborda se niega a
+ * achicarse y las pistas empujan el video fuera de la pantalla—.
+ * ========================================================================== */
+
+.editor {
+    position: fixed;
+    inset: 0;
+    /* Por encima del header del sitio (z 90). El reproductor se queda en 50 y
+       deja pasar la navegación, pero acá el video arranca pegado al borde de
+       arriba y la barra del sitio le cae encima; además esto es una herramienta
+       a pantalla completa, no una página del sitio. */
+    z-index: 95;
+    display: grid;
+    grid-template-rows: auto 40vh auto minmax(0, 1fr);
+    background: #0b0c08;
+    color: var(--text-ink);
+    font-family: var(--sans);
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ------------------------------------------------------------ transporte -- */
+
+.bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    background: #14150f;
+    border-bottom: 1px solid var(--line-ink);
+}
+
+.play,
+.ctrl {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    border: 1px solid var(--line-ink);
+    border-radius: 9px;
+    background: rgba(242, 239, 232, 0.05);
+    color: var(--text-ink);
+    cursor: pointer;
+}
+
+.play {
+    background: var(--brand-bright);
+    color: #14150f;
+    border-color: transparent;
+}
+
+.play:hover,
+.ctrl:hover {
+    background: rgba(242, 239, 232, 0.14);
+}
+
+.play:hover {
+    background: #d6efa3;
+}
+
+/* Un mando que no se puede usar se apaga pero no desaparece: que deshacer
+   siga ahí, en gris, dice que existe y que todavía no hay nada que deshacer. */
+.ctrl:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.ctrl:disabled:hover {
+    background: rgba(242, 239, 232, 0.05);
+}
+
+.play svg,
+.ctrl svg {
+    width: 16px;
+    height: 16px;
+}
+
+.clock {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+}
+
+.clockTotal {
+    opacity: 0.45;
+}
+
+.scene {
+    font-size: 12px;
+    opacity: 0.55;
+    white-space: nowrap;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.busy {
+    font-size: 12px;
+    color: var(--brand-bright);
+}
+
+/* El aviso de que un archivo cambió de largo. Se muestra un rato y se va: es
+   una explicación de por qué el clip mide distinto, no un estado. */
+.aviso {
+    max-width: 340px;
+    font-size: 12px;
+    color: #e6c98a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.status {
+    font-size: 12px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--line-ink);
+    white-space: nowrap;
+}
+
+.saved {
+    color: var(--brand-bright);
+    border-color: rgba(200, 226, 147, 0.35);
+}
+
+.saving {
+    opacity: 0.6;
+}
+
+.idle {
+    color: #e6c98a;
+    border-color: rgba(230, 201, 138, 0.3);
+}
+
+.error {
+    color: #e08f6d;
+    border-color: rgba(224, 143, 109, 0.4);
+}
+
+.loading {
+    opacity: 0.45;
+}
+
+.stale {
+    color: #e6c98a;
+    border-color: rgba(230, 201, 138, 0.5);
+    background: rgba(230, 201, 138, 0.12);
+}
+
+.zoom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.zoom input {
+    width: 130px;
+    accent-color: var(--brand-bright);
+}
+
+.zoomHint {
+    font-size: 11px;
+    opacity: 0.4;
+    white-space: nowrap;
+}
+
+/* ----------------------------------------------------------------- video -- */
+
+.videoHost {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+    /* El escenario se dibuja adentro con su propia escala: no reacomoda. */
+    container-type: inline-size;
+}
+
+/* -------------------------------------------------------------- subtítulo -- */
+
+.subs {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    min-height: 62px;
+    padding: 12px 20px;
+    background: #101109;
+    border-block: 1px solid var(--line-ink);
+}
+
+.subsCol {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.subsTag {
+    flex: 0 0 auto;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.35;
+}
+
+.subsLine {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.25;
+    font-weight: 500;
+    transition: color 140ms linear, opacity 140ms linear;
+}
+
+.subsLive {
+    color: var(--paper);
+}
+
+/* Fuera de su ventana la línea sigue a la vista pero apagada: saber qué se
+   acaba de decir ubica tanto como saber qué se está diciendo. */
+.subsPast {
+    color: var(--paper);
+    opacity: 0.3;
+}
+
+/* El castellano de la frase, chico y debajo. Apagado a propósito: es la muleta
+   para entender qué se está diciendo, no lo que hay que leer. */
+.subsEs {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.3;
+    color: #e6c98a;
+    opacity: 0.78;
+}
+
+/* ---------------------------------------------------------------- pistas -- */
+
+.board {
+    position: relative;
+    overflow: auto;
+    background: #0b0c08;
+    /* Sin esto, desplazar más allá del principio dispara el gesto de "atrás"
+       del navegador y se pierde la página a mitad de un montaje. */
+    overscroll-behavior-x: contain;
+
+    /* Sin barra a la vista: se desplaza con la rueda y la posición ya la dicen
+       la regla y la cabeza de reproducción. La barra horizontal, además, se
+       comía 12 px de alto en una zona donde el espacio es justo. */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.board::-webkit-scrollbar {
+    display: none;
+}
+
+.lanes {
+    position: relative;
+    min-width: 100%;
+    padding-bottom: 20px;
+}
+
+.row {
+    display: flex;
+    align-items: stretch;
+}
+
+/* La columna de nombres se queda quieta mientras la línea de tiempo corre. El
+   z-index la pone por encima de la cabeza de reproducción, que le pasa por
+   debajo en vez de dibujarse sobre los rótulos. */
+.label {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    flex: 0 0 156px;
+    width: 156px;
+    /* En columna: el nombre arriba y los mandos abajo. En una sola fila, con el
+       nivel de volumen adentro, no entra nada en 156 px. */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 5px;
+    padding: 0 10px;
+    background: #14150f;
+    border-right: 1px solid var(--line-ink);
+    border-bottom: 1px solid rgba(242, 239, 232, 0.06);
+    font-size: 12px;
+}
+
+/* El apagado va en el COLOR y no en `opacity`: la opacidad se lleva puesto
+   también el fondo del rótulo, y la regla y el guion se veían por debajo de la
+   columna de nombres al desplazar la línea de tiempo. */
+/* Un canto del color de la pista: es lo que ata el nombre con sus clips cuando
+   la línea de tiempo está corrida y el clip queda lejos del rótulo. */
+.labelTrack {
+    box-shadow: inset 3px 0 0 var(--trk);
+}
+
+.labelRuler,
+.labelCue {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(242, 239, 232, 0.4);
+}
+
+.trackTop {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+/* El asa de reordenar: tres rayas en un ancho fijo. Va separada del nombre para
+   que apretar el rótulo no arranque un arrastre sin querer. */
+.grip {
+    flex: 0 0 auto;
+    width: 9px;
+    height: 14px;
+    cursor: grab;
+    touch-action: none;
+    background-image: linear-gradient(
+        rgba(242, 239, 232, 0.4) 2px,
+        transparent 2px
+    );
+    background-size: 100% 4px;
+    opacity: 0.55;
+}
+
+.grip:hover {
+    opacity: 1;
+}
+
+.grip:active {
+    cursor: grabbing;
+}
+
+/* El hueco donde caería la pista que se está arrastrando. */
+.labelDrop {
+    box-shadow:
+        inset 3px 0 0 var(--trk),
+        inset 0 3px 0 var(--brand-bright);
+}
+
+.trackName {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.labelBtns {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+/* El nivel de la pista. Va chato y sin pulgar grande: es un mando secundario
+   que convive con tres botones en 136 px útiles. */
+.vol {
+    flex: 1;
+    min-width: 0;
+    height: 14px;
+    margin-left: 2px;
+    accent-color: var(--brand-bright);
+    cursor: pointer;
+}
+
+.mini {
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line-ink);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-ink);
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.mini:hover {
+    background: rgba(242, 239, 232, 0.12);
+}
+
+.miniOn {
+    background: rgba(224, 143, 109, 0.22);
+    border-color: rgba(224, 143, 109, 0.5);
+    color: #e08f6d;
+}
+
+/* -------------------------------------------------------------- la regla -- */
+
+.ruler {
+    position: relative;
+    height: 44px;
+    border-bottom: 1px solid rgba(242, 239, 232, 0.06);
+    cursor: text;
+}
+
+.tick {
+    position: absolute;
+    top: 0;
+    bottom: 22px;
+    width: 1px;
+    background: rgba(242, 239, 232, 0.14);
+}
+
+.tick b {
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.45;
+    white-space: nowrap;
+}
+
+/* Las escenas del video, al pie de la regla: son las referencias contra las
+   que se alinea la locución. */
+.beat {
+    position: absolute;
+    bottom: 3px;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    border-radius: 4px;
+    background: rgba(78, 107, 40, 0.3);
+    border: 1px solid rgba(200, 226, 147, 0.16);
+    font-size: 10px;
+    color: rgba(242, 239, 232, 0.72);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.beat em {
+    margin-left: 5px;
+    font-style: normal;
+    font-family: var(--mono);
+    opacity: 0.75;
+}
+
+/* Una escena que ya no dura lo que decía el código se marca: es un dato que
+   hace falta al volver a mirar esto dos días después. */
+.beatOn {
+    background: rgba(143, 91, 32, 0.42);
+    border-color: rgba(230, 201, 138, 0.5);
+}
+
+/* El tirador del borde. Generoso a propósito: se apunta con el bloque de la
+   escena, que puede medir 20 px a poco zoom. */
+.beatHandle {
+    position: absolute;
+    top: -3px;
+    right: -1px;
+    bottom: -3px;
+    width: 8px;
+    cursor: ew-resize;
+    touch-action: none;
+    background: linear-gradient(90deg, transparent, rgba(242, 239, 232, 0.5));
+    border-radius: 0 4px 4px 0;
+}
+
+.beatHandle:hover {
+    background: var(--brand-bright);
+}
+
+/* --------------------------------------------------------------- el guion -- */
+
+.cueLane {
+    position: relative;
+    height: 38px;
+    border-bottom: 1px solid rgba(242, 239, 232, 0.06);
+}
+
+.cue {
+    position: absolute;
+    top: 5px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    border: 1px solid rgba(143, 91, 32, 0.5);
+    border-radius: 6px;
+    background: rgba(143, 91, 32, 0.22);
+    color: rgba(242, 239, 232, 0.8);
+    font-size: 11px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.cue:hover {
+    background: rgba(143, 91, 32, 0.38);
+}
+
+.cueOn {
+    background: var(--amber);
+    border-color: #e6c98a;
+    color: #fff;
+}
+
+/* ------------------------------------------------------------- una pista -- */
+
+.track {
+    position: relative;
+    height: 62px;
+    border-bottom: 1px solid rgba(242, 239, 232, 0.06);
+    background-image: linear-gradient(90deg, rgba(242, 239, 232, 0.035) 1px, transparent 1px);
+    background-size: 40px 100%;
+}
+
+.trackDrop {
+    background-color: rgba(200, 226, 147, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(200, 226, 147, 0.4);
+}
+
+.hint {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.clip {
+    position: absolute;
+    top: 7px;
+    bottom: 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: 0 8px;
+    border-radius: 7px;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: none;
+}
+
+.clip:active {
+    cursor: grabbing;
+}
+
+/* El color sale de las variables que pone la FILA (`--trk`), no de una clase
+   por pista: así una pista nueva estrena color sin tocar el CSS. Los valores de
+   reserva son los de la primera pista, por si algo dibuja un clip fuera de una
+   fila. */
+.audio {
+    background: linear-gradient(180deg, var(--trk, #5f7f32), var(--trk2, #47622a));
+    border: 1px solid var(--trk-line, rgba(200, 226, 147, 0.45));
+    color: #f2efe8;
+}
+
+/* El silencio se lee como ausencia: rayado, sin relleno y con el borde cortado.
+   Si se pintara como un clip más, una pista llena de pausas parecería llena de
+   audio. */
+.gap {
+    background:
+        repeating-linear-gradient(
+            -45deg,
+            rgba(242, 239, 232, 0.07) 0 6px,
+            transparent 6px 12px
+        );
+    /* Rayado y sin relleno como siempre —el silencio se tiene que leer como
+       ausencia—, pero el borde va del color de la pista para que la fila entera
+       se lea de una misma familia. */
+    border: 1px dashed var(--trk-line, rgba(242, 239, 232, 0.28));
+    color: rgba(242, 239, 232, 0.5);
+}
+
+.clipOn {
+    outline: 2px solid var(--brand-bright);
+    outline-offset: 1px;
+}
+
+.clipName {
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+}
+
+.clipDur {
+    font-family: var(--mono);
+    font-size: 10px;
+    opacity: 0.6;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* El borde derecho, para estirar o recortar. Ancho generoso: con 4 px hay que
+   apuntar, y se está apuntando con el clip todavía en movimiento. */
+.handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 9px;
+    cursor: ew-resize;
+    background: linear-gradient(90deg, transparent, rgba(242, 239, 232, 0.22));
+    touch-action: none;
+}
+
+/* ------------------------------------------- menú del botón derecho -- */
+
+.menu {
+    position: fixed;
+    z-index: 20;
+    min-width: 218px;
+    padding: 5px;
+    border: 1px solid rgba(242, 239, 232, 0.16);
+    border-radius: 10px;
+    background: #1b1c14;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+}
+
+.menuHead {
+    padding: 5px 9px 7px;
+    color: rgba(242, 239, 232, 0.42);
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid rgba(242, 239, 232, 0.08);
+    margin-bottom: 4px;
+}
+
+.menuItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    padding: 7px 9px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.menuItem:hover:not(:disabled) {
+    background: rgba(242, 239, 232, 0.1);
+}
+
+/* Deshabilitado y NO escondido: que se vea que el corte existe pero que ahí no
+   se puede, con el motivo en el title, enseña dónde hay que poner la línea. */
+.menuItem:disabled {
+    opacity: 0.32;
+    cursor: not-allowed;
+}
+
+.menuItem em {
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 11px;
+    opacity: 0.45;
+}
+
+.menuDanger:hover:not(:disabled) {
+    background: rgba(224, 143, 109, 0.18);
+    color: #e08f6d;
+}
+
+/* ------------------------------------------------------ curva de volumen -- */
+
+/* El SVG cubre el carril entero pero NO recibe clicks: sólo la línea y los
+   puntos. Así el resto del carril sigue llevando la cabeza de reproducción. */
+.env {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.envLine {
+    fill: none;
+    stroke: #e6c98a;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    opacity: 0.85;
+}
+
+/* El mismo trazo, gordo y transparente: es el área que se puede agarrar. Una
+   línea de 1,5 px no se acierta con el mouse. */
+.envHit {
+    fill: none;
+    stroke: transparent;
+    /* Angosta a propósito: la línea cruza por el medio de los clips, así que
+       cada píxel de más es un píxel donde no se puede agarrar el clip. 10 px
+       alcanzan para acertarle y dejan 19 arriba y 19 abajo para el clip. */
+    stroke-width: 10;
+    pointer-events: stroke;
+    cursor: crosshair;
+}
+
+.envDot {
+    fill: #e6c98a;
+    stroke: #14150f;
+    stroke-width: 1.5;
+    pointer-events: all;
+    cursor: ns-resize;
+}
+
+.envDot:hover {
+    fill: #fff;
+}
+
+/* ---------------------------------------------------------------- recorte -- */
+
+.crop {
+    position: absolute;
+    top: 7px;
+    bottom: 7px;
+    z-index: 3;
+    border-radius: 7px;
+    overflow: hidden;
+    touch-action: none;
+}
+
+/* Lo que se va: apagado y rayado, para que se lea como descarte. */
+.cropOut {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        -45deg,
+        rgba(0, 0, 0, 0.6) 0 5px,
+        rgba(0, 0, 0, 0.32) 5px 10px
+    );
+}
+
+.cropIn {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 0 2px var(--brand-bright);
+    background: rgba(200, 226, 147, 0.14);
+}
+
+.cropGrip {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 11px;
+    margin-left: -5px;
+    cursor: ew-resize;
+    background: var(--brand-bright);
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(20, 21, 15, 0.6);
+}
+
+.cropInfo {
+    position: absolute;
+    top: -2px;
+    z-index: 4;
+    transform: translateX(-50%);
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(20, 21, 15, 0.82);
+    color: var(--paper);
+    font-size: 10px;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+
+/* ------------------------------------------------- cabeza de reproducción -- */
+
+.head {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 4;
+    width: 1px;
+    background: #e6c98a;
+    pointer-events: none;
+}
+
+.head::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -5px;
+    width: 11px;
+    height: 11px;
+    border-radius: 0 0 3px 3px;
+    background: #e6c98a;
+}

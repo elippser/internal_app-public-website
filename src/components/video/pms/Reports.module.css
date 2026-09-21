@@ -1,0 +1,169 @@
+/* Copia de ReportsView.module.css (pms-core/app), tema claro. */
+
+.root {
+    --dash-card: #ffffff;
+    --dash-dark: #0e1018;
+    --dash-text: #111827;
+    --dash-muted: #8b8fa8;
+    --dash-border: #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 4px 8px;
+    color: var(--dash-text);
+    font-family: "DM Sans", var(--sans), system-ui, sans-serif;
+}
+
+.head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.pageTitle {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+.pageSub {
+    margin: 2px 0 0;
+    font-size: 11.5px;
+    color: var(--dash-muted);
+}
+
+.refreshBtn {
+    background: var(--dash-dark);
+    color: #fff;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.rangeBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--dash-card);
+    border: 1px solid var(--dash-border);
+    border-radius: 14px;
+    padding: 8px 10px;
+}
+
+.rangeTabs {
+    display: inline-flex;
+    border-radius: 999px;
+    background: rgba(127, 127, 127, 0.08);
+    padding: 3px;
+}
+
+.rangeTab {
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: 999px;
+}
+
+.rangeTabActive {
+    background: var(--dash-dark);
+    color: #fff;
+}
+
+.rangeNote {
+    font-size: 11px;
+    color: var(--dash-muted);
+}
+
+.sectionTitle {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.sectionSub {
+    font-size: 11px;
+    color: var(--dash-muted);
+}
+
+.metricsRow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.metricCard {
+    background: var(--dash-card);
+    border: 1px solid var(--dash-border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 100px;
+    justify-content: space-between;
+}
+
+.metricLabel {
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.metricVal {
+    font-size: 26px;
+    font-weight: 800;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    letter-spacing: -0.5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.metricSub {
+    font-size: 11px;
+    color: var(--dash-muted);
+    line-height: 1.4;
+}
+
+.metricBadge {
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    letter-spacing: -0.2px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.badgeUp {
+    background: #6ef0b1;
+    color: #04331a;
+}
+
+.chartCard {
+    background: var(--dash-card);
+    border: 1px solid var(--dash-border);
+    border-radius: 16px;
+    padding: 14px 16px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.chartTitle {
+    font-size: 13.5px;
+    font-weight: 700;
+}
+
+.chartSub {
+    font-size: 11px;
+    color: var(--dash-muted);
+}
+
+.chart {
+    width: 100%;
+    height: 150px;
+    margin-top: 8px;
+    max-width: none;
+}

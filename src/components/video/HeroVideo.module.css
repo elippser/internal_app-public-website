@@ -18,6 +18,17 @@
     overflow: hidden;
 }
 
+/* La superficie embebible: el escenario y nada más, tapando el chrome del
+   sitio. Lo que la maneja es el panel interno, por postMessage. */
+.embed {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    overflow: hidden;
+    background: var(--ink);
+    container-type: inline-size;
+}
+
 /* ------------------------------------------------------------ reproductor -- */
 
 .player {

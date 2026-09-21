@@ -1,0 +1,74 @@
+/* El banner del estado turístico: el mapa de la ciudad y, pisando su borde de
+   abajo, la tarjeta de la propiedad. Las medidas salen de `.propertyCard` de
+   `TourismStatusPanel.module.css` (borde, radio 18, sombra y el ícono de casa),
+   reducidas al tamaño de la tarjeta del módulo. */
+
+.banner {
+    position: relative;
+    flex: none;
+    overflow: hidden;
+    background: #e9eef5;
+}
+
+.banner svg {
+    display: block;
+}
+
+.propertyCard {
+    position: absolute;
+    right: 12px;
+    bottom: 8px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 9px;
+    border: 1px solid var(--ch-border, #e2e8f0);
+    border-radius: 14px;
+    background: var(--ch-surface, #ffffff);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+}
+
+.photoFallback {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--ch-surface-3, #f1f5f9);
+    color: var(--ch-text-3, #64748b);
+}
+
+.photoFallback svg {
+    width: 17px;
+    height: 17px;
+}
+
+.propText {
+    display: block;
+    min-width: 0;
+}
+
+.propName {
+    display: block;
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1.25;
+    color: var(--ch-text-strong, #0f172a);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.propMeta {
+    display: block;
+    margin-top: 1px;
+    overflow: hidden;
+    /* 10,5: con 11 la línea de ubicación en alemán se pasa por 3 px y se corta. */
+    font-size: 10.5px;
+    line-height: 1.25;
+    color: var(--ch-text-3, #64748b);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
