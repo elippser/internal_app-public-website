@@ -23,8 +23,6 @@ export async function generateMetadata({
   return pageMetadata(lang, "/nosotros", dict.nosotros.meta.title, dict.nosotros.meta.description);
 }
 
-const DOT = { ok: styles.dotOk, partial: styles.dotPartial, none: styles.dotNo };
-
 export default async function NosotrosPage({
   params,
 }: {
@@ -90,38 +88,6 @@ export default async function NosotrosPage({
         </div>
       </section>
 
-      {/* ----------------------------------------------------------- estado */}
-      <section className="section section-paper2" id="estado">
-        <div className="container container-wide">
-          <SplitHead
-            locale={lang}
-            eyebrow={t.status.eyebrow}
-            title={t.status.title}
-            lead={t.status.lead}
-          />
-
-          <div className={styles.status} data-reveal>
-            {t.status.groups.map((group) => (
-              <div key={group.label} className={styles.statusGroup}>
-                <p className={styles.statusHead}>
-                  <span
-                    className={[styles.dot, DOT[group.tone as keyof typeof DOT]].join(" ")}
-                    aria-hidden
-                  />
-                  {group.label}
-                </p>
-                {group.rows.map((row) => (
-                  <div key={row.name} className={styles.statusRow}>
-                    <span className={styles.statusName}>{row.name}</span>
-                    <span>{row.desc}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ----------------------------------------------------------- piloto */}
       <section className="section">
         <div className="container container-wide">
@@ -159,8 +125,8 @@ export default async function NosotrosPage({
         steps={t.cta.steps}
         primaryLabel={dict.common.writeUs}
         primaryHref="/contacto"
-        secondaryLabel={dict.common.seePricing}
-        secondaryHref="/precios"
+        secondaryLabel={dict.common.seePlatform}
+        secondaryHref="/producto"
       />
     </>
   );

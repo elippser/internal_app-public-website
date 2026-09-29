@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import VideoStage, { useStageFit } from "./VideoStage";
 import { buildBeats, planChat, totalMs, type Escalas, type VideoDict } from "./timeline";
@@ -65,6 +65,14 @@ export default function VideoEmbed({ locale, v }: { locale: Locale; v: VideoDict
     window.parent?.postMessage({ type: "vo:hello" }, "*");
     return () => window.removeEventListener("message", onMsg);
   }, []);
+
+  // "Este instante ya está en el DOM." Lo usa la exportación a MP4 del API
+  // interno, que lleva el video cuadro por cuadro y no puede sacar la foto
+  // antes de que React haya aplicado el cambio. Es un layout effect para que
+  // salga con el DOM ya cambiado; el editor lo ignora.
+  useLayoutEffect(() => {
+    window.parent?.postMessage({ type: "vo:drawn", t }, "*");
+  }, [t]);
 
   // El panel no puede calcular los beats por su cuenta: el del chat se mide del
   // tipeo real del idioma. Se los mandamos cada vez que cambian.

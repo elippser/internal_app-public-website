@@ -71,6 +71,17 @@
     animation-play-state: paused !important;
 }
 
+/* El corte vertical (`?view=mobile`): reproductor 9:16 y escenario de 720×1280. */
+.player[data-orient="portrait"] {
+    width: min(100%, calc((100vh - 48px) * 9 / 16), 900px);
+    aspect-ratio: 9 / 16;
+}
+
+.stage[data-orient="portrait"] {
+    width: 720px;
+    height: 1280px;
+}
+
 .stage {
     position: absolute;
     left: 0;
@@ -422,4 +433,24 @@
     from {
         opacity: 0;
     }
+}
+
+/* ---------------------------------------- vertical de los videos de producto -- */
+/* Ver `video-kit/portrait.tsx`: la caja de 1280×2276 escalada al escenario de
+   720×1280 y cada escena en la franja del medio, sin recortar. */
+.pBox {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1280px;
+    height: 2275.56px;
+    transform: scale(0.5625);
+    transform-origin: 0 0;
+    overflow: hidden;
+}
+
+.pBox > .sceneWrap {
+    top: 777.78px;
+    bottom: auto;
+    height: 720px;
 }

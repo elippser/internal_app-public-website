@@ -1,5 +1,5 @@
 import type { Dictionary } from "@/i18n/dict/es";
-import { fetchPlans, type MktPlan } from "./plansApi";
+import { fetchPlans, localizePlans, type MktPlan } from "./plansApi";
 import styles from "./PlansMatrix.module.css";
 
 /**
@@ -47,9 +47,17 @@ function fill(template: string, n: number | string): string {
   return template.replace("{n}", String(n));
 }
 
-export default async function PlansMatrix({ dict }: { dict: Dictionary }) {
+export default async function PlansMatrix({
+  dict,
+  plans: given,
+}: {
+  dict: Dictionary;
+  /** Planes ya resueltos (la página los pide una vez para las tarjetas y la
+      matriz). Si no vienen, el componente los busca solo. */
+  plans?: MktPlan[];
+}) {
   const d = dict.plans.matrix;
-  const plans = await fetchPlans();
+  const plans = localizePlans(given ?? (await fetchPlans()), dict.plans.catalog);
   if (plans.length === 0) return null;
 
   const richest = [...plans].sort((a, b) => b.products.length - a.products.length)[0];

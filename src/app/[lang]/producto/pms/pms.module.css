@@ -1,0 +1,80 @@
+/* El PMS (/producto/pms: Propiedades, Habitaciones y Reservas) y la página del
+   Motor, que importa este mismo módulo: el bloque del motor con la cadena de
+   precios al lado, y las garantías. */
+
+/* ---------------------------------------------------------------- motor --- */
+
+.motorGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: start;
+}
+
+.motorSide {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: clamp(20px, 2.4vw, 30px);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 900px) {
+
+    .motorGrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* ------------------------------------------------------------ garantías -- */
+
+.guarantees {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 24px);
+}
+
+.guarantee {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.guaranteeKey {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--brand-bright);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line-ink);
+}
+
+.guaranteeTitle {
+    font-size: clamp(18px, 1.9vw, 21px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.22;
+}
+
+.guaranteeText {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-ink-2);
+}
+
+@media (max-width: 860px) {
+    .guarantees {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 28px;
+    }
+}
+
+/* Motor: la lista de la izquierda lleva debajo la viñeta del calendario. */
+.motorList {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+

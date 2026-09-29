@@ -131,3 +131,13 @@
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+/* En teléfono los campos van a 16 px: por debajo, iOS hace zoom al tocar
+   cada uno y la página queda corrida. */
+@media (max-width: 767px) {
+
+    .input,
+    .textarea {
+        font-size: 16px;
+    }
+}

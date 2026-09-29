@@ -6,6 +6,7 @@ import { clamp01, easeIn, easeInOut, easeOut, easeOutExpo, easeOutQuint, lerp, s
 import { Camera, Gradient, LockupStill, Mark, Words, brokenPts, defocus, rise, tokenize } from "../fx";
 import { ProductShot } from "./data";
 import s from "../scenes.module.css";
+import { usePortrait } from "../orientation";
 
 /**
  * Acto 2 — Conocé. Calca 16.25 → 25.0 de la referencia: "Meet" y el logo que
@@ -116,6 +117,7 @@ function GradLine({
   tone = "grad",
   strike,
   className = s.stacked,
+  style,
 }: {
   text: string;
   lt: number;
@@ -127,6 +129,7 @@ function GradLine({
   tone?: "grad" | "ink";
   strike?: { at: number; dur: number; ink: string; paper: string; thick: number; mid: number };
   className?: string;
+  style?: CSSProperties;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [span, setSpan] = useState<{ w: number; xs: number[]; pos: { x: number; y: number }[]; band: { x: number; y: number; w: number; h: number } | null } | null>(null);
@@ -172,7 +175,7 @@ function GradLine({
   const pathAt = (dx: number, dy: number) => (pts ? pts.map(([x, y], k) => `${k === 0 ? "M" : "L"} ${(x + dx).toFixed(1)} ${(y + dy).toFixed(1)}`).join(" ") + " Z" : "");
   let k = -1;
   return (
-    <span ref={ref} className={className}>
+    <span ref={ref} className={className} style={style}>
       {band && strike && (
         <svg className={s.strike} viewBox={`0 0 ${band.w.toFixed(1)} ${band.h.toFixed(1)}`} width={band.w} height={band.h} style={{ left: band.x, top: band.y }} aria-hidden>
           <path d={pathAt(0, 0)} fill={strike.ink} />
@@ -274,6 +277,11 @@ const FIRE = { tilt: 28, thick: 640, lead: 150, trail: 60, lobe: 170, lobeBack: 
 const smooth = (u: number) => (1 - Math.cos(Math.PI * clamp01(u))) / 2;
 
 export function ShotScene({ lt, v }: SceneProps) {
+  // En vertical (720×1280) la llama se calcula sobre el cuadro vertical y el PMS va más grande, anclado a
+  // la izquierda y deslizándose, en vez de achicarlo entero hasta que no se lea.
+  const portrait = usePortrait();
+  const FW = portrait ? 720 : 1280;
+  const FH = portrait ? 1280 : 720;
   // Se va desde el primer cuadro: con `smooth` sola arrancaba con velocidad
   // cero y la frase quedaba ~0,8 s quieta sumando el final de `first`. El
   // término lineal le da velocidad inicial sin salto en el corte (vale 0 en 0).
@@ -284,14 +292,14 @@ export function ShotScene({ lt, v }: SceneProps) {
   const th = (FIRE.tilt * Math.PI) / 180;
   const n = { x: Math.sin(th), y: -Math.cos(th) };
   const e = { x: Math.cos(th), y: Math.sin(th) };
-  const qSpan = 1280 * n.x - 720 * n.y;
+  const qSpan = FW * n.x - FH * n.y;
   // Arranca con las lenguas y el desenfoque fuera de cuadro (si asomaran en el
   // primer cuadro, el corte se vería) y termina con la cola afuera.
   const q0 = -(FIRE.lobe + FIRE.lead + 60);
   const q1 = qSpan + FIRE.thick + FIRE.lobeBack + FIRE.trail + 60;
   const Q = lerp(q0, q1, easeOut(seg(lt, FIRE.from, FIRE.from + FIRE.dur)));
-  const r0 = -720 * e.y - 60;
-  const r1 = 1280 * e.x + 60;
+  const r0 = -FH * e.y - 60;
+  const r1 = FW * e.x + 60;
   // Lenguas: tres senos con el reloj (flamean mientras avanzan) —unas ocho a lo
   // largo del borde más una ondulación lenta—, elevados a 2,4 para que las puntas
   // sean finas y los valles planos. Con dos jorobas anchas se leía como lomas.
@@ -309,7 +317,7 @@ export function ShotScene({ lt, v }: SceneProps) {
   const lobe = (x: number, k: number) => Math.sin(x * 7.5 + lt / 260 + k) * 0.55 + Math.sin(x * 13 - lt / 180 + 1.7 * k) * 0.3 + Math.sin(x * 3.1 + lt / 420 + 0.4 * k) * 0.15;
   const rs = Array.from({ length: FIRE.N + 1 }, (_, i) => lerp(r0, r1, i / FIRE.N));
   const rx = (r: number) => (r - r0) / (r1 - r0);
-  const px = (r: number, q: number) => ({ x: e.x * r + n.x * q, y: 720 + e.y * r + n.y * q });
+  const px = (r: number, q: number) => ({ x: e.x * r + n.x * q, y: FH + e.y * r + n.y * q });
   const pt = (r: number, q: number, pad = 0) => {
     const p = px(r, q);
     return `${(p.x + pad).toFixed(1)}px ${(p.y + pad).toFixed(1)}px`;
@@ -376,17 +384,27 @@ export function ShotScene({ lt, v }: SceneProps) {
         </div>
       )}
       <div className={`${s.layer} ${s.paper}`} style={{ clipPath: cut }}>
-        <h2 className={s.shotHead}>
+        {/* En vertical cada renglón va en UNA línea con el cuerpo ajustado a su largo: el degradado de GradLine
+            se mide sobre una sola línea y lo que cortara al renglón siguiente quedaría invisible (alemán). */}
+        <h2 className={s.shotHead} style={portrait ? { top: 340, fontSize: Math.min(50, Math.floor(1280 / Math.max(v.shotHead[0].length, v.shotHead[1].length))) } : undefined}>
           <GradLine text={v.shotHead[0]} lt={lt} at={SH.head} lag={SH.headLag} className={s.shotHeadLine} />
           <GradLine text={v.shotHead[1]} lt={lt} at={SH.head + wordCount(v.shotHead[0]) * SH.headLag} lag={SH.headLag} className={s.shotHeadLine} />
         </h2>
-        <div className={s.shotFlat} style={{ transform: `translate3d(0, ${((1 - ui) * 26 - 6 * drift).toFixed(2)}px, 0) scale(${(0.86 * (0.985 + 0.015 * ui) + 0.02 * drift).toFixed(4)})` }}>
+        <div
+          className={s.shotFlat}
+          style={
+            portrait
+              ? // El tablero entero y chico, centrado: la cámara no se mueve (sólo el mismo empuje leve del horizontal).
+                { left: 360 - 560, top: 480, marginLeft: 0, transformOrigin: "50% 0", transform: `translate3d(0, ${((1 - ui) * 26 - 6 * drift).toFixed(2)}px, 0) scale(${(0.6 * (0.985 + 0.015 * ui) + 0.015 * drift).toFixed(4)})` }
+              : { transform: `translate3d(0, ${((1 - ui) * 26 - 6 * drift).toFixed(2)}px, 0) scale(${(0.86 * (0.985 + 0.015 * ui) + 0.02 * drift).toFixed(4)})` }
+          }
+        >
           <ProductShot v={v} lt={lt} at={0} data={lt - SH.data} round />
         </div>
       </div>
       {showFire && (
         <div className={s.layer} style={{ filter: `blur(${FIRE.blur}px)` }} aria-hidden>
-          <div style={{ position: "absolute", left: -FIRE.pad, top: -FIRE.pad, width: 1280 + 2 * FIRE.pad, height: 720 + 2 * FIRE.pad, clipPath: band, background: fire }} />
+          <div style={{ position: "absolute", left: -FIRE.pad, top: -FIRE.pad, width: FW + 2 * FIRE.pad, height: FH + 2 * FIRE.pad, clipPath: band, background: fire }} />
         </div>
       )}
       <Mark tone="ink" />

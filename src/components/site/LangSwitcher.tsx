@@ -92,7 +92,7 @@ export default function LangSwitcher({
         onClick={() => setOpen((v) => !v)}
       >
         <LocaleFlag locale={locale} className={styles.flag} />
-        {LOCALE_SHORT[locale]}
+        <span className={styles.short}>{LOCALE_SHORT[locale]}</span>
       </button>
 
       {open && (

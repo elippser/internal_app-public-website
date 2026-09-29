@@ -5,6 +5,7 @@ import type { SceneProps } from "../scenes";
 import { clamp01, easeBack, easeIn, easeInExpo, easeInOut, easeOut, easeOutQuint, lerp, noise, seg } from "../timeline";
 import { Camera, H, HBlur, Mark, OnPath, Stroke, Tumble, W, Words, defocus, rise, rotateIn, tokenize, useOffsets } from "../fx";
 import s from "../scenes.module.css";
+import { usePortrait } from "../orientation";
 
 /**
  * Acto 1 — el problema. Calca los primeros 16 s de la referencia:
@@ -45,6 +46,30 @@ const SPR_BOX: SprawlBox[] = [
 ];
 const BOX_OF: Record<string, SprawlBox> = Object.fromEntries(SPR_BOX.map((b) => [b.id, b]));
 
+/**
+ * El mismo mapa en VERTICAL (720×1280, `?view=mobile`): las entradas y la
+ * pregunta arriba, la cadena de consecuencias a la derecha, el titular al medio
+ * y las apps con los dos remates abajo. Mismos tiempos (`at`) que el horizontal.
+ */
+const SPR_BOX_P: SprawlBox[] = [
+  { id: "ask", x: 222, y: 70, w: 274, h: 172, at: 500 },
+  { id: "in0", x: 22, y: 50, w: 146, h: 46, at: 780 },
+  { id: "in1", x: 18, y: 140, w: 156, h: 64, at: 890 },
+  { id: "in2", x: 22, y: 250, w: 148, h: 46, at: 1000 },
+  { id: "in3", x: 18, y: 336, w: 162, h: 46, at: 1110 },
+  { id: "ch0", x: 526, y: 44, w: 176, h: 64, at: 1260 },
+  { id: "ch1", x: 540, y: 176, w: 164, h: 64, at: 1370 },
+  { id: "ch2", x: 510, y: 300, w: 180, h: 98, at: 1480 },
+  { id: "ch3", x: 500, y: 438, w: 176, h: 98, at: 1590 },
+  { id: "ch4", x: 238, y: 400, w: 196, h: 98, at: 1700 },
+  { id: "ft0", x: 36, y: 820, w: 178, h: 66, at: 1850 },
+  { id: "apps", x: 148, y: 990, w: 424, h: 106, at: 1960 },
+  { id: "ft1", x: 470, y: 812, w: 216, h: 86, at: 2070 },
+];
+const BOX_OF_P: Record<string, SprawlBox> = Object.fromEntries(SPR_BOX_P.map((b) => [b.id, b]));
+
+
+
 /** `bow` curva la flecha (fracción del largo); `fade` la apaga en la cola, para cruzar el título. */
 type SprawlLink = { a: string; b: string; bow: number; fade?: boolean; both?: boolean };
 
@@ -82,6 +107,8 @@ const SPR = { l1: 0, l2: 400, arrowsDur: 420, drift: 3900, zoom: 3900, zoomEnd: 
  */
 const INK = "#14150f";
 const HAND = { x: 900, y: 480 };
+/** El centro, en el MUNDO, del garabato con sus apps (x de 590 a 1210): lo que la franja centra mientras se dibuja. */
+const CURL_CX = 893;
 const HAND_R = 30;
 const CV = { x: 380, y: 60 };
 const DV = { x: 1150, y: -40 };
@@ -161,10 +188,10 @@ function Head({ at, ang, opacity = 1 }: { at: Pt; ang: number; opacity?: number 
   );
 }
 
-function SprawlArrow({ link, p, gid }: { link: SprawlLink; p: number; gid: string }) {
+function SprawlArrow({ link, p, gid, boxes = BOX_OF }: { link: SprawlLink; p: number; gid: string; boxes?: Record<string, SprawlBox> }) {
   if (p <= 0.002) return null;
-  const A = BOX_OF[link.a];
-  const B = BOX_OF[link.b];
+  const A = boxes[link.a];
+  const B = boxes[link.b];
   const p0 = edgeOf(A, centerOf(B));
   const p1 = edgeOf(B, centerOf(A));
   const dx = p1.x - p0.x;
@@ -343,6 +370,13 @@ function PaidBadge() {
  * el punto en `HAND` (mismo lugar, mismo radio, mismo grosor de trazo).
  */
 export function SprawlScene({ lt, v }: SceneProps) {
+  const portrait = usePortrait();
+  const boxes = portrait ? SPR_BOX_P : SPR_BOX;
+  const boxOf = portrait ? BOX_OF_P : BOX_OF;
+  const SW = portrait ? 720 : W;
+  const SH = portrait ? 1280 : H;
+  // En vertical el punto se entrega donde lo recibe la escena 2 con la franja de ese instante (ver `bandX`).
+  const hand = portrait ? bandPt(bandT(actState(0), 0), HAND.x, HAND.y) : HAND;
   const rootRef = useRef<HTMLDivElement>(null);
   const rects = useOffsets(rootRef, ["[data-hook-dot]"]);
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
@@ -354,13 +388,13 @@ export function SprawlScene({ lt, v }: SceneProps) {
   const scale = lerp(drift, ZOOM_END, zoomK);
   // El foco se pasa al punto en 100 ms; después el punto es invariante al zoom.
   const oz = easeOut(seg(lt, SPR.zoom, SPR.zoom + 200));
-  const ox = lerp(50, (ink.x / W) * 100, oz);
-  const oy = lerp(52, (ink.y / H) * 100, oz);
+  const ox = lerp(50, (ink.x / SW) * 100, oz);
+  const oy = lerp(52, (ink.y / SH) * 100, oz);
   // El punto en el MUNDO va por la curva `ink → ink+CV → ink+DV` (por largo de
   // arco). En PANTALLA va de donde estaba a `HAND`; el paneo es la diferencia,
   // y es lo que hace salir todo lo demás por la izquierda.
   const slide = launch(seg(lt, SPR.zoom + 120, SPR.zoomEnd));
-  const ds = { x: lerp(ink.x, HAND.x, slide), y: lerp(ink.y, HAND.y, slide) };
+  const ds = { x: lerp(ink.x, hand.x, slide), y: lerp(ink.y, hand.y, slide) };
   const c1 = { x: ink.x + CV.x, y: ink.y + CV.y };
   const c2 = { x: ink.x + DV.x, y: ink.y + DV.y };
   const dw = quadSlice(ink, c1, c2, slide).head;
@@ -398,15 +432,15 @@ export function SprawlScene({ lt, v }: SceneProps) {
     <div ref={rootRef} className={`${s.scene} ${s.paper}`}>
       <Camera scale={scale} origin={`${ox.toFixed(2)}% ${oy.toFixed(2)}%`} x={panX} y={panY}>
         <div className={s.clayGlow} style={{ opacity: glow }} aria-hidden />
-        <svg className={s.svgLayer} viewBox="0 0 1280 720" aria-hidden>
+        <svg className={s.svgLayer} viewBox={`0 0 ${SW} ${SH}`} aria-hidden>
           {/* Cada flecha entra CON su caja (la más tardía de las dos), no en una segunda pasada: el mapa se arma de una sola pieza. */}
           {SPR_LINK.map((link, i) => {
-            const born = Math.max(BOX_OF[link.a].at, BOX_OF[link.b].at);
-            return <SprawlArrow key={i} link={link} p={easeOut(seg(lt, born, born + SPR.arrowsDur))} gid={`${uid}g${i}`} />;
+            const born = Math.max(boxOf[link.a].at, boxOf[link.b].at);
+            return <SprawlArrow key={i} link={link} p={easeOut(seg(lt, born, born + SPR.arrowsDur))} gid={`${uid}g${i}`} boxes={boxOf} />;
           })}
         </svg>
-        <div className={s.sprawlType}>
-          <h2 className={s.sprawlTitle}>
+        <div className={s.sprawlType} style={portrait ? { top: 588 } : undefined}>
+          <h2 className={s.sprawlTitle} style={portrait ? { fontSize: 64 } : undefined}>
             <Words text={v.hook[0]} lt={lt} at={SPR.l1} stagger={110} dur={520} />
             <br />
             <span className={s.subLine}>
@@ -415,7 +449,7 @@ export function SprawlScene({ lt, v }: SceneProps) {
             </span>
           </h2>
         </div>
-        {SPR_BOX.map((b) => {
+        {boxes.map((b) => {
           const p = easeBack(seg(lt, b.at, b.at + 400));
           if (p <= 0) return null;
           const style: CSSProperties = {
@@ -476,7 +510,7 @@ export function SprawlScene({ lt, v }: SceneProps) {
         })}
       </Camera>
       {slide > 0.001 && (
-        <svg className={s.svgLayer} viewBox="0 0 1280 720" aria-hidden>
+        <svg className={s.svgLayer} viewBox={`0 0 ${SW} ${SH}`} aria-hidden>
           <path d={trail.d} fill="none" stroke={INK} strokeWidth={trailW} strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       )}
@@ -1123,6 +1157,59 @@ function ActCamera({ st, children }: { st: ActState; children: ReactNode }) {
   );
 }
 
+/**
+ * Dónde va la franja en x, en vertical. Mientras se dibuja el garabato centra la
+ * ILUSTRACIÓN entera (garabato + apps, `CURL_CX`), no el punto: el garabato crece
+ * a la derecha del punto y centrando el punto la mitad quedaba fuera de cuadro.
+ * Cuando el hilo sale hacia los proveedores pasa suave a seguir al punto (que la
+ * cámara del acto deja en x = 640). Es función del tiempo del ACTO: las tres
+ * escenas la calculan igual y en los cortes no salta.
+ */
+function bandT(st: ActState, at: number): { tx: number; ty: number; k: number } {
+  const follow = smooth(seg(at, ACT.curl, ACT.exit));
+  // El laberinto mide ~1050 px de ancho: se lo centra y se achica la franja para que entre entero.
+  const maze = smooth(seg(at, ACT.loops, ACT.loops + 900));
+  const cx = lerp(lerp(onScreen(CURL_CX, st), 640, follow), onScreen(MAZE_CX + S4, st), maze);
+  // El garabato va un 5 % más grande y un poco más abajo del centro (equilibra el titular de arriba).
+  const k = lerp(lerp(1.05, 1, follow), MAZE_K, maze);
+  const cy = lerp(690, 640, follow);
+  return { tx: 360 - cx * k, ty: cy - 360 * k, k };
+}
+/** El centro del laberinto en la pantalla horizontal (sus ramas van de 130 a 1180) y la escala que lo hace entrar en 720. */
+const MAZE_CX = 655;
+const MAZE_K = 0.66;
+/** Un punto de la pantalla horizontal, en la vertical. */
+const bandPt = (b: { tx: number; ty: number; k: number }, x: number, y: number) => ({ x: b.tx + x * b.k, y: b.ty + y * b.k });
+
+/** En vertical, la franja horizontal del mundo en la pantalla (ver `bandX`); en horizontal no hace nada. */
+function PBandLayer({ b, children }: { b: { tx: number; ty: number; k: number }; children: ReactNode }) {
+  const portrait = usePortrait();
+  if (!portrait) return <>{children}</>;
+  return (
+    <div style={{ position: "absolute", left: 0, top: 0, width: W, height: H, transformOrigin: "0 0", transform: `translate3d(${b.tx.toFixed(1)}px, ${b.ty.toFixed(1)}px, 0) scale(${b.k.toFixed(4)})` }}>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Un titular del acto en VERTICAL: arriba y en pantalla. Su par horizontal vive
+ * en el mundo y la cámara se lo lleva por la izquierda; acá el titular se queda
+ * y se apaga cuando el horizontal saldría de
+ * cuadro. `wx`/`ww` son la x y el ancho del titular en el mundo; `ref0`, el
+ * estado del acto cuando aparece.
+ */
+function PTitle({ st, wx, ww, ref0, top, children, style }: { st: ActState; wx: number; ww: number; ref0: ActState; top: number; children: ReactNode; style?: CSSProperties }) {
+  // Sin paralaje: el paneo del acto es de más de mil píxeles y cualquier fracción lo saca de cuadro.
+  void ref0;
+  const out = clamp01((onScreen(wx + ww, st) - 80) / 260);
+  return (
+    <div className={s.corner} style={{ left: 48, right: 48, top, opacity: out.toFixed(3), filter: out < 0.98 ? `blur(${((1 - out) * 10).toFixed(1)}px)` : undefined, ...style }}>
+      {children}
+    </div>
+  );
+}
+
 /** La línea entera y su punto, en el instante `at`. Va adentro de una `ActCamera`. */
 function ActLine({ st, color }: { st: ActState; color: string }) {
   return (
@@ -1320,17 +1407,29 @@ function AppTile({ tile, style }: { tile: (typeof TILES)[number]; style?: CSSPro
 /* --- las escenas --------------------------------------------------------- */
 
 export function ThreadScene({ lt, v, locale }: SceneProps) {
+  const portrait = usePortrait();
   const st = actState(lt);
+  const title = (
+    <h2 className={`${s.displayXl} ${s.punchedTitle}`} style={{ fontSize: portrait ? 92 : 102 }}>
+      <Words text={v.tooManyApps} lt={lt} at={140} stagger={120} dur={520} />
+    </h2>
+  );
   return (
     <div className={`${s.scene} ${s.paper}`}>
+      {portrait && (
+        <PTitle st={st} wx={68} ww={760} ref0={actState(SETTLE)} top={130}>
+          {title}
+        </PTitle>
+      )}
+      <PBandLayer b={bandT(st, lt)}>
       <ActCamera st={st}>
         <ActGlow tone="paper" />
         <ActLine st={st} color={INK} />
-        <div className={s.corner} style={{ left: 68, top: 282, maxWidth: 900 }}>
-          <h2 className={`${s.displayXl} ${s.punchedTitle}`} style={{ fontSize: 102 }}>
-            <Words text={v.tooManyApps} lt={lt} at={140} stagger={120} dur={520} />
-          </h2>
-        </div>
+        {!portrait && (
+          <div className={s.corner} style={{ left: 68, top: 282, maxWidth: 900 }}>
+            {title}
+          </div>
+        )}
         {TILES.map((t, i) => {
           const at = CURL_CUM[t.seg] - 0.02;
           if (st.pc < at) return null;
@@ -1352,6 +1451,7 @@ export function ThreadScene({ lt, v, locale }: SceneProps) {
           );
         })}
       </ActCamera>
+      </PBandLayer>
       <Mark tone="ink" />
     </div>
   );
@@ -1497,6 +1597,17 @@ function VendorPins({
 /** El título de los proveedores: fijo mientras pasan los lazos, y se va por la izquierda cuando la cámara sale detrás del punto. */
 /** El título de los proveedores vive en el MUNDO (va dentro de la cámara): se achica y se va con los lazos, como en la referencia. */
 function VendorTitle({ at, v }: { at: number; v: SceneProps["v"] }) {
+  const portrait = usePortrait();
+  if (portrait) {
+    // En vertical, arriba y en pantalla, acompañando el paneo desde que aparece.
+    return (
+      <PTitle st={actState(at)} wx={VENDOR_TITLE.x} ww={VENDOR_TITLE.w} ref0={actState(OFF_TOOLS + 620)} top={150}>
+        <h2 className={`${s.toolsTitle} ${s.onInk}`} style={{ fontSize: 64, whiteSpace: "normal", textWrap: "balance" }}>
+          <Words text={v.tooManyVendors} lt={at - OFF_TOOLS} at={620} stagger={120} dur={520} dimIn={false} />
+        </h2>
+      </PTitle>
+    );
+  }
   return (
     <div className={s.corner} style={{ left: VENDOR_TITLE.x, top: VENDOR_TITLE.y + VENDOR_TITLE.line, transform: "translateY(-100%)" }}>
       <h2 className={`${s.toolsTitle} ${s.onInk}`} style={{ fontSize: 36, whiteSpace: "normal", width: "max-content", maxWidth: VENDOR_TITLE.w, textWrap: "balance" }}>
@@ -1513,6 +1624,7 @@ function VendorTitle({ at, v }: { at: number; v: SceneProps["v"] }) {
  * que la cuña los va descubriendo a medida que barre.
  */
 export function ToolsScene({ lt, v, locale }: SceneProps) {
+  const portrait = usePortrait();
   const at = lt + OFF_TOOLS;
   const st = actState(at);
   const w = easeIn(seg(lt, 0, 820));
@@ -1537,12 +1649,15 @@ export function ToolsScene({ lt, v, locale }: SceneProps) {
   return (
     <div className={s.scene} style={{ background: "transparent" }}>
       <div className={`${s.layer} ${s.night}`} style={{ clipPath: wedge }}>
-        <ActCamera st={st}>
-          <ActGlow tone="night" />
-          <ActLine st={st} color={PAPER} />
-          <VendorPins st={st} at={at} v={v} locale={locale} />
-          <VendorTitle at={at} v={v} />
-        </ActCamera>
+        <PBandLayer b={bandT(st, at)}>
+          <ActCamera st={st}>
+            <ActGlow tone="night" />
+            <ActLine st={st} color={PAPER} />
+            <VendorPins st={st} at={at} v={v} locale={locale} />
+            {!portrait && <VendorTitle at={at} v={v} />}
+          </ActCamera>
+        </PBandLayer>
+        {portrait && <VendorTitle at={at} v={v} />}
       </div>
       <div className={s.layer} style={{ opacity: w >= 0.999 ? 1 : 0 }}>
         <Mark tone="paper" />
@@ -1592,6 +1707,7 @@ function LinkIcon() {
  * derecha, engorda y se expande: el agujero deja ver la escena siguiente.
  */
 export function MazeScene({ lt, v, locale }: SceneProps) {
+  const portrait = usePortrait();
   const at = lt + OFF_MAZE;
   const st = actState(at);
   const on = lt >= 0;
@@ -1609,17 +1725,23 @@ export function MazeScene({ lt, v, locale }: SceneProps) {
   const tz = 900 * (1 - 1 / (1 + rush * 0.6));
   const hole = at < ACT.dash ? 0 : 18 + easeIn(seg(at, ACT.dash, ACT.hole)) * 1700;
   const hx = onScreen(lerp(JOIN.x, BURST.x, st.dash), st);
-  const mask = hole > 0 ? `radial-gradient(circle at ${hx.toFixed(0)}px ${BURST.y}px, transparent ${hole.toFixed(0)}px, #000 ${(hole + 1).toFixed(0)}px)` : undefined;
+  // En vertical el agujero va donde cae el punto en la pantalla (la franja corrida).
+  const hP = bandPt(bandT(st, at), hx, BURST.y);
+  const hX = portrait ? hP.x : hx;
+  const hY = portrait ? hP.y : BURST.y;
+  const mask = hole > 0 ? `radial-gradient(circle at ${hX.toFixed(0)}px ${hY}px, transparent ${hole.toFixed(0)}px, #000 ${(hole + 1).toFixed(0)}px)` : undefined;
   // Las dos frases largas van un cuerpo más chico: tienen que entrar en el hueco con margen en los cinco idiomas.
   const lines: { text: string; at: number; out?: number; xl?: boolean; sm?: boolean }[] = [{ text: v.contextLost, at: MZ.t1 }];
   return (
     <div className={`${s.scene} ${s.night}`} style={{ background: on ? undefined : "transparent", maskImage: mask, WebkitMaskImage: mask }}>
+      {on && portrait && <VendorTitle at={at} v={v} />}
       {on && (
+        <PBandLayer b={bandT(st, at)}>
         <ActCamera st={st}>
           <ActGlow tone="night" />
           <ActLine st={st} color={PAPER} />
           <VendorPins st={st} at={at} v={v} locale={locale} />
-          <VendorTitle at={at} v={v} />
+          {!portrait && <VendorTitle at={at} v={v} />}
           {v.mazeChips.map((text, i) => {
             const pos = CHIP_POS[i];
             const p = easeBack(seg(lt, MZ.chips + i * CHIP_GAP, MZ.chips + i * CHIP_GAP + 420));
@@ -1671,6 +1793,7 @@ export function MazeScene({ lt, v, locale }: SceneProps) {
         );
         })}
         </ActCamera>
+        </PBandLayer>
       )}
       {on && <Mark tone="paper" />}
     </div>
@@ -1844,8 +1967,8 @@ function cubicLen(p: number[][]): number {
  * lomo de la letra— y se va por arriba del borde de enfrente. `dir` es hacia
  * dónde viaja: -1 de derecha a izquierda, +1 al revés.
  */
-function flight(x: number, y: number, dir: 1 | -1) {
-  const enter = dir < 0 ? W + 150 : -150;
+function flight(x: number, y: number, dir: 1 | -1, fw = W) {
+  const enter = dir < 0 ? fw + 150 : -150;
   const mid = (enter + x) / 2 + dir * 46;
   const into = [[enter, y - 236], [mid, y - 220], [x - dir * 112, y - 180], [x, y]];
   const back = [[x, y], [x + dir * 106, y - 171], [x + dir * 340, y - 318], [x + dir * 640, y - 470]];
@@ -1879,6 +2002,9 @@ const TILT_FROM = 3.1;
 const TILT_TO = -0.5;
 
 export function KillsScene({ lt, v }: SceneProps) {
+  // En vertical, los textos al tamaño relativo del horizontal y la línea entrando por el borde del cuadro vertical.
+  const portrait = usePortrait();
+  const FW = portrait ? 720 : W;
   const rootRef = useRef<HTMLDivElement>(null);
   const phase: "a" | "b" = lt < KL.aEnd ? "a" : "b";
   // La segunda frase entra después: hay que volver a medirla cuando aparece.
@@ -1899,10 +2025,10 @@ export function KillsScene({ lt, v }: SceneProps) {
   // que arranca y frena. El signo la tira hacia el borde por el que entra la
   // línea, así que la segunda mitad queda espejada igual que el vuelo.
   const tilt = lerp(TILT_FROM, TILT_TO, u) * -T.dir;
-  const fontPx = 100;
+  const fontPx = portrait ? 62 : 100;
   const E = findEye(tokenize(isA ? v.kills.words[0] : v.kills.words[1]).map((t) => t.text).join("")).eye;
   const eyeR = E.r * fontPx;
-  const ex = eye ? eye.x + E.cx * fontPx : 640;
+  const ex = eye ? eye.x + E.cx * fontPx : FW / 2;
   const ey = eye ? eye.y + (BASE - E.cy) * fontPx : 400;
   const origin = block && eye ? `${(ex - block.x).toFixed(1)}px ${(ey - block.y).toFixed(1)}px` : "50% 50%";
   // El agujero es EXACTAMENTE la contraforma de la letra mientras dura el
@@ -1914,7 +2040,7 @@ export function KillsScene({ lt, v }: SceneProps) {
   // El rebote es contra el lomo de la letra: sobre el techo de su tinta y en el
   // medio del glifo. Cualquier holgura acá se multiplica por la escala y a mitad
   // del zoom la línea se ve flotando por encima.
-  const hx = eye ? eye.x + eye.w / 2 : 640;
+  const hx = eye ? eye.x + eye.w / 2 : FW / 2;
   const hy = (eye ? eye.y : 344) + (BASE - E.top) * fontPx;
   // Y el lomo se mueve: el renglón está girando sobre el ojo y la capa de la
   // línea no gira con él. El punto de impacto se rota a mano alrededor del mismo
@@ -1925,6 +2051,7 @@ export function KillsScene({ lt, v }: SceneProps) {
     ex + (hx - ex) * Math.cos(rad) - (hy - ey) * Math.sin(rad),
     ey + (hx - ex) * Math.sin(rad) + (hy - ey) * Math.cos(rad),
     T.dir,
+    FW,
   );
   const durIn = T.hit - T.line;
   // Nunca más allá del corte, aunque la frase de otro idioma corra el vértice.
@@ -1971,6 +2098,7 @@ export function KillsScene({ lt, v }: SceneProps) {
           <span
             className={s.displaySm}
             style={{
+              ...(portrait ? { fontSize: 38 } : null),
               opacity: 1 - preGone,
               transform: `translateY(${(-preGone * 14).toFixed(1)}px)`,
               filter: preGone > 0.001 ? `blur(${(preGone * 7).toFixed(1)}px)` : undefined,
@@ -2022,19 +2150,23 @@ const PU = { arrive: 490, hold: 1070, suck: 300, crack: 1370, out: 2500, font: 4
  * de la frase no se mueve.
  */
 export function PunchScene({ lt, v }: SceneProps) {
+  const portrait = usePortrait();
+  const FW = portrait ? 720 : W;
+  // En vertical la frase va más chica, como se ve en el horizontal; el punto mide lo mismo que el de la frase.
+  const font = portrait ? 34 : PU.font;
   const rootRef = useRef<HTMLDivElement>(null);
   const rects = useOffsets(rootRef, ['[data-dot]']);
   const dot = rects['[data-dot]'];
-  const px = dot ? dot.x + PERIOD.cx * PU.font : 872;
-  const py = dot ? dot.y + (INLINE_BASE - PERIOD.cy) * PU.font : 371;
+  const px = dot ? dot.x + PERIOD.cx * font : 872;
+  const py = dot ? dot.y + (INLINE_BASE - PERIOD.cy) * font : 371;
   // El gancho de la referencia: entra por el borde derecho, barre por debajo de
   // la frase y en los últimos píxeles se pone vertical para clavar el punto.
-  const path = `M ${W + 60} ${(py + 183).toFixed(1)} C ${(px + 200).toFixed(1)} ${(py + 173).toFixed(1)} ${(px + 24).toFixed(1)} ${(py + 120).toFixed(1)} ${px.toFixed(1)} ${py.toFixed(1)}`;
+  const path = `M ${FW + 60} ${(py + 183).toFixed(1)} C ${(px + 200).toFixed(1)} ${(py + 173).toFixed(1)} ${(px + 24).toFixed(1)} ${(py + 120).toFixed(1)} ${px.toFixed(1)} ${py.toFixed(1)}`;
   const head = easeOut(seg(lt, 0, PU.arrive));
   const from = easeOut(seg(lt, PU.hold, PU.hold + PU.suck));
   // El punto es la cabeza de la línea: viaja con ella y se queda cuando la línea
   // ya no está. Mide lo que mide el punto de verdad, que es el que reemplaza.
-  const r = PERIOD.r * PU.font;
+  const r = PERIOD.r * font;
   const loose = v.punchline.struck;
   const cut = loose.lastIndexOf(" ");
   const last = loose.slice(cut + 1);
@@ -2055,7 +2187,7 @@ export function PunchScene({ lt, v }: SceneProps) {
         </OnPath>
       )}
       <div className={s.typeBlock}>
-        <h2 className={s.punchLine}>
+        <h2 className={s.punchLine} style={portrait ? { fontSize: font } : undefined}>
           {v.punchline.pre}
           {loose.slice(0, cut + 1)}
           {/* La semilla no es decorativa: con la 4 la primera letra se corre a la

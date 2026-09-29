@@ -37,6 +37,8 @@ export function urlDe(src: string, versiones: Map<string, number | null>): strin
 
 export function useVoAudio(tracks: Track[], versiones: Map<string, number | null>) {
   const els = useRef(new Map<string, HTMLAudioElement>());
+  /** Los reproductores que el último cuadro quería sonando (los que `unlock` no tiene que pausar). */
+  const live = useRef(new Set<string>());
 
   // Un elemento por PISTA y archivo, no por clip.
   //
@@ -71,6 +73,30 @@ export function useVoAudio(tracks: Track[], versiones: Map<string, number | null
     }
   }, [tracks, versiones]);
 
+  /**
+   * Autoriza TODOS los audios dentro del gesto de la persona (el clic o la tecla de play).
+   *
+   * `sync` llama a `play()` desde el reloj del video, cuadro a cuadro, no desde el clic. Chrome lo deja porque
+   * recuerda que hubo un clic en la página, pero Safari, Brave y los navegadores de teléfono sólo dejan sonar un
+   * elemento cuyo `play()` salió del gesto: los demás los bloquean sin avisar y el video queda mudo. Acá cada
+   * elemento arranca en silencio DENTRO del gesto —con eso queda autorizado para el resto de la reproducción— y
+   * se pausa enseguida si ese instante no le toca sonar. Se llama sincrónicamente desde el manejador del clic.
+   */
+  const unlock = useCallback(() => {
+    for (const [clave, el] of els.current) {
+      if (!el.paused) continue;
+      el.muted = true;
+      el.play()
+        .then(() => {
+          if (!live.current.has(clave)) el.pause();
+          el.muted = false;
+        })
+        .catch(() => {
+          el.muted = false;
+        });
+    }
+  }, []);
+
   const stopAll = useCallback(() => {
     for (const el of els.current.values()) if (!el.paused) el.pause();
   }, []);
@@ -84,6 +110,7 @@ export function useVoAudio(tracks: Track[], versiones: Map<string, number | null
         stopAll();
         return;
       }
+      live.current.clear();
       for (const track of tracks) {
         // Primero: qué fragmento suena en este instante, por archivo. Dentro de
         // una pista no puede haber dos a la vez —las piezas van pegadas, no
@@ -117,6 +144,8 @@ export function useVoAudio(tracks: Track[], versiones: Map<string, number | null
           // El volumen se recalcula EN CADA CUADRO porque puede venir de una
           // curva: el fader por la ganancia de la curva en este instante. Es lo
           // que hace el fundido cruzado sin tocar los archivos.
+          live.current.add(clave);
+          el.muted = false;
           el.volume = gainAt(track, t);
           const rate = rateOf(p.clip);
           if (el.playbackRate !== rate) {
@@ -143,7 +172,7 @@ export function useVoAudio(tracks: Track[], versiones: Map<string, number | null
     [tracks, stopAll],
   );
 
-  return { sync, stopAll };
+  return { sync, stopAll, unlock };
 }
 
 /** Cuánto dura, en ms, un audio que ya está servido. 0 si no se puede leer. */

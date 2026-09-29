@@ -1,0 +1,74 @@
+/* El mapa de la plataforma completa: una columna por área, con el título y
+   la descripción de cada parte enlazando a su página. */
+
+.map {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 40px);
+}
+
+.mapGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.mapLabel {
+    margin: 0 0 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-3);
+}
+
+.mapItem {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+    color: var(--text);
+}
+
+.mapTitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15.5px;
+    font-weight: 600;
+    letter-spacing: -0.016em;
+}
+
+.mapTitle svg {
+    width: 13px;
+    height: 13px;
+    opacity: 0.45;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.mapDesc {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-2);
+}
+
+@media (hover: hover) {
+    .mapItem:hover .mapTitle svg {
+        opacity: 1;
+        transform: translateX(3px);
+    }
+}
+
+@media (max-width: 1023px) {
+    .map {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .map {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

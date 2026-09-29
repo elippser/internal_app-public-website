@@ -6,6 +6,7 @@ import { clamp01, easeIn, easeInExpo, easeInOut, easeOut, easeOutExpo, easeOutQu
 import { Blurred, Caret, Gradient, HBlur, LockupStill, Mark, Roller, Slot, Words, defocus, rise, tokenize } from "../fx";
 import { MODULES, ModuleCard, type CardKey } from "./data";
 import s from "../scenes.module.css";
+import { usePortrait } from "../orientation";
 
 /**
  * La tarjeta de módulo, memoizada.
@@ -88,6 +89,7 @@ function EraBg({ lt, soft = false, style }: { lt: number; soft?: boolean; style?
 const UL = { lead: 0, leadOut: 1800, head: 1950, words: [2000, 2850, 3000, 3150, 3300], fade: 4300, caret: 4800, out: 6420, dur: 6820 };
 
 export function UnlockScene({ lt, v }: SceneProps) {
+  const portrait = usePortrait();
   const u = v.unlock;
   const leadUp = easeIn(seg(lt, UL.leadOut, UL.leadOut + 300));
   const out = easeIn(seg(lt, UL.out, UL.out + 180));
@@ -96,6 +98,8 @@ export function UnlockScene({ lt, v }: SceneProps) {
   // toda texto y sin esto se queda clavada.
   const push = easeInOut(clamp01(lt / UL.dur));
   const blockStyle: CSSProperties = {
+    // En vertical, al medio del cuadro alto y un cuerpo más grande.
+    ...(portrait ? { top: 560, fontSize: 52 } : null),
     ...defocus(out, 12),
     transform: `translate3d(0, ${(-10 * push).toFixed(1)}px, 0) scale(${(1 + 0.022 * push).toFixed(4)})`,
   };
@@ -443,6 +447,8 @@ const OUTRO_LOGO = 121;
 const RW = { move: 250, moveEnd: 2000, swap: 780, swapEnd: 1450 };
 
 export function RowScene({ lt, v }: SceneProps) {
+  // En vertical la fila cruza por DELANTE del logo (a la altura del centro del cuadro alto), no por arriba.
+  const portrait = usePortrait();
   const m = easeInOut(seg(lt, RW.move, RW.moveEnd));
   const x = lerp(-1500, 1560, m);
   const pastel = seg(lt, 1200, 2000);
@@ -463,7 +469,7 @@ export function RowScene({ lt, v }: SceneProps) {
           <div style={{ gridArea: "1 / 1", opacity: swap }}>
             <div className={s.outroStack}>
               <LockupStill size={OUTRO_LOGO} />
-              <p className={s.tagline} style={{ fontSize: OUTRO_LINE, margin: 0 }}>
+              <p className={s.tagline} style={{ fontSize: OUTRO_LINE, margin: 0, whiteSpace: "nowrap" }}>
                 {v.end.tagline}
               </p>
             </div>
@@ -473,7 +479,7 @@ export function RowScene({ lt, v }: SceneProps) {
       {/* Las tarjetas pasan POR ENCIMA del texto: `.donutText` va en z 5. */}
       <div className={s.rowStage} style={{ zIndex: 6 }}>
         {MODULES.map((k, i) => (
-          <div key={k} className={s.rowCard} style={{ transform: `translate3d(${(x + i * ROW_GAP).toFixed(1)}px, ${(i * 4).toFixed(1)}px, 0) rotateY(-34deg) rotateZ(${ROW_CARD.tilt}deg) scale(${ROW_CARD.scale})` }}>
+          <div key={k} className={s.rowCard} style={{ ...(portrait ? { top: 440 } : null), transform: `translate3d(${(x + i * ROW_GAP).toFixed(1)}px, ${(i * 4).toFixed(1)}px, 0) rotateY(-34deg) rotateZ(${ROW_CARD.tilt}deg) scale(${ROW_CARD.scale})` }}>
             <Blurred x={Math.abs(Math.sin(m * Math.PI)) * 10}>
               <StillCard k={k} v={v} />
             </Blurred>
@@ -514,7 +520,7 @@ export function EndScene({ lt, v }: SceneProps) {
       <div className={s.typeBlock}>
         <div className={s.outroStack}>
           <LockupStill size={OUTRO_LOGO} />
-          <p className={s.tagline} style={{ fontSize: OUTRO_LINE, margin: 0 }}>
+          <p className={s.tagline} style={{ fontSize: OUTRO_LINE, margin: 0, whiteSpace: "nowrap" }}>
             {v.end.tagline}
           </p>
         </div>

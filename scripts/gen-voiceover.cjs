@@ -1,5 +1,5 @@
 /**
- * Escribe `voiceover.ts` a partir de los cinco VIDEO-LOCUCION-XX.md.
+ * Escribe `voiceover.ts` a partir de los cinco locuciones/portada/XX.md.
  *
  * Los documentos son **texto pelado**: bloques separados por una línea en
  * blanco, en orden, sin timecodes ni números de escena. Así que el reparto por
@@ -13,7 +13,7 @@
 const fs = require("fs");
 const path = require("path");
 
-/** La raíz del monorepo, donde viven los VIDEO-LOCUCION. */
+/** La raíz del monorepo, donde vive la carpeta locuciones/. */
 const RAIZ = path.resolve(__dirname, "../../..");
 const DESTINO = path.join(__dirname, "../src/components/video/voiceover.ts");
 
@@ -62,7 +62,7 @@ const LOCS = ["es", "en", "pt", "fr", "de"];
 
 const bloques = (loc) =>
   fs
-    .readFileSync(`${RAIZ}/VIDEO-LOCUCION-${loc.toUpperCase()}.md`, "utf8")
+    .readFileSync(`${RAIZ}/locuciones/portada/${loc.toUpperCase()}.md`, "utf8")
     .split(/\n\s*\n/)
     .map((x) => x.trim())
     .filter(Boolean);
@@ -97,7 +97,7 @@ import type { BeatId } from "./timeline";
 /**
  * El guion de la voz en off, en los cinco idiomas.
  *
- * **Volcado de \`VIDEO-LOCUCION-{ES,EN,PT,FR,DE}.md\` (raíz del monorepo), que
+ * **Volcado de \`locuciones/portada/{ES,EN,PT,FR,DE}.md\` (raíz del monorepo), que
  * son la fuente.** Ahí está el texto tal como se pega en ElevenLabs; acá está
  * el mismo texto más el dato que los documentos no traen: en qué beat del video
  * cae cada bloque. Si se toca el texto, se toca allá y se vuelve a volcar con

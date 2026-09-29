@@ -81,3 +81,24 @@
         padding-right: 0;
     }
 }
+
+/* Las preguntas entran en cascada al llegar (FxObserver → data-fx-in). */
+@media (prefers-reduced-motion: no-preference) {
+    .list[data-fx-in] .item {
+        animation: faqIn 0.45s ease backwards;
+    }
+
+    .list[data-fx-in] .item:nth-child(2) { animation-delay: 0.07s; }
+    .list[data-fx-in] .item:nth-child(3) { animation-delay: 0.14s; }
+    .list[data-fx-in] .item:nth-child(4) { animation-delay: 0.21s; }
+    .list[data-fx-in] .item:nth-child(5) { animation-delay: 0.28s; }
+    .list[data-fx-in] .item:nth-child(6) { animation-delay: 0.35s; }
+    .list[data-fx-in] .item:nth-child(n + 7) { animation-delay: 0.42s; }
+}
+
+@keyframes faqIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}

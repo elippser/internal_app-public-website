@@ -1,0 +1,1017 @@
+/* ============================================================================
+ * Las piezas propias de los videos de Habitaciones, Motor, Informes, Revenue
+ * y Marketing. Lo que es de la UI real vive en `video/pms/`.
+ * ========================================================================== */
+
+/* Los tokens del PMS para las piezas que van fuera de su cascarón
+   (tarjetas de unidad sueltas, la tarjeta arrastrada). */
+.pmsTokens {
+    --status-available: #22c55e;
+    --status-occupied: #ef4444;
+    --status-cleaning: #eab308;
+    --status-maintenance: #f97316;
+    --status-blocked: #6b7280;
+    --status-checkout-pending: #a855f7;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --bg-surface: #ffffff;
+    --bg-surface-hover: #f1f3f5;
+    --border-default: rgba(0, 0, 0, 0.06);
+    --accent-color: #4e6b28;
+    --accent-soft: rgba(78, 107, 40, 0.12);
+    text-align: left;
+    font-family: var(--sans);
+}
+
+.lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+}
+
+/* ------------------------------------------------ portada de Habitaciones -- */
+
+.modes {
+    display: flex;
+    gap: 28px;
+    align-items: stretch;
+}
+
+.modeCard {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid rgba(20, 21, 15, 0.08);
+    box-shadow: 0 26px 60px rgba(20, 21, 15, 0.14);
+    text-align: left;
+}
+
+.modeHead {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 650;
+    color: #14150f;
+}
+
+.modeHead small {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4e6b28;
+    background: rgba(78, 107, 40, 0.1);
+    padding: 3px 9px;
+    border-radius: 999px;
+}
+
+.modePhoto {
+    display: block;
+    width: 100%;
+    height: 118px;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.modeUnits {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 150px;
+    gap: 10px;
+}
+
+/* ---------------------------------------------------------- recorrido ------ */
+
+.ghostCard {
+    position: absolute;
+    width: 138px;
+    z-index: 40;
+    pointer-events: none;
+    box-shadow: 0 22px 40px rgba(15, 23, 42, 0.22);
+    border-radius: 10px;
+}
+
+.ring {
+    position: absolute;
+    z-index: 30;
+    border-radius: 12px;
+    border: 2.5px solid #22c55e;
+    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.18);
+    pointer-events: none;
+}
+
+/* El recuadro del precio con promo (video de Motor): el mismo lenguaje que `.ring`, en el bordó del motor. */
+.promoRing {
+    position: absolute;
+    z-index: 30;
+    border-radius: 10px;
+    border: 2.5px solid #a11c2f;
+    box-shadow: 0 0 0 6px rgba(161, 28, 47, 0.16);
+    pointer-events: none;
+}
+
+.tag {
+    position: absolute;
+    z-index: 30;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 10px 4px 8px;
+    border-radius: 999px;
+    background: #14150f;
+    color: #f2efe8;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.tag i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #c8e293;
+}
+
+.tagSoft {
+    background: #ffffff;
+    color: #14150f;
+    border: 1px solid rgba(20, 21, 15, 0.12);
+    box-shadow: 0 6px 16px rgba(20, 21, 15, 0.1);
+}
+
+.tagSoft i {
+    background: #4e6b28;
+}
+
+.rejectBar {
+    position: absolute;
+    z-index: 32;
+    border-radius: 6px;
+    border: 2px dashed #ef4444;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.toast {
+    position: absolute;
+    z-index: 50;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px 12px 12px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+    text-align: left;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.toast b {
+    display: block;
+    font-size: 14px;
+    color: #0f172a;
+}
+
+.toast small {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.toastIcon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.12);
+    color: #dc2626;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.toastPhoto {
+    flex: none;
+    width: 52px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.bookPhoto {
+    flex: none;
+    width: 92px;
+    height: 68px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.toastOk {
+    border-color: rgba(34, 197, 94, 0.35);
+}
+
+.toastOk .toastIcon {
+    background: rgba(34, 197, 94, 0.14);
+    color: #16a34a;
+}
+
+/* ------------------------------------------------------------ estados ------ */
+
+.state {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px 12px 16px;
+    border-radius: 999px;
+    background: rgba(242, 239, 232, 0.08);
+    border: 1px solid rgba(242, 239, 232, 0.2);
+    color: #f2efe8;
+    font-size: 19px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.state i {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.ruleLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ruleBad {
+    background: rgba(239, 68, 68, 0.16);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #fecaca;
+}
+
+.ruleGood {
+    background: rgba(200, 226, 147, 0.14);
+    border: 1px solid rgba(200, 226, 147, 0.5);
+    color: #e3f1c4;
+}
+
+/* ------------------------------------------------- la tarjeta del centro --- */
+
+.catCard {
+    width: 300px;
+    padding: 20px 22px;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid rgba(20, 21, 15, 0.08);
+    box-shadow: 0 30px 70px rgba(20, 21, 15, 0.16);
+    text-align: left;
+    color: #14150f;
+}
+
+.catCard h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+}
+
+.catMeta {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.catRate {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(20, 21, 15, 0.08);
+    font-size: 20px;
+    font-weight: 650;
+}
+
+.catPill {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4e6b28;
+    background: rgba(78, 107, 40, 0.1);
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+.catPhotoCard {
+    width: 520px;
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    gap: 18px;
+    align-items: start;
+}
+
+.catPhotos {
+    display: grid;
+    gap: 8px;
+}
+
+.catPhotos img {
+    display: block;
+    width: 100%;
+    height: 118px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.catPhotos img + img {
+    height: 70px;
+}
+
+.amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.amenities span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    background: #f1f5f9;
+    padding: 4px 9px;
+    border-radius: 8px;
+}
+
+/* ----------------------------------------------------- números grandes ----- */
+
+.bigRow {
+    display: flex;
+    gap: 22px;
+}
+
+.big {
+    width: 250px;
+    padding: 20px 22px 18px;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid rgba(20, 21, 15, 0.08);
+    box-shadow: 0 24px 56px rgba(20, 21, 15, 0.12);
+    text-align: left;
+    color: #14150f;
+}
+
+.bigLabel {
+    font-size: 15px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.bigValue {
+    margin-top: 8px;
+    font-size: 44px;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.bigHint {
+    margin-top: 8px;
+    font-size: 13.5px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delta {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    background: rgba(34, 197, 94, 0.14);
+    color: #15803d;
+}
+
+.deltaDown {
+    background: rgba(59, 130, 246, 0.12);
+    color: #1d4ed8;
+}
+
+/* -------------------------------------------------------------- teléfono --- */
+
+.phoneBox {
+    position: absolute;
+    transform-origin: 0 0;
+}
+
+.sideCopy {
+    position: absolute;
+    text-align: left;
+}
+
+.readsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.read {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 21px;
+    font-weight: 550;
+    color: #14150f;
+}
+
+.readCheck {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #4e6b28;
+    color: #fff;
+}
+
+.readCheck svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ------------------------------------------------------------- precio ------ */
+
+.chain {
+    width: 330px;
+    padding: 18px;
+    border-radius: 20px;
+    background: #ffffff;
+    border: 1px solid rgba(20, 21, 15, 0.08);
+    box-shadow: 0 26px 60px rgba(15, 23, 42, 0.2);
+    text-align: left;
+    color: #0f172a;
+}
+
+.chainTitle {
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.chainStep {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #f8fafc;
+    font-size: 15px;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+.chainStep b {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.chainWin {
+    background: rgba(78, 107, 40, 0.1);
+    color: #14150f;
+}
+
+.chainWin b {
+    background: #4e6b28;
+    color: #fff;
+}
+
+.chainValue {
+    margin-top: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #2f4d18;
+}
+
+/* ----------------------------------------------------------- moneda -------- */
+
+.frozen {
+    width: 420px;
+    padding: 22px 24px;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+    text-align: left;
+    color: #14150f;
+}
+
+.frozenRow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+}
+
+.frozenRow + .frozenRow {
+    border-top: 1px solid rgba(20, 21, 15, 0.08);
+}
+
+.frozenRow span {
+    font-size: 15px;
+    color: #64748b;
+    font-weight: 550;
+}
+
+.frozenRow b {
+    font-size: 30px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.frozenNote {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2f4d18;
+}
+
+.frozenNote svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ------------------------------------------------------------ ensayo ------- */
+
+.dry {
+    width: 380px;
+    padding: 20px 22px;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+    text-align: left;
+    color: #14150f;
+}
+
+.dryTitle {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #4e6b28;
+}
+
+.dryRule {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #f4f4f0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.dryResult {
+    margin-top: 12px;
+    font-size: 22px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+}
+
+.dryAvg {
+    margin-top: 2px;
+    font-size: 15px;
+    color: #15803d;
+    font-weight: 650;
+}
+
+/* ------------------------------------------------------------- marca ------- */
+
+.brand {
+    width: 340px;
+    padding: 22px;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 30px 70px rgba(20, 21, 15, 0.18);
+    border: 1px solid rgba(20, 21, 15, 0.08);
+    text-align: left;
+    color: #14150f;
+}
+
+.brandTop {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brandLogo {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: #2f4d18;
+    color: #f2efe8;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.brandName {
+    font-size: 20px;
+    font-weight: 650;
+}
+
+.brandSub {
+    font-size: 12.5px;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.swatches {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.swatches i {
+    flex: 1;
+    height: 38px;
+    border-radius: 10px;
+}
+
+.swatchNote {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: #64748b;
+}
+
+.brandRows {
+    margin-top: 12px;
+    display: grid;
+    gap: 8px;
+}
+
+.brandRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: #f4f4f0;
+}
+
+.brandRow span {
+    color: #64748b;
+}
+
+.brandRow b {
+    font-weight: 650;
+}
+
+/* ------------------------------------------------ el menú del hub ------- */
+
+/* La tarjeta del menú Marketing del PMS (el desplegable del riel), en oscuro
+   para la escena de órbita. */
+.hubMenu {
+    width: 300px;
+    padding: 10px;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    text-align: left;
+    font-family: "Outfit", var(--sans), sans-serif;
+}
+
+.hubMenuHead {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #64748b;
+}
+
+.hubRow {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1f2335;
+}
+
+.hubRow svg {
+    color: #64748b;
+    flex: none;
+}
+
+.hubRowOn {
+    background: #f1f5e9;
+    color: #2f4d18;
+    font-weight: 600;
+}
+
+.hubRowOn svg {
+    color: #2f4d18;
+}
+
+/* ============================================================================
+ * Composiciones que reemplazan a la órbita (23-09-2026: "que pesado con esta
+ * escena, la veo en todos los videos"). Una por video; la órbita queda sólo en
+ * la marca de Marketing.
+ * ========================================================================== */
+
+/* ------------------------------------------- Motor · el selector de moneda */
+
+.wheel {
+    position: absolute;
+    width: 420px;
+    height: 360px;
+    overflow: hidden;
+    perspective: 900px;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 26%, #000 74%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 26%, #000 74%, transparent 100%);
+}
+
+.wheelBand {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 50%;
+    height: 62px;
+    margin-top: -31px;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 18px 44px rgba(20, 21, 15, 0.14), 0 0 0 1px rgba(20, 21, 15, 0.06);
+}
+
+.wheelItem {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 54px;
+    margin-top: -27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #14150f;
+    white-space: nowrap;
+    backface-visibility: hidden;
+}
+
+.wheelItem b {
+    font-weight: 700;
+    color: #2f4d18;
+    margin-right: 10px;
+}
+
+.lockLink {
+    position: absolute;
+    height: 0;
+    border-top: 2px dashed rgba(47, 77, 24, 0.45);
+    transform-origin: 0 50%;
+}
+
+.lockBadge {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin: -22px 0 0 -22px;
+    border-radius: 50%;
+    background: #2f4d18;
+    color: #c8e293;
+    box-shadow: 0 10px 24px rgba(47, 77, 24, 0.35);
+}
+
+.lockBadge svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ------------------------------------------ Revenue · las trece variables */
+
+.varGrid {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-content: flex-start;
+}
+
+.varChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 46px;
+    padding: 0 18px 0 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(242, 239, 232, 0.16);
+    background: rgba(242, 239, 232, 0.06);
+    color: rgba(242, 239, 232, 0.72);
+    font-size: 17px;
+    font-weight: 550;
+    white-space: nowrap;
+}
+
+.varChip i {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(242, 239, 232, 0.3);
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 700;
+    color: transparent;
+}
+
+.varOn {
+    border-color: rgba(200, 226, 147, 0.55);
+    background: rgba(200, 226, 147, 0.1);
+    color: #f2efe8;
+}
+
+.varOn i {
+    border-color: #c8e293;
+    background: #c8e293;
+    color: #14150f;
+}
+
+.varScan {
+    box-shadow: 0 0 0 4px rgba(200, 226, 147, 0.22), 0 0 28px rgba(200, 226, 147, 0.35);
+}
+
+/* -------------------------------------------- Informes · lo que se mide */
+
+.metricRows {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px 22px;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid rgba(20, 21, 15, 0.07);
+    box-shadow: 0 26px 60px rgba(20, 21, 15, 0.12);
+}
+
+.metricRow {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    align-items: center;
+    gap: 16px;
+    height: 32px;
+    font-size: 16px;
+    font-weight: 550;
+    color: #14150f;
+    white-space: nowrap;
+}
+
+.metricBar {
+    position: relative;
+    height: 10px;
+    border-radius: 999px;
+    background: #eef0e8;
+    overflow: hidden;
+}
+
+.metricBar i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #4e6b28, #9cc25a);
+}
+
+.metricRowOn {
+    color: #2f4d18;
+}
+
+/* ------------------------------------------- Habitaciones · rayos de datos */
+
+.spokes {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.spokeDest {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 44px;
+    padding: 0 18px 0 14px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid rgba(20, 21, 15, 0.08);
+    box-shadow: 0 12px 30px rgba(20, 21, 15, 0.1);
+    font-size: 17px;
+    font-weight: 600;
+    color: #14150f;
+    white-space: nowrap;
+    transform: translateY(-50%);
+}
+
+.spokeDest i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #9cc25a;
+    box-shadow: 0 0 0 4px rgba(156, 194, 90, 0.2);
+}
+
+/* ------------------------------------------------ Marketing · el mosaico */
+
+.bento {
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(242, 239, 232, 0.12);
+    background: rgba(242, 239, 232, 0.05);
+    color: rgba(242, 239, 232, 0.78);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.tile svg {
+    width: 26px;
+    height: 26px;
+    color: #c8e293;
+}
+
+.tileOn {
+    border-color: rgba(200, 226, 147, 0.6);
+    background: rgba(200, 226, 147, 0.12);
+    color: #f2efe8;
+    box-shadow: 0 0 36px rgba(200, 226, 147, 0.18);
+}

@@ -7,11 +7,24 @@ import {
   PageHero,
   Split,
 } from "@/components/site/Sections";
-import { CompSet, RateDecision, RulesList } from "@/components/site/Vignettes";
+import {
+  CompSet,
+  RateDecision,
+  RulesList,
+  TourismDossier,
+} from "@/components/site/Vignettes";
+import SiteVideo from "@/components/site/SiteVideo";
 import { readLocale } from "@/i18n/params";
 import { pageMetadata } from "@/lib/meta";
 import BreadcrumbsLd from "@/components/site/BreadcrumbsLd";
 import { getDictionary } from "@/i18n/get-dictionary";
+
+/**
+ * Revenue. Dos argumentos que la categoría no tiene juntos: explica cada
+ * precio (el documento de decisión) y viene en el catálogo en vez de
+ * venderse aparte — la tabla de costo cita el único precio publicado del
+ * segmento, con fecha.
+ */
 
 export async function generateMetadata({
   params,
@@ -44,11 +57,9 @@ export default async function RevenuePage({
           <HeroActions
             locale={lang}
             dict={dict}
-            secondaryLabel={dict.common.seePricing}
-            secondaryHref="/precios"
           />
         }
-        aside={<RateDecision v={v} locale={lang} />}
+        aside={<SiteVideo piece="revenue" locale={lang} t={dict.common.video} priority />}
       />
 
       <Split
@@ -64,6 +75,16 @@ export default async function RevenuePage({
       <Split
         locale={lang}
         flip
+        eyebrow={t.destination.eyebrow}
+        title={t.destination.title}
+        lead={t.destination.lead}
+        items={t.destination.items}
+        media={<TourismDossier v={v} locale={lang} />}
+      />
+
+      <Split
+        locale={lang}
+        tone="paper2"
         eyebrow={t.rules.eyebrow}
         title={t.rules.title}
         lead={t.rules.lead}
@@ -73,7 +94,7 @@ export default async function RevenuePage({
 
       <Split
         locale={lang}
-        tone="paper2"
+        flip
         eyebrow={t.comp.eyebrow}
         title={t.comp.title}
         lead={t.comp.lead}
@@ -83,10 +104,12 @@ export default async function RevenuePage({
 
       <FeatureGrid
         locale={lang}
+        tone="paper2"
         eyebrow={t.rest.eyebrow}
         title={t.rest.title}
         items={t.rest.items}
       />
+
 
       <Faq items={t.faq} title={dict.common.faqTitle} locale={lang} />
 
@@ -102,7 +125,7 @@ export default async function RevenuePage({
         lang={lang}
         trail={[
           { name: dict.producto.meta.title, href: "/producto" },
-          { name: dict.revenue.meta.title, href: "/producto/revenue" },
+          { name: t.meta.title, href: "/producto/revenue" },
         ]}
       />
     </>

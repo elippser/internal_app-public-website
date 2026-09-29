@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight } from "@/components/site/Sections";
-import { PRODUCT_GROUPS, PRODUCT_HREFS, type ProductKey } from "@/components/site/nav";
+import { PRODUCT_HREFS, PRODUCT_KEYS, type ProductKey } from "@/components/site/nav";
 import { DEFAULT_LOCALE, isLocale, type Locale } from "@/i18n/config";
 import { localizedHref as localePath } from "@/i18n/routes";
 
@@ -13,8 +13,12 @@ import { localizedHref as localePath } from "@/i18n/routes";
  * Es lo único del sitio que NO puede leer el diccionario del servidor: un
  * `not-found` de Next no recibe `params`, así que no sabe en qué idioma está.
  * Por eso es un componente cliente que saca el idioma del pathname y trae sus
- * seis strings de acá abajo — copiarlas es más barato que empaquetar los cinco
+ * strings de acá abajo — copiarlas es más barato que empaquetar los cinco
  * diccionarios enteros para una página que casi nadie ve.
+ *
+ * Se monta desde `[lang]/[...rest]/page.tsx`, que llama a `notFound()` para
+ * cualquier URL desconocida; sin esa ruta comodín, Next servía su 404
+ * genérico en inglés y sin marca.
  */
 
 const STRINGS: Record<
@@ -27,7 +31,6 @@ const STRINGS: Record<
     home: string;
     contact: string;
     products: Record<ProductKey, { title: string; desc: string }>;
-    groups: Record<"operation" | "growth" | "newLayer", string>;
   }
 > = {
   es: {
@@ -36,15 +39,13 @@ const STRINGS: Record<
     em: "no existe",
     lead: "Puede que la hayamos movido o que el enlace esté mal escrito. Estos son los lugares a los que suele querer ir la gente.",
     home: "Volver al inicio",
-    contact: "Escribinos",
-    groups: { operation: "La operación", growth: "El crecimiento", newLayer: "La capa nueva" },
+    contact: "Escríbenos",
     products: {
-      reservas: { title: "Reservas y habitaciones", desc: "Panel del día, calendario, tarifas e inventario." },
-      motor: { title: "Motor de reservas", desc: "El buscador y el checkout que ve el huésped." },
-      revenue: { title: "Revenue · RMS", desc: "Pace, competencia, eventos y recomendaciones." },
-      sitios: { title: "Sitio web y marca", desc: "Builder, LinkHub, galerías y reseñas." },
-      ia: { title: "Roombir IA", desc: "Un asistente que opera el sistema con vos." },
-      agentes: { title: "Alojamiento agéntico", desc: "Reservable por un modelo de lenguaje." },
+      ia: { title: "Roombir IA", desc: "Toda la gestión, en una conversación." },
+      pms: { title: "PMS", desc: "Propiedades, habitaciones, reservas y el motor." },
+      informes: { title: "Informes", desc: "Ocupación, ingresos, cancelaciones y canales." },
+      revenue: { title: "Revenue", desc: "El precio de cada fecha, y por qué." },
+      marketing: { title: "Marketing", desc: "Web con asistente, marca, reseñas y LinkHub." },
     },
   },
   en: {
@@ -54,14 +55,12 @@ const STRINGS: Record<
     lead: "We may have moved it, or the link may be misspelled. These are the places people usually want to reach.",
     home: "Back to home",
     contact: "Write to us",
-    groups: { operation: "Operations", growth: "Growth", newLayer: "The new layer" },
     products: {
-      reservas: { title: "Bookings and rooms", desc: "Daily board, calendar, rates and inventory." },
-      motor: { title: "Booking engine", desc: "The search and checkout your guest sees." },
-      revenue: { title: "Revenue · RMS", desc: "Pace, comp set, events and recommendations." },
-      sitios: { title: "Website and brand", desc: "Builder, LinkHub, galleries and reviews." },
-      ia: { title: "Roombir AI", desc: "An assistant that operates the system with you." },
-      agentes: { title: "Agentic property", desc: "Bookable by a language model." },
+      ia: { title: "Roombir AI", desc: "Your whole property, in one conversation." },
+      pms: { title: "PMS", desc: "Properties, rooms, bookings and the engine." },
+      informes: { title: "Reports", desc: "Occupancy, revenue, cancellations and channels." },
+      revenue: { title: "Revenue", desc: "The price for each date, and why." },
+      marketing: { title: "Marketing", desc: "Website with an assistant, brand, reviews and LinkHub." },
     },
   },
   pt: {
@@ -71,14 +70,12 @@ const STRINGS: Record<
     lead: "Pode ser que a tenhamos movido ou que o link esteja errado. Estes são os lugares para onde as pessoas costumam ir.",
     home: "Voltar ao início",
     contact: "Fale com a gente",
-    groups: { operation: "A operação", growth: "O crescimento", newLayer: "A camada nova" },
     products: {
-      reservas: { title: "Reservas e quartos", desc: "Painel do dia, calendário, tarifas e inventário." },
-      motor: { title: "Motor de reservas", desc: "A busca e o checkout que o hóspede vê." },
-      revenue: { title: "Revenue · RMS", desc: "Pace, concorrência, eventos e recomendações." },
-      sitios: { title: "Site e marca", desc: "Builder, LinkHub, galerias e avaliações." },
-      ia: { title: "Roombir IA", desc: "Um assistente que opera o sistema com você." },
-      agentes: { title: "Hospedagem agêntica", desc: "Reservável por um modelo de linguagem." },
+      ia: { title: "Roombir IA", desc: "Toda a gestão, em uma conversa." },
+      pms: { title: "PMS", desc: "Propriedades, quartos, reservas e o motor." },
+      informes: { title: "Relatórios", desc: "Ocupação, receita, cancelamentos e canais." },
+      revenue: { title: "Revenue", desc: "O preço de cada data, e por quê." },
+      marketing: { title: "Marketing", desc: "Site com assistente, marca, avaliações e LinkHub." },
     },
   },
   fr: {
@@ -88,14 +85,12 @@ const STRINGS: Record<
     lead: "Nous l’avons peut-être déplacée, ou le lien est mal écrit. Voici les endroits où les gens vont le plus souvent.",
     home: "Retour à l’accueil",
     contact: "Écrivez-nous",
-    groups: { operation: "L’exploitation", growth: "La croissance", newLayer: "La nouvelle couche" },
     products: {
-      reservas: { title: "Réservations et chambres", desc: "Tableau du jour, calendrier, tarifs et inventaire." },
-      motor: { title: "Moteur de réservation", desc: "La recherche et le paiement que voit le client." },
-      revenue: { title: "Revenue · RMS", desc: "Pace, concurrence, événements et recommandations." },
-      sitios: { title: "Site web et marque", desc: "Builder, LinkHub, galeries et avis." },
-      ia: { title: "Roombir IA", desc: "Un assistant qui opère le système avec vous." },
-      agentes: { title: "Hébergement agentique", desc: "Réservable par un modèle de langage." },
+      ia: { title: "Roombir IA", desc: "Toute la gestion, en une conversation." },
+      pms: { title: "PMS", desc: "Établissements, chambres, réservations et le moteur." },
+      informes: { title: "Rapports", desc: "Occupation, revenus, annulations et canaux." },
+      revenue: { title: "Revenue", desc: "Le prix de chaque date, et pourquoi." },
+      marketing: { title: "Marketing", desc: "Site avec assistant, marque, avis et LinkHub." },
     },
   },
   de: {
@@ -105,14 +100,12 @@ const STRINGS: Record<
     lead: "Vielleicht haben wir sie verschoben, oder der Link ist falsch geschrieben. Das sind die Stellen, zu denen die meisten wollen.",
     home: "Zurück zur Startseite",
     contact: "Schreiben Sie uns",
-    groups: { operation: "Der Betrieb", growth: "Das Wachstum", newLayer: "Die neue Ebene" },
     products: {
-      reservas: { title: "Buchungen und Zimmer", desc: "Tagesübersicht, Kalender, Raten und Inventar." },
-      motor: { title: "Buchungsmaschine", desc: "Die Suche und der Checkout, die der Gast sieht." },
-      revenue: { title: "Revenue · RMS", desc: "Pace, Mitbewerber, Events und Empfehlungen." },
-      sitios: { title: "Website und Marke", desc: "Builder, LinkHub, Galerien und Bewertungen." },
-      ia: { title: "Roombir KI", desc: "Ein Assistent, der das System mit Ihnen bedient." },
-      agentes: { title: "Agentische Unterkunft", desc: "Buchbar durch ein Sprachmodell." },
+      ia: { title: "Roombir KI", desc: "Ihre ganze Unterkunft, in einem Gespräch." },
+      pms: { title: "PMS", desc: "Unterkünfte, Zimmer, Buchungen und die Maschine." },
+      informes: { title: "Berichte", desc: "Belegung, Umsatz, Stornierungen und Kanäle." },
+      revenue: { title: "Revenue", desc: "Der Preis für jedes Datum, und warum." },
+      marketing: { title: "Marketing", desc: "Website mit Assistent, Marke, Bewertungen und LinkHub." },
     },
   },
 };
@@ -136,7 +129,7 @@ export default function NotFound() {
         </p>
 
         <div className="grid grid-2">
-          {PRODUCT_GROUPS.flatMap((group) => group.items).map((key) => (
+          {PRODUCT_KEYS.map((key) => (
             <Link
               key={key}
               href={localePath(locale, PRODUCT_HREFS[key])}

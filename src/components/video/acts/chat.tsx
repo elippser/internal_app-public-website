@@ -3,7 +3,8 @@
 import { Fragment, useLayoutEffect, useMemo, useRef, type ReactNode } from "react";
 import type { SceneProps } from "../scenes";
 import { CHAT_TYPE_AT, STREAM_MS, clamp01, easeIn, easeInOut, easeOutExpo, lerp, planChat, seg, typedCount } from "../timeline";
-import { Camera, Cursor, Gradient, HBlur, Mark, H, W, useOffsets, type CursorKey, type Rect } from "../fx";
+import { Camera, Cursor, Gradient, HBlur, Mark, H as H_L, W as W_L, useOffsets, type CursorKey, type Rect } from "../fx";
+import { usePortrait } from "../orientation";
 import { AssistantTurn, ChatShell, Composer, ReservationList, UserBubble } from "../pms/ChatUi";
 import PmsShell from "../pms/PmsShell";
 import { RecCard } from "../pms/Revenue";
@@ -54,6 +55,9 @@ export function HingeScene({ lt, v }: SceneProps) {
  */
 // `r` subió de 12 a 26 el 21-09-2026: el usuario pidió los bordes más redondos.
 const APP = { w: 980, h: 620, x: 150, y: 50, r: 26 };
+const APP_L = APP;
+/** La ventana en el corte vertical: la de escritorio, centrada en 720×1280 (se achica con `K`). */
+const APP_P = { w: 980, h: 620, x: 360 - 490, y: 640 - 310, r: 26 };
 
 /**
  * Los ganchos de medición que planta `pms/ChatUi.tsx`. `data-ghost` es el
@@ -147,6 +151,17 @@ function ramp(p: number, edge: number): number {
 }
 
 export function ChatScene({ lt, v, paused }: SceneProps) {
+  // En vertical (`?view=mobile`) va la MISMA ventana de escritorio, centrada y achicada ×`K` para que
+  // entre entera; la cámara hace sus cuentas con los puntos ya achicados (`wx`/`wy`).
+  const portrait = usePortrait();
+  const APP = portrait ? APP_P : APP_L;
+  const K = portrait ? 0.7 : 1;
+  const wx = (x: number) => 360 + (x - 360) * K;
+  const wy = (y: number) => 640 + (y - 640) * K;
+  const wrapK = (x: number) => (portrait ? wx(x) : x);
+  const wrapKy = (y: number) => (portrait ? wy(y) : y);
+  const W = portrait ? 720 : W_L;
+  const H = portrait ? 1280 : H_L;
   const plan = useMemo(() => planChat(v.chat), [v.chat]);
   const { turns } = plan;
   const appRef = useRef<HTMLDivElement>(null);
@@ -229,11 +244,11 @@ export function ChatScene({ lt, v, paused }: SceneProps) {
   const x0 = pill.x + PRO.textAt;
   const fullWidth = rects[GHOST]?.w ?? 0;
   const typeP = ramp(clamp01((lt - t0.typeStart) / (t0.typeEnd - t0.typeStart)), 0.16);
-  const kx = APP.x + x0 + fullWidth * typeP;
-  const pcx = APP.x + pill.x + pill.w / 2;
+  const kx = wrapK(APP.x + x0 + fullWidth * typeP);
+  const pcx = wrapK(APP.x + pill.x + pill.w / 2);
   const reading = W * lerp(PRO.followFrom, PRO.followTo, typeP);
   const camX = lerp(lerp(lerp(put(pcx, W / 2), put(kx, reading), zoomP), put(pcx, W / 2), settleP), 0, outP);
-  const camY = lerp(-(APP.y + pill.y + pill.h / 2 - H / 2) * scale, 0, outP);
+  const camY = lerp(-(wrapKy(APP.y + pill.y + pill.h / 2) - H / 2) * scale, 0, outP);
 
   // El recorte: la ventana entera existe desde el primer cuadro, pero hasta el
   // envío sólo se ve el rectángulo de la píldora. Al abrirse, la UI se compone
@@ -283,7 +298,7 @@ export function ChatScene({ lt, v, paused }: SceneProps) {
         {/* Sin `opacity` ni `filter` en este contenedor: los dos crean un
             "backdrop root" y el `backdrop-filter` del vidrio se quedaría sin
             nada que difuminar. La entrada la hace cada pieza por su cuenta. */}
-        <div className={s.demoStage}>
+        <div className={s.demoStage} style={portrait ? { transform: `scale(${K})`, transformOrigin: "360px 640px" } : undefined}>
           {/* La sombra va suelta: `clip-path` recorta también la del elemento,
               así que si viviera en la ventana la píldora flotaría sin apoyo. */}
           <div

@@ -7,6 +7,24 @@
 .hero {
     padding-top: clamp(112px, 13vw, 168px);
     padding-bottom: clamp(48px, 6vw, 80px);
+    isolation: isolate;
+}
+
+/* Las mismas masas que el hero de la home (el fondo del final del video),
+   más bajas: acá el titular va alineado a la izquierda y comparte el cuadro
+   con una captura. */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(34% 42% at 12% 8%, rgba(150, 204, 134, 0.34), rgba(150, 204, 134, 0) 70%),
+        radial-gradient(24% 30% at 48% 0%, rgba(243, 183, 104, 0.18), rgba(243, 183, 104, 0) 72%),
+        radial-gradient(36% 44% at 88% 12%, rgba(227, 231, 149, 0.46), rgba(227, 231, 149, 0) 72%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 40%, transparent 100%);
 }
 
 .heroGrid {
@@ -64,7 +82,9 @@
 
 .stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    /* `--stat-cols` la fija el componente cuando la banda va al lado de un
+       texto (cuatro números en dos columnas); si no, las que entren. */
+    grid-template-columns: repeat(var(--stat-cols, auto-fit), minmax(150px, 1fr));
     gap: 1px;
     background: var(--line);
     border: 1px solid var(--line);
@@ -87,7 +107,7 @@
 }
 
 .statsInk .stat {
-    background: var(--ink);
+    background: var(--deep);
 }
 
 .statValue {
@@ -107,14 +127,36 @@
     color: var(--text-ink-3);
 }
 
+/* En dos columnas, una banda con cantidad impar dejaba una celda vacía al
+   final: la última pasa a ocupar las dos. */
+@media (max-width: 480px) {
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stat:last-child:nth-child(odd) {
+        grid-column: span 2;
+    }
+}
+
 /* --------------------------------------------------------------- cierre --- */
 
+/* El cierre es el final del video (escenas 19 y 24): claro de punta a punta,
+   con la masa verde a la izquierda, la amarilla a la derecha, un toque de
+   naranja entre las dos y el lavado blanco-celeste del borde izquierdo. */
 .cta {
     position: relative;
     overflow: hidden;
+    isolation: isolate;
     border-radius: var(--radius-lg);
-    background: var(--ink);
-    color: var(--text-ink);
+    background:
+        radial-gradient(38% 70% at 0% 50%, rgba(242, 253, 255, 0.95), rgba(242, 253, 255, 0) 70%),
+        radial-gradient(42% 80% at 30% 60%, rgba(150, 204, 134, 0.62), rgba(150, 204, 134, 0) 72%),
+        radial-gradient(34% 60% at 58% 0%, rgba(243, 183, 104, 0.4), rgba(243, 183, 104, 0) 72%),
+        radial-gradient(48% 80% at 80% 50%, rgba(227, 231, 149, 0.78), rgba(227, 231, 149, 0) 74%),
+        #eef3de;
+    color: var(--text);
+    box-shadow: 0 30px 80px rgba(78, 107, 40, 0.12);
     padding: clamp(36px, 5.5vw, 68px);
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
@@ -127,7 +169,7 @@
     position: absolute;
     inset: auto -10% -60% 55%;
     height: 320px;
-    background: radial-gradient(closest-side, rgba(200, 226, 147, 0.16), transparent);
+    background: radial-gradient(closest-side, rgba(255, 255, 255, 0.5), transparent);
     pointer-events: none;
 }
 
@@ -160,15 +202,15 @@
     gap: 12px;
     align-items: baseline;
     font-size: 13.5px;
-    color: var(--text-ink-2);
+    color: var(--text-2);
     padding-bottom: 10px;
-    border-bottom: 1px solid var(--line-ink);
+    border-bottom: 1px solid rgba(20, 21, 15, 0.1);
 }
 
 .ctaStep b {
     font-family: var(--mono);
     font-size: 11px;
-    color: var(--brand-bright);
+    color: var(--brand);
     flex: none;
 }
 
@@ -412,7 +454,7 @@
 }
 
 .seal {
-    background: var(--ink);
+    background: var(--deep);
     padding: clamp(20px, 2.4vw, 30px);
     display: flex;
     flex-direction: column;
@@ -559,6 +601,41 @@
     .dayTime {
         padding-top: 0;
     }
+
+    /* En una columna la cabecera "Hoy / Con roombir" apilada parecía dos
+       filas más: se oculta y cada lado lleva su etiqueta encima. */
+    .dayHead {
+        display: none;
+    }
+
+    .dayOld,
+    .dayNew {
+        flex-wrap: wrap;
+    }
+
+    /* El texto al lado del punto, no debajo: sin esto el span no encoge y
+       se va a la línea siguiente. */
+    .dayOld > span,
+    .dayNew > span {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .dayOld::before,
+    .dayNew::before {
+        content: attr(data-label);
+        flex: 0 0 100%;
+        font-size: 10.5px;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-3);
+        margin-bottom: -2px;
+    }
+
+    .dayNew::before {
+        color: var(--brand);
+    }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -653,6 +730,71 @@
     background: var(--line-2);
 }
 
+/* En teléfono, la tabla deja de ser tabla: cada fila es una tarjeta, con el
+   criterio arriba y cada celda con el nombre de su columna encima
+   (`data-label`, puesto por el componente). En escritorio no cambia nada. */
+@media (max-width: 767px) {
+    .cmpWrap {
+        overflow: visible;
+        border: 0;
+        background: transparent;
+    }
+
+    .cmp,
+    .cmp tbody,
+    .cmp tr,
+    .cmp th,
+    .cmp td {
+        display: block;
+        width: auto;
+        min-width: 0;
+    }
+
+    .cmp thead {
+        display: none;
+    }
+
+    .cmp tr {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        background: var(--card);
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .cmp th[scope="row"] {
+        width: auto;
+        border-top: 0;
+        background: var(--paper-2);
+        padding: 11px 14px;
+        font-size: 14px;
+    }
+
+    .cmp td {
+        padding: 10px 14px 12px;
+        border-top: 1px solid var(--line);
+    }
+
+    .cmp td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 10.5px;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-3);
+        margin-bottom: 5px;
+    }
+
+    .cmp td.cmpUs::before {
+        color: var(--brand);
+    }
+
+    .cmp td.costPrice {
+        white-space: normal;
+    }
+}
+
 .legend {
     display: flex;
     flex-wrap: wrap;
@@ -681,6 +823,69 @@
 .choiceUs {
     border-color: var(--brand-soft);
     background: #fff;
+}
+
+/* ------------------------------------------------ lo que hoy pagás aparte - */
+
+.cost th[scope="row"] {
+    width: 30%;
+}
+
+.costPrice {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.costTotal {
+    margin-top: 16px;
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--text);
+    max-width: 72ch;
+}
+
+/* -------------------------------------------------- lo que le podés pedir - */
+
+.ask {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.askArea {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--brand);
+}
+
+/* El pedido va como lo escribiría la persona, entre comillas. En sans y no en
+   la serif: la itálica serif es una palabra por titular (manual §15). */
+.askQ {
+    font-size: 17.5px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.018em;
+    color: var(--text);
+}
+
+.askQ::before {
+    content: "“";
+}
+
+.askQ::after {
+    content: "”";
+}
+
+.askA {
+    font-size: 14px;
+    line-height: 1.58;
+    color: var(--text-2);
+    padding-top: 10px;
+    border-top: 1px dashed var(--line-2);
 }
 
 @media (max-width: 760px) {
@@ -718,11 +923,12 @@
 }
 
 .teaserName em {
-    font-family: var(--serif);
-    font-style: italic;
-    font-weight: 400;
-    letter-spacing: -0.005em;
-    color: var(--brand);
+    font-style: normal;
+    background-image: var(--grad-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
 }
 
 .teaserText {
@@ -742,5 +948,27 @@
 @media (max-width: 620px) {
     .teaser {
         grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Los "Verificar" de los sellos, en táctil, con 40 px de alto. */
+@media (hover: none) and (pointer: coarse) {
+    .sealMore {
+        min-height: 40px;
+    }
+}
+
+/* La media del Split (una viñeta) llega con un leve escalado cuando el
+   FxObserver la marca; la viñeta de adentro sigue con su propio dibujo. */
+@media (prefers-reduced-motion: no-preference) {
+    .splitMedia[data-fx-in] {
+        animation: mediaIn 0.9s cubic-bezier(0.22, 0.9, 0.3, 1) backwards;
+    }
+}
+
+@keyframes mediaIn {
+    from {
+        opacity: 0;
+        transform: scale(0.975);
     }
 }

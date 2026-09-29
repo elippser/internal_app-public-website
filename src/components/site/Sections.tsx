@@ -180,9 +180,13 @@ export function HeroActions({
 export function StatBand({
   stats,
   tone = "paper",
+  columns,
 }: {
   stats: readonly { value: string; label: string }[];
   tone?: "paper" | "ink";
+  /** Columnas fijas (p. ej. 2 para una banda de cuatro al lado de un texto).
+      Sin esto, las que entren de 150 px; en teléfono siempre dos. */
+  columns?: 2 | 3 | 4;
 }) {
   return (
     // `data-fx`: las celdas entran en cascada y los números cuentan hasta su
@@ -190,6 +194,7 @@ export function StatBand({
     <div
       className={[styles.stats, tone === "ink" ? styles.statsInk : ""].join(" ")}
       data-fx=""
+      style={columns ? ({ "--stat-cols": String(columns) } as CSSProperties) : undefined}
     >
       {stats.map((stat) => (
         <div key={stat.label} className={styles.stat}>
@@ -261,7 +266,7 @@ export function CtaBand({
   return (
     <section className="section">
       <div className="container container-wide">
-        <div className={[styles.cta, "section-ink"].join(" ")} data-reveal data-fx="">
+        <div className={styles.cta} data-reveal data-fx="">
           <div className={styles.ctaCopy}>
             <h2 className="h2">
               <Headline text={title} />
@@ -351,7 +356,7 @@ export function Split({
               </SmartLink>
             )}
           </div>
-          <div className={styles.splitMedia} data-reveal>
+          <div className={styles.splitMedia} data-reveal data-fx="">
             {media}
           </div>
         </div>
@@ -574,11 +579,13 @@ export function DayCompare({
       {rows.map((row, i) => (
         <div key={row.time} className={styles.dayRow} style={rise(i * 0.09)}>
           <span className={styles.dayTime}>{row.time}</span>
-          <span className={styles.dayOld}>
+          {/* `data-label`: en una columna (teléfono) la cabecera se oculta y
+              cada lado lleva su etiqueta encima. */}
+          <span className={styles.dayOld} data-label={headOld}>
             <i aria-hidden />
             <span>{renderRich(row.old, locale)}</span>
           </span>
-          <span className={styles.dayNew}>
+          <span className={styles.dayNew} data-label={headNew}>
             <i aria-hidden />
             <span>{renderRich(row.now, locale)}</span>
           </span>
@@ -656,16 +663,18 @@ export function CompareTable({
             </tr>
           </thead>
           <tbody>
+            {/* `data-label`: en teléfono cada fila es una tarjeta y la celda
+                muestra el nombre de su columna encima (Sections.module.css). */}
             {rows.map((row) => (
               <tr key={row.label}>
                 <th scope="row">{row.label}</th>
-                <td className={styles.cmpUs}>
+                <td className={styles.cmpUs} data-label={headUs}>
                   <span className={styles.cmpCell}>
                     <ToneDot tone={row.usTone} />
                     <span>{row.us}</span>
                   </span>
                 </td>
-                <td>
+                <td data-label={headThem}>
                   <span className={styles.cmpCell}>
                     <ToneDot tone={row.themTone} />
                     <span>{row.them}</span>
@@ -784,6 +793,128 @@ export function CompareTeaser({
             </SmartLink>
           </p>
         )}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------ lo que hoy pagás aparte - */
+
+/**
+ * Lo que el alojamiento compra hoy por separado para cubrir lo mismo, con el
+ * precio que cada proveedor PUBLICA en su web y la fecha en que se leyó.
+ *
+ * Regla del manual (§8.2): nunca un precio de un directorio o una reseña; si
+ * el proveedor no lo publica, la celda lo dice. La tercera columna no ataca al
+ * producto ajeno: dice qué no sabe de tu alojamiento, que es el argumento.
+ * Es una `<table>` de verdad por lo mismo que `CompareTable`: es de lo que más
+ * cita un modelo.
+ */
+export function CostStack({
+  locale,
+  eyebrow,
+  title,
+  lead,
+  head,
+  rows,
+  total,
+  source,
+  tone = "paper2",
+  id,
+}: {
+  locale: Locale;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  head: { tool: string; price: string; gap: string };
+  rows: readonly { tool: string; price: string; gap: string }[];
+  /** La suma, dicha en una oración: "Un sitio en cinco idiomas… = US$ 187". */
+  total?: string;
+  /** Fuente y fecha, en letra chica bajo la tabla. */
+  source: string;
+  tone?: "paper" | "paper2";
+  id?: string;
+}) {
+  return (
+    <section
+      className={["section", tone === "paper2" ? "section-paper2" : ""].join(" ")}
+      id={id}
+    >
+      <div className="container container-wide">
+        <SplitHead locale={locale} eyebrow={eyebrow} title={title} lead={lead} />
+        <div data-reveal>
+          <div className={styles.cmpWrap}>
+            <table className={[styles.cmp, styles.cost].join(" ")}>
+              <thead>
+                <tr>
+                  <th scope="col">{head.tool}</th>
+                  <th scope="col">{head.price}</th>
+                  <th scope="col">{head.gap}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.tool}>
+                    <th scope="row">{row.tool}</th>
+                    <td className={styles.costPrice} data-label={head.price}>
+                      {renderRich(row.price, locale)}
+                    </td>
+                    <td data-label={head.gap}>
+                      <span className={styles.cmpCell}>
+                        <ToneDot tone="no" />
+                        <span>{renderRich(row.gap, locale)}</span>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {total && <p className={styles.costTotal}>{renderRich(total, locale)}</p>}
+          <p className={styles.legend}>{renderRich(source, locale)}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------- lo que le podés pedir - */
+
+/**
+ * Pedidos literales a Roombir IA y lo que hace con cada uno. Es la forma más
+ * corta de explicarle a alguien que no es técnico qué significa "un asistente
+ * que ejecuta": la frase que escribiría él y la operación que queda hecha.
+ */
+export function AskGrid({
+  locale,
+  eyebrow,
+  title,
+  lead,
+  items,
+  tone = "paper",
+  id,
+}: {
+  locale: Locale;
+  eyebrow: string;
+  title: string;
+  lead: string;
+  items: readonly { area: string; ask: string; does: string }[];
+  tone?: "paper" | "paper2";
+  id?: string;
+}) {
+  return (
+    <section className={["section", tone === "paper2" ? "section-paper2" : ""].join(" ")} id={id}>
+      <div className="container container-wide">
+        <SplitHead locale={locale} eyebrow={eyebrow} title={title} lead={lead} />
+        <div className="grid grid-3" data-reveal>
+          {items.map((item) => (
+            <article key={item.ask} className={["card", styles.ask].join(" ")}>
+              <span className={styles.askArea}>{item.area}</span>
+              <p className={styles.askQ}>{item.ask}</p>
+              <p className={styles.askA}>{renderRich(item.does, locale)}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

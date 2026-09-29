@@ -36,6 +36,19 @@
     box-shadow: inset 0 0 0 1px rgba(20, 21, 15, 0.16);
 }
 
+/* Abajo de 400 px, en la cápsula del header, queda sólo la bandera: el
+   lugar se lo lleva "Empezar gratis", que es el CTA del sitio. En el pie
+   (tono tinta) hay espacio y el texto se queda. */
+@media (max-width: 400px) {
+    .button:not(.buttonInk) .short {
+        display: none;
+    }
+
+    .button:not(.buttonInk) {
+        padding-inline: 10px;
+    }
+}
+
 .buttonInk {
     color: var(--text-ink-2);
 }

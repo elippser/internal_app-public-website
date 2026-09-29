@@ -56,8 +56,11 @@ export function LinkhubPage({
   dates,
   children,
   style,
+  logo,
 }: {
   l: LinkhubLabels;
+  /** El logo del alojamiento en el avatar. Sin él, las iniciales (lo que muestra el LinkHub real sin logo). */
+  logo?: ReactNode;
   /** El bloque de reserva está apretado. */
   pressing?: boolean;
   dates: { in: string; out: string };
@@ -80,7 +83,7 @@ export function LinkhubPage({
         <div className={s.container}>
           <header className={s.header}>
             <div className={s.avatar}>
-              <span className={s.avatarFallback}>{l.name.slice(0, 2).toUpperCase()}</span>
+              {logo ?? <span className={s.avatarFallback}>{l.name.slice(0, 2).toUpperCase()}</span>}
             </div>
             <div className={s.nameRow}>
               <span className={s.displayName}>{l.name}</span>

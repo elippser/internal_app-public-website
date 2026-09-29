@@ -1,0 +1,260 @@
+/* ============================================================================
+ * Las piezas comunes de los videos de producto (`common.tsx`).
+ * ========================================================================== */
+
+.heroVisual {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 300px;
+    bottom: 64px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.appWrap {
+    position: absolute;
+    border-radius: 26px;
+    box-shadow: 0 30px 80px rgba(20, 21, 15, 0.18), 0 6px 18px rgba(20, 21, 15, 0.06);
+    --accent-color: #4e6b28;
+    --accent-soft: rgba(78, 107, 40, 0.12);
+}
+
+.pageLayer {
+    position: absolute;
+    inset: 0;
+    padding: 12px;
+    overflow: hidden;
+    text-align: left;
+    color: #1e293b;
+    --accent-color: #4e6b28;
+    --accent-soft: rgba(78, 107, 40, 0.12);
+}
+
+.chip {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 15px 9px 12px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 550;
+    white-space: nowrap;
+    will-change: transform, opacity;
+}
+
+.chipDark {
+    background: rgba(242, 239, 232, 0.1);
+    border: 1px solid rgba(242, 239, 232, 0.22);
+    color: #f2efe8;
+}
+
+.chipLight {
+    background: #ffffff;
+    border: 1px solid rgba(20, 21, 15, 0.1);
+    box-shadow: 0 10px 26px rgba(20, 21, 15, 0.1);
+    color: #14150f;
+}
+
+.chipDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #c8e293;
+    box-shadow: 0 0 0 4px rgba(200, 226, 147, 0.18);
+}
+
+.chipLight .chipDot {
+    background: #4e6b28;
+    box-shadow: 0 0 0 4px rgba(78, 107, 40, 0.14);
+}
+
+.center {
+    position: absolute;
+    transform-origin: 50% 50%;
+}
+
+.endStack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+}
+
+.endTag {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    text-wrap: balance;
+    max-width: 900px;
+    color: #14150f;
+}
+
+.keys {
+    position: absolute;
+    z-index: 65;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: rgba(20, 21, 15, 0.88);
+    box-shadow: 0 14px 30px rgba(20, 21, 15, 0.25);
+    white-space: nowrap;
+}
+
+.keys span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.keys b {
+    color: rgba(242, 239, 232, 0.6);
+    font-size: 16px;
+}
+
+.keys kbd {
+    display: inline-grid;
+    place-items: center;
+    min-width: 58px;
+    height: 54px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #14150f;
+    font-family: var(--sans);
+    font-size: 22px;
+    font-weight: 700;
+    box-shadow: 0 3px 0 #cbd5e1;
+}
+
+/* Una tarjeta blanca de un solo borde para lo que no es una pantalla del PMS. */
+.panel {
+    padding: 20px 22px;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid rgba(20, 21, 15, 0.08);
+    box-shadow: 0 30px 70px rgba(20, 21, 15, 0.16);
+    color: #14150f;
+    text-align: left;
+    font-family: var(--sans);
+}
+
+.at {
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+/* ---------------------------------------------------------------- nota ---- */
+/* La nota didáctica: una tarjeta que explica qué es lo que se ve, atada con
+   una línea guía al punto que señala. */
+
+.note {
+    position: absolute;
+    z-index: 60;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 13px 11px 10px;
+    border-radius: 14px;
+    background: #ffffff;
+    border: 1px solid rgba(20, 21, 15, 0.1);
+    box-shadow: 0 16px 36px rgba(20, 21, 15, 0.16);
+    text-align: left;
+    font-family: var(--sans);
+    color: #14150f;
+    pointer-events: none;
+}
+
+.noteNum {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #14150f;
+    color: #c8e293;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.notePhoto {
+    flex: none;
+    width: 72px;
+    height: 54px;
+    border-radius: 9px;
+    object-fit: cover;
+}
+
+.noteTitle {
+    display: block;
+    font-size: 14px;
+    font-weight: 650;
+    line-height: 1.25;
+}
+
+.noteText {
+    display: block;
+    margin-top: 3px;
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: #475569;
+}
+
+.noteBig {
+    padding: 14px 18px 15px 14px;
+    border-radius: 18px;
+    gap: 12px;
+}
+
+.noteBig .noteNum {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+}
+
+.noteBig .noteTitle {
+    font-size: 20px;
+}
+
+.noteBig .noteText {
+    font-size: 16px;
+    margin-top: 4px;
+}
+
+.leader {
+    position: absolute;
+    z-index: 59;
+    height: 0;
+    border-top: 1.5px dashed #14150f;
+    transform-origin: 0 50%;
+    pointer-events: none;
+}
+
+.leaderDot {
+    position: absolute;
+    z-index: 61;
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    border-radius: 50%;
+    background: #14150f;
+    box-shadow: 0 0 0 4px rgba(200, 226, 147, 0.85);
+    pointer-events: none;
+}
+
+/* El final de la nota sobre algo chico (un día del calendario): un recuadro que lo rodea sin taparlo. */
+.noteRing {
+    position: absolute;
+    z-index: 61;
+    border: 2px solid #14150f;
+    border-radius: 12px;
+    box-shadow: 0 0 0 4px rgba(200, 226, 147, 0.7);
+    pointer-events: none;
+}

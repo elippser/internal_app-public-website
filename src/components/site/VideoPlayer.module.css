@@ -1,0 +1,287 @@
+/* El reproductor propio del sitio (VideoPlayer.tsx). Llena el contenedor
+   que lo monta. La barra es una píldora oscura que flota dentro del video
+   (referencia: el reproductor de ClickUp): pausa, tiempo actual, una línea
+   fina con la perilla siempre a la vista y el volumen a la derecha. Se
+   esconde sola mientras el video corre (`data-ui` la muestra). */
+
+.player {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /* Sin fondo negro: la pieza es exactamente 16:9 (o 9:16) y llena el
+       marco con `cover`; cualquier subpíxel que quede muestra el halo, no
+       un filete negro. */
+    background: transparent;
+    outline: none;
+    --ui: 0;
+}
+
+.player[data-ui] {
+    --ui: 1;
+}
+
+.video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* Reproducir, grande y al centro, mientras está en pausa. */
+.big {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(24, 24, 22, 0.86);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(8px);
+    transition: transform 0.16s ease, background-color 0.16s ease;
+}
+
+.big svg {
+    width: 32px;
+    height: 32px;
+    margin-left: 3px;
+}
+
+@media (hover: hover) {
+    .big:hover {
+        transform: scale(1.06);
+        background: rgba(24, 24, 22, 0.96);
+    }
+}
+
+/* ------------------------------------------------------------- la barra -- */
+
+.bar {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+    height: 58px;
+    padding: 0 20px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-radius: 999px;
+    background: rgba(24, 24, 22, 0.94);
+    color: #fff;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(10px);
+    opacity: var(--ui);
+    translate: 0 calc((1 - var(--ui)) * 8px);
+    transition: opacity 0.25s ease, translate 0.25s ease;
+}
+
+.player:not([data-ui]) .bar {
+    pointer-events: none;
+}
+
+.btn {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: transparent;
+    transition: background-color 0.16s ease;
+}
+
+.btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+@media (hover: hover) {
+    .btn:hover {
+        background: rgba(255, 255, 255, 0.12);
+    }
+}
+
+/* Sólo el tiempo actual, en negrita y tabular para que no baile. */
+.time {
+    flex: none;
+    min-width: 3ch;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+    color: #fff;
+}
+
+/* Las dos barras comparten pista, relleno y perilla: una línea fina blanca
+   con la perilla siempre a la vista. `touch-action: none` para que el dedo
+   arrastre sin scrollear la página. */
+.progress,
+.volTrack {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    cursor: pointer;
+    touch-action: none;
+    outline: none;
+}
+
+.progress {
+    flex: 1;
+    min-width: 60px;
+}
+
+.progress:focus-visible .track,
+.volTrack:focus-visible .track {
+    outline: 2px solid var(--brand-bright);
+    outline-offset: 6px;
+}
+
+.track {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.28);
+    overflow: hidden;
+    transition: height 0.15s ease;
+}
+
+.progress:hover .track,
+.progress:active .track {
+    height: 3px;
+}
+
+.buffered,
+.fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 999px;
+}
+
+.buffered {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.fill {
+    background: #fff;
+}
+
+.thumb {
+    position: absolute;
+    top: 50%;
+    width: 11px;
+    height: 11px;
+    margin-left: -5.5px;
+    border-radius: 50%;
+    background: #fff;
+    translate: 0 -50%;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+    transition: transform 0.15s ease;
+    pointer-events: none;
+}
+
+.progress:hover .thumb,
+.progress:active .thumb {
+    transform: scale(1.25);
+}
+
+/* Volumen: el ícono a la derecha; el deslizador aparece al pasar el mouse
+   o al enfocar, desplegándose hacia la izquierda. */
+.vol {
+    flex: none;
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 0;
+}
+
+.volTrack {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: width 0.22s ease, opacity 0.18s ease, margin 0.22s ease;
+}
+
+.vol:hover .volTrack,
+.vol:focus-within .volTrack {
+    width: 84px;
+    margin-right: 10px;
+    opacity: 1;
+    overflow: visible;
+}
+
+.volTrack .thumb {
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+}
+
+/* Táctil: iOS no deja cambiar el volumen por software; queda el mute. */
+@media (hover: none) and (pointer: coarse) {
+    .volTrack {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .bar {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        height: 52px;
+        padding: 0 12px 0 6px;
+        gap: 8px;
+    }
+
+    .time {
+        font-size: 15px;
+    }
+}
+
+/* ------------------------------------------------------------------ halo -- */
+
+/* Modo ambiente: el marco redondeado encima y, debajo, la misma pieza más
+   grande y desenfocada siguiendo la reproducción. */
+.stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    isolation: isolate;
+}
+
+.frame {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: transparent;
+    /* Fuerza una capa propia: el recorte redondeado sobre un video que corre
+       se queda quieto en vez de recalcularse por cuadro. */
+    transform: translateZ(0);
+}
+
+.ambient {
+    position: absolute;
+    left: -12%;
+    top: -12%;
+    width: 124%;
+    height: 124%;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    filter: blur(52px) saturate(1.4);
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 0;
+}

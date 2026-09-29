@@ -2320,3 +2320,63 @@
 .gradTeal .gradWord {
     background-image: linear-gradient(100deg, #073733 0%, #22524c 45%, #8f5b20 100%);
 }
+
+/* -------------------------------- vertical de los videos de producto (pBox) -- */
+/* La escena ocupa la franja del medio del cuadro alto (`video-kit/portrait.tsx`):
+   no recorta, y su fondo (el del propio `.scene`, el degradado y el pastel de
+   arriba) se estira a todo el alto. La marca baja al pie de la pantalla. */
+:global([data-pbox]) .scene {
+    overflow: visible;
+}
+
+:global([data-pbox]) .scene::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -777.78px;
+    bottom: -777.78px;
+    background: inherit;
+    /* `auto` y no `-1`: con -1 todos los fondos estirados de escenas anidadas (la del chat de IA envuelve a la
+       del chat de portada) caían en la misma capa negativa y el fondo de la de afuera tapaba, en la franja, al
+       de la de adentro. Como primer hijo posicionado, se pinta sobre el fondo de su escena y debajo de su contenido. */
+    z-index: auto;
+    pointer-events: none;
+}
+
+:global([data-pbox]) .gradient {
+    top: -777.78px;
+    bottom: -777.78px;
+}
+
+:global([data-pbox]) .pastelTop {
+    top: -777.78px;
+    height: calc(42% + 777.78px);
+}
+
+:global([data-pbox]) .mark {
+    bottom: -745px;
+    transform: scale(1.7);
+    transform-origin: 100% 100%;
+}
+
+/* Los fondos con degradado NO se heredan al alto completo: estirados desde la franja de 720 px, el
+   degradado del `::before` no empalmaba con el del `.scene` y quedaba un corte a la altura del titular.
+   En vertical el `.scene` va sin fondo y el `::before` lleva el degradado pensado para la pantalla entera. */
+:global([data-pbox]) .scene.lavender,
+:global([data-pbox]) .scene.sky,
+:global([data-pbox]) .scene.paper {
+    background: none;
+}
+
+:global([data-pbox]) .scene.lavender::before {
+    background: linear-gradient(180deg, #e2ead4 0%, #f2efe8 38%, #f2efe8 100%);
+}
+
+:global([data-pbox]) .scene.sky::before {
+    background: linear-gradient(180deg, #d6e6d2 0%, #e6eee0 50%, #f2efe8 100%);
+}
+
+:global([data-pbox]) .scene.paper::before {
+    background: radial-gradient(120% 60% at 50% 0%, #f8f5ef 0%, var(--paper) 58%, var(--paper-2) 100%);
+}

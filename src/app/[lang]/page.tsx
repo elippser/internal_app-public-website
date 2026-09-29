@@ -1,35 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import PlansMkt from "@/components/plans/PlansMkt";
-import { fetchPlans } from "@/components/plans/plansApi";
 import Faq from "@/components/site/Faq";
 import { Headline } from "@/components/site/RichText";
-import Ticker from "@/components/site/Ticker";
+import SiteVideo from "@/components/site/SiteVideo";
 import {
   ArrowRight,
-  Check,
   Commitments,
-  CompareTeaser,
   CtaBand,
   DayCompare,
   HeroActions,
+  SmartLink,
   Split,
   SplitHead,
-  StatBand,
-  SwapTable,
 } from "@/components/site/Sections";
-import {
-  AgentSurface,
-  AgentTurn,
-  EngineCalendar,
-  LinkHubPhone,
-  RateDecision,
-  SignalAgent,
-  SignalRate,
-  SpaceSwitcher,
-  TapeChart,
-} from "@/components/site/Vignettes";
-import { PRODUCT_HREFS, RIVAL_HREFS, RIVAL_KEYS } from "@/components/site/nav";
+import { AgentTurn } from "@/components/site/Vignettes";
+import { PMS_PARTS, PRODUCT_HREFS, type ProductKey } from "@/components/site/nav";
 import { localizedHref as localePath } from "@/i18n/routes";
 import { readLocale } from "@/i18n/params";
 import { pageMetadata } from "@/lib/meta";
@@ -39,10 +24,22 @@ import styles from "./home.module.css";
 import "./monax.css";
 
 /**
- * La home. El hero es el del template original (el headline animado:
- * palabras enmascaradas, el chip naranja y la píldora verde), con la
- * tipografía del sistema nuevo — todo el movimiento vive en `monax.css`, en
- * CSS puro. Lo que sigue son las secciones del sistema del sitio.
+ * La home, para la etapa de captación de primeros clientes
+ * (IDENTIDAD-COMUNICACIONAL-2026.md §4). Once bloques, en este orden:
+ * titular → qué cambia → cómo funciona → qué es (con el video de portada)
+ * → un martes con y sin → compromisos → Roombir IA → preguntas → cierre. Orden del 29-09-2026, pedido del usuario.
+ * Sin precios: la política comercial no está decidida
+ * (28-09-2026) y el sitio no los menciona hasta que lo esté.
+ *
+ * El hero es el del template original (el headline animado: palabras
+ * enmascaradas, el chip naranja y la píldora verde) con la tipografía del
+ * sistema nuevo; todo su movimiento vive en `monax.css`, en CSS puro. El video
+ * de portada ya no va debajo del titular: cierra la home, en el idioma de la
+ * página y en la orientación del dispositivo.
+ *
+ * Lo que era específico de un producto (modelo dual, calendario del motor,
+ * garantías, capa agéntica, revenue, marketing, alta) vive en la página de
+ * ese producto: la home dice qué es y por qué confiar, no todo lo que hay.
  */
 
 export async function generateMetadata({
@@ -55,24 +52,35 @@ export async function generateMetadata({
   return pageMetadata(lang, "/", dict.site.title, dict.site.description);
 }
 
-/* Los seis módulos, con su icono y el tinte que le toca. */
-const MODULE_ICONS = {
-  reservas: (
+/* El destello de cuatro puntas de la tarjeta del asistente en "qué cambia". */
+function Sparkle() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M12 2c0 6 4 10 10 10-6 0-10 4-10 10 0-6-4-10-10-10 6 0 10-4 10-10Z" />
+    </svg>
+  );
+}
+
+/* Los cinco productos, con su icono y el tinte que le toca. Roombir IA va
+   primero y en doble ancho: es la capa que usa a los otros cuatro. El PMS
+   también va en doble ancho: es el núcleo, y lista sus cuatro partes. */
+const MODULE_ICONS: Record<ProductKey, React.ReactNode> = {
+  ia: (
     <>
-      <rect x="3" y="5" width="18" height="16" rx="2.5" />
-      <path d="M3 10h18M8 3v4M16 3v4" />
+      <rect x="4" y="7" width="16" height="12" rx="3" />
+      <path d="M12 3v4M9 13h.01M15 13h.01M9.5 16.5h5" />
     </>
   ),
-  habitaciones: (
+  pms: (
     <>
       <path d="M3 20h18M5 20v-9l7-5 7 5v9" />
       <path d="M10 20v-5h4v5" />
     </>
   ),
-  motor: (
+  informes: (
     <>
-      <circle cx="11" cy="11" r="7" />
-      <path d="m20 20-4.2-4.2" />
+      <path d="M4 20h16" />
+      <path d="M7 16v-5M12 16V7M17 16v-8" />
     </>
   ),
   revenue: (
@@ -81,28 +89,21 @@ const MODULE_ICONS = {
       <path d="m7 15 4-5 3 3 5-7" />
     </>
   ),
-  sitios: (
+  marketing: (
     <>
       <rect x="3" y="4" width="18" height="16" rx="2.5" />
       <path d="M3 9h18M7 6.5h.01M10 6.5h.01" />
     </>
   ),
-  ia: (
-    <>
-      <rect x="4" y="7" width="16" height="12" rx="3" />
-      <path d="M12 3v4M9 13h.01M15 13h.01M9.5 16.5h5" />
-    </>
-  ),
-} as const;
+};
 
-const MODULE_ORDER = [
-  { key: "reservas", href: PRODUCT_HREFS.reservas, tint: "iconGreen" },
-  { key: "habitaciones", href: `${PRODUCT_HREFS.reservas}#habitaciones`, tint: "iconClay" },
-  { key: "motor", href: PRODUCT_HREFS.motor, tint: "iconAmber" },
-  { key: "revenue", href: PRODUCT_HREFS.revenue, tint: "iconGreen" },
-  { key: "sitios", href: PRODUCT_HREFS.sitios, tint: "iconClay" },
-  { key: "ia", href: PRODUCT_HREFS.ia, tint: "iconAmber" },
-] as const;
+const MODULE_ORDER: readonly { key: ProductKey; tint: string; wide: boolean }[] = [
+  { key: "ia", tint: "iconAmber", wide: true },
+  { key: "pms", tint: "iconGreen", wide: true },
+  { key: "informes", tint: "iconClay", wide: false },
+  { key: "revenue", tint: "iconAmber", wide: false },
+  { key: "marketing", tint: "iconGreen", wide: false },
+];
 
 export default async function HomePage({
   params,
@@ -115,31 +116,15 @@ export default async function HomePage({
   const v = dict.vignettes;
   const path = (href: string) => localePath(lang, href);
 
-  // Para el `offers` del JSON-LD: los MISMOS planes que pinta la sección de
-  // precios de esta página (mismo fetch, misma revalidación de 5 minutos).
-  // Antes iba hardcodeado y podía contradecir la tabla de al lado hasta el
-  // siguiente deploy; si el API no contesta, mejor no declarar precios que
-  // declarar precios inventados.
-  const plans = await fetchPlans();
-  const prices = plans.map((p) => p.price.amount).filter((n) => Number.isFinite(n));
-  const offers =
-    prices.length > 0
-      ? {
-          offers: {
-            "@type": "AggregateOffer",
-            priceCurrency: plans[0].price.currency,
-            lowPrice: String(Math.min(...prices)),
-            highPrice: String(Math.max(...prices)),
-            offerCount: String(plans.length),
-          },
-        }
-      : {};
-
   return (
     <>
       {/* ------------------------------------------- hero (template GSAP) -- */}
       <div className="monax">
         <section className="hero">
+          <p className="kicker">
+            <b aria-hidden>/</b>
+            {t.hero.kicker}
+          </p>
           <h1 className="headline" id="headline">
             <div className="line line-1">
               <span className="word">
@@ -176,6 +161,8 @@ export default async function HomePage({
             </div>
           </h1>
 
+          <p className="hero-lead">{t.hero.lead}</p>
+
           <div className="monax-cta">
             <HeroActions
               locale={lang}
@@ -183,76 +170,194 @@ export default async function HomePage({
               secondaryLabel={dict.common.seePlatform}
               secondaryHref="/producto"
             />
-            {/* Las notas bajo el hero son las cuatro cosas que el sector no
-                dice: precio publicado, sin permanencia. Las de "sin tarjeta"
-                siguen en `common` para el resto de las portadas. */}
-            <p className={styles.heroNotes}>
-              {t.hero.notes.map((note) => (
-                <span key={note}>
-                  <Check />
-                  {note}
-                </span>
-              ))}
-            </p>
           </div>
+
         </section>
       </div>
 
-      {/* ------------------------------------------- captura del producto -- */}
-      <div className={[styles.heroShot, "container", "container-wide"].join(" ")}>
-        <div className={styles.heroGlow} aria-hidden />
-        <div className={styles.heroShotInner}>
-          <TapeChart v={v} />
-          {/* Las dos señales flotan sobre el margen del calendario, no sobre
-              las barras: lo que la persona vino a mirar es la grilla. Cada una
-              con su propia fase de flotación para que no suban y bajen juntas. */}
-          <div
-            className={[styles.heroFloat, styles.heroFloatRight].join(" ")}
-            style={{ "--d": "0.4s" } as React.CSSProperties}
-            aria-hidden
-          >
-            <SignalRate v={v} />
+      {/* ----------------------------------------------------- qué cambia --- */}
+      {/* Sección blanca: encabezado con el botón a la derecha y tres tarjetas
+          foto + título + texto. Las fotos de la primera y la tercera son
+          `public/images/picture1|2.webp` a sangre y sin nada encima (pedido
+          del usuario); la del medio es la conversación con el asistente. Todo
+          el arte es decorativo (aria-hidden): el argumento está en el título
+          y el texto de cada tarjeta. */}
+      <section className={["section section-tight", styles.works].join(" ")} id="que-cambia">
+        <div className="container container-wide">
+          <div className={styles.worksHead} data-reveal>
+            <div className="stack">
+              <p className="eyebrow">{t.works.eyebrow}</p>
+              <h2 className="h2">
+                <Headline text={t.works.title} />
+              </h2>
+            </div>
+            <SmartLink locale={lang} className="btn btn-primary btn-lg" href="/crear-cuenta">
+              {dict.common.startFree}
+              <ArrowRight />
+            </SmartLink>
           </div>
-          <div
-            className={[styles.heroFloat, styles.heroFloatLeft].join(" ")}
-            style={{ "--d": "1.6s" } as React.CSSProperties}
-            aria-hidden
-          >
-            <SignalAgent v={v} />
+
+          <div className={styles.worksGrid} data-reveal data-fx="">
+            {t.works.items.map((item, i) => (
+              <article key={item.title} className={styles.worksCard}>
+                {i === 0 && (
+                  /* Foto a sangre, sin elementos encima (pedido del usuario). */
+                  <div className={[styles.worksArt, styles.worksArtPaper].join(" ")} aria-hidden>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/picture1.webp"
+                      alt=""
+                      width={1000}
+                      height={667}
+                      loading="lazy"
+                      decoding="async"
+                      className={styles.worksPhoto}
+                    />
+                  </div>
+                )}
+                {i === 1 && (
+                  /* Calcado de la referencia: pedido con avatar, respuesta en
+                     menta corrida a la derecha con su destello, y una tarjeta
+                     con etiqueta y dos botones. El contenido es el turno real
+                     del asistente (la viñeta AgentTurn): nada inventado. */
+                  <div className={[styles.worksArt, styles.worksArtInk].join(" ")} aria-hidden>
+                    <div className={styles.worksChat}>
+                      <div className={styles.worksMsg}>
+                        <span className={styles.worksAvatar}>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
+                          </svg>
+                        </span>
+                        <p className={styles.worksBubble}>{v.agent.ask}</p>
+                      </div>
+                      <div className={[styles.worksMsg, styles.worksMsgAi].join(" ")}>
+                        <p className={[styles.worksBubble, styles.worksBubbleAi].join(" ")}>{v.agent.answer}</p>
+                        <span className={styles.worksSpark}>
+                          <Sparkle />
+                        </span>
+                      </div>
+                      <div className={[styles.worksMsg, styles.worksMsgCard].join(" ")}>
+                        <div className={styles.worksTask}>
+                          <p className={styles.worksTaskLabel}>
+                            <Sparkle />
+                            {t.works.cardLabel}
+                          </p>
+                          <p className={styles.worksTaskText}>
+                            {v.agent.card.guest} · {v.agent.card.meta[0]} · {v.agent.card.meta[1]}
+                          </p>
+                          <p className={styles.worksTaskBtns}>
+                            <span className={styles.worksTaskBtn}>{v.agent.card.see}</span>
+                            <span className={styles.worksTaskGhost}>{v.agent.card.undo}</span>
+                          </p>
+                        </div>
+                        <span className={styles.worksSpark}>
+                          <Sparkle />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {i === 2 && (
+                  /* Foto a sangre; el encuadre carga a la derecha para que la
+                     pantalla de la notebook quede dentro del recorte 1:1. */
+                  <div className={[styles.worksArt, styles.worksArtAmber].join(" ")} aria-hidden>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/picture2.webp"
+                      alt=""
+                      width={1200}
+                      height={675}
+                      loading="lazy"
+                      decoding="async"
+                      className={[styles.worksPhoto, styles.worksPhotoRight].join(" ")}
+                    />
+                  </div>
+                )}
+                <h3 className={styles.worksTitle}>{item.title}</h3>
+                <p className={styles.worksText}>{item.text}</p>
+              </article>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <Ticker items={dict.ticker} />
-
-      {/* ---------------------------------------------------- compromisos -- */}
-      {/* Va antes que cualquier feature: lo primero que el sector esconde
-          (precio, permanencia, lo que falta) es lo primero que decimos. */}
-      <Commitments
-        locale={lang}
-        id="compromisos"
-        eyebrow={t.commitments.eyebrow}
-        title={t.commitments.title}
-        lead={t.commitments.lead}
-        verify={t.commitments.verify}
-        items={t.commitments.items}
-      />
-
-      {/* ------------------------------------------------------ reemplazo -- */}
-      <section className="section section-tight">
+      {/* -------------------------------------------------- cómo funciona -- */}
+      <section className="section section-tight section-paper2" id="como-funciona">
         <div className="container container-wide">
           <SplitHead
             locale={lang}
-            eyebrow={t.swap.eyebrow}
-            title={t.swap.title}
-            lead={t.swap.lead}
+            eyebrow={t.how.eyebrow}
+            title={t.how.title}
+            lead={t.how.lead}
           />
-          <div data-reveal>
-            <SwapTable
-              rows={t.swap.rows}
-              headOld={t.swap.headOld}
-              headNew={t.swap.headNew}
-            />
+          <ol className={styles.how} data-reveal data-fx="">
+            {t.how.steps.map((step, i) => (
+              <li key={step.href} className={styles.howStep}>
+                <p className={styles.howNum}>0{i + 1}</p>
+                <h3 className={styles.howTitle}>{step.title}</h3>
+                <p className={styles.howText}>{step.text}</p>
+                <Link href={path(step.href)} className="link-arrow">
+                  {step.link}
+                  <ArrowRight />
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------- qué es --- */}
+      <section className="section" id="modulos">
+        <div className="container container-wide">
+          {/* Encabezado a la izquierda y el video de portada a la derecha
+              (29-09-2026): el video es la explicación del titular, antes del
+              detalle producto por producto. En tableta y teléfono se apilan. */}
+          <div className={styles.queEsTop}>
+            <div className={["section-head", styles.queEsHead].join(" ")} data-reveal>
+              <p className="eyebrow">{t.modules.eyebrow}</p>
+              <h2 className="h2">
+                <Headline text={t.modules.title} />
+              </h2>
+              <p className="lead">{t.modules.lead}</p>
+            </div>
+            <div className={styles.videoWrap} data-reveal data-fx="">
+              <SiteVideo piece="portada" locale={lang} t={dict.common.video} ambient />
+            </div>
+          </div>
+
+          <div className={styles.modules} data-reveal data-fx="">
+            {MODULE_ORDER.map((mod) => (
+              <Link
+                key={mod.key}
+                href={path(PRODUCT_HREFS[mod.key])}
+                className={[styles.module, mod.wide ? styles.moduleWide : ""].join(" ")}
+              >
+                <span
+                  className={[styles.moduleIcon, styles[mod.tint]].join(" ")}
+                  aria-hidden
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                    {MODULE_ICONS[mod.key]}
+                  </svg>
+                </span>
+                <span className={styles.moduleTitle}>{t.modules.items[mod.key].title}</span>
+                <span className={styles.moduleDesc}>{t.modules.items[mod.key].desc}</span>
+                {mod.key === "pms" && (
+                  <span className={styles.moduleParts} aria-hidden>
+                    {PMS_PARTS.map((part) => (
+                      <span key={part} className="pill">
+                        {dict.nav.pmsParts[part]}
+                      </span>
+                    ))}
+                  </span>
+                )}
+                <span className={styles.moduleLink}>
+                  {dict.common.seeMore}
+                  <ArrowRight />
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -277,142 +382,23 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* -------------------------------------------------------- módulos -- */}
-      <section className="section" id="modulos">
-        <div className="container container-wide">
-          <div className="section-head" data-reveal>
-            <p className="eyebrow">{t.modules.eyebrow}</p>
-            <h2 className="h2">
-              <Headline text={t.modules.title} />
-            </h2>
-            <p className="lead">{t.modules.lead}</p>
-          </div>
-
-          <div className={styles.modules} data-reveal>
-            {MODULE_ORDER.map((mod) => (
-              <Link key={mod.key} href={path(mod.href)} className={styles.module}>
-                <span
-                  className={[styles.moduleIcon, styles[mod.tint]].join(" ")}
-                  aria-hidden
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                    {MODULE_ICONS[mod.key]}
-                  </svg>
-                </span>
-                <span className={styles.moduleTitle}>{t.modules.items[mod.key].title}</span>
-                <span className={styles.moduleDesc}>{t.modules.items[mod.key].desc}</span>
-                <span className={styles.moduleLink}>
-                  {dict.common.seeMore}
-                  <ArrowRight />
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------- espacios operativos --- */}
-      <Split
+      {/* ---------------------------------------------------- compromisos -- */}
+      {/* Primero qué es (arriba); después, por qué confiar: lo que el sector
+          esconde (precio, permanencia, lo que falta) es lo que decimos. */}
+      <Commitments
         locale={lang}
-        tone="ink"
-        eyebrow={t.spaces.eyebrow}
-        title={t.spaces.title}
-        lead={t.spaces.lead}
-        items={t.spaces.items}
-        media={<SpaceSwitcher v={v} />}
-      />
-
-      {/* --------------------------------------------------- modelo dual --- */}
-      <section className="section">
-        <div className="container container-wide">
-          <SplitHead
-            locale={lang}
-            eyebrow={t.sale.eyebrow}
-            title={t.sale.title}
-            lead={t.sale.lead}
-          />
-
-          <div className={styles.sale} data-reveal>
-            <article className="card" data-fx="">
-              <div className={styles.saleUnits} aria-hidden>
-                <span className={[styles.saleUnit, styles.saleUnitOn].join(" ")}>101</span>
-                <span className={[styles.saleUnit, styles.saleUnitOn].join(" ")}>102</span>
-                <span className={[styles.saleUnit, styles.saleUnitOn].join(" ")}>103</span>
-                <span className={styles.saleUnit}>104</span>
-              </div>
-              <h3 className="h3">{t.sale.poolTitle}</h3>
-              <p className="muted" style={{ fontSize: 14.5 }}>
-                {t.sale.poolText}
-              </p>
-              <p className="pill" style={{ marginTop: 4 }}>
-                {t.sale.poolTag}
-              </p>
-            </article>
-
-            <article className="card" data-fx="">
-              <div className={styles.saleUnits} aria-hidden>
-                {t.sale.unitNames.map((name) => (
-                  <span
-                    key={name}
-                    className={[styles.saleUnit, styles.saleUnitNamed].join(" ")}
-                  >
-                    {name}
-                  </span>
-                ))}
-              </div>
-              <h3 className="h3">{t.sale.unitTitle}</h3>
-              <p className="muted" style={{ fontSize: 14.5 }}>
-                {t.sale.unitText}
-              </p>
-              <p className="pill" style={{ marginTop: 4 }}>
-                {t.sale.unitTag}
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      {/* ----------------------------------------------------------- motor - */}
-      <Split
-        locale={lang}
-        flip
-        tone="paper2"
-        eyebrow={t.engine.eyebrow}
-        title={t.engine.title}
-        lead={t.engine.lead}
-        items={t.engine.items}
-        link={{ href: PRODUCT_HREFS.motor, label: t.engine.link }}
-        media={<EngineCalendar v={v} />}
-      />
-
-      {/* ------------------------------------------------------- agéntico -- */}
-      <Split
-        locale={lang}
-        tone="ink"
-        eyebrow={t.agentic.eyebrow}
-        title={t.agentic.title}
-        lead={t.agentic.lead}
-        items={t.agentic.items}
-        link={{ href: PRODUCT_HREFS.agentes, label: t.agentic.link }}
-        media={<AgentSurface v={v} />}
-      />
-
-      {/* --------------------------------------------------------- revenue - */}
-      <Split
-        locale={lang}
-        flip
-        eyebrow={t.revenue.eyebrow}
-        title={t.revenue.title}
-        lead={t.revenue.lead}
-        items={t.revenue.items}
-        link={{ href: PRODUCT_HREFS.revenue, label: t.revenue.link }}
-        media={<RateDecision v={v} locale={lang} />}
+        id="compromisos"
+        eyebrow={t.commitments.eyebrow}
+        title={t.commitments.title}
+        lead={t.commitments.lead}
+        verify={t.commitments.verify}
+        items={t.commitments.items}
       />
 
       {/* -------------------------------------------------------------- IA - */}
       <Split
         locale={lang}
-        tone="ink"
+        flip
         eyebrow={t.ia.eyebrow}
         title={t.ia.title}
         lead={t.ia.lead}
@@ -420,134 +406,6 @@ export default async function HomePage({
         link={{ href: PRODUCT_HREFS.ia, label: t.ia.link }}
         media={<AgentTurn v={v} />}
       />
-
-      {/* ------------------------------------------------------ garantías -- */}
-      <section className="section section-ink">
-        <div className="container container-wide">
-          <div className="section-head" data-reveal>
-            <p className="eyebrow">{t.guarantees.eyebrow}</p>
-            <h2 className="h2">
-              <Headline text={t.guarantees.title} />
-            </h2>
-          </div>
-          <div className={styles.guarantees} data-reveal>
-            {t.guarantees.items.map((item) => (
-              <article key={item.key} className={styles.guarantee}>
-                <p className={styles.guaranteeKey}>{item.key}</p>
-                <h3 className={styles.guaranteeTitle}>{item.title}</h3>
-                <p className={styles.guaranteeText}>{item.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* --------------------------------------------------------- números - */}
-      <section className="section section-tight">
-        <div className="container container-wide">
-          <SplitHead
-            locale={lang}
-            eyebrow={t.stats.eyebrow}
-            title={t.stats.title}
-            lead={t.stats.lead}
-          />
-          <div data-reveal>
-            <StatBand stats={t.stats.items} />
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------- sitio y LinkHub - */}
-      <Split
-        locale={lang}
-        flip
-        tone="paper2"
-        eyebrow={t.marketing.eyebrow}
-        title={t.marketing.title}
-        lead={t.marketing.lead}
-        items={t.marketing.items}
-        link={{ href: PRODUCT_HREFS.sitios, label: t.marketing.link }}
-        media={<LinkHubPhone v={v} />}
-      />
-
-      {/* ------------------------------------------------------------ alta - */}
-      <section className="section">
-        <div className="container container-wide">
-          <SplitHead
-            locale={lang}
-            eyebrow={t.onboarding.eyebrow}
-            title={t.onboarding.title}
-            lead={t.onboarding.lead}
-          />
-          <div className={styles.steps} data-reveal>
-            {t.onboarding.steps.map((step) => (
-              <article key={step.title} className={styles.step}>
-                <p className={styles.stepNum}>{step.num}</p>
-                <h3 className={styles.stepTitle}>{step.title}</h3>
-                <p className={styles.stepText}>{step.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* -------------------------------------------------------- precios -- */}
-      <PlansMkt
-        dict={dict}
-        locale={lang}
-        title={dict.plans.homeTitle}
-        subtitle={dict.plans.homeSubtitle}
-      />
-
-      {/* --------------------------------------------------- comparativas -- */}
-      <CompareTeaser
-        locale={lang}
-        tone="paper2"
-        eyebrow={t.compare.eyebrow}
-        title={t.compare.title}
-        lead={t.compare.lead}
-        link={{ href: "/comparar", label: t.compare.link }}
-        cards={RIVAL_KEYS.map((key) => ({
-          href: RIVAL_HREFS[key],
-          vs: dict.comparar.vsPrefix,
-          name: dict.comparar.rivals[key].name,
-          text: dict.comparar.rivals[key].oneLiner,
-        }))}
-      />
-
-      {/* ----------------------------------------------------- honestidad -- */}
-      <section className="section section-tight" id="estado">
-        <div className="container container-wide">
-          <div className={styles.honest} data-reveal>
-            <div className="stack">
-              <p className="eyebrow">{t.honest.eyebrow}</p>
-              <h2 className="h2">
-                <Headline text={t.honest.title} />
-              </h2>
-              <p className="lead">{t.honest.lead}</p>
-              <Link href={path("/nosotros#estado")} className="link-arrow">
-                {t.honest.link}
-                <ArrowRight />
-              </Link>
-            </div>
-
-            <div className={styles.honestList}>
-              {t.honest.items.map((item) => (
-                <div key={item.tag} className={styles.honestItem}>
-                  <div>
-                    <p className={styles.honestTag}>{item.tag}</p>
-                    <p className={styles.honestState}>
-                      <i aria-hidden />
-                      {item.state === "none" ? t.honest.states.none : t.honest.states.partial}
-                    </p>
-                  </div>
-                  <p>{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       <Faq items={t.faq} title={dict.common.faqTitle} locale={lang} />
 
@@ -574,10 +432,10 @@ export default async function HomePage({
             url: `${siteUrl}/${lang}`,
             inLanguage: ["es", "en", "pt", "fr", "de"],
             description: dict.site.description,
-            ...offers,
           }),
         }}
       />
+
     </>
   );
 }

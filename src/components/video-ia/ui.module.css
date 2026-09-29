@@ -1,0 +1,509 @@
+/* ============================================================================
+ * Piezas del chat de Roombir IA copiadas del producto (pms-core/app):
+ * adjuntos y menú de `RoombirChatView.module.css`, banda de dictado de
+ * `VoiceWave.module.css` y panel de `TourismStatusPanel.module.css`.
+ * Mismas medidas y tokens `--ch-*`; sin transiciones ni @keyframes: el reloj
+ * del video escribe cada estado en `style`.
+ * ========================================================================== */
+
+/* ------------------------------------------------------------ adjuntos --- */
+
+.attachPreviewRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 4px 6px 10px;
+}
+
+.msgAttachRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+    justify-content: flex-end;
+}
+
+.attCard {
+    position: relative;
+    width: 76px;
+    height: 76px;
+    border-radius: var(--ch-r-lg);
+    border: 1px solid var(--ch-border);
+    background: var(--ch-surface-3);
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: var(--ch-shadow-card);
+}
+
+.attCardSm {
+    width: 58px;
+    height: 58px;
+    border-radius: var(--ch-r-md);
+}
+
+.attDoc {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px;
+    color: var(--ch-accent-ink);
+}
+
+.attDoc svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.attCardSm .attDoc svg {
+    width: 18px;
+    height: 18px;
+}
+
+.attDocName {
+    max-width: 100%;
+    font-size: 10px;
+    line-height: 1.2;
+    color: var(--ch-text-2);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attPending {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px;
+}
+
+/* El spinner del adjunto que se procesa: animación infinita (permitida). */
+.attSpinner {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--ch-border-strong);
+    border-top-color: var(--accent-color);
+    animation: uiSpin 0.8s linear infinite;
+}
+
+@keyframes uiSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ------------------------------------------------------------ menú ------- */
+
+.attachWrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.attachMenu {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: -5px;
+    width: 264px;
+    padding: 2px 6px 6px;
+    z-index: 35;
+    background: var(--ch-surface);
+    border: 1px solid var(--ch-border);
+    border-radius: var(--ch-r-lg);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16), 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+
+.attachMenuGroup + .attachMenuGroup {
+    margin-top: 4px;
+    border-top: 1px solid var(--ch-divider);
+}
+
+.attachMenuHead {
+    padding: 7px 4px 5px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ch-text-4);
+}
+
+.attachMenuGrid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 4px;
+}
+
+.attachMenuItem {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 4px 6px;
+    border: 1px solid var(--ch-divider);
+    border-radius: var(--ch-r-md);
+    background: var(--ch-surface-2);
+    text-align: center;
+    color: var(--ch-text-2);
+}
+
+.attachMenuItemHot {
+    background: var(--accent-soft);
+    border-color: var(--accent-strong);
+}
+
+.attachMenuIcon {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--ch-r-sm);
+    display: grid;
+    place-items: center;
+    background: var(--ch-surface-3);
+    color: var(--ch-text-2);
+}
+
+.attachMenuItemHot .attachMenuIcon {
+    background: var(--ch-surface);
+    color: var(--ch-accent-ink);
+}
+
+.attachMenuIcon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.attachMenuLabel {
+    max-width: 100%;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ------------------------------------------------------------ dictado ---- */
+
+.band {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 100%;
+    height: 120px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.band::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.94);
+    mask:
+        linear-gradient(0deg, #000 0%, #000 50%, transparent 100%),
+        linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    mask-composite: intersect;
+    -webkit-mask:
+        linear-gradient(0deg, #000 0%, #000 50%, transparent 100%),
+        linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    -webkit-mask-composite: source-in;
+}
+
+.bandRow {
+    position: absolute;
+    left: 12.5%;
+    right: 12.5%;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 6px;
+}
+
+.wave {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 36px;
+    overflow: hidden;
+    mask: linear-gradient(90deg, #000 0%, #000 58%, rgba(0, 0, 0, 0.28) 100%);
+    -webkit-mask: linear-gradient(90deg, #000 0%, #000 58%, rgba(0, 0, 0, 0.28) 100%);
+}
+
+.wave i {
+    position: absolute;
+    width: 4px;
+    border-radius: 2px;
+    background: var(--accent-color);
+}
+
+.stop {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ef4444;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.35);
+}
+
+.stop svg {
+    width: 16px;
+    height: 16px;
+}
+
+.cancel {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--ch-border);
+    background: var(--ch-surface);
+    color: var(--ch-text-2);
+    display: grid;
+    place-items: center;
+    box-shadow: var(--ch-shadow-card);
+}
+
+.cancel svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* El micrófono activo del compositor: rojo, como el stop de la banda. */
+.micOn {
+    background: rgba(239, 68, 68, 0.14) !important;
+    color: #dc2626 !important;
+}
+
+/* ------------------------------------------------------ estado turístico - */
+
+.panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 420px;
+    height: 100%;
+    overflow: hidden;
+    border-left: 1px solid var(--ch-border, #e2e8f0);
+    background: var(--ch-surface, #ffffff);
+    text-align: left;
+}
+
+.panelHeader {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px 10px 16px;
+    border-bottom: 1px solid var(--ch-divider, #eef1f6);
+}
+
+.panelTitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ch-text-2, #475569);
+}
+
+.panelActions {
+    display: flex;
+    gap: 4px;
+}
+
+.iconBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--ch-r-sm, 8px);
+    color: var(--ch-text-3, #64748b);
+}
+
+.iconBtn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.panelScroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.panelHero {
+    padding: 12px 12px 0;
+}
+
+.panelHero > div {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.panelBody {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 14px 16px 0;
+}
+
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: var(--ch-r-md, 10px);
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: #b45309;
+    background: #fef3c7;
+}
+
+.alertIcon {
+    flex: none;
+    width: 15px;
+    height: 15px;
+    margin-top: 1px;
+}
+
+.section {
+    padding: 12px 14px;
+    border: 1px solid var(--ch-divider, #eef1f6);
+    border-radius: var(--ch-r-lg, 12px);
+    background: var(--ch-surface, #ffffff);
+}
+
+.sectionHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.sectionTitle {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ch-text-strong, #0f172a);
+}
+
+.chip {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.chipLive {
+    color: #16a34a;
+    background: #dcfce7;
+}
+
+.chipMid {
+    color: var(--ch-text-2, #475569);
+    background: var(--ch-surface-3, #f1f5f9);
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.metric {
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: var(--ch-r-md, 10px);
+    background: var(--ch-surface-2, #f8fafc);
+}
+
+.metricValue {
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.25;
+    color: var(--ch-text-strong, #0f172a);
+    overflow-wrap: anywhere;
+}
+
+.metricLabel {
+    margin-top: 1px;
+    font-size: 11.5px;
+    color: var(--ch-text-3, #64748b);
+}
+
+.narrative {
+    margin: 10px 0 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--ch-text-2, #475569);
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 7px 0;
+    border-top: 1px solid var(--ch-divider, #eef1f6);
+}
+
+.itemTitle {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ch-text, #1e293b);
+}
+
+.itemDetail {
+    font-size: 12px;
+    color: var(--ch-text-3, #64748b);
+}
+
+.spark {
+    margin-top: 10px;
+}
+
+.sparkLabel {
+    margin-bottom: 4px;
+    font-size: 11.5px;
+    color: var(--ch-text-3, #64748b);
+}
+
+.sparkSvg {
+    display: block;
+    width: 100%;
+    height: 44px;
+    color: var(--ch-accent-ink, #4e6b28);
+}
+
+.missing {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--ch-text-4, #94a3b8);
+}
+
+.footer {
+    padding: 14px 16px 20px;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--ch-text-4, #94a3b8);
+}

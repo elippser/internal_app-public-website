@@ -201,3 +201,23 @@
     background: #fff;
     border-color: var(--text-3);
 }
+
+/* El estado vacío: el catálogo no contestó. Una tarjeta con el texto y el
+   enlace a contacto, del mismo ancho que las de los planes. */
+.empty {
+    max-width: 640px;
+    padding: clamp(20px, 2.4vw, 28px);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--card);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-2);
+}
+
+.empty a {
+    color: var(--brand);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}

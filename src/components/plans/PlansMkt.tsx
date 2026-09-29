@@ -2,7 +2,8 @@ import type { Dictionary } from "@/i18n/dict/es";
 import type { Locale } from "@/i18n/config";
 import { localizedHref } from "@/i18n/routes";
 import SamePageLink from "@/components/site/SamePageLink";
-import { fetchPlans, type MktPlan } from "./plansApi";
+import { renderRich } from "@/components/site/RichText";
+import { fetchPlans, localizePlans, type MktPlan } from "./plansApi";
 import styles from "./PlansMkt.module.css";
 
 /**
@@ -51,9 +52,19 @@ function limitChip(
   return fill(value === 1 ? one : many, value);
 }
 
+/** Formato numérico de cada idioma para el importe (separador de miles). */
+const NUMBER_LOCALES: Record<Locale, string> = {
+  es: "es-AR",
+  en: "en-US",
+  pt: "pt-BR",
+  fr: "fr-FR",
+  de: "de-DE",
+};
+
 function priceLabel(
   plan: MktPlan,
   d: Dictionary["plans"],
+  locale: Locale = "es",
 ): { amount: string; period: string } {
   if (plan.free) {
     return {
@@ -68,7 +79,7 @@ function priceLabel(
         ? d.oneTime
         : d.perMonth;
   return {
-    amount: `${plan.price.currency} ${plan.price.amount.toLocaleString("es-AR")}`,
+    amount: `${plan.price.currency} ${plan.price.amount.toLocaleString(NUMBER_LOCALES[locale])}`,
     period,
   };
 }
@@ -105,8 +116,26 @@ export default async function PlansMkt({
 }: Props) {
   const d = dict.plans;
   const signupHref = ctaHref ?? (locale ? localizedHref(locale, "/crear-cuenta") : undefined);
-  const plans = given ?? (await fetchPlans());
-  if (plans.length === 0) return null;
+  const plans = localizePlans(given ?? (await fetchPlans()), d.catalog);
+
+  // Sin catálogo (el API interno no contestó) la sección no queda en blanco:
+  // en una marca que promete el precio publicado, eso es lo peor que puede
+  // pasar. Se dice en una línea y se manda a contacto.
+  if (plans.length === 0) {
+    return (
+      <section className={styles.section} id="planes">
+        <div className={styles.inner}>
+          {(title || subtitle) && (
+            <header className={styles.header}>
+              {title && <h2 className={styles.title}>{title}</h2>}
+              {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+            </header>
+          )}
+          <p className={styles.empty}>{renderRich(d.empty, locale ?? "es")}</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={styles.section} id="planes">
@@ -120,7 +149,7 @@ export default async function PlansMkt({
 
         <div className={styles.grid}>
           {plans.map((plan) => {
-            const { amount, period } = priceLabel(plan, d);
+            const { amount, period } = priceLabel(plan, d, locale);
             const ctaClass = [styles.cta, plan.highlighted ? "" : styles.ctaGhost]
               .filter(Boolean)
               .join(" ");

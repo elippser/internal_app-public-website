@@ -11,6 +11,7 @@ import {
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dict/es";
 import VideoStage, { useStageFit } from "./VideoStage";
+import type { Orient } from "./orientation";
 import { useVoAudio } from "./editor/useVoAudio";
 import type { Voiceover } from "@/lib/videoVo";
 import { buildBeats, clamp01, planChat, totalMs } from "./timeline";
@@ -76,12 +77,15 @@ export default function HeroVideo({
   v,
   langs,
   vo,
+  orient = "landscape",
 }: {
   locale: Locale;
   v: VideoDict;
   langs: LangLink[];
   /** El montaje de la voz en off, ya leído en el servidor. */
   vo?: Voiceover | null;
+  /** El corte vertical (`?view=mobile`): mismo video y mismos tiempos, escenas recompuestas para 9:16. */
+  orient?: Orient;
 }) {
   /**
    * Las pistas y las escalas del montaje. Si el API interno no contestó, el
@@ -93,7 +97,7 @@ export default function HeroVideo({
    */
   const tracks = useMemo(() => vo?.tracks ?? [], [vo]);
   const versiones = useMemo(() => new Map<string, number | null>(), []);
-  const { sync, stopAll } = useVoAudio(tracks, versiones);
+  const { sync, stopAll, unlock } = useVoAudio(tracks, versiones);
   const chatDuration = useMemo(() => planChat(v.chat).duration, [v.chat]);
   const beats = useMemo(() => buildBeats(chatDuration, vo?.scenes), [chatDuration, vo]);
   const total = totalMs(beats);
@@ -146,6 +150,8 @@ export default function HeroVideo({
 
   const setPlay = useCallback(
     (on: boolean) => {
+      // Dentro del gesto de play: autoriza los audios (Safari, Brave y los teléfonos bloquean un play() que sale del reloj).
+      if (on) unlock();
       if (on) {
         const first = !startedRef.current;
         markStarted();
@@ -161,7 +167,7 @@ export default function HeroVideo({
       setPlaying(on);
       if (!on) stopAll();
     },
-    [total, markStarted, stopAll],
+    [total, markStarted, stopAll, unlock],
   );
 
   // Parámetros: ?t=segundos, ?autoplay=1, ?loop=1.
@@ -210,7 +216,7 @@ export default function HeroVideo({
     return () => cancelAnimationFrame(raf);
   }, [total, sync]);
 
-  const fit = useStageFit(playerRef);
+  const fit = useStageFit(playerRef, orient);
 
   const toggleFullscreen = useCallback(() => {
     const el = playerRef.current;
@@ -289,6 +295,16 @@ export default function HeroVideo({
       play: () => setPlay(true),
       pause: () => setPlay(false),
       now: () => tRef.current,
+      // Para exportar a MP4 cuadro por cuadro: mueve el reloj SIN remontar las escenas y resuelve cuando el
+      // cuadro ya está en el DOM (dos cuadros de pintado). Con `seek` cada cuadro remontaba todo.
+      frame: (ms: number) =>
+        new Promise<void>((resolve) => {
+          markStarted();
+          const next = Math.max(0, Math.min(total - 1, ms));
+          tRef.current = next;
+          setT(next);
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+        }),
     };
   }, [beats, total, jump, setPlay, markStarted]);
 
@@ -335,6 +351,7 @@ export default function HeroVideo({
         ].join(" ")}
         onPointerMove={wake}
         onPointerDown={wake}
+        data-orient={orient}
       >
         {/* ------------------------------------------------ el video */}
         <VideoStage
@@ -346,6 +363,7 @@ export default function HeroVideo({
           locale={locale}
           fit={fit}
           label={v.meta.description}
+          orient={orient}
         />
 
         {/* Superficie de click: un click reproduce o pausa, doble click pantalla

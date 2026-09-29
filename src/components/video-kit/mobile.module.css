@@ -1,0 +1,81 @@
+/* ============================================================================
+ * El teléfono (marco de imagen + pantalla debajo) y el motor móvil de los
+ * videos de producto (`mobile.tsx`). El contenido se diseña a 300 px de ancho.
+ * ========================================================================== */
+
+.phone {
+    position: relative;
+    filter: drop-shadow(0 30px 50px rgba(20, 21, 15, 0.28));
+}
+
+.frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.screen {
+    position: absolute;
+    overflow: hidden;
+    background: #ffffff;
+    z-index: 1;
+}
+
+.status {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 4;
+    color: #0a0a0a;
+    font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+}
+
+.statusLight {
+    color: #ffffff;
+}
+
+.zone {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.zone b {
+    font-weight: 650;
+    letter-spacing: -0.01em;
+}
+
+.icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28em;
+}
+
+.icons svg {
+    height: 0.78em;
+    width: auto;
+    fill: currentColor;
+}
+
+.content {
+    position: absolute;
+    left: 0;
+    transform-origin: 0 0;
+    overflow: hidden;
+}
+
+/* ------------------------------------------------------------ el flujo ---- */
+
+.flow {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}

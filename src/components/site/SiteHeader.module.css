@@ -7,7 +7,8 @@
     left: 0;
     right: 0;
     z-index: 90;
-    padding: 16px var(--gutter) 0;
+    /* 11px y no 16: la cápsula va 5px más arriba (pedido del 28-09-2026). */
+    padding: 11px var(--gutter) 0;
     pointer-events: none;
 }
 
@@ -17,24 +18,56 @@
    pseudo del wrap. Solo cambian la geometría (banda full-width en el top) y
    el z-index: 89 para quedar delante de toda la página pero debajo del wrap
    del header (90). */
-.blurTop::before {
-    content: '';
-    pointer-events: none;
-    position: fixed;
-    height: 96px;
-    top: 0;
-    left: 0;
-    right: 0;
-    /* Solo la propiedad estándar: Lightning CSS (el minificador de Next)
-       genera el -webkit- solo. Si se escriben las dos y la estándar va
-       primero, las colapsa a -webkit- únicamente… y Chrome NO soporta
-       -webkit-backdrop-filter (es alias solo de Safari): el blur muere en
-       silencio. Así se rompió la primera versión de esta banda. */
-    backdrop-filter: blur(5px);
-    mask: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 100%);
-    -webkit-mask: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 100%);
-    pointer-events: none;
-    z-index: 89;
+/* Sólo en escritorio (≥1024px): en teléfono y tableta la banda se apagó
+   (pedido del 28-09-2026). */
+@media (min-width: 1024px) {
+    .blurTop::before {
+        content: '';
+        pointer-events: none;
+        position: fixed;
+        height: 96px;
+        top: 0;
+        left: 0;
+        right: 0;
+        /* Solo la propiedad estándar: Lightning CSS (el minificador de Next)
+           genera el -webkit- solo. Si se escriben las dos y la estándar va
+           primero, las colapsa a -webkit- únicamente… y Chrome NO soporta
+           -webkit-backdrop-filter (es alias solo de Safari): el blur muere en
+           silencio. Así se rompió la primera versión de esta banda. */
+        backdrop-filter: blur(5px);
+        mask: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 100%);
+        -webkit-mask: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 100%);
+        pointer-events: none;
+        z-index: 89;
+        transition: height 0.28s ease, background-color 0.28s ease;
+    }
+
+    /* Menú abierto: la banda baja hasta pasar el panel, difumina más y se
+       lava de blanco (pedido del 28-09-2026). */
+    /* El blur baja sólo hasta la mitad del panel (el panel arranca a ~84px
+       y mide max(40vh, 360px)) y se desvanece ahí. */
+    .blurTopOpen::before {
+        height: calc(84px + max(20vh, 180px));
+        backdrop-filter: blur(14px);
+        mask: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+        -webkit-mask: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    /* El lavado blanco, sin blur, sí llega hasta el fondo de la ventana. */
+    .blurTop::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 89;
+        pointer-events: none;
+        background-color: rgba(250, 250, 246, 0.72);
+        opacity: 0;
+        transition: opacity 0.28s ease;
+    }
+
+    .blurTopOpen::after {
+        opacity: 1;
+    }
 }
 
 .bar {
@@ -138,25 +171,347 @@
 
 /* --------------------------------------------------------------- mega ----- */
 
+/* Todo el ancho del header con 10px de margen a cada lado (28-09-2026). Se
+   posiciona contra `.wrap`, que es fijo y de borde a borde: así no cuenta la
+   barra de scroll como lo haría `100vw`. */
 .megaWrap {
     position: absolute;
     top: calc(100% + 10px);
-    left: 50%;
-    translate: -50% 0;
-    width: min(940px, calc(100vw - 2 * var(--gutter)));
+    left: 10px;
+    right: 10px;
     pointer-events: auto;
 }
 
+/* La X de la esquina del panel. Por encima de las columnas (y de la
+   ilustración de Soluciones), con el mismo vidrio que el panel. */
+.megaClose {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(207, 207, 207, 0.7);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.megaClose svg {
+    width: 16px;
+    height: 16px;
+}
+
+@media (hover: hover) {
+    .megaClose:hover {
+        background: #fff;
+        color: var(--text);
+    }
+}
+
+/* El puente: una franja invisible que tapa el hueco entre la cápsula y el
+   panel. Es parte de `.megaWrap`, así que pasar el mouse por ahí no dispara
+   el mouseleave y el menú no se cierra en el camino. */
+.megaWrap::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 22px;
+}
+
+/* Los tres menús usan la misma grilla (28-09-2026): una primera columna
+   ancha pegada al borde —la tarjeta comercial, la de Roombir IA o "por tipo"—
+   separada por una línea, y tres columnas iguales de enlaces. */
 .mega {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
-    padding: 14px;
-    border-radius: 22px;
-    background: var(--card);
-    border: 1px solid var(--line);
+    grid-template-columns: minmax(0, 1.25fr) repeat(3, minmax(0, 1fr));
+    column-gap: 6px;
+    padding: 0;
+    /* Los tres menús miden lo mismo: el alto del de Soluciones (el más
+       alto) llevado a vh. Es mínimo: si el contenido pide más, crece. */
+    min-height: max(40vh, 360px);
+    overflow: hidden;
+    border-radius: 32px;
+    /* Vidrio, no sólido: el fondo se difumina detrás del panel. Sólo la
+       propiedad estándar (ver la nota en .blurTop::before). */
+    background: rgba(255, 255, 255, 0.62);
+    backdrop-filter: blur(28px) saturate(1.4);
+    border: 1px solid rgba(207, 207, 207, 0.7);
     box-shadow: 0 24px 60px rgba(20, 21, 15, 0.14), 0 2px 8px rgba(20, 21, 15, 0.06);
     animation: megaIn 0.16s ease both;
+}
+
+/* 24px de padding en todos los lados de cada columna, en los tres menús. */
+.mega > .megaGroup {
+    padding: 24px;
+}
+
+/* Columnas 2 a 4 cuando el contenido es uno solo (las secciones de Roombir
+   IA, los cargos): subgrid, así cada ítem cae en las mismas columnas que los
+   grupos de Plataforma. */
+.megaSpan {
+    grid-column: 2 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-content: start;
+    row-gap: 2px;
+    padding: 24px 0;
+}
+
+/* Con subgrid el padding del contenedor sólo correría la primera columna:
+   los 24px laterales van en cada ítem, igual que en un grupo de Plataforma. */
+.megaSpan > * {
+    margin-inline: 24px;
+}
+
+.megaSpan > .megaLabel {
+    grid-column: 1 / -1;
+}
+
+/* Roombir IA, columna 4: Intelligence. Tarjeta con un gradiente frío que
+   empalma con el cielo de la imagen, el texto arriba y el planeta apoyado
+   abajo, de borde a borde. Separada 14px del borde como la tarjeta de color. */
+.megaIntel {
+    grid-column: 4;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 14px 14px 14px 0;
+    padding: 24px 48px 24px 24px;
+    border-radius: 22px;
+    background: linear-gradient(0deg, #a7bbcb 39%, #f1f4f6);
+    border: 1px solid #c9dced;
+    color: var(--text);
+}
+
+.megaIntelLabel {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #3a5a86;
+}
+
+.megaIntelTitle {
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.024em;
+}
+
+.megaIntelTitle em {
+    font-style: normal;
+    color: #2b5fb8;
+}
+
+.megaIntelBody {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--text-2);
+}
+
+.megaIntelMore {
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #2b5fb8;
+}
+
+.megaIntelMore svg {
+    width: 13px;
+    height: 13px;
+}
+
+.megaIntelImg {
+    /* Apoyada abajo, de borde a borde, sin empujar el alto del panel. */
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: none;
+    height: 34%;
+    object-fit: cover;
+    object-position: center 30%;
+    /* Opaca arriba y cada vez más transparente hacia abajo. */
+    mask: linear-gradient(#000, #00000045);
+    -webkit-mask: linear-gradient(#000, #00000045);
+}
+
+.megaIntel > :not(.megaIntelImg) {
+    position: relative;
+    z-index: 1;
+}
+
+.megaIaItem .megaTitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.megaIaItem .megaTitle svg {
+    width: 13px;
+    height: 13px;
+}
+
+/* La primera columna: pegada al borde, con la línea gris a la derecha. */
+.mega > .megaPromo {
+    margin-right: 8px;
+    border: 0;
+    border-right: 1px solid var(--line);
+    border-radius: 0;
+}
+
+.mega > .megaPromo {
+    padding: 24px;
+}
+
+/* La tarjeta de Roombir IA no va pegada: queda a 14px del borde, redondeada,
+   como antes. */
+.mega > .megaFeatured {
+    margin: 14px 8px 14px 14px;
+    padding: 24px;
+}
+
+/* Soluciones, columna 4: dos ilustraciones apiladas que se cruzan con un
+   fundido al pasar por "Hoteles". */
+/* Una tarjeta propia en la columna 4: la ilustración centrada, con aire, sobre
+   un fondo claro. Enmarcada se lee como una vista previa del tipo de
+   alojamiento y no como una figura suelta sobre el panel. */
+.megaArt {
+    position: relative;
+    min-height: 0;
+    margin: 14px 14px 14px 0;
+    border-radius: 22px;
+    overflow: hidden;
+    background:
+        radial-gradient(70% 60% at 50% 70%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 75%),
+        radial-gradient(60% 60% at 10% 0%, rgba(158, 205, 232, 0.28), rgba(158, 205, 232, 0) 72%),
+        radial-gradient(60% 60% at 100% 100%, rgba(243, 183, 104, 0.22), rgba(243, 183, 104, 0) 72%),
+        #f3f1ea;
+    border: 1px solid rgba(20, 21, 15, 0.05);
+}
+
+.megaArt img {
+    position: absolute;
+    inset: 22px;
+    width: calc(100% - 44px);
+    height: calc(100% - 44px);
+    object-fit: contain;
+    object-position: center;
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    pointer-events: none;
+}
+
+.megaArt .megaArtOn {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .megaArt img {
+        transition: opacity 0.2s linear;
+        transform: none;
+    }
+}
+
+/* El gradiente de la tarjeta de Soluciones: durazno y celeste en lugar del
+   verde de Plataforma, igual de claro. */
+.mega > .megaPromoAlt {
+    background:
+        radial-gradient(50% 70% at 0% 20%, rgba(243, 183, 104, 0.3), rgba(243, 183, 104, 0) 72%),
+        radial-gradient(55% 80% at 90% 85%, rgba(158, 205, 232, 0.42), rgba(158, 205, 232, 0) 72%),
+        radial-gradient(45% 60% at 60% 10%, rgba(214, 200, 240, 0.32), rgba(214, 200, 240, 0) 72%),
+        radial-gradient(40% 60% at 15% 95%, rgba(242, 253, 255, 0.9), rgba(242, 253, 255, 0) 70%),
+        #f7f5f0;
+}
+
+
+
+/* La flecha de los títulos de columna. */
+.megaLabel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.megaLabel svg {
+    width: 11px;
+    height: 11px;
+    flex: none;
+}
+
+/* La tarjeta comercial de Plataforma: el gradiente de la banda final
+   (`.cta` de Sections) con las manchas a la mitad, sobre papel más claro. */
+.megaPromo {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 22px;
+    border-radius: 16px;
+    background:
+        radial-gradient(45% 70% at 0% 40%, rgba(242, 253, 255, 0.9), rgba(242, 253, 255, 0) 70%),
+        radial-gradient(55% 85% at 25% 80%, rgba(150, 204, 134, 0.32), rgba(150, 204, 134, 0) 72%),
+        radial-gradient(45% 60% at 70% 0%, rgba(243, 183, 104, 0.2), rgba(243, 183, 104, 0) 72%),
+        radial-gradient(60% 90% at 95% 70%, rgba(227, 231, 149, 0.45), rgba(227, 231, 149, 0) 74%),
+        #f6f8ee;
+    border: 1px solid rgba(78, 107, 40, 0.1);
+}
+
+.megaPromoTitle {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.026em;
+    color: var(--text);
+}
+
+.megaPromoTitle em {
+    font-style: normal;
+    background-image: var(--grad-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.megaPromoBody {
+    margin: 0;
+    flex: 1;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-2);
+}
+
+.megaPromoBtn {
+    margin-top: 6px;
+    height: 40px;
+    padding-inline: 16px;
+    font-size: 13.5px;
+}
+
+.drawer .megaPromo {
+    margin-top: 18px;
 }
 
 @keyframes megaIn {
@@ -177,8 +532,301 @@
     gap: 2px;
 }
 
-.megaLabel {
+/* La tarjeta de Roombir IA: tinta con la palabra en pistacho, la única banda
+   oscura del menú. Pistacho sobre tinta y nunca musgo (manual §14). */
+.megaFeatured {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px 18px 16px;
+    border-radius: 22px;
+    background: var(--ink);
+    color: var(--text-ink);
+    transition: background-color 0.14s ease;
+}
+
+.megaFeatured:hover {
+    background: var(--ink-2);
+}
+
+/* En el menú, la tarjeta es una malla de color pleno (referencia del
+   28-09-2026): turquesa y celeste arriba, azul e índigo al medio, violeta a la
+   izquierda, magenta abajo, naranja en la esquina inferior izquierda y púrpura
+   en la derecha. No hay gradientes radiales ni lineales: son manchas de
+   contorno irregular, muy difuminadas, que se funden y derivan despacio. */
+.mega > .megaFeatured {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: #f4f2fb;
+}
+
+.mega > .megaFeatured > :not(.megaFeaturedGlow):not(.megaFeaturedSparkle) {
+    position: relative;
+    z-index: 1;
+}
+
+.megaFeaturedGlow {
+    position: absolute;
+    inset: -14%;
+    z-index: 0;
+    /* La misma malla, muy aclarada: pastel, con los textos en negro. */
+    filter: blur(36px);
+    opacity: 0.38;
+    pointer-events: none;
+}
+
+.megaFeaturedGlow i {
+    position: absolute;
+    display: block;
+    animation: glowDrift 18s ease-in-out infinite alternate;
+}
+
+/* Turquesa, arriba a la izquierda. */
+.megaFeaturedGlow i:nth-child(1) {
+    left: 2%;
+    top: 4%;
+    width: 58%;
+    height: 34%;
+    background: #14ffdc;
+    border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+    rotate: -12deg;
+}
+
+/* Celeste, arriba a la derecha. */
+.megaFeaturedGlow i:nth-child(2) {
+    right: 2%;
+    top: 4%;
+    width: 60%;
+    height: 32%;
+    background: #10cfff;
+    border-radius: 44% 56% 61% 39% / 50% 42% 58% 50%;
+    rotate: 8deg;
+    animation-delay: -4s;
+}
+
+/* Azul, a la derecha al medio. */
+.megaFeaturedGlow i:nth-child(3) {
+    right: 0;
+    top: 30%;
+    width: 50%;
+    height: 34%;
+    background: #1f5bff;
+    border-radius: 41% 59% 38% 62% / 62% 35% 65% 38%;
+    rotate: 20deg;
+    animation-duration: 21s;
+    animation-delay: -7s;
+}
+
+/* Violeta, a la izquierda al medio. */
+.megaFeaturedGlow i:nth-child(4) {
+    left: 0;
+    top: 40%;
+    width: 48%;
+    height: 26%;
+    background: #b01cff;
+    border-radius: 58% 42% 47% 53% / 44% 59% 41% 56%;
+    rotate: -8deg;
+    animation-duration: 20s;
+    animation-delay: -10s;
+}
+
+/* Magenta, abajo al centro. */
+.megaFeaturedGlow i:nth-child(5) {
+    left: 20%;
+    bottom: 8%;
+    width: 56%;
+    height: 30%;
+    background: #ff1f9c;
+    border-radius: 52% 48% 71% 29% / 38% 60% 40% 62%;
+    rotate: 6deg;
+    animation-duration: 23s;
+    animation-delay: -3s;
+}
+
+/* Naranja, en la esquina inferior izquierda. */
+.megaFeaturedGlow i:nth-child(6) {
+    left: 4%;
+    bottom: 6%;
+    width: 34%;
+    height: 26%;
+    background: #ff8a1c;
+    border-radius: 47% 53% 60% 40% / 57% 44% 56% 43%;
+    rotate: -14deg;
+    animation-duration: 17s;
+    animation-delay: -12s;
+}
+
+/* Púrpura, en la esquina inferior derecha. */
+.megaFeaturedGlow i:nth-child(7) {
+    right: 2%;
+    bottom: 3%;
+    width: 36%;
+    height: 26%;
+    background: #6a1dff;
+    border-radius: 55% 45% 38% 62% / 46% 58% 42% 54%;
+    rotate: 12deg;
+    animation-duration: 24s;
+    animation-delay: -8s;
+}
+
+@keyframes glowDrift {
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(5%, -4%) scale(1.08);
+    }
+}
+
+/* El glitter, en tres capas de ruido fractal (nada de grillas de puntos):
+   un grano fino que le da textura de papel metalizado, y dos capas de
+   destellos —sólo los picos del ruido, así salen dispersos e irregulares—
+   que titilan a destiempo. Quedan por encima del color y por debajo del
+   texto. */
+.megaFeaturedSparkle {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.33 0.33 0.33 0 -0.2'/></filter><rect width='180' height='180' filter='url(%23g)'/></svg>");
+    background-size: 180px 180px;
+    mix-blend-mode: soft-light;
+    opacity: 0.55;
+}
+
+.megaFeaturedSparkle::before,
+.megaFeaturedSparkle::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: screen;
+    animation: glitterTwinkle 3.6s ease-in-out infinite alternate;
+}
+
+.megaFeaturedSparkle::before {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='s'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='1' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 0 -0.9'/><feComponentTransfer><feFuncA type='discrete' tableValues='0 0 0 0 0 0 0 0 0 1'/></feComponentTransfer></filter><rect width='240' height='240' filter='url(%23s)'/></svg>");
+    background-size: 240px 240px;
+}
+
+.megaFeaturedSparkle::after {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='310' height='310'><filter id='s'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='1' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 0 -0.94'/><feComponentTransfer><feFuncA type='discrete' tableValues='0 0 0 0 0 0 0 0 0 1'/></feComponentTransfer></filter><rect width='310' height='310' filter='url(%23s)'/></svg>");
+    background-size: 310px 310px;
+    animation-delay: -1.8s;
+    animation-duration: 4.4s;
+}
+
+@keyframes glitterTwinkle {
+    from {
+        opacity: 0.35;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .megaFeaturedGlow i,
+    .megaFeaturedSparkle::before,
+    .megaFeaturedSparkle::after {
+        animation: none;
+    }
+}
+
+/* Sin efecto al pasar el mouse: ni brillo ni el fondo de tinta de la
+   tarjeta base. */
+.mega > .megaFeatured:hover {
+    background: #f4f2fb;
+}
+
+.mega > .megaFeatured .megaFeaturedTitle {
+    color: var(--text);
+}
+
+/* En el menú los textos de la tarjeta van más grandes: es la pieza que
+   presenta a Roombir IA. */
+.mega > .megaFeatured {
+    gap: 12px;
+}
+
+.mega > .megaFeatured .megaFeaturedLabel {
+    font-size: 12px;
+}
+
+.mega > .megaFeatured .megaFeaturedTitle {
+    font-size: 30px;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+}
+
+.mega > .megaFeatured .megaFeaturedDesc {
+    font-size: 15.5px;
+    line-height: 1.5;
+}
+
+.mega > .megaFeatured .megaFeaturedMore {
+    font-size: 15px;
+}
+
+.mega > .megaFeatured .megaFeaturedMore svg {
+    width: 15px;
+    height: 15px;
+}
+
+.mega > .megaFeatured .megaFeaturedLabel,
+.mega > .megaFeatured .megaFeaturedTitle,
+.mega > .megaFeatured .megaFeaturedDesc,
+.mega > .megaFeatured .megaFeaturedMore {
+    text-shadow: none;
+}
+
+.mega > .megaFeatured .megaFeaturedLabel,
+.mega > .megaFeatured .megaFeaturedDesc {
+    color: var(--text);
+}
+
+.megaFeaturedLabel {
     font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-ink-3);
+}
+
+.megaFeaturedTitle {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--brand-bright);
+}
+
+.megaFeaturedDesc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-ink-2);
+}
+
+.megaFeaturedMore {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 10px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-ink);
+}
+
+.megaFeaturedMore svg {
+    width: 13px;
+    height: 13px;
+}
+
+.megaLabel {
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -201,6 +849,7 @@
     display: block;
     font-size: 14.5px;
     font-weight: 600;
+    line-height: 1.3;
     letter-spacing: -0.018em;
     color: var(--text);
     margin-bottom: 3px;
@@ -213,20 +862,40 @@
     color: var(--text-3);
 }
 
-.megaFoot {
-    grid-column: 1 / -1;
+/* Las cuatro partes del PMS, debajo del producto en la columna "La
+   operación": una lista chica con punto, que lleva a cada ancla. */
+.megaParts {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 6px;
-    padding: 14px 12px 4px;
-    border-top: 1px solid var(--line);
+    flex-direction: column;
+    gap: 1px;
+    margin: 4px 0 0 12px;
+    padding-left: 12px;
+    border-left: 1px solid var(--line);
 }
 
-.megaFootText {
-    font-size: 13px;
-    color: var(--text-3);
+.megaPart {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 9px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-2);
+    transition: background-color 0.14s ease, color 0.14s ease;
+}
+
+.megaPart i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--brand);
+    flex: none;
+}
+
+.megaPart:hover {
+    background: var(--paper-2);
+    color: var(--text);
 }
 
 /* -------------------------------------------------------------- móvil ----- */
@@ -296,6 +965,37 @@
     margin-top: -2px;
 }
 
+/* Un subgrupo dentro de un grupo del cajón (Operaciones, Por cargo…). */
+.drawerSub {
+    padding-top: 10px;
+}
+
+.drawerSub .drawerLabel {
+    margin-bottom: 6px;
+}
+
+/* Los ítems de cada menú en el cajón: en fila, como píldoras, con target de
+   40 px cada una. */
+.drawerParts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 4px 0 8px;
+}
+
+.drawerPart {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    padding-inline: 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-2);
+}
+
 .drawerActions {
     display: flex;
     flex-direction: column;
@@ -321,10 +1021,29 @@
     }
 }
 
-/* Abajo de 400px la cápsula no da para logo + botón + hamburguesa. El botón se
-   va y queda dentro del cajón. Va anidado bajo `.bar` para ganarle en
-   especificidad al `display: inline-flex` de `.btn`, que es global. */
+/* Abajo de 400px la cápsula no da para logo + idioma + botón + hamburguesa.
+   Lo que se achica es el idioma (queda la bandera, ver LangSwitcher) y el
+   botón, que es el CTA del sitio y tiene que seguir a la vista. Va anidado
+   bajo `.bar` para ganarle en especificidad al `.btn` global. */
 @media (max-width: 400px) {
+    .bar {
+        gap: 8px;
+        padding: 6px 6px 6px 12px;
+    }
+
+    .bar .cta {
+        height: 36px;
+        padding-inline: 12px;
+        font-size: 13px;
+    }
+
+    .actions {
+        gap: 2px;
+    }
+}
+
+/* Debajo de 340 px ni así entra: el botón se va al cajón. */
+@media (max-width: 340px) {
     .bar .cta {
         display: none;
     }

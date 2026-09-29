@@ -1,6 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isLocale, pickLocale, type Locale } from "@/i18n/config";
-import { ROUTES, internalPath, publicPath, routeKeyOf } from "@/i18n/routes";
+import {
+  ROUTES,
+  internalPath,
+  legacyRedirect,
+  publicPath,
+  routeKeyOf,
+} from "@/i18n/routes";
 
 /**
  * Mete todo el tráfico dentro de un idioma y traduce los slugs.
@@ -36,6 +42,19 @@ const PASSTHROUGH = new Set([
   "/manifest.webmanifest",
 ]);
 
+/**
+ * 308 a la página que reemplazó a una que ya no existe. `target` trae el slug
+ * y, si corresponde, el ancla (`/es/producto/marketing#agentes`): el ancla va
+ * en `hash`, no pegada al pathname, o se codifica como `%23`.
+ */
+function legacyResponse(request: NextRequest, target: string) {
+  const url = request.nextUrl.clone();
+  const i = target.indexOf("#");
+  url.pathname = i === -1 ? target : target.slice(0, i);
+  url.hash = i === -1 ? "" : target.slice(i);
+  return NextResponse.redirect(url, 308);
+}
+
 function chooseLocale(request: NextRequest): Locale {
   const cookie = request.cookies.get(LOCALE_COOKIE)?.value;
   if (cookie && isLocale(cookie)) return cookie;
@@ -52,6 +71,8 @@ export function middleware(request: NextRequest) {
   // ------------------------------------------------------------- 1. prefijar
   if (!isLocale(first)) {
     const locale = chooseLocale(request);
+    const legacy = legacyRedirect(locale, pathname);
+    if (legacy) return legacyResponse(request, legacy);
     const key = routeKeyOf(pathname);
     const url = request.nextUrl.clone();
     // Si la ruta sin prefijo es una página conocida, se manda directo a su
@@ -64,6 +85,13 @@ export function middleware(request: NextRequest) {
   const locale = first;
   const rest = "/" + segments.slice(2).join("/");
   const key = routeKeyOf(rest);
+
+  // Una página que ya no existe (las seis de producto de antes del
+  // 22-09-2026): 308 a la que la reemplazó, en el mismo idioma.
+  if (!key) {
+    const legacy = legacyRedirect(locale, rest);
+    if (legacy) return legacyResponse(request, legacy);
+  }
 
   // Ruta desconocida: que siga y caiga en el 404 del idioma, con su chrome.
   if (!key) return NextResponse.next();

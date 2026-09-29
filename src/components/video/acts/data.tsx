@@ -263,7 +263,7 @@ export function LinkhubCard({ cl, v }: { cl: number; v: VideoDict }) {
     <div ref={rootRef} className={s.phone}>
       <div className={s.phoneNotch} />
       <div className={s.phoneScreenLh}>
-        <LinkhubPage l={l} dates={{ in: "21 mar", out: "23 mar" }} pressing={!done && cl >= LH.tap && cl < LH.tap + 220}>
+        <LinkhubPage l={l} dates={{ in: v.ui.linkhub.inShort, out: v.ui.linkhub.outShort }} pressing={!done && cl >= LH.tap && cl < LH.tap + 220}>
           {!done && cl >= LH.overlay && cl < LH.results + 480 && (
             <MotorSearch l={l} sel={sel} tab={cl >= LH.day1 + 120 ? 1 : 0} pressingNext={cl >= LH.next && cl < LH.next + 220} style={{ opacity: overlay * (1 - seg(cl, LH.results + 80, LH.results + 420)) }} />
           )}
@@ -539,7 +539,7 @@ export function ModuleCard({ k, v, style, className }: { k: CardKey; v: VideoDic
           <div className={s.lhScreen} style={{ width: Math.round(LH_CARD.w * LH_CARD.k), height: 349 }}>
             <div style={{ width: LH_CARD.w, transform: `scale(${LH_CARD.k})`, transformOrigin: "0 0" }}>
               <div className={s.phoneScreenLh} style={{ height: "auto", borderRadius: 0 }}>
-                <LinkhubPage l={{ ...v.ui.linkhub, blocks: v.ui.linkhub.blocks.slice(0, LH_CARD.blocks) }} dates={{ in: "21 mar", out: "23 mar" }} pressing={false} />
+                <LinkhubPage l={{ ...v.ui.linkhub, blocks: v.ui.linkhub.blocks.slice(0, LH_CARD.blocks) }} dates={{ in: v.ui.linkhub.inShort, out: v.ui.linkhub.outShort }} pressing={false} />
               </div>
             </div>
           </div>

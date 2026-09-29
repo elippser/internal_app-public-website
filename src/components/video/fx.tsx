@@ -546,7 +546,9 @@ export function Caret({ oldText, newText, lt, at, sweep = 680, hold = 700, entra
 export function Stroke({ d, p, from = 0, color, width = 3, opacity = 1, style }: { d: string; p: number; from?: number; color: string; width?: number; opacity?: number; style?: CSSProperties }) {
   if (p - from <= 0.001) return null;
   return (
-    <svg className={s.svgLayer} viewBox={`0 0 ${W} ${H}`} aria-hidden style={{ opacity, ...style }}>
+    // Sin viewBox: las unidades son px del contenedor, así el trazo cae donde tiene que caer en el
+    // escenario horizontal (1280×720), en el vertical (720×1280) y dentro de la franja del acto.
+    <svg className={s.svgLayer} aria-hidden style={{ opacity, ...style }}>
       <path d={d} pathLength={1} fill="none" stroke={color} strokeWidth={width} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={`${(p - from).toFixed(4)} 1`} strokeDashoffset={-from} />
     </svg>
   );

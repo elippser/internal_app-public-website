@@ -66,15 +66,34 @@ src/app/
     monax.css                 el hero del template original (sólo la home)
     not-found.tsx             404
     opengraph-image.tsx       la imagen de compartir, generada en el build
+    [...rest]/page.tsx        comodín: cualquier URL desconocida → el 404 con marca
+    producto/pms/             el PMS (propiedades, habitaciones, reservas y motor, con anclas)
 src/components/
   site/                       el chrome y las piezas reutilizables
+  site/SiteVideo.tsx          el reproductor de los videos de presentación
   plans/                      precios y comparativa, contra el catálogo real
   LeadForm.tsx                captura de leads contra el API interno
   Pixels.tsx                  GA4 / Google Ads / GTM / Meta, solo en producción
 public/
   llms.txt                    el sitio también es legible por un agente
   icon.svg                    favicon que sigue el tema del navegador
+  video/mp4/                  los 8 videos × 5 idiomas × (horizontal | vertical) + póster
 ```
+
+Los cinco productos (Roombir IA · PMS · Informes · Revenue · Marketing) y el
+porqué de cada bloque de la home están en `IDENTIDAD-COMUNICACIONAL-2026.md`,
+en la raíz del monorepo. **El sitio no menciona precios** (ni planes, gratis,
+comisión o permanencia) hasta que la política comercial esté decidida:
+`/precios` y las comparativas viven apartadas en `parked/` (ver su README) y
+sus URLs redirigen con 308. Las cuatro partes del PMS son anclas de una sola
+página; las URLs viejas (`/producto/propiedades`, `/producto/habitaciones`,
+`/producto/motor`, `/producto/reservas`) redirigen con 308.
+
+Los videos de `public/video/mp4/` salen de las líneas de tiempo de `/video/*`
+exportadas a MP4 (Marketing › Videos del panel) y re-codificadas a 720p / 30
+fps para la web: `<pieza>-<idioma>-h.mp4` (16:9) y `-v.mp4` (9:16), con su
+`.jpg` de póster. `SiteVideo` elige el idioma de la página y la orientación del
+dispositivo.
 
 Una página **es** una carpeta, y la carpeta va **en castellano**: la página de
 Roombir IA vive en `src/app/[lang]/producto/ia/page.tsx` aunque en inglés se

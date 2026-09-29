@@ -53,3 +53,32 @@ export async function fetchPlans(): Promise<MktPlan[]> {
     return [];
   }
 }
+
+/** Los textos del catálogo por idioma (`dict.plans.catalog`). */
+export interface PlanCatalogText {
+  plans: Record<string, { tagline?: string; description?: string }>;
+  products: Record<string, { name?: string; description?: string }>;
+}
+
+/**
+ * Pasa al idioma de la página lo que el catálogo trae escrito en castellano:
+ * el tagline y la descripción de cada plan (por `slug`) y el nombre y la
+ * descripción de cada producto (por `key`). Precios, topes y qué incluye cada
+ * plan siguen saliendo del catálogo tal cual; lo que el diccionario no tenga
+ * cae al texto del catálogo, así un producto nuevo se ve igual (en castellano)
+ * hasta que se lo traduzca.
+ */
+export function localizePlans(plans: MktPlan[], t: PlanCatalogText): MktPlan[] {
+  return plans.map((plan) => {
+    const pt = t.plans[plan.slug];
+    return {
+      ...plan,
+      tagline: plan.tagline && pt?.tagline ? pt.tagline : plan.tagline,
+      description: plan.description && pt?.description ? pt.description : plan.description,
+      products: plan.products.map((p) => {
+        const x = t.products[p.key];
+        return x ? { ...p, name: x.name ?? p.name, description: x.description ?? p.description } : p;
+      }),
+    };
+  });
+}

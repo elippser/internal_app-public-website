@@ -8,8 +8,10 @@ import Logo from "./Logo";
 import {
   COMPANY_LINKS,
   LEGAL_LINKS,
+  PMS_SUBPAGES,
   PRODUCT_HREFS,
   PRODUCT_KEYS,
+  SOLUTION_HREFS,
   SOLUTION_KEYS,
 } from "./nav";
 import styles from "./SiteFooter.module.css";
@@ -81,9 +83,21 @@ export default function SiteFooter({
                   {dict.nav.platform}
                 </Link>
                 {PRODUCT_KEYS.map((key) => (
-                  <Link key={key} href={path(PRODUCT_HREFS[key])} className={styles.colLink}>
-                    {dict.nav.products[key].title}
-                  </Link>
+                  <div key={key} className={styles.colItem}>
+                    <Link href={path(PRODUCT_HREFS[key])} className={styles.colLink}>
+                      {dict.nav.products[key].title}
+                    </Link>
+                    {/* Las subpáginas del PMS con URL propia (hoy, el motor). */}
+                    {key === "pms" && (
+                      <span className={styles.colSub}>
+                        {PMS_SUBPAGES.map((sub) => (
+                          <Link key={sub.key} href={path(sub.href)} className={styles.colSubLink}>
+                            {dict.nav.pmsParts[sub.key]}
+                          </Link>
+                        ))}
+                      </span>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
@@ -92,12 +106,8 @@ export default function SiteFooter({
               <p className={styles.colLabel}>{dict.footer.columns.solutions}</p>
               <div className={styles.colList}>
                 {SOLUTION_KEYS.map((key) => (
-                  <Link
-                    key={key}
-                    href={path(`/soluciones#${key}`)}
-                    className={styles.colLink}
-                  >
-                    {dict.footer.solutions[key]}
+                  <Link key={key} href={path(SOLUTION_HREFS[key])} className={styles.colLink}>
+                    {dict.nav.menus.solutionItems[key].title}
                   </Link>
                 ))}
               </div>
@@ -129,7 +139,7 @@ export default function SiteFooter({
 
         <div className={styles.bottom}>
           <span>
-            © {year} Roombir · {dict.footer.madeIn}
+            © {year} Roombir
           </span>
           <div className={styles.bottomRight}>
             <a className={styles.agentNote} href="/llms.txt">

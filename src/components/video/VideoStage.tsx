@@ -13,6 +13,7 @@ import { SCENES } from "./scenes";
 import { easeOut, seg, type Beat } from "./timeline";
 import type { VideoDict } from "./timeline";
 import s from "./HeroVideo.module.css";
+import { OrientProvider, STAGE_DIMS, type Orient } from "./orientation";
 
 /**
  * El escenario del video: el reparto de beats sobre 1280×720, escalado entero
@@ -35,7 +36,7 @@ export type StageFit = { scale: number; x: number; y: number };
  * elemento que lo contiene. Un video no reacomoda su contenido: se agranda o se
  * achica entero.
  */
-export function useStageFit(ref: RefObject<HTMLElement | null>): StageFit {
+export function useStageFit(ref: RefObject<HTMLElement | null>, orient: Orient = "landscape"): StageFit {
   const [fit, setFit] = useState<StageFit>({ scale: 1, x: 0, y: 0 });
 
   useEffect(() => {
@@ -43,18 +44,19 @@ export function useStageFit(ref: RefObject<HTMLElement | null>): StageFit {
     if (!el) return;
     const measure = () => {
       const { width, height } = el.getBoundingClientRect();
-      const scale = Math.min(width / STAGE_W, height / STAGE_H);
+      const { w, h } = STAGE_DIMS[orient];
+      const scale = Math.min(width / w, height / h);
       setFit({
         scale,
-        x: (width - STAGE_W * scale) / 2,
-        y: (height - STAGE_H * scale) / 2,
+        x: (width - w * scale) / 2,
+        y: (height - h * scale) / 2,
       });
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [ref]);
+  }, [ref, orient]);
 
   return fit;
 }
@@ -80,6 +82,7 @@ export default function VideoStage({
   locale,
   fit,
   label,
+  orient = "landscape",
 }: {
   beats: Beat[];
   /** El instante que se dibuja, en ms desde el principio del video. */
@@ -91,6 +94,8 @@ export default function VideoStage({
   locale: Locale;
   fit: StageFit;
   label: string;
+  /** Horizontal (1280×720) o vertical (720×1280, `?view=mobile`). */
+  orient?: Orient;
 }) {
   const stageRef = useRef<HTMLDivElement>(null);
 
@@ -119,7 +124,9 @@ export default function VideoStage({
       aria-label={label}
       role="img"
       data-stage=""
+      data-orient={orient}
     >
+      <OrientProvider orient={orient}>
       {beats.map((b, i) => {
         // Una escena puede premontarse (para verse por el agujero de la
         // anterior) y quedarse por encima de la que sigue mientras conviven.
@@ -141,6 +148,7 @@ export default function VideoStage({
           </div>
         );
       })}
+      </OrientProvider>
     </div>
   );
 }

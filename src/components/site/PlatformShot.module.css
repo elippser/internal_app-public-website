@@ -1,0 +1,201 @@
+/* La ventana del pantallazo: mismo lenguaje que el marco de las viñetas
+   (Vignettes.module.css), pero grande y con el riel de áreas. */
+
+.shot {
+    border-radius: 22px;
+    border: 1px solid rgba(20, 21, 15, 0.08);
+    background: var(--paper-2);
+    box-shadow: 0 40px 100px rgba(20, 21, 15, 0.14), 0 3px 10px rgba(20, 21, 15, 0.05);
+    overflow: hidden;
+}
+
+.bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    min-width: 0;
+}
+
+.dots {
+    display: inline-flex;
+    gap: 6px;
+    flex: none;
+}
+
+.dots i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(20, 21, 15, 0.14);
+}
+
+.barLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.barTag {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-3);
+    white-space: nowrap;
+}
+
+.body {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    min-height: 560px;
+}
+
+.rail {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 12px;
+    background: #fff;
+    border-right: 1px solid var(--line);
+}
+
+.area {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    text-align: left;
+    font: inherit;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.areaOn {
+    background: var(--paper-2);
+    color: var(--text);
+}
+
+.areaLabel {
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: -0.014em;
+}
+
+.areaItems {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 12.5px;
+    color: var(--text-3);
+}
+
+.panel {
+    padding: clamp(18px, 2.4vw, 32px);
+    min-width: 0;
+}
+
+.caption {
+    margin: 0 0 18px;
+    max-width: 62ch;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text-2);
+}
+
+/* Las pantallas del área, en dos columnas que se acomodan por alto. */
+.panes {
+    columns: 2;
+    column-gap: 20px;
+}
+
+.panes > * {
+    break-inside: avoid;
+    margin-bottom: 20px;
+}
+
+@media (hover: hover) {
+    .area:hover {
+        background: var(--paper-2);
+        color: var(--text);
+    }
+}
+
+@media (max-width: 1023px) {
+    .body {
+        grid-template-columns: 200px minmax(0, 1fr);
+    }
+
+    .panes {
+        columns: 1;
+    }
+}
+
+/* Teléfono: el riel pasa a ser una tira de pestañas arriba, sin la lista de
+   ítems, y las pantallas van de a una. */
+@media (max-width: 767px) {
+    .shot {
+        border-radius: 18px;
+    }
+
+    .barTag {
+        display: none;
+    }
+
+    .body {
+        grid-template-columns: minmax(0, 1fr);
+        min-height: 0;
+    }
+
+    .rail {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 6px;
+        padding: 10px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        scrollbar-width: none;
+    }
+
+    .rail::-webkit-scrollbar {
+        display: none;
+    }
+
+    .area {
+        flex: none;
+        width: auto;
+        min-height: 40px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        white-space: nowrap;
+    }
+
+    .areaOn {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: var(--paper);
+    }
+
+    .areaItems {
+        display: none;
+    }
+
+    .panel {
+        padding: 16px 12px;
+    }
+
+    .caption {
+        font-size: 14.5px;
+    }
+}

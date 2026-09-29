@@ -32,6 +32,8 @@ export type DashboardLabels = {
   months: string[];
   topCats: string;
   topCatsSub: string;
+  /** Los nombres de las tres categorías del bloque "Top categorías", en el idioma del video. */
+  topCatNames?: string[];
   quick: string;
   quickSub: string;
   quickItems: string[];
@@ -76,10 +78,11 @@ export default function Dashboard({
   const up = (q: number, dy = 6): CSSProperties | undefined => (on ? { opacity: q, transform: q < 1 ? `translate3d(0, ${((1 - q) * dy).toFixed(2)}px, 0)` : undefined } : undefined);
   const spark = on ? easeInOut(seg(now, DA.spark, DA.spark + DA.sparkDur)) : 1;
   const bars = [0.42, 0.55, 1];
+  const catNames = labels.topCatNames ?? ["Doble Superior", "Doble", "Suite"];
   const cats = [
-    { name: "Doble Superior", pct: 0.9 },
-    { name: "Doble", pct: 0.66 },
-    { name: "Suite", pct: 0.5 },
+    { name: catNames[0], pct: 0.9 },
+    { name: catNames[1], pct: 0.66 },
+    { name: catNames[2], pct: 0.5 },
   ];
   return (
     <div className={s.root}>

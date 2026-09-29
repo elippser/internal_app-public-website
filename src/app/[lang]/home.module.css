@@ -2,109 +2,20 @@
    original y vive en `monax.css`. Todo lo que se repita en otra página se muda
    a `Sections.module.css` o a `globals.css`. */
 
-/* ------------------------------------------------------- notas del hero --- */
-
-.heroNotes {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px 20px;
-    font-size: 12.8px;
-    color: var(--text-3);
-}
-
-.heroNotes span {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.heroNotes svg {
-    width: 13px;
-    height: 13px;
-    color: var(--brand);
-    flex: none;
-}
-
-/* ------------------------------------------------- captura del producto --- */
-
-/* El tape chart bajo el titular. El degradado lo funde con el papel en vez de
-   cortarlo con un borde duro. */
-.heroShot {
-    position: relative;
-    padding-top: clamp(30px, 4vw, 54px);
-    padding-bottom: clamp(40px, 6vw, 80px);
-}
-
-.heroShotInner {
-    position: relative;
-    z-index: 1;
-}
-
-.heroGlow {
-    position: absolute;
-    inset: -14% 0 20%;
-    /* Dos luces, no una: pistacho a la izquierda y un barro tibio a la
-       derecha. Es lo que hace que el papel no se lea plano detrás de la
-       captura. */
-    background:
-        radial-gradient(46% 56% at 32% 38%, rgba(200, 226, 147, 0.34), transparent 70%),
-        radial-gradient(40% 50% at 74% 46%, rgba(199, 129, 74, 0.16), transparent 70%);
-    filter: blur(30px);
-    pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .heroGlow {
-        animation: glowDrift 12s ease-in-out infinite alternate;
-    }
-}
-
-@keyframes glowDrift {
-    from {
-        transform: translateX(-2.5%) scale(1);
-    }
-
-    to {
-        transform: translateX(2.5%) scale(1.05);
-    }
-}
-
-/* Las dos señales que flotan al costado del tape chart en pantallas grandes.
-   En chico desaparecen: apiladas no aportan nada y estorban. */
-.heroFloat {
-    position: absolute;
-    z-index: 2;
-}
-
-.heroFloatLeft {
-    left: -60px;
-    bottom: -78px;
-    width: 254px;
-}
-
-.heroFloatRight {
-    right: -52px;
-    top: -28px;
-    width: 208px;
-}
-
-@media (max-width: 1240px) {
-    .heroFloat {
-        display: none;
-    }
-}
-
 /* --------------------------------------------------------------- módulos -- */
 
+/* Cuatro columnas: cinco productos, con Roombir IA y el PMS en doble ancho,
+   son siete celdas; la octava la ocupa Marketing en doble ancho también,
+   así no queda hueco al final. */
 .modules {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
+    background: rgba(20, 21, 15, 0.07);
+    border: 1px solid rgba(20, 21, 15, 0.06);
     border-radius: var(--radius);
     overflow: hidden;
+    box-shadow: var(--shadow-float);
 }
 
 .module {
@@ -118,6 +29,33 @@
 
 .module:hover {
     background: #fff;
+}
+
+.moduleWide {
+    grid-column: span 2;
+}
+
+.moduleWide .moduleTitle {
+    font-size: 19px;
+}
+
+/* La última tarjeta (Marketing) también en doble ancho: cinco productos con
+   dos dobles son siete celdas de ocho; con la última en doble cierra justo. */
+.module:last-child {
+    grid-column: span 2;
+}
+
+/* Las cuatro partes del PMS, como píldoras dentro de su tarjeta. */
+.moduleParts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 2px 0 6px;
+}
+
+.moduleParts :global(.pill) {
+    height: 26px;
+    font-size: 12px;
 }
 
 .moduleIcon {
@@ -194,6 +132,66 @@
 @media (max-width: 620px) {
     .modules {
         grid-template-columns: minmax(0, 1fr);
+    }
+
+    .moduleWide,
+    .module:last-child {
+        grid-column: auto;
+    }
+}
+
+/* ------------------------------------------------------ cómo funciona --- */
+
+/* Cuatro pasos numerados, en el orden en que pasa un día de recepción. Es el
+   flujo del PMS más lo que se le cuelga; cada paso enlaza a su producto. */
+.how {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 26px);
+}
+
+.howStep {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    padding-top: 20px;
+    border-top: 2px solid var(--ink);
+    min-width: 0;
+}
+
+.howNum {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--brand);
+    letter-spacing: 0.04em;
+}
+
+.howTitle {
+    font-size: 17.5px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+}
+
+.howText {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-2);
+    flex: 1;
+}
+
+@media (max-width: 980px) {
+    .how {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .how {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 22px;
     }
 }
 
@@ -281,73 +279,6 @@
     }
 }
 
-/* ---------------------------------------------------------- honestidad --- */
-
-/* La sección que ningún competidor pone: qué NO hace el producto todavía. En
-   un lanzamiento piloto es lo que separa una demo de una relación. */
-.honest {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: clamp(24px, 4vw, 60px);
-    align-items: start;
-}
-
-.honestList {
-    display: flex;
-    flex-direction: column;
-}
-
-.honestItem {
-    display: grid;
-    grid-template-columns: 128px minmax(0, 1fr);
-    gap: 16px;
-    padding: 16px 0;
-    border-top: 1px solid var(--line);
-    font-size: 14.5px;
-    line-height: 1.55;
-    color: var(--text-2);
-}
-
-.honestItem:last-child {
-    border-bottom: 1px solid var(--line);
-}
-
-.honestTag {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--text);
-}
-
-.honestState {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--mono);
-    font-size: 10.5px;
-    color: var(--amber);
-    margin-top: 3px;
-}
-
-.honestState i {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--amber);
-    flex: none;
-}
-
-@media (max-width: 860px) {
-    .honest {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .honestItem {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 4px;
-    }
-}
-
 /* --------------------------------------------------------------- venta --- */
 
 .sale {
@@ -398,11 +329,6 @@
 
 @media (prefers-reduced-motion: no-preference) {
 
-    /* Las señales flotantes quedan meciéndose, cada una con su fase. */
-    .heroFloat {
-        animation: floatBob 6.5s ease-in-out calc(var(--d, 0s) + 1.2s) infinite;
-    }
-
     /* El icono del módulo saluda al pasar el mouse. */
     .moduleIcon {
         transition: transform 0.2s ease;
@@ -441,8 +367,489 @@
     }
 }
 
-@keyframes floatBob {
+
+/* ------------------------------------------------------------ qué cambia -- */
+
+/* La sección blanca tras el hero: encabezado con el botón a la derecha y tres
+   tarjetas con su "foto" arriba y título + texto debajo (el patrón de
+   Hostaway y Guesty). La foto es una ilustración 3D del sitio con chips
+   encima, o una viñeta real del producto; nunca una captura vieja. */
+.works {
+    background: #fff;
+}
+
+.worksHead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: clamp(16px, 3vw, 48px);
+    margin-bottom: clamp(30px, 4vw, 52px);
+}
+
+.worksHead h2 {
+    max-width: 780px;
+}
+
+.worksGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(18px, 2.2vw, 28px);
+}
+
+.worksCard {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+}
+
+.worksArt {
+    position: relative;
+    aspect-ratio: 1 / 0.98;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 14px;
+    isolation: isolate;
+}
+
+.worksArtPaper {
+    background: linear-gradient(160deg, #eef1e4 0%, #dde7c4 100%);
+}
+
+.worksArtAmber {
+    background: linear-gradient(160deg, #f7f0e1 0%, #eedbb6 100%);
+}
+
+/* El asistente, calcado de la referencia: teal con una trama de puntos muy
+   tenue, y tres piezas escalonadas en diagonal (pedido con avatar arriba a la
+   izquierda, respuesta en menta corrida a la derecha, tarjeta abajo a la
+   izquierda), cada una con su destello. */
+.worksArtInk {
+    display: flex;
+    align-items: center;
+    padding: clamp(16px, 1.8vw, 24px);
+    background: linear-gradient(135deg, #1a7f74 0%, #10605a 42%, #0a413d 100%);
+}
+
+.worksArtInk::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.11) 1px, transparent 1.4px);
+    background-size: 16px 16px;
+    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.25));
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.25));
+    pointer-events: none;
+}
+
+.worksChat {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.worksMsg {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    width: 82%;
+}
+
+.worksMsgAi {
+    align-self: flex-end;
+    align-items: center;
+    width: 84%;
+}
+
+.worksMsgCard {
+    align-items: center;
+    width: 78%;
+    margin-left: 4%;
+}
+
+.worksAvatar {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f2efe8;
+    color: var(--brand);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+}
+
+.worksAvatar svg {
+    width: 16px;
+    height: 16px;
+}
+
+.worksBubble {
+    padding: 9px 12px;
+    border-radius: 12px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 12.5px;
+    line-height: 1.4;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.worksBubbleAi {
+    background: #dcefdf;
+    color: #0e3d33;
+}
+
+.worksSpark {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #d6efb0;
+    display: grid;
+    place-items: center;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.05), 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+.worksSpark svg {
+    width: 14px;
+    height: 14px;
+}
+
+.worksTask {
+    flex: 1;
+    min-width: 0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.worksTaskLabel {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-3);
+}
+
+.worksTaskLabel svg {
+    width: 11px;
+    height: 11px;
+    color: var(--brand);
+}
+
+.worksTaskText {
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--ink);
+}
+
+.worksTaskBtns {
+    display: flex;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.worksTaskBtn,
+.worksTaskGhost {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding-inline: 9px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.worksTaskBtn {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.worksTaskGhost {
+    border: 1px solid var(--line-2);
+    color: var(--text-2);
+}
+
+/* Las fotos de la primera y la tercera tarjeta, a sangre. El fondo de color
+   de `.worksArtPaper`/`.worksArtAmber` queda debajo mientras cargan. */
+.worksPhoto {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.worksPhotoRight {
+    object-position: 62% 50%;
+}
+
+.worksTitle {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    line-height: 1.2;
+}
+
+.worksText {
+    font-size: 14.5px;
+    line-height: 1.58;
+    color: var(--text-2);
+}
+
+/* Tableta: una columna, pero con la tarjeta acotada a 560px y el arte en
+   16:10; a ancho completo la tarjeta oscura quedaba enorme con dos burbujas
+   perdidas en el medio. */
+@media (max-width: 899px) {
+    .worksGrid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+
+    .worksCard {
+        width: 100%;
+        max-width: 560px;
+        margin-inline: auto;
+    }
+
+    .worksArt {
+        aspect-ratio: 16 / 10;
+    }
+}
+
+@media (max-width: 599px) {
+    .worksCard {
+        max-width: none;
+    }
+
+    .worksArt {
+        aspect-ratio: 4 / 3;
+    }
+}
+
+@media (max-width: 767px) {
+    .worksHead {
+        grid-template-columns: 1fr;
+    }
+
+    .worksHead > a {
+        justify-self: start;
+    }
+}
+
+@media (max-width: 480px) {
+    .worksArt {
+        aspect-ratio: 1 / 1;
+    }
+}
+
+/* ----------------------------------------------------------------- video -- */
+
+/* "Qué es": encabezado a la izquierda y el video de portada a la derecha,
+   centrados verticalmente; la grilla de productos va debajo de los dos. En
+   tableta y teléfono el video pasa debajo del encabezado. */
+.queEsTop {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(24px, 4vw, 64px);
+    align-items: center;
+    margin-bottom: clamp(32px, 4.5vw, 64px);
+}
+
+.queEsHead {
+    max-width: none;
+    margin-bottom: 0;
+}
+
+.videoWrap {
+    min-width: 0;
+}
+
+@media (max-width: 1023px) {
+    .queEsTop {
+        grid-template-columns: minmax(0, 1fr);
+        gap: clamp(22px, 4vw, 36px);
+        align-items: start;
+    }
+
+    .queEsHead {
+        max-width: 720px;
+    }
+}
+
+/* ------------------------------------------------------------ movimiento -- */
+
+/* Vida sutil de las secciones (29-09-2026). Mismo mecanismo que el resto del
+   sitio: el FxObserver marca `data-fx-in` al entrar en viewport y el CSS
+   anima DESDE un estado inicial HACIA el natural (keyframes sólo con `from`),
+   así que sin JS o con reduced-motion todo está en su lugar. Los hover van
+   bajo `(hover: hover)`: en táctil no existen. */
+@media (prefers-reduced-motion: no-preference) {
+    /* Qué cambia: las tres tarjetas en cascada. */
+    .worksGrid[data-fx-in] .worksCard {
+        animation: floatRise 0.6s cubic-bezier(0.22, 0.9, 0.3, 1) backwards;
+    }
+
+    .worksGrid[data-fx-in] .worksCard:nth-child(2) {
+        animation-delay: 0.12s;
+    }
+
+    .worksGrid[data-fx-in] .worksCard:nth-child(3) {
+        animation-delay: 0.24s;
+    }
+
+    /* Las fotos asientan: un zoom lento que termina en su tamaño natural. */
+    .worksGrid[data-fx-in] .worksPhoto {
+        animation: photoSettle 1.8s cubic-bezier(0.22, 0.9, 0.3, 1) backwards;
+    }
+
+    /* La conversación se escribe en orden, después de que la tarjeta entró. */
+    .worksGrid[data-fx-in] .worksMsg {
+        animation: floatRise 0.45s ease backwards;
+    }
+
+    .worksGrid[data-fx-in] .worksMsg:nth-child(1) {
+        animation-delay: 0.5s;
+    }
+
+    .worksGrid[data-fx-in] .worksMsg:nth-child(2) {
+        animation-delay: 1.05s;
+    }
+
+    .worksGrid[data-fx-in] .worksMsg:nth-child(3) {
+        animation-delay: 1.6s;
+    }
+
+    /* Los destellos titilan, desfasados entre sí. */
+    .worksGrid[data-fx-in] .worksSpark {
+        animation: twinkle 3.4s ease-in-out 1.8s infinite;
+    }
+
+    .worksGrid[data-fx-in] .worksMsgCard .worksSpark {
+        animation-delay: 2.6s;
+    }
+
+    /* La trama de puntos deriva muy despacio en diagonal. */
+    .worksGrid[data-fx-in] .worksArtInk::before {
+        animation: dotsDrift 9s linear infinite;
+    }
+
+    /* Productos: las tarjetas en cascada. */
+    .modules[data-fx-in] .module {
+        animation: floatRise 0.5s ease backwards;
+    }
+
+    .modules[data-fx-in] .module:nth-child(2) {
+        animation-delay: 0.08s;
+    }
+
+    .modules[data-fx-in] .module:nth-child(3) {
+        animation-delay: 0.16s;
+    }
+
+    .modules[data-fx-in] .module:nth-child(4) {
+        animation-delay: 0.24s;
+    }
+
+    .modules[data-fx-in] .module:nth-child(5) {
+        animation-delay: 0.32s;
+    }
+
+    /* Cómo funciona: los pasos entran de a uno y el número llega deslizando. */
+    .how[data-fx-in] .howStep {
+        animation: floatRise 0.5s ease backwards;
+    }
+
+    .how[data-fx-in] .howStep:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    .how[data-fx-in] .howStep:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    .how[data-fx-in] .howStep:nth-child(4) {
+        animation-delay: 0.3s;
+    }
+
+    .how[data-fx-in] .howNum {
+        animation: numSlide 0.5s cubic-bezier(0.22, 0.9, 0.3, 1) 0.25s backwards;
+    }
+
+    /* El video llega con un leve escalado. */
+    .videoWrap[data-fx-in] {
+        animation: videoIn 0.9s cubic-bezier(0.22, 0.9, 0.3, 1) backwards;
+    }
+}
+
+/* Hover: sólo donde hay mouse. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .worksPhoto {
+        transition: transform 0.9s cubic-bezier(0.22, 0.9, 0.3, 1);
+    }
+
+    .worksCard:hover .worksPhoto {
+        transform: scale(1.035);
+    }
+
+    .module {
+        transition: background-color 0.18s ease, transform 0.25s ease;
+    }
+
+    .module:hover {
+        transform: translateY(-2px);
+    }
+
+    .moduleIcon {
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .module:hover .moduleIcon {
+        transform: scale(1.1) rotate(-4deg);
+    }
+}
+
+@keyframes photoSettle {
+    from {
+        transform: scale(1.06);
+    }
+}
+
+@keyframes twinkle {
     50% {
-        transform: translateY(-8px);
+        transform: scale(1.14);
+        opacity: 0.75;
+    }
+}
+
+@keyframes dotsDrift {
+    to {
+        background-position: 16px 16px;
+    }
+}
+
+@keyframes numSlide {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+}
+
+@keyframes videoIn {
+    from {
+        opacity: 0;
+        transform: scale(0.985);
     }
 }

@@ -203,3 +203,11 @@ select.input {
         justify-self: stretch;
     }
 }
+
+/* En teléfono los campos van a 16 px: por debajo, iOS hace zoom al tocar
+   cada uno y la página queda corrida. */
+@media (max-width: 767px) {
+    .input {
+        font-size: 16px;
+    }
+}

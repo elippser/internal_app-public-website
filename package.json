@@ -6,7 +6,9 @@
     "dev": "next dev -p 6300",
     "build": "next build",
     "start": "next start -p 6300",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "capture:motor": "node scripts/capture-motor.cjs",
+    "sync:linkhub": "node scripts/sync-linkhub.mjs"
   },
   "dependencies": {
     "next": "16.2.4",

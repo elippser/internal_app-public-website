@@ -9,6 +9,13 @@ import Calendar from "../pms/Calendar";
 import PmsShell from "../pms/PmsShell";
 import { APP_H, APP_W, CardContent, MODULES, MODULE_COLOR, MODULE_H, MODULE_W, ModuleCard, OCCUPANCY, PHONE_H, PHONE_W, ProductShot, calCategories, calDays, calLabels, shellLabels, type CardKey } from "./data";
 import s from "../scenes.module.css";
+import { usePortrait } from "../orientation";
+
+/** El centro del cuadro: (640, 360) en horizontal y (360, 640) en vertical (`?view=mobile`). */
+function useFrame() {
+  const p = usePortrait();
+  return p ? { cx: 360, cy: 640, w: 720, h: 1280, portrait: true } : { cx: 640, cy: 360, w: 1280, h: 720, portrait: false };
+}
 
 /**
  * Acto 3 — los módulos. Calca 25.0 → 37.75 de la referencia: tarjetas que
@@ -127,6 +134,7 @@ const StillCard = memo(function StillCard({ k, v, className }: { k: CardKey; v: 
 });
 
 export function WheelScene({ lt, v }: SceneProps) {
+  const F = useFrame();
   const d = drum(lt);
   const speed = (drum(lt + 8) - drum(lt - 8)) / 16;
   const move = drumMove(lt);
@@ -141,7 +149,7 @@ export function WheelScene({ lt, v }: SceneProps) {
     <div className={`${s.scene} ${s.inkBg}`}>
       {/* Mismo reloj que el cierre de `built` (`lt − end`): al corte, el mismo cuadro. */}
       <Gradient lt={lt} deep />
-      <Camera scale={zc} origin={`${WHEEL_END.px}px ${WHEEL_END.py}px`}>
+      <Camera scale={zc} origin={`${F.cx}px ${WHEEL_END.py}px`}>
         <div className={s.wheelStage}>
           {WHEEL.map((k, i) => {
             const a = WH.step * (i - d);
@@ -254,7 +262,8 @@ type Light = { sx: number; sy: number; half: { w: number; h: number }; on: numbe
  * la línea blanca pegada a la cara (`padding-box`, 1,5) y el brillo.
  */
 function CardLight({ sx, sy, half, on, ring, color }: Light) {
-  if (sx + half.w < -20 || sx - half.w > 1300 || sy + half.h < -20 || sy - half.h > 740) return null;
+  // Fuera de cuadro en cualquiera de los dos cortes (1280×720 o 720×1280): no se dibuja.
+  if (sx + half.w < -20 || sx - half.w > 1300 || sy + half.h < -20 || sy - half.h > 1300) return null;
   const layers = [`linear-gradient(${WHITE(0.8)}, ${WHITE(0.8)}) padding-box`, `linear-gradient(color-mix(in srgb, ${color} 50%, transparent), color-mix(in srgb, ${color} 50%, transparent)) border-box`];
   if (on >= 0.002) {
     const dx = LIGHT.x - sx;
@@ -283,6 +292,7 @@ function pullCurve(lt: number): number {
 const mountedAt = (lt: number) => (lt >= 0 ? GRID_RANK.size : Math.ceil(GRID_RANK.size * clamp01((lt + GRID_PRE.ms) / (GRID_PRE.ms - GRID_PRE.slack))));
 
 export function GridScene({ lt, v }: SceneProps) {
+  const F = useFrame();
   const p = pullCurve(lt);
   const outer = lerp(WHEEL_END.Z, 1, p);
   const inner = lerp(WH.scale / CELL, 1, p);
@@ -296,7 +306,7 @@ export function GridScene({ lt, v }: SceneProps) {
     // Premontada va encima de la rueda (el reproductor apila en orden): invisible hasta el corte.
     <div className={`${s.scene} ${s.inkBg}`} style={lt < 0 ? { opacity: 0 } : undefined}>
       <Gradient lt={lt + WH.end} deep />
-      <Camera scale={outer} origin={`${WHEEL_END.px}px ${WHEEL_END.py}px`}>
+      <Camera scale={outer} origin={`${F.cx}px ${WHEEL_END.py}px`}>
         <Camera scale={inner}>
           {GRID_SPAN.map((c) => {
             const off = colOff(c, lt);
@@ -304,15 +314,15 @@ export function GridScene({ lt, v }: SceneProps) {
               if ((GRID_RANK.get(`${c},${r}`) ?? 0) >= mounted) return null;
               const key = gridKey(c, r);
               // Dónde cae el centro de la tarjeta en pantalla: las dos cámaras, de adentro hacia afuera.
-              const x1 = 640 + c * (CW + GAP) * inner;
-              const y1 = 360 + (r * (CH + GAP) + off) * inner;
-              const sx = WHEEL_END.px + (x1 - WHEEL_END.px) * outer;
+              const x1 = F.cx + c * (CW + GAP) * inner;
+              const y1 = F.cy + (r * (CH + GAP) + off) * inner;
+              const sx = F.cx + (x1 - F.cx) * outer;
               const sy = WHEEL_END.py + (y1 - WHEEL_END.py) * outer;
               return (
                 <div
                   key={`${c},${r}`}
                   className={s.gridCell}
-                  style={{ left: 640 + c * (CW + GAP) - CW / 2, top: 360 + r * (CH + GAP) - CH / 2, width: CW, height: CH, transform: `translate3d(0, ${off.toFixed(1)}px, 0)` }}
+                  style={{ left: F.cx + c * (CW + GAP) - CW / 2, top: F.cy + r * (CH + GAP) - CH / 2, width: CW, height: CH, transform: `translate3d(0, ${off.toFixed(1)}px, 0)` }}
                 >
                   <div style={{ position: "relative", width: MODULE_W, height: MODULE_H, transform: `scale(${CELL})`, transformOrigin: "0 0" }}>
                     <CardLight sx={sx} sy={sy} half={half} on={on} ring={ring} color={MODULE_COLOR[key]} />
@@ -364,11 +374,12 @@ function LogoFace({ t }: { t: number }) {
 
 /** La tarjeta del logo QUIETA en `LOGO_CARD`: el último cuadro de `merge`, que `unfold` deja fijo debajo de la UI. */
 function LogoCard() {
+  const F = useFrame();
   const k = LOGO_CARD.scale;
   return (
-    <div className={s.gridCell} style={{ left: LOGO_CARD.x - CW / 2, top: LOGO_CARD.y - CH / 2, width: CW, height: CH, transform: `scale(${(k / CELL).toFixed(4)})` }}>
+    <div className={s.gridCell} style={{ left: F.cx - CW / 2, top: F.cy - CH / 2, width: CW, height: CH, transform: `scale(${(k / CELL).toFixed(4)})` }}>
       <div style={{ position: "relative", width: MODULE_W, height: MODULE_H, transform: `scale(${CELL})`, transformOrigin: "0 0" }}>
-        <CardLight sx={LOGO_CARD.x} sy={LOGO_CARD.y} half={{ w: (MODULE_W / 2) * k, h: (MODULE_H / 2) * k }} on={1} ring={RING.to} color={LOGO_CARD.color} />
+        <CardLight sx={F.cx} sy={F.cy} half={{ w: (MODULE_W / 2) * k, h: (MODULE_H / 2) * k }} on={1} ring={RING.to} color={LOGO_CARD.color} />
         <LogoFace t={1e4} />
       </div>
     </div>
@@ -376,12 +387,13 @@ function LogoCard() {
 }
 
 export function MergeScene({ lt, v }: SceneProps) {
+  const F = useFrame();
   const T = GR.end + Math.max(0, lt);
   const mounted = mountedAt(lt);
   const grow = smooth(seg(lt, MG.grow, MG.end));
   const pop = easeOut(seg(lt, 0, MG.pop));
-  const cx = LOGO_CARD.x;
-  const cy = lerp(360 + colOff(0, T), LOGO_CARD.y, smooth(seg(lt, 0, MG.center)));
+  const cx = F.cx;
+  const cy = lerp(F.cy + colOff(0, T), F.cy, smooth(seg(lt, 0, MG.center)));
   let absorbed = 0;
   const flying = GRID_SPAN.flatMap((c) =>
     GRID_SPAN.map((r) => {
@@ -394,8 +406,8 @@ export function MergeScene({ lt, v }: SceneProps) {
       absorbed += smooth(seg(u, 0.6, 1));
       if (u >= 1) return null;
       const e = smooth(u);
-      const bx = 640 + c * (CW + GAP);
-      const by = 360 + r * (CH + GAP);
+      const bx = F.cx + c * (CW + GAP);
+      const by = F.cy + r * (CH + GAP);
       const x = lerp(bx, cx, e);
       const y = lerp(by + colOff(c, T), cy, e);
       const sc = lerp(1, 0.7, e);
@@ -426,7 +438,7 @@ export function MergeScene({ lt, v }: SceneProps) {
       {flying}
       <div
         className={s.gridCell}
-        style={{ left: 640 - CW / 2, top: 360 - CH / 2, width: CW, height: CH, zIndex: 200, opacity: smooth(seg(lt, 0, 200)), transform: `translate3d(${(cx - 640).toFixed(1)}px, ${(cy - 360).toFixed(1)}px, 0) scale(${cs.toFixed(4)})` }}
+        style={{ left: F.cx - CW / 2, top: F.cy - CH / 2, width: CW, height: CH, zIndex: 200, opacity: smooth(seg(lt, 0, 200)), transform: `translate3d(${(cx - F.cx).toFixed(1)}px, ${(cy - F.cy).toFixed(1)}px, 0) scale(${cs.toFixed(4)})` }}
       >
         <div style={{ position: "relative", width: MODULE_W, height: MODULE_H, transform: `scale(${CELL})`, transformOrigin: "0 0" }}>
           <CardLight sx={cx} sy={cy} half={{ w: (MODULE_W / 2) * k, h: (MODULE_H / 2) * k }} on={1} ring={RING.to} color={LOGO_CARD.color} />
@@ -570,6 +582,7 @@ const UN = { rise: 300, riseEnd: 1250, shot: 760, title: 520, push: 1250, white:
 const UN_FROM = 620;
 
 export function UnfoldScene({ lt, v }: SceneProps) {
+  const F = useFrame();
   // Sube con aceleración y frenada: la tarjeta se ve entera, se tapa a mitad de
   // camino y la UI termina de sentarse sola.
   const rise = easeInOut(seg(lt, UN.rise, UN.riseEnd));
@@ -583,7 +596,10 @@ export function UnfoldScene({ lt, v }: SceneProps) {
         <div
           className={s.unfoldStage}
           style={{
-            transform: `perspective(1500px) translate3d(0, ${lerp(UN_FROM, -12 * push, rise).toFixed(1)}px, 0) rotateX(${lerp(15, 8 - 3 * push, rise).toFixed(2)}deg) scale(${(0.86 + 0.06 * push).toFixed(4)})`,
+            // En vertical: más abajo, anclada a la izquierda y más grande (se corta por la derecha).
+            // En vertical el PMS entero y chico, centrado debajo del titular.
+            ...(F.portrait ? { left: -200, top: 470 } : null),
+            transform: `perspective(1500px) translate3d(0, ${lerp(F.portrait ? 900 : UN_FROM, -12 * push, rise).toFixed(1)}px, 0) rotateX(${lerp(15, 8 - 3 * push, rise).toFixed(2)}deg) scale(${((F.portrait ? 0.58 : 0.86) + (F.portrait ? 0.025 : 0.06) * push).toFixed(4)})`,
           }}
         >
           <ProductShot v={v} lt={lt} at={UN.shot} />
@@ -592,8 +608,8 @@ export function UnfoldScene({ lt, v }: SceneProps) {
       {lt >= UN.title && (
         // `plainEm`: el titular va todo en Outfit y sin el subrayado del
         // argumento (pedido del 20-09-2026).
-        <div className={s.corner} style={{ left: 0, right: 0, top: 44, textAlign: "center" }}>
-          <h2 className={`${s.displayXl} ${s.onInk} ${s.plainEm} ${s.unfoldTitle}`}>
+        <div className={s.corner} style={{ left: F.portrait ? 40 : 0, right: F.portrait ? 40 : 0, top: F.portrait ? 330 : 44, textAlign: "center" }}>
+          <h2 className={`${s.displayXl} ${s.onInk} ${s.plainEm} ${s.unfoldTitle}`} style={F.portrait ? { fontSize: 68 } : undefined}>
             <Words text={v.brand} lt={lt} at={UN.title} stagger={90} dur={520} dimIn={false} />
           </h2>
         </div>
@@ -697,6 +713,10 @@ function leaderPath(p: number, x0: number, y0: number, stub: number, r: number, 
 }
 
 export function PrecisionScene({ lt, v }: SceneProps) {
+  // En vertical: el calendario más abajo y a la izquierda (misma pose), el rótulo arriba.
+  const F = useFrame();
+  const BOX = F.portrait ? { left: -40, top: 460 } : PR_BOX;
+  const TAG = F.portrait ? { ...PR_TAG, x: 150, y: 200 } : PR_TAG;
   const rootRef = useRef<HTMLDivElement>(null);
   const rects = useOffsets(rootRef, [SELQ.c7, SELQ.c10, SELQ.row]);
   const c7 = rects[SELQ.c7];
@@ -746,10 +766,10 @@ export function PrecisionScene({ lt, v }: SceneProps) {
   const leader = easeOutExpo(seg(lt, PR.leader, PR.leader + PR.leaderDur));
   const tagText = tokenize(v.designed[1]).map((t) => t.text).join("");
   // El rótulo y la guía cuelgan del mismo punto y panean con la tarjeta.
-  const tagX = PR_TAG.x + panX;
-  const leadX = tagX - PR_TAG.gap;
-  const leadY = PR_TAG.y + PR_TAG.drop;
-  const leadEnd = PR_BOX.top + 4;
+  const tagX = TAG.x + panX;
+  const leadX = tagX - TAG.gap;
+  const leadY = TAG.y + TAG.drop;
+  const leadEnd = BOX.top + 4;
   return (
     <div className={`${s.scene} ${s.inkBg}`}>
       <Gradient lt={lt + 12000} deep />
@@ -772,8 +792,8 @@ export function PrecisionScene({ lt, v }: SceneProps) {
         <div
           className={s.precisionStage}
           style={{
-            left: PR_BOX.left,
-            top: PR_BOX.top,
+            left: BOX.left,
+            top: BOX.top,
             opacity: Math.min(1, ui * 1.5),
             transform: `perspective(1400px) translate3d(${(panX + (1 - ui) * PR_IN.x).toFixed(1)}px, ${((1 - ui) * PR_IN.y).toFixed(1)}px, 0) rotateX(${PR_POSE.rx}deg) rotateZ(${PR_POSE.rz}deg) scale(${lerp(PR_POSE.sc * PR_IN.sc, PR_POSE.sc, ui).toFixed(4)})`,
           }}
@@ -819,9 +839,9 @@ export function PrecisionScene({ lt, v }: SceneProps) {
         </div>
       )}
       {leader > 0 && (
-        <svg className={s.precisionLeader} viewBox="0 0 1280 720" width="1280" height="720" aria-hidden>
+        <svg className={s.precisionLeader} viewBox={`0 0 ${F.w} ${F.h}`} width={F.w} height={F.h} aria-hidden>
           <path
-            d={leaderPath(leader, leadX, leadY, PR_TAG.stub, PR_TAG.r, leadEnd)}
+            d={leaderPath(leader, leadX, leadY, TAG.stub, TAG.r, leadEnd)}
             fill="none"
             stroke="#f2efe8"
             strokeOpacity={0.9}
@@ -832,7 +852,7 @@ export function PrecisionScene({ lt, v }: SceneProps) {
         </svg>
       )}
       {lt >= PR.tag && (
-        <div className={s.corner} style={{ left: tagX, top: PR_TAG.y }}>
+        <div className={s.corner} style={{ left: tagX, top: TAG.y }}>
           <h2 className={`${s.glowText} ${s.onInk}`}>
             {/* El rótulo se va barrido con la cámara, igual que la UI. */}
             <Blurred x={sweep}>

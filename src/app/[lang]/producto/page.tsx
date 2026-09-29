@@ -1,23 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Faq from "@/components/site/Faq";
+import { Headline } from "@/components/site/RichText";
 import {
   ArrowRight,
   CtaBand,
-  FeatureGrid,
   HeroActions,
   PageHero,
   Split,
   SplitHead,
   StatBand,
-  SwapTable,
 } from "@/components/site/Sections";
-import Ticker from "@/components/site/Ticker";
-import { AgentTurn, SpaceSwitcher, TapeChart } from "@/components/site/Vignettes";
-import { PRODUCT_HREFS } from "@/components/site/nav";
+import SiteVideo from "@/components/site/SiteVideo";
+import { AgentTurn, SpaceSwitcher } from "@/components/site/Vignettes";
+import { PMS_PARTS, PRODUCT_HREFS, PRODUCT_KEYS } from "@/components/site/nav";
 import { localizedHref as localePath } from "@/i18n/routes";
 import { readLocale } from "@/i18n/params";
 import { pageMetadata } from "@/lib/meta";
 import { getDictionary } from "@/i18n/get-dictionary";
+import styles from "./producto.module.css";
+
+/**
+ * La vista de conjunto: qué es la plataforma y cómo se conectan sus cinco
+ * productos. Abre con el video de portada, lista los cinco con enlace a
+ * cada página, cuenta el escritorio por puesto y la capa que los une
+ * (Roombir IA), y cierra con los números. Ya no repite la home ni publica el
+ * catálogo interno de apps por área (IDENTIDAD-COMUNICACIONAL-2026.md §5).
+ */
 
 export async function generateMetadata({
   params,
@@ -26,7 +35,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return pageMetadata(lang, "/producto", dict.producto.meta.title, dict.producto.meta.description);
+  return pageMetadata(
+    lang,
+    "/producto",
+    dict.producto.meta.title,
+    dict.producto.meta.description,
+  );
 }
 
 export default async function ProductoPage({
@@ -38,6 +52,7 @@ export default async function ProductoPage({
   const dict = await getDictionary(lang);
   const t = dict.producto;
   const v = dict.vignettes;
+  const path = (href: string) => localePath(lang, href);
 
   return (
     <>
@@ -50,28 +65,55 @@ export default async function ProductoPage({
           <HeroActions
             locale={lang}
             dict={dict}
-            secondaryLabel={dict.common.seePricing}
-            secondaryHref="/precios"
           />
         }
-        aside={<TapeChart v={v} />}
+        aside={<SiteVideo piece="portada" locale={lang} t={dict.common.video} priority />}
       />
 
-      <Ticker items={dict.ticker} />
-
-      <section className="section section-tight">
+      {/* -------------------------------------------- los cinco productos -- */}
+      <section className="section section-paper2" id="productos">
         <div className="container container-wide">
-          <div data-reveal>
-            <SwapTable
-              rows={dict.home.swap.rows}
-              headOld={dict.home.swap.headOld}
-              headNew={dict.home.swap.headNew}
-            />
+          <SplitHead
+            locale={lang}
+            eyebrow={t.modules.eyebrow}
+            title={t.modules.title}
+            lead={t.modules.lead}
+          />
+          <div className={styles.products} data-reveal>
+            {PRODUCT_KEYS.map((key, i) => (
+              <Link
+                key={key}
+                href={path(PRODUCT_HREFS[key])}
+                className={[
+                  "card",
+                  "card-hover",
+                  styles.product,
+                  key === "ia" || key === "pms" ? styles.productWide : "",
+                ].join(" ")}
+              >
+                <span className={styles.productNum}>0{i + 1}</span>
+                <span className={styles.productTitle}>{t.modules.items[key].title}</span>
+                <span className={styles.productDesc}>{t.modules.items[key].desc}</span>
+                {key === "pms" && (
+                  <span className={styles.productParts} aria-hidden>
+                    {PMS_PARTS.map((part) => (
+                      <span key={part} className="pill">
+                        {dict.nav.pmsParts[part]}
+                      </span>
+                    ))}
+                  </span>
+                )}
+                <span className="link-arrow">
+                  {dict.common.seeMore}
+                  <ArrowRight />
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ------------------------------------------------ el escritorio ---- */}
+      {/* ------------------------------------------------- el escritorio -- */}
       <Split
         locale={lang}
         tone="ink"
@@ -82,53 +124,7 @@ export default async function ProductoPage({
         media={<SpaceSwitcher v={v} />}
       />
 
-      {/* ------------------------------------------------------ el catálogo */}
-      <section className="section">
-        <div className="container container-wide">
-          <SplitHead
-            locale={lang}
-            eyebrow={t.catalog.eyebrow}
-            title={t.catalog.title}
-            lead={t.catalog.lead}
-          />
-
-          <div className="grid grid-4" data-reveal>
-            {t.catalog.hubs.map((hub) => (
-              <article key={hub.hub} className="card">
-                <h3 className="h3" style={{ marginBottom: 12 }}>
-                  {hub.hub}
-                </h3>
-                <ul
-                  style={{
-                    listStyle: "none",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 6,
-                  }}
-                >
-                  {hub.apps.map((app) => (
-                    <li key={app} style={{ fontSize: 13.6, color: "var(--text-2)" }}>
-                      {app}
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------- módulos */}
-      <FeatureGrid
-        locale={lang}
-        tone="paper2"
-        eyebrow={t.modules.eyebrow}
-        title={t.modules.title}
-        lead={t.modules.lead}
-        items={t.modules.items}
-      />
-
-      {/* -------------------------------------------------------------- IA - */}
+      {/* ----------------------------------------------- la capa que une -- */}
       <Split
         locale={lang}
         flip
@@ -140,24 +136,23 @@ export default async function ProductoPage({
         media={<AgentTurn v={v} />}
       />
 
+      {/* ------------------------------------------------------- números -- */}
       <section className="section section-tight">
         <div className="container container-wide">
           <div data-reveal>
             <StatBand stats={t.stats} />
           </div>
-          <p className="small" style={{ marginTop: 18 }}>
+          <p className={styles.ask} data-reveal>
             {t.ask}{" "}
-            <Link
-              href={localePath(lang, "/contacto")}
-              className="link-arrow"
-              style={{ fontSize: 13.5 }}
-            >
+            <Link href={path("/contacto")} className="link-arrow">
               {t.askLink}
               <ArrowRight />
             </Link>
           </p>
         </div>
       </section>
+
+      <Faq items={dict.home.faq.slice(0, 4)} title={dict.common.faqTitle} locale={lang} />
 
       <CtaBand
         locale={lang}
@@ -166,6 +161,12 @@ export default async function ProductoPage({
         lead={t.cta.lead}
         steps={t.cta.steps}
       />
+
+      {/* Para el lector de pantalla y el buscador: el título de la página
+          repetido como resumen de los cinco. */}
+      <p className="sr-only">
+        <Headline text={t.hero.title} />
+      </p>
     </>
   );
 }

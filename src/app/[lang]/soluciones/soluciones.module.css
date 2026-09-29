@@ -1,0 +1,54 @@
+/* Lo exclusivo del índice de soluciones: las tarjetas por tipo (dos, anchas)
+   y por cargo (tres por fila en escritorio). */
+
+.types {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(14px, 1.6vw, 20px);
+}
+
+.roles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(14px, 1.6vw, 20px);
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.cardTitle {
+    font-size: clamp(18px, 1.8vw, 22px);
+    font-weight: 600;
+    letter-spacing: -0.024em;
+    line-height: 1.2;
+    color: var(--text);
+}
+
+.cardWide .cardTitle {
+    font-size: clamp(20px, 2.1vw, 26px);
+}
+
+.cardDesc {
+    font-size: 14.2px;
+    line-height: 1.58;
+    color: var(--text-2);
+    flex: 1;
+}
+
+@media (max-width: 980px) {
+    .roles {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 620px) {
+    .types,
+    .roles {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

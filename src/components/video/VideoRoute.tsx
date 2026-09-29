@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/config";
 import HeroVideo, { type LangLink } from "./HeroVideo";
 import type { VideoDict } from "./timeline";
 import type { Voiceover } from "@/lib/videoVo";
+import { useViewParam } from "./orientation";
 
 /**
  * Qué se ve en `/{lang}/video`: el reproductor, o el escenario pelado con
@@ -47,6 +48,9 @@ export default function VideoRoute({
     setModo(new URLSearchParams(window.location.search).get("embed") === "1" ? "embed" : "player");
   }, []);
 
+  // `?view=mobile`: el corte vertical (9:16) del mismo video.
+  const orient = useViewParam() ?? "landscape";
+
   if (modo === "embed") return <VideoEmbed locale={locale} v={v} />;
-  return <HeroVideo locale={locale} v={v} langs={langs} vo={vo} />;
+  return <HeroVideo key={orient} locale={locale} v={v} langs={langs} vo={vo} orient={orient} />;
 }

@@ -4,7 +4,7 @@ import type { BeatId } from "./timeline";
 /**
  * El guion de la voz en off, en los cinco idiomas.
  *
- * **Volcado de `VIDEO-LOCUCION-{ES,EN,PT,FR,DE}.md` (raíz del monorepo), que
+ * **Volcado de `locuciones/portada/{ES,EN,PT,FR,DE}.md` (raíz del monorepo), que
  * son la fuente.** Ahí está el texto tal como se pega en ElevenLabs; acá está
  * el mismo texto más el dato que los documentos no traen: en qué beat del video
  * cae cada bloque. Si se toca el texto, se toca allá y se vuelve a volcar con

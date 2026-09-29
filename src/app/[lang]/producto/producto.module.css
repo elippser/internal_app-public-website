@@ -1,0 +1,97 @@
+/* Lo exclusivo de /producto: la grilla de los cinco productos. */
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: clamp(14px, 1.6vw, 20px);
+}
+
+/* Roombir IA y el PMS en tres columnas cada uno (la primera fila); los otros
+   tres en dos columnas cada uno (la segunda). Seis columnas cierran las dos
+   filas sin hueco. */
+.product {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.productWide {
+    grid-column: span 3;
+}
+
+.productNum {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--brand);
+    padding-bottom: 10px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+    width: 100%;
+}
+
+.productTitle {
+    font-size: clamp(19px, 1.9vw, 24px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: var(--text);
+}
+
+.productDesc {
+    font-size: 14.2px;
+    line-height: 1.58;
+    color: var(--text-2);
+    flex: 1;
+}
+
+.productParts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.productParts :global(.pill) {
+    height: 26px;
+    font-size: 12px;
+}
+
+.ask {
+    margin-top: 18px;
+    font-size: 14px;
+    color: var(--text-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    align-items: center;
+}
+
+@media (max-width: 980px) {
+    .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .product,
+    .productWide {
+        grid-column: span 1;
+    }
+
+    .productWide {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 620px) {
+    .products {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .product,
+    .productWide {
+        grid-column: auto;
+    }
+}

@@ -556,6 +556,290 @@ export function LinkHubPhone({ v }: { v: V }) {
   );
 }
 
+/* ------------------------------------------------- estado de unidades ---- */
+
+const UNIT_STATE_CLASS: Record<string, string> = {
+  available: styles.stAvailable,
+  occupied: styles.stOccupied,
+  cleaning: styles.stCleaning,
+  maintenance: styles.stMaintenance,
+  blocked: styles.stBlocked,
+  checkout: styles.stCheckout,
+};
+
+/**
+ * El tablero de Estado de habitaciones (rooms-app): una tarjeta por unidad con
+ * su estado operativo, y abajo la última línea del historial — quién cambió
+ * qué y cuándo, que es lo que la máquina de estados deja escrito.
+ */
+export function UnitStates({ v }: { v: V }) {
+  const u = v.units;
+  const states = u.states as Record<string, string>;
+  return (
+    <Frame label={u.label} tag={u.tag}>
+      <div className={styles.units}>
+        {u.tiles.map((tile, i) => (
+          <div key={tile.code} className={styles.unitTile} style={delay(i * 0.06)}>
+            <span className={styles.unitCode}>{tile.code}</span>
+            <span className={styles.unitCat}>{tile.cat}</span>
+            <span className={[styles.unitState, UNIT_STATE_CLASS[tile.state] ?? ""].join(" ")}>
+              <i aria-hidden />
+              {states[tile.state] ?? tile.state}
+            </span>
+          </div>
+        ))}
+      </div>
+      <p className={styles.ruleNote}>{u.history}</p>
+    </Frame>
+  );
+}
+
+/* --------------------------------------------------------------- informes - */
+
+/** Las barras de la curva de demanda: reservas ya cargadas por día. */
+const DEMAND = [34, 42, 58, 71, 66, 48, 39, 44, 62, 88, 94, 76, 52, 47];
+
+/**
+ * La app de Informes: cuatro números con su delta contra el período
+ * anterior, la curva de demanda de los próximos días y la sección que la
+ * distingue, la que no mira lo que pasó sino lo que está mal cargado hoy.
+ */
+export function ReportsBoard({ v }: { v: V }) {
+  const r = v.reports;
+  return (
+    <Frame label={r.label} tag={r.tag}>
+      <div className={styles.kpis}>
+        {r.kpis.map((k) => (
+          <div key={k.label} className={styles.kpi}>
+            <span className={styles.kpiLabel}>{k.label}</span>
+            <span className={styles.kpiValue}>{k.value}</span>
+            <span className={styles.kpiDelta}>{k.delta}</span>
+          </div>
+        ))}
+      </div>
+      <p className={styles.kpiChartTitle}>{r.chart}</p>
+      <div className={styles.demand}>
+        {DEMAND.map((h, i) => (
+          <i key={i} style={{ height: `${h}%`, ...delay(i * 0.03) }} />
+        ))}
+      </div>
+      <p className={styles.kpiChartTitle}>{r.hygieneTitle}</p>
+      <div>
+        {r.hygiene.map((line) => (
+          <p key={line} className={styles.hygiene}>
+            <i aria-hidden />
+            {line}
+          </p>
+        ))}
+      </div>
+    </Frame>
+  );
+}
+
+/* ------------------------------------------------ expediente del destino - */
+
+/**
+ * El expediente del destino que arma Roombir IA antes de opinar: cada fila con
+ * el dato y de dónde salió. La última fila es la que importa: lo que no se
+ * pudo leer figura como faltante, nunca como cero.
+ */
+export function TourismDossier({ v, locale }: { v: V; locale: Locale }) {
+  const t = v.tourism;
+  return (
+    <Frame label={t.label} tag={t.tag}>
+      <div className={styles.dossierHead}>
+        <span className={styles.dossierPlace}>{t.place}</span>
+        <span className={styles.dossierUpdated}>{t.updated}</span>
+      </div>
+      <div>
+        {t.rows.map((row) => (
+          <div key={row.key} className={styles.dossierRow}>
+            <span className={styles.logKey}>{row.key}</span>
+            <span className={styles.logVal}>{renderRich(row.value, locale)}</span>
+            <span className={styles.dossierSrc}>{row.src}</span>
+          </div>
+        ))}
+        <div className={[styles.dossierRow, styles.dossierMissing].join(" ")}>
+          <span className={styles.logKey}>{t.missing.key}</span>
+          <span className={styles.logVal}>{t.missing.value}</span>
+          <span className={styles.dossierSrc}>—</span>
+        </div>
+      </div>
+      <p className={styles.ruleNote}>{t.note}</p>
+    </Frame>
+  );
+}
+
+/* -------------------------------------------------- el editor con captura - */
+
+/**
+ * El asistente del editor web: a la izquierda, el pedido con la captura de
+ * una web de referencia adjunta y lo que ejecutó; a la derecha, la sección
+ * que quedó armada en el lienzo, en borrador. La foto se marca como de
+ * relleno a propósito: es lo que pasa hoy (el asistente no usa tu librería).
+ */
+export function BuilderAi({ v }: { v: V }) {
+  const b = v.builder;
+  return (
+    <Frame label={b.label} tag={b.tag}>
+      <div className={styles.builder}>
+        <div className={styles.builderChat}>
+          <div className={styles.shot}>
+            <div className={styles.shotImg} aria-hidden>
+              <i />
+              <i />
+              <i />
+            </div>
+            <span className={styles.shotName}>{b.file}</span>
+          </div>
+          <p className={styles.builderAsk}>{b.ask}</p>
+          <div className={styles.builderTrace}>
+            {b.trace.map((line) => (
+              <p key={line.tool} className={styles.builderTraceLine}>
+                {line.tool}
+                <span>{line.ok}</span>
+              </p>
+            ))}
+          </div>
+        </div>
+        <div className={styles.canvas}>
+          <div className={styles.canvasPhoto}>
+            <span>{b.photo}</span>
+          </div>
+          <p className={styles.canvasTitle}>{b.title}</p>
+          <p className={styles.canvasSub}>{b.sub}</p>
+          <div className={styles.canvasBar}>
+            {b.bar.map((field, i) => (
+              <span
+                key={field}
+                className={i === b.bar.length - 1 ? styles.canvasBarGo : undefined}
+              >
+                {field}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Frame>
+  );
+}
+
+/* ------------------------------------------------------ identidad de marca */
+
+/** La paleta de ejemplo: la que saldría del logo de Cabañas del Alerce. */
+const BRAND_SWATCHES = ["#2f4a3a", "#b88a4e", "#e9e2d3", "#1f2a24"];
+
+/**
+ * La ficha de marca de una propiedad: el logo, la paleta que se extrajo de él,
+ * el tono, la tipografía sugerida por el tono, la frase, y quién la consume.
+ */
+export function BrandKit({ v }: { v: V }) {
+  const b = v.brand;
+  return (
+    <Frame label={b.label} tag={b.tag}>
+      <div className={styles.brandTop}>
+        <span className={styles.brandLogo} aria-hidden>
+          {b.logo}
+        </span>
+        <div>
+          <p className={styles.kpiChartTitle} style={{ margin: "0 0 6px" }}>
+            {b.palette}
+          </p>
+          <div className={styles.swatches}>
+            {BRAND_SWATCHES.map((hex, i) => (
+              <i key={hex} style={{ background: hex, ...delay(0.1 + i * 0.08) }} />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div>
+        {b.rows.map((row) => (
+          <div key={row.key} className={styles.logLine}>
+            <span className={styles.logKey}>{row.key}</span>
+            <span className={styles.logVal}>{row.value}</span>
+          </div>
+        ))}
+      </div>
+      <p className={styles.ruleNote}>{b.used}</p>
+    </Frame>
+  );
+}
+
+/* ---------------------------------------------------------------- reseñas - */
+
+/**
+ * La bandeja de reseñas: de dónde vino cada una, las estrellas, y si ya tiene
+ * respuesta pública o sigue esperando.
+ */
+export function ReviewsList({ v }: { v: V }) {
+  const r = v.reviews;
+  return (
+    <Frame label={r.label} tag={r.tag}>
+      <div>
+        {r.rows.map((row, i) => (
+          <div key={row.author} className={styles.review} style={delay(i * 0.1)}>
+            <div className={styles.reviewHead}>
+              <span className={styles.reviewSource}>{row.source}</span>
+              <span className={styles.reviewStars}>{row.stars}</span>
+              <span className={styles.reviewAuthor}>{row.author}</span>
+            </div>
+            <p className={styles.reviewText}>{row.text}</p>
+            <span
+              className={[
+                styles.reviewStatus,
+                row.status === "replied" ? styles.reviewReplied : "",
+              ].join(" ")}
+            >
+              <i aria-hidden />
+              {row.status === "replied" ? r.replied : r.pending}
+            </span>
+          </div>
+        ))}
+      </div>
+    </Frame>
+  );
+}
+
+/* ------------------------------------------------ compañía y propiedades - */
+
+/**
+ * Una compañía con dos propiedades, sus espacios de trabajo, y dos personas
+ * con acceso distinto: una ve todo, la otra sólo las cabañas.
+ */
+export function OrgTree({ v }: { v: V }) {
+  const o = v.org;
+  return (
+    <Frame label={o.label} tag={o.tag}>
+      <div className={styles.orgSwitch}>
+        <span className={styles.orgCompany}>{o.company}</span>
+        <span className={styles.orgSelect}>{o.select}</span>
+      </div>
+      <div className={styles.orgProps}>
+        {o.props.map((p, i) => (
+          <div key={p.name} className={styles.orgProp} style={delay(0.1 + i * 0.12)}>
+            <span className={styles.orgPropName}>{p.name}</span>
+            <span className={styles.orgPropMeta}>{p.meta}</span>
+            <span className={styles.orgSpaces}>
+              {p.spaces.map((s) => (
+                <span key={s}>{s}</span>
+              ))}
+            </span>
+          </div>
+        ))}
+      </div>
+      <p className={styles.kpiChartTitle}>{o.membersTitle}</p>
+      <div>
+        {o.members.map((m) => (
+          <div key={m.name} className={styles.orgMember}>
+            <span className={styles.orgMemberName}>{m.name}</span>
+            <span className={styles.orgMemberScope}>{m.scope}</span>
+          </div>
+        ))}
+      </div>
+    </Frame>
+  );
+}
+
 /* ------------------------------------------------- señales del sistema ---- */
 
 function SignalCheck() {

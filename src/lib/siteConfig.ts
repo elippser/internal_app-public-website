@@ -68,18 +68,7 @@ export const loginUrl =
  */
 export const contact = {
   email: "hola@roombir.com",
-  /** E.164 sin espacios, como pide la convención de teléfonos de la plataforma. */
-  whatsapp: "+5492611234567",
   instagram: "https://www.instagram.com/roombir.app/",
   linkedin: "https://www.linkedin.com/company/roombir/",
 };
 
-/**
- * El enlace de WhatsApp con el mensaje ya escrito. El texto viene del
- * diccionario del idioma activo: quien escribe desde la versión alemana no
- * tiene por qué mandar un mensaje en castellano.
- */
-export function whatsappUrlFor(message: string): string {
-  const number = contact.whatsapp.replace(/[^0-9]/g, "");
-  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
-}

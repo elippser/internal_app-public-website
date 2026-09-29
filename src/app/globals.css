@@ -16,7 +16,9 @@
        azul corporativo (Cloudbeds, Guesty, Apaleo, SiteMinder). */
     --paper: #f2efe8;
     --paper-2: #e9e5db;
-    --card: #fbfaf7;
+    /* Casi blanco: las pantallas del video flotan en blanco sobre el papel,
+       no en un papel un tono más claro. */
+    --card: #fdfcfa;
     --ink: #14150f;
     --ink-2: #1e2019;
     --ink-3: #2b2e25;
@@ -38,19 +40,35 @@
        3.7:1; este pasa 4.5:1 incluso sobre --paper-2. */
     --amber: #8f5b20;
 
+    /* El oscuro del video (escenas 12-16, `.gradientDeep`): un petróleo casi
+       monocromo con una pluma de luz arriba a la izquierda. Reemplaza a la
+       tinta oliva como fondo de las bandas oscuras; --ink sigue siendo el
+       color del texto y de los botones. */
+    --deep: #012d2b;
+    --deep-2: #0a3936;
+    --deep-3: #134541;
+
+    /* El énfasis de los titulares, calcado de `.gradWord` del video: Outfit
+       con un degradado musgo profundo → musgo → ámbar recortado al texto.
+       Sobre oscuro, pistacho → arena. */
+    --grad-text: linear-gradient(100deg, #2f4d18 0%, #4e6b28 45%, #8f5b20 100%);
+    --grad-text-ink: linear-gradient(100deg, #c8e293 0%, #b9dcb4 45%, #eac98a 100%);
+
     --line-ink: rgba(242, 239, 232, 0.14);
     --text-ink: #f2efe8;
     --text-ink-2: rgba(242, 239, 232, 0.66);
     /* 0.55 y no 0.42: sobre tinta, 0.42 quedaba en 3.7:1. */
     --text-ink-3: rgba(242, 239, 232, 0.55);
 
-    --radius: 18px;
+    --radius: 20px;
     --radius-sm: 12px;
-    --radius-lg: 28px;
+    --radius-lg: 32px;
 
     --shadow-sm: 0 1px 2px rgba(20, 21, 15, 0.05), 0 4px 14px rgba(20, 21, 15, 0.04);
     --shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset,
         0 10px 34px rgba(20, 21, 15, 0.07), 0 2px 6px rgba(20, 21, 15, 0.04);
+    /* La sombra de las pantallas del video: larga, baja y muy difusa. */
+    --shadow-float: 0 30px 70px rgba(20, 21, 15, 0.1), 0 3px 10px rgba(20, 21, 15, 0.05);
 
     /* Outfit es la tipografia de la marca: geometrica, con buena caja alta
        para titulares grandes. Inter quedo afuera para no cargar dos familias.
@@ -219,8 +237,8 @@ body:has([data-page="video"]) nextjs-portal {
 }
 
 .h2 {
-    font-size: clamp(27px, 3.5vw, 43px);
-    line-height: 1.07;
+    font-size: clamp(28px, 3.7vw, 47px);
+    line-height: 1.08;
 }
 
 .h3 {
@@ -229,17 +247,25 @@ body:has([data-page="video"]) nextjs-portal {
     letter-spacing: -0.022em;
 }
 
-/* La palabra en bastardilla de cada título. Un serif editorial sobre un sans
-   geométrico es lo único que hace que un titular de software no parezca los
-   otros veinte que la persona vio esta semana. */
+/* La palabra marcada de cada título (`*así*`). Era Instrument Serif itálica;
+   el video la abandonó por el mismo Outfit con el degradado de marca recortado
+   al texto, y el sitio lo sigue. El padding con margen negativo agranda la
+   caja sin mover nada: el recorte al texto no pinta fuera de la caja y se
+   comería las colas de la j, la g y los acentos. */
 .display em,
 .h1 em,
 .h2 em,
 .h3 em {
-    font-family: var(--serif);
-    font-style: italic;
-    font-weight: 400;
-    letter-spacing: -0.005em;
+    font-style: normal;
+    padding: 0.14em 0.06em;
+    margin: -0.14em -0.06em;
+    background-image: var(--grad-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
 }
 
 .eyebrow {
@@ -327,7 +353,7 @@ body:has([data-page="video"]) nextjs-portal {
 /* Las bandas oscuras son el ritmo del sitio: cada dos o tres secciones de papel
    entra una de tinta para que la página no sea un scroll plano. */
 .section-ink {
-    background: var(--ink);
+    background: var(--deep);
     color: var(--text-ink);
 }
 
@@ -348,8 +374,10 @@ body:has([data-page="video"]) nextjs-portal {
     color: var(--text-ink-3);
 }
 
+/* El lavado de menta de las escenas claras del video (#e2ead4 arriba que se
+   funde en el papel): distingue la sección sin cortarla con un bloque gris. */
 .section-paper2 {
-    background: var(--paper-2);
+    background: linear-gradient(180deg, #e2ead4 0%, #ebeee0 38%, var(--paper) 100%);
 }
 
 .section-head {
@@ -510,24 +538,30 @@ body:has([data-page="video"]) nextjs-portal {
 
 .card {
     background: var(--card);
-    border: 1px solid var(--line);
+    border: 1px solid rgba(20, 21, 15, 0.06);
     border-radius: var(--radius);
     padding: clamp(20px, 2.4vw, 30px);
+    box-shadow: 0 14px 40px rgba(20, 21, 15, 0.05), 0 1px 3px rgba(20, 21, 15, 0.04);
 }
 
 .card-hover {
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.card-hover:hover {
-    transform: translateY(-3px);
-    border-color: var(--line-2);
-    box-shadow: var(--shadow);
+@media (hover: hover) {
+    .card-hover:hover {
+        transform: translateY(-3px);
+        border-color: rgba(20, 21, 15, 0.1);
+        box-shadow: var(--shadow-float);
+    }
 }
 
+/* Sobre el petróleo las tarjetas son vidrio: un blanco muy bajo que deja
+   pasar la pluma de luz del fondo, como las pantallas de la escena 14. */
 .section-ink .card {
-    background: var(--ink-2);
-    border-color: var(--line-ink);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
 }
 
 .section-ink .card-hover:hover {
@@ -566,6 +600,19 @@ body:has([data-page="video"]) nextjs-portal {
     .grid-3,
     .grid-4 {
         grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Una tarjeta que ocupa dos columnas de la grilla (Roombir IA en /producto).
+   En una columna vuelve a ocupar una: `span 2` sobre una grilla de una sola
+   columna crea una columna implícita y la página desborda de costado. */
+.span-2 {
+    grid-column: span 2;
+}
+
+@media (max-width: 620px) {
+    .span-2 {
+        grid-column: auto;
     }
 }
 
@@ -759,18 +806,12 @@ body:has([data-page="video"]) nextjs-portal {
 
 /* ------------------------------------------------------------- acentos ---- */
 
-/* La palabra en bastardilla, ahora en color. Musgo sobre papel, pistacho sobre
-   tinta: es el toque de color más barato y más visible de todo el sitio. */
-.display em,
-.h1 em,
-.h2 em {
-    color: var(--brand);
-}
-
+/* Sobre el petróleo el degradado del énfasis va en claro. */
 .section-ink .display em,
 .section-ink .h1 em,
-.section-ink .h2 em {
-    color: var(--brand-bright);
+.section-ink .h2 em,
+.section-ink .h3 em {
+    background-image: var(--grad-text-ink);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -831,6 +872,9 @@ body:has([data-page="video"]) nextjs-portal {
     overflow: clip;
 }
 
+/* La pluma de `.gradientDeep`: una luz verde agua que nace arriba, entre el
+   25 y el 40 % del ancho, y se apaga hacia abajo; a la derecha, nada más que
+   el petróleo plano. Más baja que en el video: acá tiene texto encima. */
 .section-ink::before {
     content: "";
     position: absolute;
@@ -838,8 +882,8 @@ body:has([data-page="video"]) nextjs-portal {
     z-index: -1;
     pointer-events: none;
     background:
-        radial-gradient(38% 30% at 22% 22%, rgba(200, 226, 147, 0.09), transparent 65%),
-        radial-gradient(34% 28% at 78% 74%, rgba(199, 129, 74, 0.08), transparent 65%);
+        radial-gradient(34% 30% at 34% 18%, rgba(189, 214, 193, 0.2), rgba(102, 140, 129, 0.08) 55%, transparent 75%),
+        radial-gradient(30% 26% at 82% 80%, rgba(199, 129, 74, 0.07), transparent 65%);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -916,5 +960,18 @@ body:has([data-page="video"]) nextjs-portal {
 @media (prefers-reduced-motion: reduce) {
     .ticker-track[aria-hidden] {
         display: none;
+    }
+}
+
+/* ------------------------------------------------------------- táctil ---- */
+
+/* Los enlaces de texto con flecha miden 23 px de alto: en táctil se les da
+   un target de 40 px con aire arriba y abajo, sin mover nada en escritorio
+   (donde el puntero es fino y el hover ya ayuda). */
+@media (hover: none) and (pointer: coarse) {
+    .link-arrow {
+        min-height: 40px;
+        margin-block: -8px;
+        padding-block: 8px;
     }
 }

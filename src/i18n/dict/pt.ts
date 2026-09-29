@@ -1,4 +1,7 @@
 import type { Dictionary } from "./es";
+import { solPt } from "./sol/pt";
+import { platPt } from "./plat/pt";
+import { intelPt } from "./intel/pt";
 
 /**
  * Português do Brasil. As mesmas chaves de `es.ts` — o TypeScript não deixa
@@ -11,30 +14,33 @@ const pt: Dictionary = {
   site: {
     title: "Roombir · PMS, motor, site e revenue sem cinco fornecedores",
     description:
-      "Reservas, motor sem comissão, site, revenue management incluído e um assistente de IA que executa, sobre um único banco de dados. Preço publicado e sem fidelidade, para hotéis, chalés, hostels e aluguéis da América Latina.",
+      "Reservas, motor de reservas próprio, site, revenue management e um assistente de IA que executa, sobre um único banco de dados. Para hotéis, chalés, hostels e aluguéis da América Latina.",
     tagline: "Software hoteleiro sem cinco fornecedores",
     og: {
       title: "Sua hospedagem inteira, sem cinco fornecedores.",
-      lead: "Reservas, quartos, motor próprio, site, revenue e um assistente que executa. Com o preço à vista e sem fidelidade.",
+      lead: "Reservas, quartos, motor próprio, site, revenue e um assistente que executa. Sobre um único banco de dados, feito na Argentina.",
       chips: ["PMS", "Motor de reservas", "Sites", "Revenue", "LinkHub", "Roombir IA"],
     },
   },
 
   nav: {
+    menus: { ...solPt.menus, platformPromo: platPt.promo, solutionsPromo: platPt.solPromo, intelligence: intelPt.card },
     product: "Plataforma",
     platform: "A plataforma",
     contact: "Contato",
     login: "Entrar",
-    signup: "Começar grátis",
+    signup: "Começar",
     home: "roombir, início",
     openMenu: "Abrir menu",
     closeMenu: "Fechar menu",
     more: "Mais",
     skip: "Ir para o conteúdo",
     primary: "Principal",
-    megaFoot: "Sete produtos sobre um único banco de dados.",
+    megaFoot: "Tudo sobre um único banco de dados.",
     megaLink: "Ver a plataforma completa",
     language: "Idioma",
+    featured: "O assistente",
+    featuredMore: "O que você pode pedir",
     links: {
       solutions: "Soluções",
       pricing: "Preços",
@@ -43,39 +49,45 @@ const pt: Dictionary = {
     groups: {
       operation: "A operação",
       growth: "O crescimento",
-      newLayer: "A camada nova",
     },
     products: {
-      reservas: {
-        title: "Reservas e quartos",
-        desc: "Painel do dia, calendário, tarifas, disponibilidade e inventário físico.",
-      },
-      motor: {
-        title: "Motor de reservas",
-        desc: "A busca e o checkout que o hóspede vê, com calendário informativo.",
-      },
-      revenue: {
-        title: "Revenue · RMS",
-        desc: "Pace, concorrência, eventos e recomendações de tarifa com ciclo fechado.",
-      },
-      sitios: {
-        title: "Site e marca",
-        desc: "Builder com domínio próprio, LinkHub, galerias e avaliações.",
-      },
       ia: {
         title: "Roombir IA",
-        desc: "Um assistente com 272 ferramentas que opera o sistema com você.",
+        desc: "Toda a gestão, em uma conversa. Você pede e ele faz, com as suas permissões.",
       },
-      agentes: {
-        title: "Hospedagem agêntica",
-        desc: "llms.txt, availability.json e JSON-LD: reservável por uma IA.",
+      pms: {
+        title: "PMS",
+        desc: "Propriedades, quartos, reservas e o motor, sobre um único inventário.",
       },
+      informes: {
+        title: "Relatórios",
+        desc: "Ocupação, receita, cancelamentos, canais e o que está mal cadastrado hoje.",
+      },
+      revenue: {
+        title: "Revenue",
+        desc: "O preço de cada data, com o rastro do porquê e seu destino à vista.",
+      },
+      marketing: {
+        title: "Marketing",
+        desc: "Site com assistente, marca, arquivos, avaliações e LinkHub, conectados às suas reservas.",
+      },
+    },
+    pmsParts: {
+      propiedades: "Propriedades",
+      habitaciones: "Quartos",
+      reservas: "Reservas",
+      motor: "Motor de reservas",
     },
   },
 
+  plataformaCompleta: platPt.page,
+  intelligence: intelPt,
+  solucionesIndex: solPt.index,
+  solucionesPaginas: solPt.pages,
+
   footer: {
     claim:
-      "Reservas, quartos, motor próprio, site, revenue e um assistente que executa, sobre um único banco de dados. Preço publicado, sem fidelidade, feito na Argentina.",
+      "Reservas, quartos, motor próprio, site, revenue e um assistente que executa, sobre um único banco de dados.",
     nav: "Rodapé",
     columns: {
       product: "Plataforma",
@@ -85,7 +97,6 @@ const pt: Dictionary = {
     },
     company: {
       about: "Quem somos",
-      status: "Estado do produto",
       compare: "Comparativos",
       pricing: "Preços",
       contact: "Contato",
@@ -102,7 +113,6 @@ const pt: Dictionary = {
       glamping: "Glamping e villas",
       grupos: "Grupos e redes pequenas",
     },
-    madeIn: "Feito na Argentina",
     agentNote: "este site também tem llms.txt",
     social: {
       instagram: "Roombir no Instagram",
@@ -112,7 +122,7 @@ const pt: Dictionary = {
   },
 
   common: {
-    startFree: "Começar grátis",
+    startFree: "Começar",
     seePlatform: "Ver a plataforma",
     seePricing: "Ver preços",
     talkToUs: "Falar com a gente",
@@ -124,14 +134,24 @@ const pt: Dictionary = {
     noInstall: "Nada para instalar",
     guidedSignup: "Cadastro guiado em nove passos",
     inSpanish: "Cinco idiomas, feito na Argentina",
+    video: {
+      label: "Vídeo de apresentação",
+      play: "Reproduzir",
+      pause: "Pausar",
+      unmute: "Ativar o som",
+      mute: "Silenciar",
+      close: "Fechar o vídeo",
+      volume: "Volume",
+      progress: "Progresso do vídeo",
+    },
   },
 
   ticker: [
-    "Preço publicado, sem fidelidade",
+    "Um único banco de dados para tudo",
     "Tape chart com prévia",
-    "Revenue incluído, não um módulo à parte",
+    "Revenue com o porquê de cada tarifa",
     "llms.txt · legível por uma IA",
-    "272 ferramentas que executam",
+    "Um assistente que executa",
     "10 moedas, câmbio congelado no check-in",
     "E-mails ao hóspede sem configurar SMTP",
     "LinkHub com QR",
@@ -276,6 +296,139 @@ const pt: Dictionary = {
       bio: "Villa La Angostura · Neuquén",
       blocks: ["Reservar online", "WhatsApp", "Fotos dos chalés", "Como chegar", "Avaliações · 4.8"],
     },
+    units: {
+      label: "Quartos · Status",
+      tag: "andar 2",
+      states: {
+        available: "Disponível",
+        occupied: "Ocupado",
+        cleaning: "Limpeza",
+        maintenance: "Manutenção",
+        blocked: "Bloqueado",
+        checkout: "Saída pendente",
+      },
+      tiles: [
+        { code: "201", cat: "Duplo", state: "occupied" },
+        { code: "202", cat: "Duplo", state: "checkout" },
+        { code: "203", cat: "Duplo Superior", state: "cleaning" },
+        { code: "204", cat: "Duplo Superior", state: "available" },
+        { code: "205", cat: "Triplo", state: "maintenance" },
+        { code: "206", cat: "Suíte", state: "blocked" },
+      ],
+      history: "203 · saída pendente → limpeza · Lucía · 11:42",
+    },
+    reports: {
+      label: "Relatórios",
+      tag: "últimos 30 dias",
+      kpis: [
+        { label: "Ocupação", value: "72%", delta: "+8 pts" },
+        { label: "ADR", value: "$96.600", delta: "+6%" },
+        { label: "RevPAR", value: "$69.500", delta: "+18%" },
+        { label: "Cancelamento", value: "6%", delta: "−2 pts" },
+      ],
+      chart: "Demanda · próximos 14 dias",
+      hygieneTitle: "Status e gestão",
+      hygiene: [
+        "2 reservas pendentes sem confirmação há mais de 24 h",
+        "1 chegada de hoje sem quarto atribuído",
+        "1 saída de hoje que ainda está em check-in",
+      ],
+    },
+    tourism: {
+      label: "Roombir IA · Panorama turístico",
+      tag: "dossiê",
+      place: "Mendoza · março",
+      updated: "atualizado há 2 h",
+      rows: [
+        { key: "feriados", value: "Carnaval **3 e 4** · feriado prolongado", src: "calendário" },
+        { key: "eventos", value: "Fiesta de la Vendimia · **7 mar** · a 4 km", src: "agenda" },
+        { key: "clima", value: "máxima média **29°** · 2 dias de chuva", src: "clima" },
+        { key: "voos", value: "rotas observadas em MDZ: **Santiago, São Paulo, Aeroparque**", src: "ADS-B" },
+        { key: "câmbio", value: "para um brasileiro, Mendoza está **mais barata** que há um ano", src: "câmbio real" },
+      ],
+      missing: { key: "a pé", value: "não foi possível ler · fica de fora" },
+      note: "Cada dado com sua fonte. O que não pôde ser lido aparece como faltante, nunca como zero.",
+    },
+    builder: {
+      label: "Editor · Assistente",
+      tag: "rascunho",
+      file: "referencia.png",
+      ask: "Monte a capa como a desta captura, com os meus textos",
+      trace: [
+        { tool: "ler a captura", ok: "hero + busca" },
+        { tool: "adicionar seção · capa", ok: "ok" },
+        { tool: "conectar motor de reservas", ok: "ok" },
+      ],
+      photo: "foto de preenchimento · trocar",
+      title: "Cabañas del Alerce",
+      sub: "Seis chalés de montanha em Villa La Angostura",
+      bar: ["Chegada", "Saída", "2 adultos", "Buscar"],
+    },
+    brand: {
+      label: "Marca",
+      tag: "Cabañas del Alerce",
+      logo: "A",
+      palette: "Paleta · tirada do logo",
+      rows: [
+        { key: "tom", value: "Caloroso e próximo" },
+        { key: "tipografia", value: "Serif clássica · sugerida pelo tom" },
+        { key: "frase", value: "Seis chalés entre o lago e o bosque" },
+        { key: "perto", value: "Lago Nahuel Huapi · 800 m" },
+      ],
+      used: "O site, o LinkHub, o motor e os dados para buscadores usam essa marca.",
+    },
+    reviews: {
+      label: "Avaliações",
+      tag: "4,8 · 126 avaliações",
+      rows: [
+        {
+          source: "Google",
+          stars: "★★★★★",
+          author: "Paula R.",
+          text: "O chalé impecável e a vista para o lago, o melhor da viagem.",
+          status: "replied",
+        },
+        {
+          source: "Booking",
+          stars: "★★★★☆",
+          author: "Marcos T.",
+          text: "Tudo muito bonito. O último trecho do caminho é de cascalho.",
+          status: "pending",
+        },
+        {
+          source: "Airbnb",
+          stars: "★★★★★",
+          author: "Julia M.",
+          text: "Voltamos com certeza. A Coihue é enorme para quatro.",
+          status: "replied",
+        },
+      ],
+      replied: "respondida",
+      pending: "sem resposta",
+    },
+    org: {
+      label: "Empresa",
+      tag: "2 propriedades",
+      company: "Grupo Andino",
+      select: "Hotel del Parque ▾",
+      props: [
+        {
+          name: "Hotel del Parque",
+          meta: "Mendoza · ARS · UTC−3",
+          spaces: ["Recepção", "Limpeza", "Revenue"],
+        },
+        {
+          name: "Cabañas del Alerce",
+          meta: "Villa La Angostura · ARS · UTC−3",
+          spaces: ["Recepção", "Marketing"],
+        },
+      ],
+      membersTitle: "Quem vê o quê",
+      members: [
+        { name: "Martín Sosa", scope: "todas · Administração" },
+        { name: "Lucía Paz", scope: "só Cabañas del Alerce · Recepção" },
+      ],
+    },
     signals: {
       revenue: "revenue · sáb 21/03",
       applied: "aplicada no motor",
@@ -300,9 +453,33 @@ const pt: Dictionary = {
     upToUsers: "Até {n} usuários",
     noPropertyLimit: "Sem limite de propriedades",
     noUserLimit: "Sem limite de usuários",
+    catalog: {
+      plans: {
+        "inicial": { tagline: "Para colocar a hospedagem em operação e receber reservas online", description: "O núcleo do PMS: quartos, reservas e o motor público. Gratuito por tempo limitado para testar a plataforma com dados reais." },
+        "profesional": { tagline: "A hospedagem completa: operação, marketing e presença web", description: "Soma site, identidade de marca, galerias, avaliações, LinkHub e relatórios ao núcleo operacional. É o plano que atende a maioria das hospedagens pequenas e médias." },
+        "full-system": { tagline: "Todo o roombir, incluindo revenue management e o assistente de IA", description: "Todos os produtos da plataforma: o núcleo operacional, marketing completo, Revenue (RMS), presença online e Roombir IA com créditos mensais." },
+      },
+      products: {
+        "habitaciones": { name: "Quartos", description: "Inventário físico: categorias, unidades, status operacionais e mapa de ocupação." },
+        "reservas": { name: "Reservas", description: "Operação comercial do dia a dia: painel do dia, lista e calendário de reservas, lançamento manual, tarifas, disponibilidade e promoções." },
+        "motor": { name: "Motor de reservas", description: "A busca e o checkout que o hóspede vê, com seu estúdio de configuração. Superfície pública: não abre pelo menu do PMS." },
+        "informes": { name: "Relatórios", description: "Análise operacional da hospedagem: ocupação, receita, produção por canal e fechamentos." },
+        "revenue": { name: "Revenue (RMS)", description: "Revenue management: pace, compset, eventos de demanda, regras e recomendações de tarifa." },
+        "website": { name: "Sites", description: "Construtor de sites e o renderizador que os publica: multi-idioma, domínio próprio, SEO e GEO." },
+        "marca": { name: "Identidade de marca", description: "Logo, paleta, tom, narrativa e contato público da propriedade. Alimenta o site, o motor e o LinkHub." },
+        "galerias": { name: "Galerias", description: "Galerias multimídia da propriedade e de seus quartos." },
+        "resenas": { name: "Avaliações", description: "Avaliações de hóspedes, respostas públicas e seu reflexo no site e no motor." },
+        "linkhub": { name: "LinkHub", description: "Página link-in-bio da hospedagem para redes sociais, com seu renderizador público." },
+        "social-hub": { name: "Presença online", description: "Redes sociais, Google Business Profile, anúncios em OTAs e controle de SEO/GEO. Hoje oculto do menu do PMS." },
+        "archivos": { name: "Biblioteca de arquivos", description: "Armazenamento compartilhado de imagens e documentos da hospedagem." },
+        "staypass": { name: "StayPass", description: "Portal do hóspede: conta, reservas e perfil. Superfície pública, não abre pelo PMS." },
+      },
+    },
     homeTitle: "Um só sistema, um só preço",
     homeSubtitle:
       "Tudo o que uma hospedagem precisa para operar e vender, sem cinco fornecedores e sem comissão por reserva.",
+    empty:
+      "Não conseguimos carregar os planos agora. São mensais, por hospedagem, sem comissão por reserva e sem fidelidade: [fale com a gente](/contacto) e mandamos os valores.",
     matrix: {
       caption: "O que cada plano do Roombir inclui",
       product: "Produto",
@@ -323,33 +500,33 @@ const pt: Dictionary = {
     meta: {
       title: "Criar conta · roombir",
       description:
-        "Conte sobre a sua hospedagem e enviamos por e-mail o acesso para criar a sua conta. Gratis e sem cartao.",
+        "Conte sobre a sua hospedagem e enviamos por e-mail o acesso para criar a sua conta.",
     },
-    eyebrow: "Comecar",
+    eyebrow: "Começar",
     title: "Conte sobre a sua *hospedagem*.",
-    lead: "Quatro dados e enviamos o acesso por e-mail. O cadastro leva uma tarde e nao pedimos cartao.",
+    lead: "Quatro dados e enviamos o acesso por e-mail. O cadastro leva uma tarde e é você quem faz.",
     checks: [
-      "Plano gratuito para comecar, **sem cartao**",
-      "Migramos suas reservas e tarifas junto com voce",
-      "Motor de reservas proprio, sem comissao por reserva",
+      "Cadastro guiado em nove passos, **sem instalar nada**",
+      "Migramos suas reservas e tarifas junto com você",
+      "Motor de reservas próprio, no seu site e no seu LinkHub",
       "Atendimento de gente de verdade, no seu idioma",
     ],
     steps: [
-      { title: "Voce preenche o formulario", text: "Quatro dados da hospedagem e o seu e-mail." },
-      { title: "O acesso chega", text: "Um link pessoal, de uso unico, que abre o cadastro." },
-      { title: "Voce cria a sua senha", text: "E entra no sistema com o cadastro guiado de nove passos." },
+      { title: "Você preenche o formulário", text: "Quatro dados da hospedagem e o seu e-mail." },
+      { title: "O acesso chega", text: "Um link pessoal, de uso único, que abre o cadastro." },
+      { title: "Você cria a sua senha", text: "E entra no sistema com o cadastro guiado de nove passos." },
     ],
     form: {
       groupProperty: "Sua hospedagem",
       groupContact: "Seus dados",
       hotelName: "Nome da hospedagem",
-      hotelNamePlaceholder: "Hotel Los Alamos",
+      hotelNamePlaceholder: "Hotel Los Álamos",
       lodgingType: "Tipo",
       lodgingTypes: {
         hotel: "Hotel",
         apart_hotel: "Apart hotel",
         hostel: "Hostel",
-        cabins: "Chales",
+        cabins: "Chalés",
         inn_bnb: "Pousada ou B&B",
         apartment: "Apartamentos",
         house: "Casa",
@@ -363,49 +540,49 @@ const pt: Dictionary = {
       },
       units: "Quartos ou unidades",
       unitsPlaceholder: "12",
-      unitsHint: "Os que voce pode vender hoje.",
-      country: "Pais",
+      unitsHint: "Os que você pode vender hoje.",
+      country: "País",
       countryCommon: "Mais frequentes",
-      countryAll: "Todos os paises",
+      countryAll: "Todos os países",
       city: "Cidade",
-      cityPlaceholder: "Florianopolis",
+      cityPlaceholder: "Florianópolis",
       contactName: "Seu nome",
       contactNamePlaceholder: "Nome e sobrenome",
       email: "Seu e-mail",
       emailPlaceholder: "voce@suahospedagem.com",
-      emailHint: "E para la que vai o acesso, entao use um que voce leia.",
+      emailHint: "É para lá que vai o acesso, então use um que você leia.",
       phone: "Telefone ou WhatsApp",
       phonePlaceholder: "+55 11 …",
       optional: "opcional",
-      choose: "Escolha uma opcao",
-      honeypot: "Nao preencher",
+      choose: "Escolha uma opção",
+      honeypot: "Não preencher",
       submit: "Receber o acesso",
       sending: "Enviando…",
       legal:
-        "Usamos seus dados apenas para dar acesso e acompanhar o cadastro. Voce pode pedir a exclusao quando quiser. Mais na [politica de privacidade](/legal/privacidad).",
+        "Usamos seus dados apenas para dar acesso e acompanhar o cadastro. Você pode pedir a exclusão quando quiser. Mais na [política de privacidade](/legal/privacidad).",
       errors: {
         hotelName: "Escreva o nome da sua hospedagem.",
         lodgingType: "Escolha o tipo de hospedagem.",
-        units: "Informe quantos quartos ou unidades voce tem.",
-        country: "Escolha o pais.",
+        units: "Informe quantos quartos ou unidades você tem.",
+        country: "Escolha o país.",
         city: "Escreva a cidade.",
         contactName: "Escreva o seu nome.",
         emailRequired: "Escreva o seu e-mail.",
-        emailInvalid: "Esse e-mail nao parece valido.",
-        disposable: "Use um endereco permanente: o acesso vai para la.",
+        emailInvalid: "Esse e-mail não parece válido.",
+        disposable: "Use um endereço permanente: o acesso vai para lá.",
         rate: "Tentativas demais seguidas. Tente de novo em alguns minutos.",
-        mail: "Nao conseguimos enviar o e-mail. Tente de novo em alguns minutos.",
-        generic: "Nao conseguimos enviar. Escreva para hola@roombir.com.",
-        network: "Nao conseguimos conectar. Verifique a conexao e tente de novo.",
+        mail: "Não conseguimos enviar o e-mail. Tente de novo em alguns minutos.",
+        generic: "Não conseguimos enviar. Escreva para hola@roombir.com.",
+        network: "Não conseguimos conectar. Verifique a conexão e tente de novo.",
       },
       done: {
         title: "Confira o seu e-mail",
-        text: "Enviamos o acesso para {email}. O link e pessoal e vale uma unica vez.",
-        textNoEmail: "Enviamos o acesso por e-mail. O link e pessoal e vale uma unica vez.",
+        text: "Enviamos o acesso para {email}. O link é pessoal e vale uma única vez.",
+        textNoEmail: "Enviamos o acesso por e-mail. O link é pessoal e vale uma única vez.",
         notes: [
-          "Se nao aparecer em alguns minutos, veja em spam ou promocoes.",
+          "Se não aparecer em alguns minutos, veja em spam ou promoções.",
           "O link vence em 7 dias.",
-          "Se errou o endereco, preencha o formulario de novo.",
+          "Se errou o endereço, preencha o formulário de novo.",
         ],
       },
     },
@@ -434,27 +611,51 @@ const pt: Dictionary = {
       "Usamos seus dados só para falar com você sobre o roombir. Pode pedir para apagá-los quando quiser. Mais na [política de privacidade](/legal/privacidad).",
     doneTitle: "Pronto, chegou.",
     doneText:
-      "A gente escreve nas próximas horas. Se preferir não esperar, pode começar o cadastro agora mesmo: é grátis e não pede cartão.",
+      "A gente escreve nas próximas horas. Se preferir não esperar, pode começar o cadastro agora mesmo: é guiado e é você quem faz.",
   },
 
   home: {
     hero: {
-      l1a: "Sua",
-      l1b: "hospedagem,",
-      l2: "inteira,",
-      pill: "e com o preço\nà vista",
-      l3a: "sem cinco",
-      l3b: "fornecedores.",
-      notes: [
-        "Preço publicado",
-        "Sem fidelidade",
-        "Sem cartão nem instalação",
-        "Cinco idiomas, feito na Argentina",
+      l1a: "Tire sua",
+      l1b: "hospedagem",
+      l2: "do passado",
+      pill: "sem instalar\nnada",
+      l3a: "e faça-a",
+      l3b: "crescer.",
+      kicker: "Sistema de gestão para hospedagens",
+      lead: "Software para hotéis, chalés, hostels e aluguéis: reservas, motor de reservas próprio, site, revenue e um assistente de IA, sobre um único banco de dados.",
+    },
+
+    works: {
+      eyebrow: "O que muda",
+      title: "Gerencie toda a sua hospedagem *de um só lugar*.",
+      cardLabel: "Reserva atualizada",
+      items: [
+        {
+          title: "Nenhuma reserva duplicada",
+          text: "Seu site, seu LinkHub e a recepção vendem o mesmo inventário. Uma noite de uma unidade se vende uma só vez, e a disponibilidade muda na hora, sem sincronizar nada.",
+        },
+        {
+          title: "Delegue a operação ao assistente",
+          text: "Peça em uma frase: mover uma reserva, mudar uma tarifa, avisar o hóspede. Ele faz com as suas permissões e mostra o que tocou, com desfazer à mão.",
+        },
+        {
+          title: "Cobre o preço que cada data merece",
+          text: "O Revenue calcula o preço de cada data com o porquê à vista (ocupação, ritmo, eventos, concorrência) e aplica sozinho no motor.",
+        },
       ],
+    },
+    // La habitación en 3D bajo la cinta: la cámara sigue al cursor.
+    room: {
+      eyebrow: "Feito para hospedagens",
+      title: "Cada quarto, *no seu lugar*.",
+      lead: "Reservas, limpeza, tarifas e o hóspede de cada unidade vivem no mesmo banco de dados: o que muda em uma tela já mudou em todas.",
+      hint: "Mova o cursor para percorrê-lo",
+      label: "Ilustração 3D de um quarto",
     },
     swap: {
       eyebrow: "Por que existe",
-      title: "Sete produtos que você *compra separado* hoje.",
+      title: "O que você *compra separado* hoje.",
       lead:
         "Uma hospedagem pequena ou média não deveria precisar de cinco fornecedores e um consultor para operar digitalmente. Essa é a tese do roombir, e é o que decide cada escolha de produto lá dentro.",
       headOld: "O que você compra separado hoje",
@@ -470,36 +671,64 @@ const pt: Dictionary = {
       ],
     },
     modules: {
-      eyebrow: "A plataforma",
-      title: "Seis superfícies, *nenhuma ponte* entre elas.",
+      eyebrow: "O que é",
+      title: "Um só sistema, *nenhuma ponte* entre as partes.",
       lead:
         "Não são integrações que sincronizam de madrugada: são visões diferentes dos mesmos dados. Mudar o preço de uma categoria aparece no motor na hora, sem publicar nada.",
       items: {
-        reservas: {
-          title: "Reservas",
-          desc: "Painel do dia, calendário tape chart com arrastar e redimensionar, entrada manual, tarifas, disponibilidade e promoções.",
-        },
-        habitaciones: {
-          title: "Quartos",
-          desc: "O inventário físico: status operacional de cada unidade, planta de ocupação e gestão de categorias.",
-        },
-        motor: {
-          title: "Motor de reservas",
-          desc: "Sua busca e seu checkout, com um calendário que mostra preço e unidades restantes dia a dia.",
-        },
-        revenue: {
-          title: "Revenue · RMS",
-          desc: "Pace contra seu próprio histórico, comp-set, eventos de demanda, regras de preço e recomendações explicadas.",
-        },
-        sitios: {
-          title: "Site e LinkHub",
-          desc: "Construtor visual com domínio próprio e multi-idioma, galerias, avaliações, identidade de marca e link-in-bio.",
-        },
         ia: {
           title: "Roombir IA",
-          desc: "Um assistente com 272 ferramentas que consulta e opera o sistema, sempre com as suas permissões e nunca com as dele.",
+          desc: "Toda a gestão em uma conversa. Cria e move reservas, muda tarifas e edita o seu site, e antes de opinar sobre o seu destino lê um dossiê com quinze fontes datadas.",
+        },
+        pms: {
+          title: "PMS",
+          desc: "Propriedades, quartos, reservas e o motor que o hóspede vê, sobre um único inventário. Você cadastra uma vez e opera no calendário.",
+        },
+        informes: {
+          title: "Relatórios",
+          desc: "Ocupação, receita, cancelamentos e canais, e o que está mal cadastrado hoje.",
+        },
+        revenue: {
+          title: "Revenue",
+          desc: "O preço de cada data com o rastro do porquê, e a tarifa que entra sozinha no motor.",
+        },
+        marketing: {
+          title: "Marketing",
+          desc: "Site com assistente, marca, fotos, avaliações e LinkHub, tudo lendo suas reservas.",
         },
       },
+    },
+    how: {
+      eyebrow: "Como funciona",
+      title: "Da propriedade à reserva, *em quatro passos*.",
+      lead:
+        "Você cadastra uma vez e usa na ordem em que um dia de recepção acontece. Não há módulo que precise ser conectado a outro.",
+      steps: [
+        {
+          title: "Você cadastra a propriedade e os quartos",
+          text: "Tipo, endereço, moeda e contato; depois as categorias e as unidades, por pool ou com nome próprio. A disponibilidade se inicializa sozinha.",
+          href: "/producto/pms",
+          link: "Ver o PMS",
+        },
+        {
+          title: "Publica o seu site e o seu link com o motor dentro",
+          text: "O site e o LinkHub saem da mesma marca e leem o mesmo inventário. O hóspede vê o preço de cada dia e reserva sozinho.",
+          href: "/producto/marketing",
+          link: "Ver Marketing",
+        },
+        {
+          title: "As reservas entram e você as opera",
+          text: "Painel do dia, lista e calendário de fita. Uma noite de uma unidade se vende uma única vez, e o e-mail ao hóspede sai sem configurar nada.",
+          href: "/producto/pms",
+          link: "Ver Reservas",
+        },
+        {
+          title: "Os números e o preço, sem planilha",
+          text: "Relatórios sobre as mesmas reservas, Revenue com o porquê de cada tarifa e um assistente a quem você pede o resto em uma frase.",
+          href: "/producto/ia",
+          link: "Ver Roombir IA",
+        },
+      ],
     },
     spaces: {
       eyebrow: "O que ninguém mais tem",
@@ -573,7 +802,7 @@ const pt: Dictionary = {
       lead:
         "Não é um chat que explica onde clicar. Consulta disponibilidade, cria reservas, move uma estadia com prévia, ajusta tarifas, aprova eventos do RMS ou publica um site. E faz tudo isso com as suas permissões, não com as dele.",
       items: [
-        "272 ferramentas cobrindo praticamente toda a superfície do produto.",
+        "Tudo o que se faz no aplicativo pode ser pedido numa frase.",
         "Dá para ver a transcrição do turno: qual ferramenta usou e o que voltou.",
         "Responde com cartões acionáveis, não só com texto.",
         "Três camadas de permissão: filtro antes do turno, contexto no prompt e avaliação em cada chamada.",
@@ -607,11 +836,10 @@ const pt: Dictionary = {
       lead:
         "O Roombir está em piloto de mercado, então ainda não vamos te mostrar um contador de hotéis inflado. O que dá para mostrar é o que existe dentro do produto hoje.",
       items: [
-        { value: "23", label: "apps ativáveis por espaço de trabalho" },
-        { value: "272", label: "ferramentas que o assistente maneja" },
+        { value: "21", label: "apps ativáveis por espaço de trabalho" },
         { value: "38", label: "tours guiados sobre a tela real" },
         { value: "10", label: "moedas, com blue, MEP, CCL ou oficial para ARS" },
-        { value: "5", label: "idiomas de plataforma" },
+        { value: "5", label: "idiomas da plataforma" },
         { value: "1", label: "único banco de dados para todo o sistema" },
       ],
     },
@@ -653,46 +881,28 @@ const pt: Dictionary = {
     },
     commitments: {
       eyebrow: "O que os outros não dizem",
-      title: "Seis coisas que você pode *verificar* antes de falar com alguém.",
+      title: "Três coisas que você pode *verificar* antes de falar com alguém.",
       lead:
-        "Nesta categoria o preço se pede por formulário, a fidelidade aparece na segunda fatura e o que falta se descobre na terceira semana. Aqui é ao contrário: cada uma destas seis linhas tem um lugar onde se comprova.",
+        "Nesta categoria o que falta se descobre na terceira semana e a demo chega antes do produto. Aqui é ao contrário: cada uma destas três linhas tem um lugar onde se comprova.",
       verify: "Verificar",
       items: [
         {
-          key: "precio",
-          title: "Preço publicado",
-          text: "Os planos e o que cada um inclui estão no site, em HTML, com número. Saem do **mesmo catálogo que cobra** a sua conta.",
-          href: "/precios",
-        },
-        {
-          key: "permanencia",
-          title: "Sem fidelidade",
-          text: "Mensal. Se em duas semanas nada mudou para você, não há nada para cancelar nem ninguém que ligue para te segurar.",
-          href: "/legal/terminos",
-        },
-        {
-          key: "comision",
-          title: "0% sobre o que o seu motor vende",
-          text: "O que entra pelo seu link é inteiramente seu. Não há porcentagem por reserva nem taxa por transação.",
-          href: "/precios",
-        },
-        {
-          key: "rms",
-          title: "Revenue no catálogo, não à parte",
-          text: "Em quase todo lugar o RMS é um módulo cotado separadamente. Aqui é mais um produto, e o comparativo de planos diz em qual ele entra.",
-          href: "/producto/revenue",
-        },
-        {
-          key: "estado",
-          title: "Estado do produto público",
-          text: "O que funciona, o que funciona pela metade e o que não existe, área por área. **Channel manager e pagamentos, por exemplo, ainda não.**",
-          href: "/nosotros#estado",
+          key: "traza",
+          title: "Cada ação da IA, à vista",
+          text: "O assistente executa com as suas permissões e deixa a transcrição de cada turno: qual ferramenta usou, com quais dados e o que mudou, **com desfazer à mão**.",
+          href: "/producto/ia",
         },
         {
           key: "ia",
           title: "Uma IA consegue ler este site",
           text: "Tem seu próprio `llms.txt` com os mesmos números desta página. Praticamos antes de pedir isso a você.",
           href: "/llms.txt",
+        },
+        {
+          key: "alta",
+          title: "Cadastro guiado, sem instalar nada",
+          text: "Você se cadastra sozinho, em nove passos salvos no servidor, e entra pelo navegador. **Sem ligação prévia** nem implantação para esperar.",
+          href: "/crear-cuenta",
         },
       ],
     },
@@ -743,36 +953,6 @@ const pt: Dictionary = {
         "Comparativos escritos para servir mesmo que você não nos escolha: o que cada um faz melhor, o que ainda não fazemos e em que caso o outro é a escolha certa. Verificados contra o site público de cada um, com data.",
       link: "Ver todos os comparativos",
     },
-    honest: {
-      eyebrow: "Estado do produto",
-      title: "O que *ainda não* fazemos.",
-      lead:
-        "Estamos em piloto de mercado e preferimos que você saiba antes de começar, não na segunda semana. Estas são as quatro coisas que um concorrente grande tem e o Roombir não tem, hoje.",
-      link: "Ver o estado completo, área por área",
-      states: { none: "não existe", partial: "parcial" },
-      items: [
-        {
-          tag: "Channel manager",
-          state: "none",
-          text: "Não há sincronização de inventário nem de tarifas com OTAs. Existe um log de eventos que registra cada mudança de reserva para quando isso se conectar, mas hoje é um arquivo, não uma integração.",
-        },
-        {
-          tag: "Gateway de pagamento",
-          state: "none",
-          text: "Não se cobra online. A cobrança é no check-in, presencial, com a conversão de moeda congelada naquele momento.",
-        },
-        {
-          tag: "Tarifas de concorrentes",
-          state: "partial",
-          text: "O comp-set se descobre sozinho por proximidade e similaridade, mas as tarifas dos concorrentes externos são carregadas à mão. A conexão com provedores automáticos está preparada e não conectada.",
-        },
-        {
-          tag: "Presença online",
-          state: "partial",
-          text: "As fichas do Google Business e das OTAs são editadas e pontuadas dentro do sistema, mas não são publicadas por API: hoje se copiam à mão para o destino. As conexões de redes são declaradas.",
-        },
-      ],
-    },
     faq: [
       {
         q: "Serve para chalés e apartamentos, ou só para hotéis?",
@@ -799,22 +979,14 @@ const pt: Dictionary = {
         a: "Não, e é de propósito. O assistente opera **assumindo a sua identidade real** com uma permissão de vida curta reemitida a cada chamada. Antes do turno tiram-se da mão dele as ferramentas que o seu usuário não pode usar, e cada operação é reavaliada contra a política do serviço. Se no meio da conversa te revogarem um acesso, a ação seguinte falha e o assistente explica por quê.",
       },
       {
-        q: "Por que vocês publicam o preço se ninguém mais faz isso?",
-        a: "Porque a alternativa é você pedir por formulário, alguém te ligar e você descobrir o número na segunda reunião. Os planos saem do **mesmo catálogo que cobra a sua conta** e estão em HTML, então um modelo de IA também consegue lê-los quando alguém pergunta quanto custa um PMS. [Ver preços](/precios).",
-      },
-      {
-        q: "Tem fidelidade?",
-        a: "Não. O plano é mensal e não há multa por cancelar: você escreve para hola@roombir.com, damos um prazo razoável para baixar o que quiser guardar, e pronto. Está nos [termos](/legal/terminos), não em uma ligação.",
-      },
-      {
         q: "Qual é a diferença para o Cloudbeds ou o Little Hotelier?",
-        a: "Em três coisas que dá para verificar: o preço está publicado, não há fidelidade, e o revenue management e o assistente de IA estão no catálogo em vez de serem cotados à parte. E em duas que eles têm e nós ainda não: **channel manager** e **gateway de pagamento**. Colocamos por escrito, com data, nos [comparativos](/comparar).",
+        a: "Em três coisas que dá para verificar: o revenue management e o assistente de IA fazem parte do sistema, não são módulos adicionais; o assistente executa em vez de sugerir, e deixa a transcrição de cada turno; e tudo (reservas, motor, site, revenue) lê o mesmo banco de dados, sem sincronizações.",
       },
     ],
     cta: {
       title: "Coloque para rodar *esta semana*.",
       lead:
-        "O cadastro é guiado e não pede cartão. Se preferir que a gente acompanhe a carga de quartos — o passo que mais custa —, fazemos numa call curta.",
+        "O cadastro é guiado e é você quem faz. Se preferir que a gente acompanhe a carga de quartos — o passo que mais custa —, fazemos numa call curta.",
       steps: [
         "Você se cadastra e carrega a propriedade.",
         "Carregamos os quartos juntos, se você quiser.",
@@ -827,11 +999,11 @@ const pt: Dictionary = {
     meta: {
       title: "A plataforma",
       description:
-        "Sete produtos sobre um único banco de dados: reservas, quartos, motor, revenue, sites, portal do hóspede e um assistente de IA. O que cada um faz e como se conectam.",
+        "Roombir IA, o PMS (propriedades, quartos, reservas e motor), relatórios, revenue e marketing, sobre um único banco de dados. O que cada parte faz e como se conectam.",
     },
     hero: {
       eyebrow: "A plataforma",
-      title: "Sete produtos, *um único banco de dados*.",
+      title: "Cada parte do sistema, *sobre os mesmos dados*.",
       lead:
         "Todo o time entra pelo mesmo painel. Quartos, reservas e revenue aparecem embutidos ali dentro, herdando contexto e tema, então para quem trabalha é um só aplicativo — e para os dados, um só lugar.",
     },
@@ -849,7 +1021,7 @@ const pt: Dictionary = {
     },
     catalog: {
       eyebrow: "O catálogo",
-      title: "23 apps que *ligam e desligam*.",
+      title: "21 apps que *ligam e desligam*.",
       lead:
         "Um app se ativa por espaço de trabalho e com um nível: operar (o dia a dia), configurar (também muda os ajustes) ou nada. O espaço de administração vê o catálogo completo, incluindo apps adicionados depois.",
       hubs: [
@@ -884,32 +1056,28 @@ const pt: Dictionary = {
       title: "O que faz *cada parte*.",
       lead:
         "Cada um tem sua página com o detalhe completo. Todos leem e escrevem os mesmos dados: não há sincronização noturna nem importação de nada.",
-      items: [
-        {
-          title: "Reservas e quartos",
-          desc: "Painel do dia, lista com painel rápido, tape chart com mover e redimensionar, entrada manual, tarifas com cadeia de preços, disponibilidade com restrições e promoções. Do outro lado, o inventário físico com seis status operacionais e matriz de transições.",
+      items: {
+        ia: {
+          title: "Roombir IA",
+          desc: "Um assistente que opera o sistema inteiro em uma conversa: reservas, tarifas, quartos, o site, o revenue. Parte de um dossiê do seu destino com quinze fontes datadas e trabalha com as suas permissões.",
         },
-        {
-          title: "Motor de reservas",
-          desc: "Busca, resultados, detalhe, serviços, dados do hóspede e confirmação. Com calendário informativo, sete blocos de configuração visual e dois modos de confirmação. Embute no seu site ou funciona como página própria.",
+        pms: {
+          title: "PMS",
+          desc: "Propriedades com sua moeda e sua equipe; categorias vendidas como pool ou com nome próprio; painel do dia, lista e calendário de fita; e o motor onde o hóspede vê o preço de cada dia e reserva sozinho, em dez moedas.",
         },
-        {
-          title: "Revenue · RMS",
-          desc: "Analytics de eixo duplo — quando se reservou e quando se dorme —, pace contra seu próprio histórico, comp-set com descoberta automática, eventos de demanda, motor de regras com ensaio a seco e recomendações que empurram a tarifa para o motor.",
-        },
-        {
-          title: "Sites e marca",
-          desc: "Builder visual com biblioteca de componentes, componentes de domínio conectados a dados, multi-idioma, domínio próprio, popups, botão de WhatsApp e editor de SEO e GEO. Mais galerias, avaliações, identidade de marca e LinkHub.",
-        },
-        {
-          title: "StayPass",
-          desc: "O portal do hóspede: conta própria, minhas reservas, detalhe, cancelamento, perfil com documento e nacionalidade, e confirmação por token de email. Um mesmo hóspede acumula as hospedagens onde se cadastrou; cada hotel vê só a sua base.",
-        },
-        {
+        informes: {
           title: "Relatórios",
-          desc: "Ocupação e volume com projeção, ADR e RevPAR, lead time, estadia média, cancelamentos e última hora, produção por canal, e duas seções de higiene operacional que marcam o que está mal gerido, não só o que aconteceu.",
+          desc: "Ocupação, tarifa média, receita, cancelamentos e canais sobre as mesmas reservas que você opera, e uma seção com o que está mal cadastrado hoje.",
         },
-      ],
+        revenue: {
+          title: "Revenue",
+          desc: "Um documento de decisão por data com o rastro completo, pace contra seu próprio histórico, concorrência, eventos do seu destino e a tarifa que entra no motor ao aceitá-la.",
+        },
+        marketing: {
+          title: "Marketing",
+          desc: "O editor de site com assistente, a marca, a biblioteca de fotos, as galerias, as avaliações, o LinkHub e a camada que torna a sua hospedagem legível para uma IA.",
+        },
+      },
     },
     ia: {
       eyebrow: "A camada que une tudo",
@@ -917,24 +1085,23 @@ const pt: Dictionary = {
       lead:
         "Como os dados são um só, o agente faz em uma frase o que em outro stack são três abas e duas exportações: olhar o pace, ajustar uma tarifa e publicar a promo no site.",
       items: [
-        "272 ferramentas distribuídas por reservas, tarifas, disponibilidade, quartos, propriedades, revenue, marketing, arquivos, empresa e sistema.",
-        "Blocos de resposta ricos: cartões de reserva e de revenue com botões que executam, sujeitos à mesma verificação de permissões.",
-        "Histórico de sessões filtrado pelo espaço de trabalho ativo.",
+        "Opera reservas, tarifas, disponibilidade, quartos, propriedades, revenue, marketing, arquivos, empresa e sistema.",
+        "Cartões de reserva e de revenue com botões que executam, sujeitos à mesma verificação de permissões.",
+        "Histórico de conversas filtrado pelo espaço de trabalho ativo.",
       ],
       link: "Ver Roombir IA",
     },
     stats: [
-      { value: "23", label: "apps ativáveis" },
+      { value: "21", label: "apps ativáveis" },
       { value: "30", label: "widgets do painel adaptativo" },
       { value: "38", label: "tours guiados" },
-      { value: "272", label: "ferramentas do agente" },
     ],
     ask: "Procurava algo específico?",
     askLink: "Pergunte para a gente",
     cta: {
       title: "Venha *olhar por dentro*.",
       lead:
-        "O cadastro é gratuito e guiado. Se preferir que a gente mostre antes, peça uma demo e percorremos com os seus dados.",
+        "O cadastro é guiado. Se preferir que a gente mostre antes, peça uma demo e percorremos com os seus dados.",
       steps: [
         "Você cria a empresa e a propriedade.",
         "Carrega quartos e unidades.",
@@ -943,537 +1110,176 @@ const pt: Dictionary = {
     },
   },
 
-  reservas: {
+  pms: {
     meta: {
-      title: "Reservas e quartos",
+      title: "PMS",
       description:
-        "O coração operacional: painel do dia, calendário tape chart com mover e redimensionar, entrada manual, tarifas, disponibilidade, promoções e o inventário físico com seus seis status.",
+        "Propriedades, quartos e reservas em um só produto: você carrega a propriedade e os quartos uma vez, as reservas entram pelo motor ou à mão, e você as opera no painel do dia e no calendário.",
     },
     hero: {
-      eyebrow: "Reservas e quartos",
-      title: "O dia a dia, *em uma só grade*.",
+      eyebrow: "PMS · Propriedades, quartos e reservas",
+      title: "Sua hospedagem inteira, *em um só lugar*.",
       lead:
-        "Oito telas para a operação comercial e três para o inventário físico. Todas sobre o mesmo dado, então mover uma reserva no calendário muda o status do quarto, libera a noite no motor e aparece no relatório.",
+        "Você cadastra a propriedade e os quartos uma vez. As reservas entram pelo seu motor ou você as cadastra, e as opera no painel do dia e no calendário. É um único banco de dados: o que muda em uma tela já mudou em todas.",
     },
-    calendar: {
-      eyebrow: "Calendário",
-      title: "Você arrasta a reserva e *vê o que vai acontecer* antes de soltar.",
+    propiedades: {
+      eyebrow: "01 · Propriedades",
+      title: "Várias propriedades, *uma única conta*.",
       lead:
-        "A grade é quarto por dia, agrupada por categoria. Uma reserva se move de quarto ou de datas arrastando, e antes de aplicar a mudança o sistema mostra a prévia: se há conflito e o que acontece com o preço.",
+        "Um hotel em Mendoza e seis chalés em Villa La Angostura, com o mesmo usuário. Cada propriedade com sua moeda, seu fuso horário e sua equipe; cada pessoa vê só as que lhe cabem.",
       items: [
-        "Barras de bloqueio por manutenção ou uso interno, criáveis do próprio calendário e com a mesma trava de uma reserva.",
-        "Popover de detalhe ao clicar, sem sair da tela.",
-        "Toolbar com navegação por mês ou intervalo, hoje, busca por hóspede ou código, filtro por categoria e por status.",
-        "Estatísticas por categoria e por dia acima da grade.",
+        "**Acesso por propriedade e por função**: quem atende a recepção dos chalés entra nos chalés, com o menu de recepção; quem administra vê tudo.",
+        "**Espaços de trabalho por função** —recepção, limpeza, marketing, revenue—, cada um com seu menu e sua tela inicial.",
+        "**Todo o resto depende da propriedade**: quartos, reservas, marca, site, LinkHub e avaliações se cadastram uma vez. Você muda o telefone e ele muda em todo lugar.",
+        "**A segunda propriedade copia a estrutura da primeira**, e você troca de uma para outra com um seletor no topo, sem sair nem entrar de novo.",
       ],
     },
-    views: {
-      eyebrow: "As oito telas",
-      title: "Cada momento do turno, *a sua tela*.",
+    habitaciones: {
+      eyebrow: "02 · Quartos",
+      title: "Por categoria ou por unidade, *do seu jeito*.",
+      lead:
+        "Um hotel vende um duplo superior e atribui o 203 depois. Um complexo vende o chalé Alerce, com suas fotos e seu preço. O Roombir faz as duas coisas, e as duas ao mesmo tempo na mesma propriedade.",
+      items: [
+        "**Pool de categoria**: o hóspede compra “um duplo superior” e o sistema atribui o quarto, minimizando buracos ou distribuindo o desgaste. Ou deixa sem atribuir para a recepção decidir.",
+        "**Unidade com nome próprio**: a categoria envolve uma única unidade. O hóspede reserva o chalé Alerce, com suas fotos e seu preço.",
+        "**Seis status com histórico** —disponível, ocupado, limpeza, manutenção, bloqueado e saída pendente—, painel por andar e planta de ocupação.",
+        "**Cadastro em massa em dois passos** e bloqueios por metade do dia, que usam a mesma trava que uma reserva.",
+      ],
+    },
+    reservas: {
+      eyebrow: "03 · Reservas",
+      title: "Cada momento do turno, *sua tela*.",
+      lead:
+        "Oito telas sobre o mesmo dado: mover uma reserva no calendário muda o quarto, libera a noite no motor e aparece no relatório.",
       items: [
         {
           title: "Painel do dia",
-          desc: "Check-ins e check-outs do dia, com dois dias visíveis e navegação. É a tela com que a recepção abre o turno, com cartões acionáveis.",
+          desc: "Chegadas e saídas do dia, com cartões acionáveis. É a tela com que a recepção abre o turno.",
         },
         {
           title: "Todas as reservas",
-          desc: "Lista com filtros e um painel lateral que abre sem sair da lista: resumo, atividade e notas. Dali se atribui unidade, muda status e editam-se notas internas.",
+          desc: "A lista com filtros e um painel lateral que abre sem sair: resumo, atividade e notas. Dali se atribui o quarto e se muda o status.",
         },
         {
           title: "Calendário",
-          desc: "O tape chart: quarto por dia, mover e redimensionar com prévia, bloqueios, filtros e estatísticas.",
+          desc: "Quartos por dia. Você arrasta uma reserva ou a estica, e antes de soltar vê se choca com outra e o que acontece com o preço.",
         },
         {
           title: "Nova reserva",
-          desc: "Entrada manual ou walk-in com busca do hóspede, categoria, datas, ocupação por idade, canal de origem, promoções e notas.",
+          desc: "A que entrou por telefone ou por WhatsApp: hóspede, datas, ocupação por idade, canal de origem, promoções e notas.",
         },
         {
           title: "Tarifas",
-          desc: "Preço base por categoria mais planos tarifários com vigência, preço por noite, moeda, estadia mínima e ativação.",
+          desc: "Preço base por categoria e planos de tarifas com vigência, moeda e estadia mínima.",
         },
         {
           title: "Disponibilidade",
-          desc: "Grade com semáforo — livre, parcial, cheio, fechado — e restrições por dia: fechado, fechado na chegada, fechado na saída, estadia mínima e máxima.",
+          desc: "Sinal por dia —livre, parcial, cheio, fechado— e restrições: fechado na chegada ou na saída, estadia mínima e máxima.",
         },
         {
           title: "Promoções",
-          desc: "Assistente de três passos, automáticas ou com código, por porcentagem, valor fixo ou preço fixo por noite, com restrições e sua apresentação no site público.",
-        },
-        {
-          title: "Configuração do motor",
-          desc: "Moeda, confirmação, regras de estadia, calendário informativo, camada agêntica e horários. Mais o modelo de reservas: modo de venda e estratégia de atribuição.",
-        },
-      ],
-    },
-    chain: {
-      eyebrow: "Cadeia de preços",
-      title: "Quatro passos, *sempre na mesma ordem*.",
-      lead:
-        "Quando o motor precisa dizer quanto custa uma noite, resolve esta cadeia. Saber em que degrau está cada preço é a diferença entre confiar no sistema e auditá-lo à mão toda manhã.",
-      stepLabel: "passo {n}",
-      steps: [
-        {
-          title: "Override do RMS",
-          desc: "Se há uma recomendação de revenue aceita para aquela data, é ela que manda.",
-        },
-        {
-          title: "Plano tarifário",
-          desc: "O plano vigente para aquela categoria e aquela data, com sua moeda e seu mínimo de noites.",
-        },
-        {
-          title: "Preço base",
-          desc: "O da categoria. É o que o motor cobra enquanto você não carregar tarifas.",
-        },
-        {
-          title: "Promoções",
-          desc: "Aplicam-se por cima do preço que saiu dos três passos anteriores.",
-        },
-      ],
-    },
-    rooms: {
-      eyebrow: "Quartos",
-      title: "O inventário físico, *com status que não mentem*.",
-      lead:
-        "Seis status operacionais — disponível, ocupado, limpeza, manutenção, bloqueado e saída pendente — e uma matriz que define qual transição é válida. De 'ocupado' só se pode ir para 'saída pendente': o quadro não aceita status impossíveis.",
-      items: [
-        "**Status dos quartos**: quadro ao vivo com filtros por andar e categoria, e painel de detalhe com o histórico completo de mudanças — quem, quando e com que nota.",
-        "**Planta de ocupação**: visão espacial por andar com navegação de data, para ler a casa de relance.",
-        "**Gestão**: categorias com capacidade, preço base, fotos, comodidades e modo de venda auditado; unidades com código único, andar, capacidade própria e **criação em massa com prévia**.",
-      ],
-    },
-    detail: {
-      eyebrow: "Detalhe da reserva",
-      title: "Tudo o que aconteceu com aquela reserva, *em uma ficha*.",
-      items: [
-        {
-          title: "Linha do tempo de status",
-          desc: "Pendente, confirmada, check-in, check-out, mais cancelada e no-show. Com as ações disponíveis conforme o ponto em que está.",
-        },
-        {
-          title: "Serviços contratados",
-          desc: "Spa, café da manhã, late check-out, com quantidade, data e status. Preço e título congelam ao contratar: uma reserva antiga continua mostrando o que se cobrou então.",
-        },
-        {
-          title: "Valores em duas moedas",
-          desc: "O valor na moeda base e na moeda de cobrança, com a conversão viva até o check-in e congelada a partir dali.",
-        },
-        {
-          title: "Canal de origem fino",
-          desc: "Direto, telefone ou OTA, com identificador pontual — booking.com, airbnb, direct-web, phone-front-desk — para que o relatório por canal sirva para algo.",
-        },
-        {
-          title: "Notas e pedidos especiais",
-          desc: "Notas internas do time separadas dos pedidos do hóspede, para ninguém confundir uma coisa com a outra.",
-        },
-        {
-          title: "Log de auditoria",
-          desc: "Cada mudança relevante fica registrada, incluindo todo ajuste manual de valores. É o que se olha quando a conta não fecha.",
-        },
-      ],
-    },
-    faq: [
-      {
-        q: "O que acontece se duas pessoas reservam a mesma noite ao mesmo tempo?",
-        a: "Uma das duas falha. Cada noite de cada quarto é uma **trava única no banco de dados** — a chave é a unidade mais a data —, então a segunda escrita não entra. Não é uma validação no código que a concorrência consiga driblar: é o banco que impede.",
-      },
-      {
-        q: "Posso lançar reservas que entraram por telefone ou WhatsApp?",
-        a: "Sim, e convém. A entrada manual tem busca do hóspede por email, seleção de categoria e datas, ocupação separada em adultos, crianças e bebês — bebês não contam para capacidade nem para preço —, promoções e **canal de origem**. Esse último campo é o que depois te diz que parte das suas reservas ainda entra pelo chat.",
-      },
-      {
-        q: "Como se decide qual quarto cabe a cada reserva?",
-        a: "Depende de dois eixos. Se a categoria é de **unidade única**, há uma só opção. Se é um pool, a propriedade escolhe entre atribuição **manual** — a reserva fica “sem quarto” e a recepção decide — ou **automática**, onde o motor pontua e escolhe, com preferências opcionais de minimizar buracos ou equilibrar o desgaste. Cada reserva congela o modo com que nasceu, então mudar a configuração depois não reescreve a história.",
-      },
-    ],
-    cta: {
-      title: "Comece pelo *calendário*.",
-      lead:
-        "Você carrega os quartos uma vez e já tem a grade, o motor e a disponibilidade inicializada. O resto pode entrar quando quiser.",
-      steps: [
-        "Você carrega categorias e unidades.",
-        "A disponibilidade se inicializa sozinha.",
-        "O calendário e o motor ficam operacionais.",
-      ],
-    },
-  },
-
-  motor: {
-    meta: {
-      title: "Motor de reservas",
-      description:
-        "A busca e o checkout que o seu hóspede vê: calendário com preço e unidades restantes, sete blocos configuráveis sem código, dois modos de confirmação e emails sem configurar SMTP.",
-    },
-    hero: {
-      eyebrow: "Motor de reservas",
-      title: "O link que *substitui a conversa*.",
-      lead:
-        "Busca, resultados, detalhe, serviços, dados do hóspede e confirmação. É o seu motor, com a sua marca, sem comissão por reserva e com um calendário que diz ao hóspede o que ele precisa para decidir.",
-    },
-    calendar: {
-      eyebrow: "Calendário informativo",
-      title: "Um seletor de datas que *responde perguntas*.",
-      lead:
-        "O calendário comum pede duas datas e pronto. O do motor mostra, dia a dia e conforme o que você habilitar, tudo o que a pessoa ia perguntar por WhatsApp antes de reservar.",
-      items: [
-        "**Preço a partir de** em cada dia, resolvido pela cadeia de preços real: override do RMS, plano tarifário, preço base e promoções.",
-        "**Unidades restantes**, que é o sinal de escassez mais honesto que existe: é o seu inventário, não um contador inventado.",
-        "**Bandeiras** de dia fechado, fechado na chegada e fechado na saída, marcadas onde se olha.",
-        "**Aviso de mínimo de noites** ao escolher a entrada, para ninguém chegar ao fim do checkout e só ali descobrir.",
-        "Um botão mestre desliga tudo e ele volta a ser um seletor de datas comum. É seu, não nosso.",
-      ],
-    },
-    studio: {
-      eyebrow: "Estúdio do Motor",
-      title: "Sete blocos, *sem tocar em código*.",
-      lead:
-        "Cada tela do fluxo tem seu bloco de configuração, com seus textos, suas etiquetas e seus estilos. As mudanças se aplicam ao motor sem republicar o site.",
-      items: [
-        { title: "Busca", desc: "A busca de entrada: campos, etiquetas e o que se pede primeiro." },
-        {
-          title: "Calendário",
-          desc: "O botão mestre e o que o hóspede vê por dia: preços, unidades, bandeiras e avisos.",
-        },
-        {
-          title: "Hóspedes",
-          desc: "Como se pedem adultos, crianças e bebês. Bebês não contam para capacidade nem para preço.",
-        },
-        {
-          title: "Listagem",
-          desc: "Como se apresentam as categorias disponíveis e que informação acompanha cada uma.",
-        },
-        {
-          title: "Detalhe",
-          desc: "A ficha da categoria ou da unidade, com fotos, comodidades e descrição.",
-        },
-        {
-          title: "Serviços",
-          desc: "Os extras oferecidos antes de pagar, com sua janela de horário e antecedência mínima.",
-        },
-        { title: "Checkout", desc: "O formulário final: que dados se pedem e com que textos legais." },
-        {
-          title: "Tela de sucesso",
-          desc: "O que o hóspede vê ao terminar, que é onde se decide se ele volta a te escrever ou não.",
-        },
-      ],
-    },
-    agentic: {
-      eyebrow: "Camada agêntica",
-      title: "E *uma máquina também consegue ler*.",
-      lead:
-        "Com a camada agêntica ativa, o motor publica seu inventário em formatos pensados para modelos de linguagem, não só para navegadores. É uma aposta explícita de produto rumo à busca generativa.",
-      items: [
-        "`llms.txt` — a descrição da hospedagem em texto puro.",
-        "`availability.json` — a disponibilidade legível por máquina.",
-        "`engine-capabilities.json` — quais operações o motor aceita.",
-        "JSON-LD estruturado nas páginas do site.",
-      ],
-      link: "Ver a camada agêntica inteira",
-    },
-    after: {
-      eyebrow: "Depois do checkout",
-      title: "A reserva entra *e o sistema segue sozinho*.",
-      items: [
-        {
-          title: "A unidade é atribuída",
-          desc: "Conforme o modelo da propriedade: a única unidade possível se for 1:1, a que o motor escolhe se for pool automático, ou nenhuma se você preferir que a recepção decida.",
-        },
-        {
-          title: "O email sai",
-          desc: "Do domínio do roombir, com a sua caixa como responder-a. Sem configurar SMTP, sem domínio verificado, sem mais um provedor de email na lista.",
-        },
-        {
-          title: "A busca fica registrada",
-          desc: "Incluindo as buscas **sem disponibilidade**, que são as mais valiosas: alimentam o índice de demanda do RMS e o funil de conversão.",
-        },
-      ],
-      stats: [
-        { value: "0%", label: "de comissão por reserva do motor" },
-        { value: "10", label: "moedas, com blue, MEP, CCL ou oficial para ARS" },
-        { value: "2", label: "modos de confirmação, com expiração automática" },
-      ],
-    },
-    distribute: {
-      eyebrow: "Onde vai o link",
-      title: "No seu site, na sua bio e *no chat*.",
-      lead:
-        "O motor é uma superfície, não uma página. Vai embutido no site que você monta com o builder, como página própria, ou como o botão principal do seu LinkHub: a página link-in-bio que você põe no Instagram, com seu QR para baixar.",
-      items: [
-        "Componente do builder que se conecta sozinho ao seu inventário.",
-        "Página própria com a URL da sua hospedagem.",
-        "Bloco 'reservar' do LinkHub, com analítica de visitas e cliques.",
-        "Botão flutuante de WhatsApp no site, com mensagem pronta, para quem mesmo assim prefere escrever.",
-      ],
-    },
-    faq: [
-      {
-        q: "O motor vai dentro do meu site ou é uma página à parte?",
-        a: "As duas coisas. Embute como componente dentro do site que você monta com o builder, e também existe como página própria em `/sua-hospedagem`. Se você ainda não tem site, o link do motor já é algo que dá para mandar por WhatsApp ou pôr na bio do Instagram.",
-      },
-      {
-        q: "Posso mudar os textos e as cores do checkout?",
-        a: "Sim, pelo Estúdio do Motor e **sem tocar em código nem republicar o site**. São sete blocos configuráveis: busca, calendário, hóspedes, listagem, detalhe, serviços, checkout e tela de sucesso, cada um com seus textos, etiquetas e estilos.",
-      },
-      {
-        q: "Quem confirma a reserva?",
-        a: "Você escolhe. Num modo a reserva nasce pendente e **o hóspede confirma** com um link com token que chega por email. No outro, fica pendente até **a recepção aceitar**. Nos dois casos as pendentes expiram sozinhas conforme o tempo configurado, então você não fica com noites bloqueadas por alguém que nunca voltou.",
-      },
-      {
-        q: "Preciso configurar um servidor de email?",
-        a: "Não. Todos os emails ao hóspede saem do domínio do roombir, com a caixa da hospedagem como **responder-a**. É uma decisão deliberada: configurar SMTP por hotel é uma das frições clássicas do cadastro de um PMS e aqui simplesmente não existe.",
-      },
-    ],
-    cta: {
-      title: "Ponha seu link de reservas *na bio*.",
-      lead:
-        "Você carrega os quartos e o motor fica operacional com a disponibilidade inicializada. O site e o LinkHub entram depois, quando quiser.",
-      steps: [
-        "Você carrega categorias, unidades e preços.",
-        "Configura o motor no Estúdio.",
-        "Compartilha o link e para de perder consultas no chat.",
-      ],
-    },
-  },
-
-  revenue: {
-    meta: {
-      title: "Revenue · RMS",
-      description:
-        "Revenue management incluído: pace contra seu próprio histórico, comp-set com descoberta automática, eventos de demanda, motor de regras com ensaio a seco e recomendações que empurram a tarifa para o motor.",
-    },
-    hero: {
-      eyebrow: "Revenue · RMS",
-      title: "Um preço sugerido *que dá para auditar*.",
-      lead:
-        "Oito abas de revenue management embutidas no painel: analytics de eixo duplo, pace contra seu próprio histórico, comp-set, eventos de demanda, um motor de regras com ensaio a seco, e um documento de decisão por data que explica cada número.",
-    },
-    decision: {
-      eyebrow: "Decisões",
-      title: "A resposta para *“por que você sugere isso?”*",
-      lead:
-        "Há um documento por propriedade e por data com o rastro completo: que inputs o motor viu, qual era a tarifa base, qual sugeriu, que regras casaram, se um teto foi aplicado, e um log legível linha por linha.",
-      items: [
-        "Ocupação, índice de demanda, disponibilidade, tarifas de concorrentes, pickup e eventos: tudo o que entrou na conta, com seu valor.",
-        "Que regra casou e em que ordem, porque vence a última.",
-        "Se o teto mínimo ou máximo foi aplicado, e qual era.",
-        "O ciclo de vida da recomendação: sugerida, aceita ou recusada, aplicada, por quem e quando.",
-      ],
-    },
-    rules: {
-      eyebrow: "Cenários",
-      title: "Treze variáveis, *e um ensaio a seco*.",
-      lead:
-        "Cada regra avalia uma variável contra uma referência, dentro de uma janela de antecedência, e aplica uma ação. São avaliadas em ordem e vence a última que casa. Antes de ativar qualquer uma, o ensaio a seco mostra o que ela teria feito.",
-      items: [
-        "**Variáveis**: ocupação, índice de demanda, disponibilidade, tarifa de concorrente 1 a 5, pickup 7d, pickup 30d, impacto de eventos, dias até o evento mais próximo e índice de pace.",
-        "**Operadores**: maior, maior ou igual, igual, menor ou igual, menor.",
-        "**Ações**: ajuste percentual sobre a base, ou troca de plano tarifário.",
-        "**Tetos** de tarifa mínima e máxima, aplicados depois de todo o resto.",
-      ],
-    },
-    comp: {
-      eyebrow: "Concorrência",
-      title: "Um comp-set *misto e honesto*.",
-      lead:
-        "Os concorrentes que também usam Roombir trazem tarifa real. Os externos são descobertos sozinhos por proximidade e score de similaridade, e a tarifa deles você carrega — como referência fixa ou por data, que tem prioridade.",
-      items: [
-        "Score de similaridade por tipo, categoria, tamanho, faixa e região.",
-        "Perfil do seu próprio hotel, sincronizado do PMS a menos que você o sobreponha à mão.",
-        "Grade de tarifas de concorrentes por data.",
-        "Preparado para Lighthouse, RateGain, PriceLabs e KeyData; hoje sem conexão.",
-      ],
-    },
-    rest: {
-      eyebrow: "As outras abas",
-      title: "Tudo o que há *além do preço*.",
-      items: [
-        {
-          title: "Analytics de eixo duplo",
-          desc: "Eixo de criação — quando se reservou — com receita direta e de OTA, cancelamentos, antecedência, buscas e pickup. Eixo de estadia — quando se dorme — com ocupação, ADR, RevPAR e receita. Muitos sistemas misturam os dois e confundem.",
-        },
-        {
-          title: "Pace",
-          desc: "Ritmo de venda contra o comportamento histórico da sua própria propriedade, separado por dia da semana, mês e faixa de antecedência. Com curva, pickup e alertas de venda rápida ou lenta com limites configuráveis.",
-        },
-        {
-          title: "Eventos",
-          desc: "Feriados, feiras, shows e esportivos, ingeridos automaticamente e curados por você: sugerido, aprovado ou descartado. Um evento aprovado não é sobrescrito pela reingestão. Com score de relevância e impacto esperado.",
-        },
-        {
-          title: "Recomendações",
-          desc: "Tarifa atual, sugerida, delta e motivo. Ciclo de vida completo: sugerida, aceita ou recusada, aplicada, expirada ou substituída, com responsável e data.",
-        },
-        {
-          title: "Sinais de demanda",
-          desc: "Além das reservas, o índice de demanda usa as buscas do motor, incluindo as que não acharam disponibilidade — o sinal mais subestimado que uma hospedagem pequena tem.",
+          desc: "Automáticas ou com código, por porcentagem, valor fixo ou preço por noite, com sua apresentação pronta para o seu site.",
         },
         {
           title: "Configuração",
-          desc: "Comp-set, localização sincronizada do PMS com override manual, perfil do hotel, limites de pace, raio e horizonte de eventos, e tetos de tarifa.",
+          desc: "Moeda, confirmação, regras de estadia, horários e como os quartos são atribuídos. Mais o Estúdio do Motor para textos e cores.",
         },
       ],
     },
+    motor: {
+      eyebrow: "PMS · Motor de reservas",
+      title: "Um calendário que *responde antes de perguntar*.",
+      lead:
+        "O seletor de datas comum pede dois dias e pronto. O do motor mostra, dia a dia e conforme o que você habilitar, o que a pessoa ia perguntar por WhatsApp antes de reservar.",
+      items: [
+        "**Preço a partir de** em cada dia, calculado com as mesmas tarifas que o motor cobra.",
+        "**Unidades restantes**: o seu inventário real, não um contador inventado.",
+        "**Dias fechados**, fechados na chegada ou na saída, e o **mínimo de noites** ao escolher a entrada.",
+        "**O hóspede confirma por e-mail ou você confirma**: as pendentes vencem sozinhas, e o e-mail sai do domínio do roombir sem configurar nada.",
+      ],
+    },
+    prices: {
+      eyebrow: "Cada tarifa, individual",
+      title: "O preço de cada noite, *com o seu porquê*.",
+      lead:
+        "Quando o motor precisa dizer quanto custa uma noite, resolve uma cadeia fixa, sempre na mesma ordem. Saber de qual degrau sai cada preço é o que permite confiar no sistema sem auditá-lo toda manhã.",
+      items: [
+        "**Primeiro, o que você aceitou no Revenue**: se há uma tarifa recomendada e aceita para essa data, ela manda.",
+        "**Depois, o plano de tarifas** vigente para essa categoria e essa data, com sua estadia mínima.",
+        "**Se não há plano, o preço base** da categoria. Cada chalé pode ter o seu.",
+        "**Por cima de tudo, as promoções**: desconto ou acréscimo —uma promoção também pode subir o preço na alta temporada—, automáticas ou com código.",
+      ],
+    },
+    currency: {
+      eyebrow: "Dez moedas",
+      title: "O que o hóspede viu *não se mexe depois*.",
+      lead:
+        "O hóspede olha o preço na moeda dele e você cobra na sua. A reserva fica sempre na sua moeda base e a conversão congela no check-in: o valor que você cobra não muda depois.",
+      items: [
+        "Dólar, peso argentino, real, peso chileno, peso colombiano, peso mexicano, sol, peso uruguaio, euro e libra.",
+        "Para pesos argentinos você escolhe a cotação: oficial, blue, MEP ou CCL.",
+        "As taxas se atualizam a cada três horas e são marcadas como antigas se a fonte não respondeu.",
+        "Os relatórios somam direto, porque tudo fica na sua moeda base.",
+      ],
+    },
+    where: {
+      eyebrow: "Onde o motor aparece",
+      title: "No seu site, na bio *e para uma IA*.",
+      items: [
+        {
+          title: "O seu site",
+          desc: "Uma seção do editor de site que se conecta sozinha ao seu inventário.",
+        },
+        {
+          title: "O seu LinkHub",
+          desc: "O link da bio do Instagram abre o mesmo motor, idêntico ao do seu site.",
+        },
+        {
+          title: "Um link direto",
+          desc: "Uma página própria com o endereço da sua hospedagem, para mandar por WhatsApp se você ainda não tem site.",
+        },
+        {
+          title: "Agentes de IA",
+          desc: "Com a camada agêntica ligada, um assistente externo pode ler a sua disponibilidade e completar uma reserva. [Como funciona](/producto/marketing#agentes).",
+        },
+      ],
+    },
+    stats: [
+      { value: "8", label: "telas sobre o mesmo dado para operar as reservas" },
+      { value: "10", label: "moedas, com blue, MEP, CCL ou oficial para ARS" },
+      { value: "6", label: "status de quarto, com histórico" },
+      { value: "1", label: "trava por unidade e noite no banco de dados" },
+    ],
     faq: [
       {
-        q: "Tenho pouco histórico. O RMS serve mesmo assim?",
-        a: "Serve, mas vai te avisar. O benchmark de pace se monta com **o seu próprio histórico**, agrupado por dia da semana, mês e faixa de antecedência, e a interface **expõe o tamanho da amostra**. Se uma célula foi calculada com três reservas, você vai ver. Preferimos isso a te mostrar uma curva confiante construída sobre nada.",
+        q: "Como eu cobro as reservas?",
+        a: "No check-in, presencialmente. **Ainda não há gateway de pagamento integrado.** O que há é multimoeda de verdade: o hóspede olha na moeda dele, você cobra na sua e a conversão congela no check-in.",
       },
       {
-        q: "De onde saem as tarifas da concorrência?",
-        a: "De dois lugares. Se o concorrente também usa roombir, a tarifa é real. Se é externo, o sistema o **descobre sozinho** por geolocalização e score de similaridade — tipo, categoria, tamanho, faixa, região — mas **a tarifa você carrega**, como referência fixa ou por data. A conexão com provedores automáticos está preparada e ainda não conectada; não vamos dizer que sim até que esteja.",
+        q: "Conecta com Booking ou Expedia?",
+        a: "Ainda não: **o Roombir não tem channel manager**. Se você vende em OTAs, essa disponibilidade hoje é conciliada à mão. O sistema foi pensado para que a reserva direta —seu site, seu LinkHub, seu motor— deixe de se perder num chat.",
       },
       {
-        q: "Se eu aceitar uma recomendação, preciso copiar o preço em outro lugar?",
-        a: "Não. Ao aceitá-la, a recomendação **empurra um override de tarifa para o motor de reservas**, que passa a ser o passo 0 da cadeia de preços. O ciclo fecha dentro do sistema. Na maioria dos stacks esse passo é uma pessoa copiando um número de uma tela para outra.",
+        q: "O que acontece se duas pessoas reservam a mesma noite ao mesmo tempo?",
+        a: "Uma das duas falha. Cada noite de cada unidade é uma **trava única no banco de dados** —a chave é a unidade mais a data—, então a segunda escrita não entra. Não é uma validação no código que dê para driblar: é o banco que impede.",
       },
       {
-        q: "Está incluído ou se paga à parte?",
-        a: "Depende do plano. Nos sistemas grandes o RMS é quase sempre um módulo adicional cotado à parte; aqui é mais um produto do catálogo. [Veja os planos](/precios) para saber em qual entra.",
+        q: "Tenho chalés e quartos. Posso ter os dois?",
+        a: "Sim, na mesma propriedade. Os chalés entram como unidade com nome próprio e os quartos como pool, e convivem no mesmo calendário e no mesmo motor.",
+      },
+      {
+        q: "Quem confirma a reserva?",
+        a: "Você escolhe. Em um modo a reserva nasce pendente e **o hóspede a confirma** com um link que chega por e-mail. No outro, fica pendente até que **a recepção aceite**. Nos dois casos as pendentes vencem sozinhas.",
       },
     ],
     cta: {
-      title: "O preço *deixa de ser um palpite*.",
+      title: "Cadastre a propriedade e os quartos; *o motor fica pronto*.",
       lead:
-        "O RMS começa a servir assim que você tem histórico próprio, e enquanto não tiver, ele te diz na cara em vez de inventar uma curva.",
+        "O cadastro é guiado e é você quem faz. Se preferir que a gente acompanhe o cadastro dos quartos —o passo que mais custa—, fazemos numa ligação curta.",
       steps: [
-        "Você carrega o inventário e as tarifas base.",
-        "Monta o comp-set e aprova os eventos da sua região.",
-        "Escreve duas ou três regras e testa a seco.",
-      ],
-    },
-  },
-
-  sitios: {
-    meta: {
-      title: "Site e marca",
-      description:
-        "Construtor visual com domínio próprio e multi-idioma, componentes conectados aos seus dados, LinkHub para a bio do Instagram, identidade de marca, galerias e avaliações.",
-    },
-    hero: {
-      eyebrow: "Site, marca e LinkHub",
-      title: "Sua presença digital, *servida pelo mesmo sistema*.",
-      lead:
-        "O construtor monta o site com componentes que se conectam sozinhos ao seu inventário, e o renderer publica no seu domínio. Ao lado vivem a identidade de marca, as galerias, as avaliações e o LinkHub que vai na bio do Instagram.",
-    },
-    builder: {
-      eyebrow: "Builder",
-      title: "Um editor visual com *componentes que entendem de hotelaria*.",
-      lead:
-        "Tela com arrastar e soltar, edição direta sobre o texto, menus de contexto e uma biblioteca de componentes organizada em famílias. O que o diferencia de um construtor genérico é a outra metade: os componentes de domínio.",
-      items: [
-        "**Motor de reservas embutido**, cartões de quarto, categorias, galerias, promoções, avaliações e serviços: todos conectados a dados vivos.",
-        "**Editor de estilos** lateral com tipografia, cor, espaçamento e efeitos, mais editor de CSS para casos avançados.",
-        "**Editor de imagens** integrado — recorte, filtros, ajustes — e editor de texto rico.",
-        "**Assistente de IA do builder** com streaming, para gerar e editar seções.",
-        "**Modo simples ou avançado** por subsite, rascunhos e publicação explícita, prévia em vários tamanhos.",
-      ],
-    },
-    published: {
-      eyebrow: "O site publicado",
-      title: "O que *o hóspede* vê.",
-      items: [
-        {
-          title: "Domínio próprio",
-          desc: "Hostnames personalizados por subsite, com registro e resolução. Cada variante de idioma pode ter o seu.",
-        },
-        {
-          title: "Multi-idioma de verdade",
-          desc: "Rotas por idioma com título, descrição, capa, favicon e prévia social próprios. Páginas, não tradução automática.",
-        },
-        {
-          title: "Popups",
-          desc: "Cinco formatos — modal, slide-in, toast, banner e tela cheia — com modelos, gatilhos, regras de página, prioridade e controle de frequência por visitante.",
-        },
-        {
-          title: "Botão de WhatsApp",
-          desc: "Flutuante, com preset visual, canto, tamanho, cores e mensagem pronta. O número sai da propriedade.",
-        },
-        {
-          title: "Analítica",
-          desc: "Google Analytics e Google Tag Manager por subsite, preservando as UTMs da campanha até a reserva.",
-        },
-        {
-          title: "Conta do hóspede",
-          desc: "Login, cadastro e recuperação integrados ao StayPass, para o hóspede ver e cancelar suas reservas pelo seu site.",
-        },
-      ],
-    },
-    seo: {
-      eyebrow: "SEO e GEO",
-      title: "Para buscadores *e para modelos*.",
-      lead:
-        "O editor cobre o SEO clássico — título, descrição, capa, favicon, prévia social, ícone da Apple — e acrescenta uma camada pensada para que um modelo de linguagem entenda a sua hospedagem sem ninguém entrar no site.",
-      items: [
-        "Tipo de entidade, nome e descrição, categorias, casos de uso e domínios de problema.",
-        "Públicos-alvo e alcance geográfico.",
-        "Sinais de confiança: anos de atividade, quantidade de clientes, certificações e clientes em destaque.",
-        "Por página: intenção, tema, contexto semântico e entidades relacionadas.",
-      ],
-      link: "Ver a camada agêntica",
-    },
-    linkhub: {
-      eyebrow: "LinkHub",
-      title: "A página que vai *na bio*.",
-      lead:
-        "Um link-in-bio feito para hospedagens, não um genérico com um botão de 'reservar' que leva a um formulário. Dez tipos de bloco, tema próprio e analítica própria.",
-      items: [
-        "**Blocos**: link, WhatsApp, reservar, avaliações, texto, galeria, vídeo, mapa, contato e separador. Cada um com título, subtítulo, ícone, miniatura, ordem, destaque e **agendamento por data**.",
-        "**Design**: modelos de tema, claro e escuro, fundo sólido, gradiente, imagem ou padrão, sete estilos de botão, cantos e tipografia — incluindo qualquer Google Font.",
-        "**Compartilhar**: link e **QR code para baixar** e imprimir na recepção ou no cardápio.",
-        "**Analítica**: visitas e cliques por dia, país, referência e dispositivo, sem IP e sem user-agent. As etiquetas ficam guardadas à parte para que renomear um bloco não quebre o histórico.",
-      ],
-    },
-    around: {
-      eyebrow: "Ao redor",
-      title: "O que *alimenta* tudo isso.",
-      items: [
-        {
-          title: "Identidade de marca",
-          desc: "Logo, logo escuro, hero, fundo e quatro fotos; paleta com extração automática do logo; tom, tipografia, tagline, história, públicos, contexto de localização e contato público. Uma só ficha que alimenta o site, o motor, o LinkHub e as fichas de OTA.",
-        },
-        {
-          title: "Galerias",
-          desc: "Galerias multimídia da propriedade e dos quartos, com capa, ordem, descrição, imagens e vídeos. Consumidas pelo site, pelo LinkHub e pelas fichas.",
-        },
-        {
-          title: "Avaliações",
-          desc: "Próprias e externas, com autor, nota, texto, data, idioma e link. Resposta do hotel, importação em massa por CSV com deduplicação, e estatísticas que alimentam os widgets e os componentes do site.",
-        },
-        {
-          title: "Biblioteca de arquivos",
-          desc: "Repositório de imagens, vídeos, áudios e documentos da empresa, com pastas aninhadas e etiquetas. Os apps embutidos podem abri-la e receber o arquivo escolhido.",
-        },
-        {
-          title: "Modelos com autopreenchimento",
-          desc: "Cria-se um modelo a partir de um subsite, extraem-se os espaços preenchíveis, e gerar monta um site novo com os dados reais da hospedagem.",
-        },
-        {
-          title: "Presença online",
-          desc: "Score de visibilidade auditável, conexões de redes declaradas, ficha do Google Business e fichas de OTA. Hoje está escondida do menu e não publica por API: edita-se e copia-se para o destino.",
-        },
-      ],
-    },
-    faq: [
-      {
-        q: "Preciso carregar meus quartos duas vezes, uma para o site?",
-        a: "Não, e esse é o ponto. Os componentes de domínio do builder — motor embutido, cartões de quarto, categorias, galerias, promoções, avaliações e serviços — **se conectam sozinhos aos dados que você já carregou**. Se você sobe uma foto nova numa categoria, ela aparece no site sem ninguém tocar.",
-      },
-      {
-        q: "Posso ter o site em vários idiomas?",
-        a: "Sim. Cada site tem variantes por idioma, e cada variante tem sua própria URL, título, descrição, domínio, capa, favicon e prévia social. Não é um tradutor automático em cima de uma página: são páginas.",
-      },
-      {
-        q: "Não sei desenhar. Ainda assim sai algo apresentável?",
-        a: "É para isso que existem os modelos com autopreenchimento: toma-se um site como modelo, extraem-se os espaços preenchíveis e “gerar” monta um novo com **os seus dados reais** — marca, fotos, quartos e serviços. Além disso os sites novos começam em modo simples, com os controles avançados escondidos até você procurá-los.",
-      },
-    ],
-    cta: {
-      title: "Seu site e seu link, *na mesma tarde*.",
-      lead:
-        "Se você já carregou marca e quartos, gerar o site com um modelo é questão de minutos, e o LinkHub se autopreenche com os dados da propriedade.",
-      steps: [
-        "Você carrega identidade de marca e fotos.",
-        "Gera o site a partir de um modelo.",
-        "Publica no seu domínio e monta o LinkHub.",
+        "Você cria a propriedade e cadastra categorias e unidades.",
+        "Configura o motor no Estúdio.",
+        "Compartilha o link e para de perder consultas no chat.",
       ],
     },
   },
@@ -1482,242 +1288,1026 @@ const pt: Dictionary = {
     meta: {
       title: "Roombir IA",
       description:
-        "Um assistente com 272 ferramentas que consulta e opera o PMS com as permissões reais do usuário: filtro antes do turno, contexto no prompt e avaliação em cada chamada.",
+        "Um assistente que opera a sua hospedagem em uma conversa: cria e move reservas, muda tarifas e edita o site, com as suas permissões. Antes de opinar sobre o seu destino, lê um dossiê com quinze fontes datadas.",
     },
     hero: {
       eyebrow: "Roombir IA",
-      title: "Um assistente que *faz*, não que explica onde clicar.",
+      title: "Toda a sua hospedagem, *em uma conversa*.",
       lead:
-        "A categoria inteira vende IA que analisa: um painel que resume e sugere. Esta executa. Está embutida no painel, tem sessões persistentes e 272 ferramentas que cobrem praticamente toda a superfície do produto: consulta disponibilidade, cria reservas, move uma estadia com prévia, ajusta tarifas, aprova eventos ou publica um site.",
+        "O Roombir IA opera o sistema inteiro: cria e move reservas, muda tarifas, bloqueia unidades e edita o seu site. Antes de opinar sobre o seu destino, lê um dossiê montado com quinze fontes datadas. E trabalha com as suas permissões, não com as dele.",
+    },
+    ask: {
+      eyebrow: "O que você pode pedir a ele",
+      title: "Você pede como diria, *e fica pronto*.",
+      lead:
+        "Não é preciso aprender comandos nem saber em que tela está cada coisa. São pedidos de um dia normal, e o que ele faz com cada um.",
+      items: [
+        {
+          area: "Reservas",
+          ask: "Passa o García da 203 para a 204 a partir de quinta",
+          does: "Busca a reserva, verifica se a 204 está livre nessas noites e move. Devolve o cartão com a mudança.",
+        },
+        {
+          area: "Tarifas",
+          ask: "Sobe 10% o duplo superior nos sábados de outubro",
+          does: "Diz quais datas são afetadas e aplica no plano de tarifas quando você confirma.",
+        },
+        {
+          area: "Quartos",
+          ask: "Bloqueia o chalé Alerce na terça à tarde por manutenção",
+          does: "Cria o bloqueio a partir da tarde: a noite de terça sai do motor e a manhã continua vendável.",
+        },
+        {
+          area: "Site",
+          ask: "Muda o título da capa e publica",
+          does: "Edita o texto no rascunho do seu site e publica. Se você não pedir para publicar, fica no rascunho.",
+        },
+        {
+          area: "Destino",
+          ask: "O que vale a pena fazer com a Vendimia?",
+          does: "Lê o dossiê de Mendoza —data, distância, feriados por perto, rotas aéreas— e o seu pace dessas noites, e propõe o que fazer com a tarifa e a estadia mínima.",
+        },
+        {
+          area: "Relatórios",
+          ask: "Qual canal mais cancela?",
+          does: "Lê o relatório de canais e responde com o número e o canal. Se houver menos de três reservas, não afirma.",
+        },
+      ],
+    },
+    dossier: {
+      eyebrow: "Panorama turístico",
+      title: "Sabe onde está *o seu destino*.",
+      lead:
+        "Antes de opinar sobre a sua região, o Roombir IA monta um dossiê com quinze fontes públicas, cada dado com a sua data: o que acontece este mês e o que vem a seguir. O modelo não sai buscando: lê o que o sistema já verificou.",
+      items: [
+        "**Feriados, feriados prolongados e férias escolares**, os seus e os dos países que visitam você.",
+        "**Eventos no seu raio**: esportes, cultura, congressos e feiras, filtrados por distância e não por país.",
+        "**Quais voos chegam à sua região e de onde**: as rotas observadas pousando nos aeroportos próximos.",
+        "**Clima, câmbio dos seus mercados e alertas** de segurança ou de ameaças naturais.",
+      ],
+    },
+    compare: {
+      eyebrow: "A diferença",
+      title: "Um chat genérico busca; *este parte de um dossiê*.",
+      lead:
+        "Um chat de IA de uso geral é muito bom redigindo, e não vê o seu sistema: busca na web, junta o que encontra e resume para você. O Roombir IA parte dos seus dados e de fontes fixas. Se você pedir que também busque na web, ele também faz isso.",
+      headCriterion: "O que importa",
+      headUs: "Roombir IA",
+      headThem: "Um chat de IA de uso geral",
+      rows: [
+        {
+          label: "Vê suas reservas, tarifas e quartos",
+          us: "Sim: as mesmas que você opera",
+          usTone: "ok",
+          them: "Não, a menos que você cole os dados",
+          themTone: "no",
+        },
+        {
+          label: "Faz as mudanças",
+          us: "Sim, com as suas permissões",
+          usTone: "ok",
+          them: "Não: explica onde clicar",
+          themTone: "no",
+        },
+        {
+          label: "De onde sai o dado do seu destino",
+          us: "Um dossiê com quinze fontes fixas e datadas",
+          usTone: "ok",
+          them: "O que encontrar naquela vez na web",
+          themTone: "mid",
+        },
+        {
+          label: "Se falta um dado",
+          us: "Diz que falta",
+          usTone: "ok",
+          them: "Nem sempre distingue",
+          themTone: "mid",
+        },
+        {
+          label: "Busca na web",
+          us: "Se você pedir",
+          usTone: "ok",
+          them: "Sim",
+          themTone: "ok",
+        },
+        {
+          label: "Redige, resume e traduz",
+          us: "Sim",
+          usTone: "ok",
+          them: "Sim",
+          themTone: "ok",
+        },
+      ],
+      legend: {
+        ok: "sim",
+        mid: "depende",
+        no: "não",
+        info: "sem avaliação",
+      },
+    },
+    strategic: {
+      eyebrow: "Turno estratégico",
+      title: "“Quero mais reservas” *também é um pedido*.",
+      lead:
+        "Um objetivo aberto não entra no circuito de sempre. O Roombir IA lê a sua operação inteira —a ocupação que vem, o pace, os canais, a concorrência, o que falta configurar— e escolhe até três jogadas com regras fixas, não ao gosto do modelo. Propõe um plano com passos que podem ser executados, e cada passo pede a sua confirmação.",
+      items: [
+        "Lê **18 fontes da sua própria operação** em paralelo, em cerca de um segundo.",
+        "As jogadas são escolhidas pelo sistema por regras; o modelo diagnostica e redige.",
+        "Um dado que não pôde ser lido entra como faltante: nunca é preenchido com zeros.",
+        "Se você já tem um plano em andamento, ele o retoma em vez de propor outro.",
+      ],
     },
     perms: {
       eyebrow: "Permissões",
       title: "Opera com *as suas* permissões, não com as dele.",
       lead:
-        "É o ponto delicado de qualquer agente dentro de um sistema de gestão, e está resolvido em três camadas aplicadas em momentos diferentes.",
+        "É o ponto delicado de qualquer assistente dentro de um sistema de gestão. Aqui está resolvido em camadas que se aplicam em momentos diferentes, e a última está onde não dá para pular: em quem executa.",
       items: [
-        "**Antes do turno** — filtram-se as ferramentas conforme o seu alcance real. O que você não pode usar nem chega a ser oferecido ao modelo.",
-        "**No prompt** — explica-se que papel você tem, que apps você tem com e sem acesso, que capacidades, que propriedades, e como responder quando algo está bloqueado.",
-        "**Em cada chamada** — a operação concreta é avaliada contra uma tabela de políticas por serviço, que espelha o que os serviços reais exigem e **fecha as lacunas** onde o backend é mais frouxo que a interface.",
-        "**Com a sua identidade** — a execução usa uma permissão de vida curta emitida em seu nome e renovada a cada chamada.",
+        "**O que o seu usuário não pode, não é oferecido ao modelo**: na recepção ele faz o que a recepção pode; na administração, o que a administração pode.",
+        "**O que não pode ser desfeito pede que você escreva**: para confirmar, você tem que digitar à mão o que vai apagar.",
+        "**As exclusões pedem um botão**, não um “sim” perdido na conversa.",
+        "**Você vê a transcrição** de cada turno: que ferramenta usou, com que dados e o que devolveu.",
       ],
     },
-    tools: {
-      eyebrow: "272 ferramentas",
-      title: "Praticamente *toda* a superfície do produto.",
+    talk: {
+      eyebrow: "Como se fala com ele",
+      title: "Você escreve, fala, *mostra*.",
       lead:
-        "Não é um chatbot com três ações de demonstração. Estão agrupadas por domínio e ainda há ferramentas cruas de leitura e escrita para cobrir os endpoints sem uma dedicada.",
+        "Dentro do painel, no espaço de trabalho em que você estiver, com o histórico desse espaço: a recepção não vê as conversas do marketing.",
       items: [
         {
-          title: "Reservas",
-          desc: "Consultar disponibilidade, criar reserva, mudar status, atribuir, desatribuir e auto-atribuir unidade, mover com prévia, notas, ajuste de valor, serviços extras, buscar hóspede e hóspedes frequentes.",
+          title: "Por voz",
+          desc: "Você dita em vez de escrever. Funciona em qualquer navegador, porque a transcrição é feita do nosso lado.",
         },
         {
-          title: "Tarifas e promoções",
-          desc: "Listar, criar, atualizar e excluir planos tarifários e promoções, e ativá-las ou desativá-las.",
+          title: "Capturas e PDF",
+          desc: "Você cola uma captura ou solta um PDF —uma planilha de tarifas, uma listagem de uma OTA— e ele trabalha em cima disso.",
         },
         {
-          title: "Disponibilidade",
-          desc: "Inicializar, sincronizar, restrições por dia e bloqueios de quarto.",
+          title: "Áudio e vídeo",
+          desc: "Um áudio ou um vídeo curto é resumido antes da resposta e entra como contexto. Até dois minutos de áudio.",
         },
         {
-          title: "Quartos",
-          desc: "Status dos quartos, unidades e categorias completas, histórico, criação em massa, auditoria do modelo de venda e autocorreção.",
+          title: "A web, se você pedir",
+          desc: "Quando você pede para ele buscar fora, ele busca. Se não, trabalha com o seu sistema e com o dossiê do seu destino.",
         },
-        {
-          title: "Revenue",
-          desc: "Dashboard, séries diárias, janela de reserva, pace, sinais de demanda, regras com ensaio a seco, decisões, recomendações, eventos e concorrência.",
-        },
-        {
-          title: "Marketing",
-          desc: "Sites — criar, publicar, duplicar, páginas, idiomas, SEO e GEO, popups, Estúdio do Motor —, galerias, avaliações, LinkHub e presença online.",
-        },
-        {
-          title: "Empresa e usuários",
-          desc: "Perfil, usuários, convites, papéis, status, acessos e busca por email.",
-        },
-        {
-          title: "Sistema",
-          desc: "Busca global, notificações e tema do painel. Mais a biblioteca de arquivos completa, com pastas e arquivos.",
-        },
-      ],
-    },
-    experience: {
-      eyebrow: "A experiência",
-      title: "Você vê *o que ele está fazendo* enquanto faz.",
-      lead:
-        "A resposta chega em streaming com a transcrição do turno à vista. Não é um spinner e depois um parágrafo: é a lista de operações, com seu resultado, enquanto acontecem.",
-      items: [
-        "Blocos de resposta ricos: cartões de reserva, de revenue e listas acionáveis, não só texto.",
-        "Botões dentro dos cartões que executam operações, com a mesma verificação de permissões.",
-        "Captura de feedback dentro da conversa, para que o que não funcionou chegue a quem conserta.",
-        "Histórico de sessões filtrado pelo espaço de trabalho ativo: a recepção não vê as conversas do marketing.",
       ],
     },
     stats: [
-      { value: "272", label: "ferramentas disponíveis" },
-      { value: "3", label: "camadas de verificação de permissões" },
-      { value: "10", label: "códigos de recusa explícitos" },
-      { value: "1", label: "identidade: a sua, com permissão de vida curta" },
+      { value: "15", label: "fontes no dossiê do destino" },
+      { value: "3", label: "níveis de modelo, escolhidos por turno" },
+      { value: "5", label: "idiomas" },
     ],
-    why: {
-      eyebrow: "Por que aqui ele pode mais",
-      title: "Porque vê *o sistema inteiro*, não um módulo.",
-      lead:
-        "Um assistente preso a um só produto responde sobre aquele produto. Como aqui os dados são um só, numa frase se cruzam coisas que em outro stack são três abas e duas exportações.",
-      items: [
-        "“Como está vindo o feriado prolongado comparado com o ano passado?” — olha o **pace** contra o seu próprio histórico.",
-        "“Sobe 10% os duplos de sábado e me avisa se ficar acima do comp-set” — mexe em **tarifas** e consulta **concorrência**.",
-        "“Publica a promo de última hora no site” — cria a **promoção** e publica o **site**.",
-        "“Quem chega hoje e está sem quarto atribuído?” — cruza **reservas** e **unidades**.",
-      ],
-    },
     faq: [
       {
-        q: "O que acontece se eu pedir algo que meu usuário não pode fazer?",
-        a: "Ele explica a permissão que falta, não diz que a função não existe. Há códigos de recusa explícitos — papel insuficiente, capacidade ausente, sem espaço ativo, acesso de app insuficiente, propriedade fora de alcance, troca de senha obrigatória, entre outros — e o assistente traduz qual foi. A diferença importa: “você não tem permissão” se resolve falando com o seu admin, “não existe” te faz procurar outro sistema.",
+        q: "Ele pode fazer qualquer coisa?",
+        a: "Tudo o que o seu usuário pode fazer no aplicativo, sim: cobre cada tela do sistema, exceto o que deixamos de fora de propósito, como o fluxo do hóspede ou o login. O que o seu usuário não pode, não é oferecido ao modelo: na recepção ele faz o que a recepção pode, não o que a administração pode.",
       },
       {
-        q: "O assistente tem acesso total ao sistema?",
-        a: "Não tem acesso próprio nenhum. Quando executa algo, faz **assumindo a sua identidade real**, com uma permissão de vida curta reemitida a cada chamada. Se no meio da conversa te revogarem a associação, a operação seguinte falha e o assistente explica. Não há uma conta de serviço com superpoderes por trás.",
+        q: "O que acontece se ele errar?",
+        a: "Por isso há freios. O que grava dados, confirma com você na conversa. O que apaga, pede um botão. O que não pode ser desfeito, pede que você escreva à mão o que vai apagar. E no site ele trabalha em cima do rascunho: publicar é um passo à parte.",
       },
       {
-        q: "Dá para ver o que ele fez ou é preciso confiar?",
-        a: "Dá para ver. Cada turno mostra a transcrição: que ferramenta usou, com que parâmetros e o que voltou. E as respostas não são só texto: voltam como cartões de reserva ou de revenue com botões que executam, sujeitos à mesma verificação de permissões que todo o resto.",
+        q: "Ele inventa dados do meu destino?",
+        a: "O dossiê é montado pelo sistema, não pelo modelo: quinze fontes públicas lidas com regras fixas e guardadas com a sua data. Se uma fonte não respondeu, o dado aparece como **faltante** e o assistente tem que dizer isso. Um zero inventado é pior que um dado que falta, porque é citado como evidência.",
+      },
+      {
+        q: "Ele busca na internet?",
+        a: "Se você pedir, sim. Por padrão trabalha com o seu sistema e com o dossiê do destino, que é informação verificada, uma fonte por tema. A busca aberta fica para quando você quiser.",
+      },
+      {
+        q: "Que modelo de IA ele usa?",
+        a: "Não está preso a um fornecedor. Cada turno é classificado e vai para o modelo correspondente: um rápido para consultas, um mais capaz quando é preciso gravar dados ou analisar. Quando aparece um modelo melhor, trocamos do nosso lado e você não precisa fazer nada.",
       },
     ],
     cta: {
-      title: "Teste com *os seus próprios dados*.",
+      title: "Peça algo *que hoje leva quatro abas*.",
       lead:
-        "O assistente serve de verdade quando tem um sistema carregado embaixo. Comece pelo cadastro, carregue uma propriedade e peça algo que hoje você resolveria abrindo quatro abas.",
+        "O assistente serve de verdade com o seu sistema carregado embaixo. Comece pelo cadastro, carregue uma propriedade e peça algo real.",
       steps: [
         "Você se cadastra e carrega a propriedade.",
-        "Entra no Roombir IA pelo painel.",
+        "Abre o Roombir IA pelo painel.",
         "Pede algo real e olha a transcrição.",
       ],
     },
   },
 
-  agentes: {
+  propiedades: {
     meta: {
-      title: "Hospedagem agêntica",
+      title: "Propriedades",
       description:
-        "llms.txt, availability.json, engine-capabilities.json, JSON-LD e um editor de GEO: o que é preciso para um modelo de linguagem entender a sua hospedagem e conseguir reservá-la.",
+        "Várias propriedades sob a mesma empresa e um único usuário: cada uma com sua moeda, seu fuso horário e sua equipe, e cada pessoa com acesso só às propriedades e às telas que lhe cabem.",
     },
     hero: {
-      eyebrow: "Hospedagem agêntica",
-      title: "Que uma máquina consiga *te entender e te reservar*.",
+      eyebrow: "Propriedades",
+      title: "Várias propriedades, *uma única conta*.",
       lead:
-        "Cada vez mais gente pergunta a um modelo antes de buscar. Esse modelo não vê o seu carrossel de fotos: vê texto, dados estruturados e rotas. O motor do Roombir publica as três coisas, e o editor de GEO deixa você declarar o que é com as suas palavras.",
-      secondary: "Ver o motor",
+        "Um hotel em Mendoza e seis chalés em Villa La Angostura, com o mesmo usuário. Cada propriedade com sua moeda, seu fuso horário e sua equipe; cada pessoa vê só as que lhe cabem.",
     },
-    shift: {
-      eyebrow: "A mudança",
-      title: "A consulta já não *começa num buscador*.",
+    access: {
+      eyebrow: "Acessos",
+      title: "Cada pessoa, *só o seu*.",
       lead:
-        "Antes a pergunta era “chalés em Villa La Angostura” e a resposta eram dez links azuis. Agora a pergunta é “onde eu fico quatro noites com duas crianças e um cachorro, a menos de trinta minutos do centro?” e a resposta é um parágrafo com dois ou três nomes. Estar nesse parágrafo depende de haver algo seu que se possa ler.",
-      headOld: "O que o SEO clássico otimiza",
-      headNew: "O que a camada agêntica acrescenta",
-      rows: [
-        { old: "Título e descrição para o resultado", now: "Descrição da entidade, em texto puro" },
-        { old: "Imagem de capa para o clique", now: "Disponibilidade real legível por máquina" },
-        { old: "Palavras-chave na página", now: "Casos de uso, públicos e alcance geográfico" },
-        { old: "Links de entrada", now: "Sinais de confiança declarados e verificáveis" },
-        { old: "Um formulário de contato", now: "Uma rota de reserva que um agente consegue seguir" },
+        "O acesso é dado por propriedade e por função. Quem atende a recepção dos chalés entra nos chalés, com o menu de recepção; quem administra vê tudo.",
+      items: [
+        "**Acesso por propriedade**: uma pessoa pode ter todas ou só algumas, e se você a convidar a partir de uma propriedade, ela fica limitada a essa.",
+        "**Dez capacidades administrativas** que se concedem uma a uma: criar propriedades, gerenciar usuários, atribuir espaços, ativar apps, faturamento e sites, entre outras.",
+        "**Espaços de trabalho por função** —recepção, limpeza, marketing, revenue—, cada um com seu menu e sua tela inicial.",
+        "**Um espaço de administração** que vê o catálogo completo, incluindo os apps que forem adicionados depois.",
       ],
     },
-    layers: {
-      eyebrow: "Duas camadas diferentes",
-      title: "Ser *encontrado* e ser *lido* não é a mesma coisa.",
-      lead:
-        "Os grandes distribuidores começaram a conectar o inventário deles aos assistentes de IA: o hotel aparece porque está no catálogo deles. É útil, e não substituímos isso. A camada da Roombir é a outra: o seu próprio site e o seu próprio motor legíveis e reserváveis sem intermediário, com as suas palavras e a sua tarifa.",
-      headOld: "Distribuição via intermediário",
-      headNew: "Seu site, legível por si só",
-      rows: [
-        { old: "Você aparece porque o distribuidor te listou", now: "Você aparece porque o seu domínio publica quem você é e o que vende" },
-        { old: "A tarifa e a comissão passam pela plataforma deles", now: "A tarifa é sua e a reserva entra direto no seu motor" },
-        { old: "Ativa quando eles conectam cada plataforma", now: "Ativa com um interruptor na sua configuração" },
-        { old: "A descrição é escrita pelo catálogo deles", now: "A descrição é escrita por você, no editor de GEO" },
-      ],
-    },
-    surfaces: {
-      eyebrow: "As quatro superfícies",
-      title: "O que *o seu motor* publica.",
-      lead:
-        "Ativa-se com um botão na configuração do motor. A partir daí, a sua hospedagem tem uma cara pública para máquinas além da que já tinha para pessoas.",
+    sheet: {
+      eyebrow: "A ficha",
+      title: "O que *define* cada propriedade.",
       items: [
         {
-          title: "llms.txt",
-          desc: "Quem você é, o que vende e como se reserva, em texto puro e sem markup. É o arquivo que um modelo lê inteiro sem gastar tokens interpretando HTML.",
+          title: "Tipo de hospedagem",
+          desc: "Hotel, resort, apart-hotel, hostel, chalés, vila, aluguel de temporada ou glamping. O tipo decide como começa o resto.",
         },
         {
-          title: "availability.json",
-          desc: "A sua disponibilidade real, num formato que uma máquina consegue consultar. Não é um formulário a preencher: é o dado.",
+          title: "Endereço com mapa",
+          desc: "Você cola as coordenadas do Google Maps e ela fica localizada. Dali saem o mapa do seu site e o dossiê do seu destino.",
         },
         {
-          title: "engine-capabilities.json",
-          desc: "Que operações o seu motor aceita e com que parâmetros. É a diferença entre um agente saber que você existe e saber como te reservar.",
+          title: "Moeda, fuso horário e idioma",
+          desc: "Os de cada propriedade, não os da empresa: uma em pesos e outra em dólares convivem sem problema.",
         },
         {
-          title: "JSON-LD nas páginas",
-          desc: "Dados estruturados no site publicado, que é o que os buscadores clássicos já leem e também os modelos quando visitam a página.",
+          title: "Contato público e redes",
+          desc: "E-mail, telefone, WhatsApp, Instagram, Facebook e TikTok, cadastrados uma vez para o site, o LinkHub e o motor.",
         },
       ],
     },
-    editor: {
-      eyebrow: "Editor de GEO",
-      title: "Você declara o que é *com as suas palavras*, não com as de um robô.",
+    root: {
+      eyebrow: "A raiz",
+      title: "Todo o resto *depende da propriedade*.",
       lead:
-        "O editor vai bem além do SEO clássico. É uma ficha pensada para que um modelo consiga te descrever com precisão mesmo que ninguém entre no seu site.",
+        "Quartos, reservas, marca, site, LinkHub, avaliações e galerias são cadastrados sobre uma propriedade. Por isso se cadastram uma vez: você muda o telefone e ele muda em todo lugar.",
       items: [
-        "**Tipo de entidade**: hotel, resort, B&B, aluguel de temporada, apartamento, hostel, motel, camping ou hospedagem genérica.",
-        "**Categorias, casos de uso e domínios de problema**: para que serve a sua hospedagem, dito do jeito que as pessoas buscam.",
-        "**Públicos e alcance geográfico**: a quem você atende e até onde.",
-        "**Sinais de confiança**: anos de atividade, quantidade de clientes, certificações e clientes em destaque.",
-        "**Controle de indexação por IA** e prioridade: a camada desliga se você não quiser.",
-        "**Por página**: intenção (informativa, comercial, transacional, comparativa ou de suporte), tema, contexto semântico e entidades relacionadas.",
+        "**Modelos de propriedade**: a segunda começa copiando os espaços e os apps da primeira.",
+        "**Cada propriedade tem seu motor, seu site e seu LinkHub**, com sua própria marca.",
+        "**Espaços que não se desmontam por engano**: um com reservas em andamento ou usuários ativos fica bloqueado.",
+        "**Apagar uma propriedade** só pode ser feito por quem é dono da empresa.",
       ],
     },
-    consistency: {
-      eyebrow: "Por que aqui funciona",
-      title: "Porque o dado *não se copia*.",
-      lead:
-        "A razão pela qual um arquivo de disponibilidade pode ser publicado sem medo é a mesma pela qual o calendário do motor mostra unidades restantes de verdade: é o mesmo inventário que o calendário do hotel usa. Não há exportação noturna que possa dessincronizar.",
+    move: {
+      eyebrow: "Entre propriedades",
+      title: "Trocar de propriedade *não é trocar de sistema*.",
       items: [
-        "Um quarto é carregado uma vez e aparece no motor, no site, no JSON de disponibilidade e no RMS.",
-        "Um bloqueio de manutenção tira inventário real e some de todas as superfícies ao mesmo tempo.",
-        "A descrição de marca que você carregou alimenta o site, o LinkHub, as fichas de OTA e o llms.txt.",
+        {
+          title: "Um seletor no topo",
+          desc: "A empresa, a propriedade e o espaço de trabalho se escolhem no mesmo lugar, sem sair nem entrar de novo.",
+        },
+        {
+          title: "Uma busca para todas",
+          desc: "Ctrl ou Cmd + K encontra reservas, propriedades, unidades e telas. Encontra ou não encontra: não inventa.",
+        },
+        {
+          title: "Avisos que sabem para onde ir",
+          desc: "Se a notificação é de outra propriedade, o sistema troca de propriedade antes de abri-la.",
+        },
       ],
-    },
-    dogfood: {
-      eyebrow: "Pregar e praticar",
-      title: "Este site também tem o seu *llms.txt*.",
-      lead:
-        "Seria estranho pedir que a sua hospedagem seja legível por uma máquina e que a página onde pedimos isso não fosse.",
-      button: "Ver /llms.txt",
     },
     faq: [
       {
-        q: "Isso me garante aparecer quando alguém pergunta ao ChatGPT?",
-        a: "Não, e quem disser que sim está mentindo. Ninguém controla o que um modelo recomenda, assim como ninguém controla o ranking do Google. **O que depende de você é que, quando um agente for olhar, encontre algo que consiga entender** — um texto que descreva o que você é, uma disponibilidade legível e uma rota clara para reservar. Uma hospedagem cujo único dado público é um carrossel de fotos no Instagram não tem nada que um modelo possa citar.",
+        q: "Quantas propriedades cada plano inclui?",
+        a: "Cada plano diz isso com número em [preços](/precios), do mesmo catálogo que cobra a sua conta.",
       },
       {
-        q: "O que é GEO e em que difere do SEO?",
-        a: "O SEO clássico otimiza para que uma pessoa clique num resultado: título, descrição, imagem de capa. **GEO — Generative Engine Optimization —** otimiza para que um modelo consiga te descrever com precisão sem ninguém entrar no seu site: que tipo de entidade você é, para quais públicos, em que região, com que sinais de confiança. São complementares; o editor do sistema tem os dois.",
+        q: "Posso dar acesso a alguém a uma única propriedade?",
+        a: "Sim. Se você convidar a partir dessa propriedade, o acesso fica limitado a ela. E dentro da propriedade, o espaço de trabalho decide quais telas a pessoa vê.",
       },
       {
-        q: "Posso decidir que a IA não me indexe?",
-        a: "Sim. A camada agêntica do motor liga ou desliga na configuração, e o editor de GEO tem controle de indexação por IA e prioridade. É uma decisão sua, não um padrão que a gente impõe.",
+        q: "Posso ter um hotel e chalés na mesma empresa?",
+        a: "Sim, e na mesma propriedade também: cada categoria é vendida como pool ou como unidade com nome próprio. Está explicado em [Quartos](/producto/pms).",
+      },
+],
+    cta: {
+      title: "Cadastre a primeira; *a segunda copia a estrutura*.",
+      lead:
+        "O cadastro cria a empresa e a primeira propriedade. As seguintes começam a partir de um modelo.",
+      steps: [
+        "Você cria a empresa e a primeira propriedade.",
+        "Convida a sua equipe com acesso por propriedade.",
+        "Adiciona a segunda a partir de um modelo.",
+      ],
+    },
+  },
+
+  habitaciones: {
+    meta: {
+      title: "Quartos",
+      description:
+        "Categorias vendidas como um pool de quartos intercambiáveis ou unidades com nome próprio, na mesma propriedade. Seis status operacionais com histórico, planta por andar, cadastro em massa e uma trava por noite.",
+    },
+    hero: {
+      eyebrow: "Quartos",
+      title: "Por categoria ou por unidade, *do seu jeito*.",
+      lead:
+        "Um hotel vende um duplo superior e atribui o 203 depois. Um complexo vende o chalé Alerce, com suas fotos e seu preço. O Roombir faz as duas coisas, e as duas ao mesmo tempo na mesma propriedade.",
+    },
+    dual: {
+      eyebrow: "Duas formas de vender",
+      title: "Cada categoria escolhe *como se vende*.",
+      lead:
+        "O modo se define categoria por categoria, com um valor padrão para a propriedade. Assim um complexo com seis chalés e dois quartos vende os chalés por nome e os quartos como pool, no mesmo calendário.",
+      items: [
+        "**Pool de categoria**: o hóspede compra “um duplo superior” e o sistema atribui o quarto, minimizando buracos ou distribuindo o desgaste. Ou deixa sem atribuir para a recepção decidir.",
+        "**Unidade com nome próprio**: a categoria envolve uma única unidade. O hóspede reserva o chalé Alerce, com suas fotos e seu preço.",
+        "**Mudar de modo fica registrado**, com o motivo, e há uma ferramenta para migrar categorias que já têm reservas.",
+        "**Cada reserva guarda o modo com que nasceu**: mudar a configuração depois não reescreve a história.",
+      ],
+    },
+    states: {
+      eyebrow: "Status dos quartos",
+      title: "Status que *não admitem impossíveis*.",
+      lead:
+        "Seis status —disponível, ocupado, limpeza, manutenção, bloqueado e saída pendente— e uma regra para cada mudança. De ocupado só se passa para saída pendente: ninguém libera um quarto com o hóspede dentro.",
+      items: [
+        "**Histórico por unidade**: quem mudou qual status, quando e com qual nota.",
+        "**Painel por andar e por categoria**, com filtros, para ler a casa num relance.",
+        "**Planta de ocupação** por andar, com navegação por data.",
+        "**A limpeza muda status** sem ver tarifas nem revenue: o espaço de trabalho dela não tem isso.",
+      ],
+    },
+    load: {
+      eyebrow: "O cadastro",
+      title: "Você cadastra uma vez, *todos usam*.",
+      items: [
+        {
+          title: "Cadastro em massa em dois passos",
+          desc: "Uma prévia avisa se um código se repete antes de criar qualquer coisa; depois todas são criadas juntas ou nenhuma.",
+        },
+        {
+          title: "Bloqueios por metade do dia",
+          desc: "Manutenção à tarde bloqueia essa noite e deixa a manhã vendável. Usa a mesma trava que uma reserva.",
+        },
+        {
+          title: "A ficha de cada categoria",
+          desc: "Capacidade de adultos e crianças, tamanho, preço base, fotos e comodidades escolhidas de um catálogo.",
+        },
+        {
+          title: "Um único inventário",
+          desc: "A categoria que você cadastra aqui é a que aparece no motor, no site, no LinkHub e no Revenue.",
+        },
+      ],
+    },
+    lock: {
+      eyebrow: "A garantia",
+      title: "Uma noite se vende *uma única vez*.",
+      lead:
+        "Cada noite de cada unidade é uma trava única no banco de dados. Se duas pessoas reservam a mesma coisa ao mesmo tempo, a segunda não entra: não é uma validação que dê para pular, é o banco que impede.",
+      items: [
+        "Os bloqueios de manutenção usam a mesma trava, então descontam inventário de verdade.",
+        "Ao cancelar, marcar no-show ou fazer check-out, a noite se libera sozinha.",
+        "A noite de saída não é bloqueada: quem chega naquele dia pode entrar.",
+      ],
+    },
+    faq: [
+      {
+        q: "Tenho chalés e quartos. Posso ter os dois?",
+        a: "Sim, na mesma propriedade. Os chalés entram como unidade com nome próprio e os quartos como pool, e convivem no mesmo calendário e no mesmo motor.",
+      },
+      {
+        q: "Posso mudar de modo depois?",
+        a: "Sim. A mudança pede um motivo e fica registrada, e se a categoria já tem reservas há uma ferramenta para migrá-la. As reservas antigas mantêm o modo com que nasceram.",
+      },
+      {
+        q: "O que acontece se duas pessoas reservam a mesma noite ao mesmo tempo?",
+        a: "Uma das duas falha. Cada noite de cada unidade é uma **trava única no banco de dados** —a chave é a unidade mais a data—, então a segunda escrita não entra. Não é uma validação no código que dê para driblar: é o banco que impede.",
+      },
+      {
+        q: "A equipe de limpeza vê as tarifas?",
+        a: "Não, se você não quiser. O espaço de limpeza traz seu próprio menu —status dos quartos e planta— sem tarifas nem revenue.",
       },
     ],
     cta: {
-      title: "Ative *com um botão*.",
+      title: "Comece pelos *seus quartos*.",
       lead:
-        "A camada agêntica é mais uma seção da configuração do motor. Se o seu inventário já está carregado, publicar as rotas não leva nada.",
+        "Você cadastra categorias e unidades e a disponibilidade se inicializa sozinha. O calendário e o motor ficam prontos.",
       steps: [
-        "Você carrega o inventário e a identidade de marca.",
-        "Ativa a camada agêntica no motor.",
-        "Preenche o editor de GEO com as suas palavras.",
+        "Cadastra as categorias e escolhe como cada uma se vende.",
+        "Cria as unidades de uma vez.",
+        "A disponibilidade se inicializa sozinha.",
+      ],
+    },
+  },
+
+  motor: {
+    meta: {
+      title: "Motor de reservas",
+      description:
+        "O motor que o seu hóspede vê —com preço por dia, unidades restantes e dez moedas— e as oito telas onde você o opera: painel do dia, lista, calendário, entrada manual, tarifas, disponibilidade, promoções e configuração. Sem comissão por reserva.",
+    },
+    hero: {
+      eyebrow: "Motor de reservas",
+      title: "Cada reserva, *do primeiro clique ao check-out*.",
+      lead:
+        "O hóspede vê o preço de cada dia antes de escolher as datas e reserva sozinho. Você a vê entrar no painel do dia, move no calendário e fecha no check-out. Sem comissão por reserva, em dez moedas.",
+    },
+    guest: {
+      eyebrow: "O que o hóspede vê",
+      title: "Um calendário que *responde antes de perguntar*.",
+      lead:
+        "O seletor de datas comum pede dois dias e pronto. O do motor mostra, dia a dia e conforme o que você habilitar, o que a pessoa ia perguntar por WhatsApp antes de reservar.",
+      items: [
+        "**Preço a partir de** em cada dia, calculado com as mesmas tarifas que o motor cobra.",
+        "**Unidades restantes**: o seu inventário real, não um contador inventado.",
+        "**Dias fechados**, fechados na chegada ou na saída, e o **mínimo de noites** ao escolher a entrada.",
+        "**Chalé com nome ou categoria**, conforme como você vende, com suas fotos, suas comodidades e os extras oferecidos antes de pagar.",
+      ],
+    },
+    views: {
+      eyebrow: "O que você vê",
+      title: "Cada momento do turno, *sua tela*.",
+      lead:
+        "Oito telas sobre o mesmo dado: mover uma reserva no calendário muda o quarto, libera a noite no motor e aparece no relatório.",
+      items: [
+        {
+          title: "Painel do dia",
+          desc: "Chegadas e saídas do dia, com cartões acionáveis. É a tela com que a recepção abre o turno.",
+        },
+        {
+          title: "Todas as reservas",
+          desc: "A lista com filtros e um painel lateral que abre sem sair: resumo, atividade e notas. Dali se atribui o quarto e se muda o status.",
+        },
+        {
+          title: "Calendário",
+          desc: "Quartos por dia. Você arrasta uma reserva ou a estica, e antes de soltar vê se choca com outra e o que acontece com o preço.",
+        },
+        {
+          title: "Nova reserva",
+          desc: "A que entrou por telefone ou por WhatsApp: hóspede, datas, ocupação por idade, canal de origem, promoções e notas.",
+        },
+        {
+          title: "Tarifas",
+          desc: "Preço base por categoria e planos de tarifas com vigência, moeda e estadia mínima.",
+        },
+        {
+          title: "Disponibilidade",
+          desc: "Sinal por dia —livre, parcial, cheio, fechado— e restrições: fechado na chegada ou na saída, estadia mínima e máxima.",
+        },
+        {
+          title: "Promoções",
+          desc: "Automáticas ou com código, por porcentagem, valor fixo ou preço por noite, com sua apresentação pronta para o seu site.",
+        },
+        {
+          title: "Configuração",
+          desc: "Moeda, confirmação, regras de estadia, horários e como os quartos são atribuídos. Mais o Estúdio do Motor para textos e cores.",
+        },
+      ],
+    },
+    prices: {
+      eyebrow: "Cada tarifa, individual",
+      title: "O preço de cada noite, *com o seu porquê*.",
+      lead:
+        "Quando o motor precisa dizer quanto custa uma noite, resolve uma cadeia fixa, sempre na mesma ordem. Saber de qual degrau sai cada preço é o que permite confiar no sistema sem auditá-lo toda manhã.",
+      items: [
+        "**Primeiro, o que você aceitou no Revenue**: se há uma tarifa recomendada e aceita para essa data, ela manda.",
+        "**Depois, o plano de tarifas** vigente para essa categoria e essa data, com sua estadia mínima.",
+        "**Se não há plano, o preço base** da categoria. Cada chalé pode ter o seu.",
+        "**Por cima de tudo, as promoções**: desconto ou acréscimo —uma promoção também pode subir o preço na alta temporada—, automáticas ou com código.",
+      ],
+    },
+    currency: {
+      eyebrow: "Dez moedas",
+      title: "O que o hóspede viu *não se mexe depois*.",
+      lead:
+        "O hóspede olha o preço na moeda dele e você cobra na sua. A reserva fica sempre na sua moeda base e a conversão congela no check-in: o valor que você cobra não muda depois.",
+      items: [
+        "Dólar, peso argentino, real, peso chileno, peso colombiano, peso mexicano, sol, peso uruguaio, euro e libra.",
+        "Para pesos argentinos você escolhe a cotação: oficial, blue, MEP ou CCL.",
+        "As taxas se atualizam a cada três horas e são marcadas como antigas se a fonte não respondeu.",
+        "Os relatórios somam direto, porque tudo fica na sua moeda base.",
+      ],
+    },
+    where: {
+      eyebrow: "Onde aparece",
+      title: "No seu site, na bio *e para uma IA*.",
+      items: [
+        {
+          title: "O seu site",
+          desc: "Uma seção do editor de site que se conecta sozinha ao seu inventário.",
+        },
+        {
+          title: "O seu LinkHub",
+          desc: "O link da bio do Instagram abre o mesmo motor, idêntico ao do seu site.",
+        },
+        {
+          title: "Um link direto",
+          desc: "Uma página própria com o endereço da sua hospedagem, para mandar por WhatsApp se você ainda não tem site.",
+        },
+        {
+          title: "Agentes de IA",
+          desc: "Com a camada agêntica ligada, um assistente externo pode ler a sua disponibilidade e completar uma reserva. [Como funciona](/producto/marketing#agentes).",
+        },
+      ],
+    },
+    after: {
+      eyebrow: "Depois do checkout",
+      title: "A reserva entra *e o sistema segue sozinho*.",
+      items: [
+        {
+          title: "A unidade é atribuída",
+          desc: "A única possível se você vende por unidade, a que o sistema escolhe se é um pool automático, ou nenhuma se você preferir que a recepção decida.",
+        },
+        {
+          title: "Sai o e-mail",
+          desc: "A partir do domínio do roombir, com a sua caixa como responder-a. Sem configurar servidor de e-mail nem mais um fornecedor.",
+        },
+        {
+          title: "O hóspede tem a sua conta",
+          desc: "Com o StayPass ele vê as próprias reservas a partir do seu site. Um mesmo hóspede acumula as hospedagens onde reservou, e cada hotel vê só as suas.",
+        },
+      ],
+      stats: [
+        { value: "0%", label: "de comissão por reserva" },
+        { value: "10", label: "moedas, com blue, MEP, CCL ou oficial para ARS" },
+        { value: "2", label: "modos de confirmação, com vencimento automático" },
+      ],
+    },
+    faq: [
+      {
+        q: "Vocês cobram comissão por reserva?",
+        a: "Não. O motor não tem cobrança por reserva: você paga o plano e nada mais. Está escrito nos [termos](/legal/terminos).",
+      },
+{
+        q: "Quem confirma a reserva?",
+        a: "Você escolhe. Em um modo a reserva nasce pendente e **o hóspede a confirma** com um link que chega por e-mail. No outro, fica pendente até que **a recepção aceite**. Nos dois casos as pendentes vencem sozinhas, assim você não fica com noites bloqueadas por alguém que nunca voltou.",
+      },
+      {
+        q: "Posso mudar os textos e as cores do checkout?",
+        a: "Sim, pelo Estúdio do Motor e **sem tocar em código nem republicar o site**: busca, calendário, hóspedes, listagem, detalhe, serviços, checkout e tela final, cada um com seus textos e seus estilos.",
+      },
+    ],
+    cta: {
+      title: "Coloque o seu link de reservas *na bio*.",
+      lead:
+        "Você cadastra os quartos e o motor fica operacional com a disponibilidade inicializada. O site e o LinkHub entram depois, quando você quiser.",
+      steps: [
+        "Cadastra categorias, unidades e preços.",
+        "Configura o motor no Estúdio.",
+        "Compartilha o link e para de perder consultas no chat.",
+      ],
+    },
+  },
+
+  informes: {
+    meta: {
+      title: "Relatórios",
+      description:
+        "Ocupação, ADR, RevPAR, receita, cancelamentos, antecedência e canais, calculados sobre as mesmas reservas que você opera, e uma seção com o que está mal cadastrado hoje. Sem planilhas.",
+    },
+    hero: {
+      eyebrow: "Relatórios",
+      title: "Seus números, *sem montar planilha*.",
+      lead:
+        "Ocupação, tarifa média, receita, cancelamentos e de que canal vem cada reserva, calculados sobre as mesmas reservas que você opera. E uma seção que não olha o que aconteceu, e sim o que está mal cadastrado hoje.",
+    },
+    hygiene: {
+      eyebrow: "Status e gestão",
+      title: "O que está mal, *antes do que aconteceu*.",
+      lead:
+        "A maioria dos relatórios conta o mês passado. Esta seção diz o que precisa ser corrigido hoje, antes que vire um hóspede sem quarto.",
+      items: [
+        "**Reservas pendentes** que ninguém confirmou a tempo.",
+        "**Chegadas de hoje sem quarto atribuído.**",
+        "**Saídas de hoje que continuam dentro**: o check-out não foi marcado.",
+        "**Reservas sem canal**: as que ninguém marcou e depois desmontam o relatório de canais.",
+      ],
+    },
+    metrics: {
+      eyebrow: "O que mede",
+      title: "Cada número, *explicado na sua linha*.",
+      lead: "Sem glossário à parte: cada métrica se entende onde aparece.",
+      items: [
+        {
+          title: "Ocupação e demanda",
+          desc: "Quantos quartos você tem ocupados hoje e a curva do que já está reservado para os próximos 7 a 90 dias.",
+        },
+        {
+          title: "ADR e RevPAR",
+          desc: "O ADR é o que você cobra em média por noite vendida; o RevPAR, o que cada quarto que você tem deixa, vendido ou não.",
+        },
+        {
+          title: "Cancelamentos",
+          desc: "A taxa do período e as de última hora, com sua tendência por semana ou por mês.",
+        },
+        {
+          title: "Canais",
+          desc: "De onde vem cada reserva e qual cancela mais. Com menos de três reservas, não afirma.",
+        },
+      ],
+    },
+    period: {
+      eyebrow: "Contra o período anterior",
+      title: "Cada número, *com a sua diferença*.",
+      lead:
+        "Você escolhe o intervalo —uma semana, um mês, três ou seis meses, ou um personalizado— e cada métrica se compara com o período imediatamente anterior.",
+      items: [
+        {
+          title: "Receita",
+          desc: "A do período e a projetada para os próximos 30 dias com o que já está reservado.",
+        },
+        {
+          title: "Antecedência",
+          desc: "Com quantos dias de antecedência reservam com você, com o mínimo, o máximo e sobre quantas reservas foi calculado.",
+        },
+        {
+          title: "Estadia média",
+          desc: "Quantas noites cada hóspede fica, em média, no intervalo que você escolheu.",
+        },
+        {
+          title: "Ocupação por categoria",
+          desc: "Quais categorias estão cheias hoje e quais têm vaga, com a porcentagem de cada uma.",
+        },
+      ],
+    },
+    ask: {
+      eyebrow: "A pergunta que não está na tela",
+      title: "Se não está no relatório, *pergunte a ele*.",
+      lead:
+        "O Roombir IA lê os mesmos relatórios e responde na conversa, com o número e de onde ele sai. Para “estamos melhor que o ano passado nesta altura?” tem o pace do [Revenue](/producto/revenue), contra o seu próprio histórico.",
+      items: [
+        "“Qual canal mais cancela este trimestre?”",
+        "“Quantas chegadas eu tenho amanhã sem quarto?”",
+        "“Como está vindo outubro contra setembro?”",
+      ],
+    },
+    faq: [
+      {
+        q: "De onde saem os números?",
+        a: "Das mesmas reservas que você opera no calendário, calculadas na hora. Não há uma exportação noturna nem uma base à parte que possa se dessincronizar.",
+      },
+{
+        q: "Qual a diferença com o Revenue?",
+        a: "Relatórios olha para a operação: o que aconteceu, o que está mal cadastrado, de onde vêm as reservas. [Revenue](/producto/revenue) olha para a frente para decidir o preço: pace contra o seu próprio histórico, concorrência e eventos.",
+      },
+      {
+        q: "Preciso configurar alguma coisa?",
+        a: "Não. Com as reservas cadastradas, os relatórios já estão prontos. A única coisa que vale a pena é marcar o canal de cada reserva manual, para o relatório de canais servir.",
+      },
+    ],
+    cta: {
+      title: "Seus números, *desde o primeiro dia*.",
+      lead: "Os relatórios não se configuram: saem das reservas que você já está cadastrando.",
+      steps: [
+        "Cadastra suas reservas, ou migramos com você.",
+        "Marca o canal de cada reserva manual.",
+        "Abre Relatórios e escolhe o intervalo.",
+      ],
+    },
+  },
+
+  revenue: {
+    meta: {
+      title: "Revenue",
+      description:
+        "Revenue management com o rastro de cada preço: quais dados viu, qual regra bateu e qual teto aplicou. Pace contra o seu próprio histórico, concorrência, eventos do seu destino de quinze fontes e a tarifa que entra no motor ao aceitá-la.",
+    },
+    hero: {
+      eyebrow: "Revenue",
+      title: "Ele diz o preço *e por quê*.",
+      lead:
+        "Um documento por data com o rastro completo: quais dados viu, qual regra bateu e qual teto aplicou. Olha o seu próprio histórico e o seu destino —feriados, eventos, rotas aéreas, clima— com a fonte à vista. E quando você aceita, a tarifa entra sozinha no motor.",
+    },
+    decision: {
+      eyebrow: "Decisões",
+      title: "A resposta para *“por que você sugere isso?”*",
+      lead:
+        "Há um documento por propriedade e por data com o rastro completo: quais dados o sistema viu, qual era a tarifa base, qual sugeriu, quais regras bateram, se foi aplicado um teto, e um registro que se lê linha por linha.",
+      items: [
+        "Ocupação, demanda, disponibilidade, tarifas da concorrência, reservas novas e eventos: tudo o que entrou na conta, com seu valor.",
+        "Qual regra bateu e em que ordem, porque ganha a última.",
+        "Se foi aplicado o teto mínimo ou máximo, e qual era.",
+        "A vida da recomendação: sugerida, aceita ou rejeitada, aplicada, com quem e quando.",
+      ],
+    },
+    destination: {
+      eyebrow: "O seu destino",
+      title: "O que move a demanda, *com a fonte*.",
+      lead:
+        "Os sinais de demanda saem de quinze fontes públicas por destino, varridas ao redor da sua propriedade e não de uma lista fixa de cidades. Os eventos são sugeridos sozinhos e você os aprova: um aprovado não é sobrescrito pela próxima atualização.",
+      items: [
+        "**Eventos no seu raio**: esportes, cultura, congressos e feiras, com seu impacto esperado e os dias que faltam.",
+        "**Feriados e feriados prolongados**, que as regras de preço podem usar como variável.",
+        "**Rotas aéreas observadas** chegando à sua região, e o câmbio dos mercados que visitam você.",
+        "**As buscas sem disponibilidade** do seu próprio motor: o sinal de demanda mais subestimado de uma hospedagem pequena.",
+      ],
+    },
+    rules: {
+      eyebrow: "Cenários",
+      title: "Treze variáveis, *e um ensaio a seco*.",
+      lead:
+        "Cada regra olha uma variável, compara com um valor dentro de uma janela de antecedência e aplica um ajuste. São avaliadas em ordem e ganha a última que bate. Antes de ativar qualquer uma, o ensaio a seco mostra o que ela teria feito.",
+      items: [
+        "**Variáveis**: ocupação, índice de demanda, disponibilidade, tarifa dos concorrentes 1 a 5, reservas novas em 7 e em 30 dias, impacto de eventos, dias até o evento mais próximo e índice de pace.",
+        "**Comparações**: maior, maior ou igual, igual, menor ou igual, menor.",
+        "**Ajuste** percentual sobre a tarifa base.",
+        "**Tetos** de tarifa mínima e máxima, aplicados depois de tudo o mais.",
+      ],
+    },
+    comp: {
+      eyebrow: "Concorrência",
+      title: "Uma concorrência *mista e honesta*.",
+      lead:
+        "Os concorrentes que também usam roombir contribuem com sua tarifa real. Os de fora são descobertos sozinhos por proximidade e semelhança, e a tarifa deles você cadastra, como referência fixa ou por data.",
+      items: [
+        "Pontuação de semelhança por tipo, categoria, tamanho, faixa e região.",
+        "O perfil do seu próprio hotel, tirado do sistema a menos que você o mude à mão.",
+        "Grade de tarifas da concorrência por data.",
+        "Preparado para fornecedores automáticos de tarifas; hoje sem conectar.",
+      ],
+    },
+    rest: {
+      eyebrow: "As outras abas",
+      title: "Tudo o que existe *além do preço*.",
+      items: [
+        {
+          title: "Dois calendários em um",
+          desc: "Por data de reserva —quando compraram de você— e por data de estadia —quando dormem—. Muitos sistemas misturam os dois e confundem.",
+        },
+        {
+          title: "Pace",
+          desc: "O ritmo de venda contra o da sua própria propriedade no passado, por dia da semana, mês e antecedência, com alertas de venda rápida ou lenta.",
+        },
+        {
+          title: "Eventos",
+          desc: "Sugeridos sozinhos e curados por você: sugerido, aprovado ou descartado, com pontuação de relevância e impacto esperado.",
+        },
+        {
+          title: "Recomendações",
+          desc: "Tarifa atual, sugerida, diferença e motivo. São aceitas ou rejeitadas, e podem se aplicar sozinhas se você ativar isso.",
+        },
+        {
+          title: "Sinais de demanda",
+          desc: "Além das reservas, o índice de demanda considera as buscas do seu motor, incluindo as que não encontraram vaga.",
+        },
+        {
+          title: "Configuração",
+          desc: "Concorrência, localização, perfil do hotel, limites de pace, raio de eventos e tetos de tarifa.",
+        },
+      ],
+    },
+    cost: {
+      eyebrow: "Em outros lugares, à parte",
+      title: "Um RMS quase sempre *é mais um módulo*.",
+      lead:
+        "Entre os sistemas para hospedagens independentes, o revenue management é vendido como um adicional. O único que publica o preço no site cobra por quarto.",
+      head: { tool: "Produto", price: "Preço publicado", gap: "Como se contrata" },
+      rows: [
+        {
+          tool: "Amenitiz PriceAdvisor",
+          price: "**€6** por quarto por mês",
+          gap: "Adicional sobre o plano. Sugere; não aplica sozinho.",
+        },
+        {
+          tool: "SiteMinder Dynamic Revenue Plus",
+          price: "não publica",
+          gap: "Adicional com cobrança à parte sobre o plano.",
+        },
+        {
+          tool: "Mews RMS",
+          price: "não publica",
+          gap: "Módulo à parte dos seus três planos.",
+        },
+      ],
+      total:
+        "Com preço publicado, um hotel de **15 quartos** paga **€90 por mês** só pelas sugestões de tarifa. No roombir, Revenue está no catálogo de produtos como qualquer outro: [veja em qual plano ele entra](/precios).",
+      source:
+        "Fontes: páginas de produto e de preços de amenitiz.com, siteminder.com e mews.com, lidas em 22 de setembro de 2026.",
+    },
+    faq: [
+      {
+        q: "Tenho pouco histórico. Serve do mesmo jeito?",
+        a: "Serve, mas ele vai avisar. O pace é comparado contra **o seu próprio histórico**, agrupado por dia da semana, mês e antecedência, e a tela **mostra o tamanho da amostra**. Se uma célula foi calculada com três reservas, você vai ver. Preferimos isso a mostrar uma curva confiante construída sobre nada.",
+      },
+      {
+        q: "De onde saem as tarifas da concorrência?",
+        a: "De dois lugares. Se o concorrente também usa roombir, a tarifa é real. Se é de fora, o sistema **descobre sozinho** por localização e semelhança, mas **a tarifa você cadastra**, fixa ou por data. A conexão com fornecedores automáticos está preparada e ainda não conectada; não vamos dizer que sim até que esteja.",
+      },
+      {
+        q: "Se eu aceitar uma recomendação, tenho que copiar o preço para outro lugar?",
+        a: "Não. Ao aceitá-la, a tarifa **entra no motor de reservas** e passa a ser o primeiro degrau do preço daquela data. Na maioria dos sistemas esse passo é uma pessoa copiando um número de uma tela para outra.",
+      },
+    ],
+    cta: {
+      title: "O preço *deixa de ser um palpite*.",
+      lead:
+        "Revenue começa a servir assim que você tem histórico próprio, e enquanto não tem, ele diz isso na cara em vez de inventar uma curva.",
+      steps: [
+        "Cadastra o inventário e as tarifas base.",
+        "Monta a sua concorrência e aprova os eventos da sua região.",
+        "Escreve duas ou três regras e testa a seco.",
+      ],
+    },
+  },
+
+  marketing: {
+    meta: {
+      title: "Marketing",
+      description:
+        "O editor de site com assistente —você mostra uma captura e ele monta as seções— conectado ao seu inventário e ao seu motor. Marca, biblioteca de fotos, galerias, avaliações, LinkHub e a camada que torna a sua hospedagem legível para uma IA.",
+    },
+    hero: {
+      eyebrow: "Marketing",
+      title: "Um site que *já sabe* o que está livre.",
+      lead:
+        "O site, a marca, as fotos, as avaliações e o LinkHub saem do mesmo lugar que as suas reservas: você muda um preço e ele já está no site. E o editor tem um assistente: você cola a captura de um site de que gosta e ele monta as seções, editáveis.",
+    },
+    ai: {
+      eyebrow: "O editor com assistente",
+      title: "Você mostra um site, *ele monta o seu*.",
+      lead:
+        "Você cola até seis capturas por pedido —a capa de um hotel de que gosta, uma seção de outro site— e o assistente monta as seções com essa estrutura e os seus textos, na tela e em rascunho. Depois você edita como qualquer outra coisa.",
+      items: [
+        "**Você aponta um bloco e pede** “faz igual a este”, “adiciona mais dois cartões”, “muda o título”: ele mexe só nessa peça e deixa o resto como estava.",
+        "**Tudo vai para o rascunho.** Publicar é um passo à parte, e é seu.",
+"**Sem código.** E se você quiser, há estilos por tela, animações e CSS próprio.",
+      ],
+    },
+    connected: {
+      eyebrow: "Conectado, não colado",
+      title: "Seções que *leem os seus dados*.",
+      lead:
+        "O que diferencia o editor de um construtor genérico não é a tela: são as seções que se conectam sozinhas ao que você já cadastrou. Num construtor genérico, o motor e os quartos são colados de outro serviço.",
+      items: [
+        {
+          title: "Motor e quartos",
+          desc: "O motor de reservas, os cartões de quarto e as categorias, com disponibilidade e preço de verdade.",
+        },
+        {
+          title: "Galeria, avaliações, serviços e promoções",
+          desc: "Você muda uma promoção em Reservas e o site mostra, sem editar a página.",
+        },
+        {
+          title: "Vários idiomas",
+          desc: "Cada idioma é uma página com seu endereço, seu título e sua prévia para redes. Não é um tradutor por cima.",
+        },
+        {
+          title: "O seu domínio",
+          desc: "Cada idioma pode ter o seu, com rascunho, publicação explícita e prévia em vários tamanhos.",
+        },
+      ],
+    },
+    quality: {
+      eyebrow: "Qualidade do site",
+      title: "Um controle de qualidade *que também conserta*.",
+      lead:
+        "Um painel como o do PageSpeed revisa o que um buscador e um celular penalizam. O botão “Consertar tudo” corrige o que encontrou com regras fixas, sem IA no meio, e revisa de novo.",
+      items: [
+        {
+          title: "Antes de publicar",
+          desc: "Avisa textos pequenos demais no celular, imagens sem descrição e títulos ou descrições que faltam.",
+        },
+        {
+          title: "Modelos com a sua marca",
+          desc: "Você começa de um modelo que se preenche com o seu logo, suas cores, suas fotos e os textos da sua propriedade.",
+        },
+        {
+          title: "Modo simples ou avançado",
+          desc: "O simples esconde os controles de design até você procurá-los. O avançado mostra todos.",
+        },
+        {
+          title: "Popups e WhatsApp",
+          desc: "Cinco formatos de popup com regras de página e de frequência, e um botão de WhatsApp com a mensagem já escrita.",
+        },
+      ],
+    },
+    cost: {
+      eyebrow: "O que hoje você paga à parte",
+      title: "Cinco fornecedores *que não se falam*.",
+      lead:
+        "É assim que hoje se monta a presença digital de uma hospedagem independente, com os preços que cada fornecedor publica. Nenhum sabe o que você tem livre esta noite.",
+      head: { tool: "O que se compra", price: "Preço publicado", gap: "O que não sabe da sua hospedagem" },
+      rows: [
+        {
+          tool: "Site no Framer",
+          price: "US$ 10/mês + **US$ 20 por idioma**",
+          gap: "O seu inventário e os seus preços: o motor é colado de outro serviço.",
+        },
+        {
+          tool: "Site no Webflow",
+          price: "US$ 15/mês + **US$ 9 por idioma**",
+          gap: "O mesmo: sem quartos nem motor próprios.",
+        },
+        {
+          tool: "Avaliações no TrustYou",
+          price: "a partir de **US$ 75** por propriedade por mês",
+          gap: "Qual hóspede saiu hoje, a menos que você integre com o seu sistema.",
+        },
+        {
+          tool: "Link na bio com Linktree",
+          price: "**US$ 15/mês**",
+          gap: "A sua disponibilidade: “Reservar” é um link.",
+        },
+        {
+          tool: "Fotos no Google Workspace",
+          price: "**US$ 7** por usuário por mês",
+          gap: "Qual foto é de qual quarto.",
+        },
+      ],
+      total:
+        "Um site em cinco idiomas no Framer (US$ 10 + 4 × US$ 20), mais avaliações, link na bio e fotos: **US$ 187 por mês**, e ainda sem motor de reservas nem nada conectado às suas reservas.",
+      source:
+        "Preços publicados em framer.com, webflow.com, trustyou.com, linktr.ee e workspace.google.com, lidos em 22 de setembro de 2026. Framer, Webflow e TrustYou, com pagamento anual; Linktree, plano Pro mensal.",
+    },
+    brand: {
+      eyebrow: "Marca",
+      title: "A sua marca, *cadastrada uma vez*.",
+      lead:
+        "Uma ficha de identidade que alimenta o site, o LinkHub, o motor e os dados que os buscadores leem. Você muda o logo e ele muda em todo lugar.",
+      items: [
+        "**Paleta tirada do seu logo**, com a cor principal ajustada para o texto por cima se ler.",
+        "**Tom e tipografia**: você escolhe o tom e a tipografia se sugere sozinha.",
+        "**História, frase e para quem você fala**, nas suas palavras.",
+        "**A sua região e o que você tem por perto**, detectados a partir do mapa.",
+      ],
+    },
+    files: {
+      eyebrow: "Fotos e arquivos",
+      title: "Suas fotos, *em um só lugar*.",
+      items: [
+        {
+          title: "A biblioteca da empresa",
+          desc: "Imagens, vídeos, áudios e documentos, com pastas, etiquetas e busca. Você arrasta do computador e pronto.",
+        },
+        {
+          title: "Editor de imagem",
+          desc: "Você recorta e ajusta uma foto sem sair do sistema.",
+        },
+        {
+          title: "Galerias",
+          desc: "Fotos e vídeos do YouTube ou Vimeo agrupados em galerias da propriedade, com capa e ordem.",
+        },
+        {
+          title: "A mesma biblioteca para tudo",
+          desc: "Ela é usada pelo editor de site, pela marca, pelas galerias e pelo assistente. O site mostra a galeria que você escolher com uma seção.",
+        },
+      ],
+    },
+    reviews: {
+      eyebrow: "Avaliações",
+      title: "Suas avaliações, *respondidas em um só lugar*.",
+      lead:
+        "Você cadastra as avaliações do Google, Booking, TripAdvisor, Airbnb, Despegar, Hotels.com e as próprias, à mão ou por arquivo, e responde daqui. As que você escolher aparecem no seu site.",
+      items: [
+        "**Importação por arquivo** que avisa as linhas com erros e não duplica as que já existiam.",
+        "**Resposta pública** por avaliação, e um filtro das que continuam sem resposta.",
+        "**Média e distribuição** de uma a cinco estrelas, por fonte.",
+        "**Aparecem no seu site** com uma seção do editor, só as que você deixar visíveis.",
+      ],
+    },
+    linkhub: {
+      eyebrow: "LinkHub",
+      title: "O link da sua bio, *com o motor dentro*.",
+      lead:
+        "Um link na bio feito para hospedagens: o botão de reservar abre o mesmo motor do seu site, com disponibilidade e preço, sem mandar ninguém para outro formulário.",
+      items: [
+        "**Dez tipos de bloco**: reservar, WhatsApp, avaliações, galeria, vídeo, mapa, contato, link, texto e separador, com programação por data.",
+        "**Seis modelos** que se completam com a sua marca, ou o design à mão.",
+        "**Código QR** para imprimir na recepção ou no cardápio.",
+        "**Visitas e cliques** por dia, país, origem e dispositivo, sem guardar o IP de ninguém.",
+      ],
+    },
+    agentes: {
+      eyebrow: "Legível para uma IA",
+      title: "Que uma máquina consiga *te entender e te reservar*.",
+      lead:
+        "Cada vez mais gente pergunta a um assistente de IA antes de buscar. Esse assistente não vê o seu carrossel de fotos: lê texto, dados estruturados e rotas. O seu site e o seu motor publicam as três coisas, e se ligam com um interruptor.",
+      items: [
+        "**`llms.txt`**: quem você é, o que vende e como se reserva, em texto puro.",
+        "**`availability.json`** e **`engine-capabilities.json`**: a sua disponibilidade real e o que o seu motor aceita.",
+        "**Dados estruturados** em cada página e um editor de GEO para declarar o que você é com as suas palavras.",
+        "**Dez ferramentas para agentes no navegador**: um assistente externo pode completar uma reserva.",
+      ],
+    },
+    faq: [
+      {
+        q: "Preciso saber design?",
+        a: "Não. Você pode começar de um modelo que se preenche com a sua marca, pedir ao assistente que monte uma seção a partir de uma captura, ou trabalhar no modo simples, que esconde os controles de design. Se você sabe design, o modo avançado tem estilos por tela, animações e CSS próprio.",
+      },
+      {
+        q: "Preciso cadastrar os quartos duas vezes, uma para o site?",
+        a: "Não, e esse é o ponto. As seções de quartos, motor, galerias, promoções, avaliações e serviços **se conectam sozinhas ao que você já cadastrou**. Se você sobe uma foto nova numa categoria, ela aparece no site sem ninguém mexer.",
+      },
+      {
+        q: "Posso usar o meu próprio domínio?",
+        a: "Sim, e cada idioma do site pode ter o seu.",
+      },
+{
+        q: "Posso trazer minhas avaliações do Google?",
+        a: "Sim, por arquivo ou à mão.",
+      },
+    ],
+    cta: {
+      title: "Seu site e seu link, *na mesma tarde*.",
+      lead:
+        "Se você já cadastrou a marca e os quartos, começa o site a partir de um modelo ou de uma captura, e o LinkHub se completa com os dados da propriedade.",
+      steps: [
+        "Cadastra sua marca e suas fotos.",
+        "Começa o site a partir de um modelo ou uma captura.",
+        "Publica no seu domínio e monta o LinkHub.",
       ],
     },
   },
@@ -1901,12 +2491,6 @@ const pt: Dictionary = {
         },
       ],
     },
-    honest: {
-      eyebrow: "Antes de você decidir",
-      title: "O que um plano do Roombir ainda não inclui",
-      text: "Não está em nenhum plano porque ainda não existe, não porque seja um extra: **channel manager** — não há sincronização de inventário nem tarifas com OTAs — e **gateway de pagamento** — não se cobra online. As tarifas de concorrentes externos são carregadas à mão, e as fichas do Google Business e das OTAs se editam dentro mas se copiam ao destino à mão.",
-      link: "Ver o estado completo do produto",
-    },
     why: {
       eyebrow: "Por que está publicado",
       title: "O preço *não se pede*: se lê.",
@@ -1978,7 +2562,7 @@ const pt: Dictionary = {
       eyebrow: "Sobre nós",
       title: "Software para a hospedagem que *não tem área de TI*.",
       lead:
-        "O Roombir nasceu de uma observação simples: um hotel de vinte quartos ou um complexo de seis chalés precisa exatamente das mesmas sete peças que uma rede, e nenhuma das opções do mercado as entrega juntas a um preço que faça sentido nessa escala.",
+        "O Roombir nasceu de uma observação simples: um hotel de vinte quartos ou um complexo de seis chalés precisa exatamente das mesmas peças que uma rede, e nenhuma das opções do mercado as entrega juntas de um jeito que faça sentido nessa escala.",
       secondary: "Ver o produto",
     },
     thesis: {
@@ -2009,105 +2593,11 @@ const pt: Dictionary = {
         },
       ],
     },
-    status: {
-      eyebrow: "Estado do produto",
-      title: "O que funciona, o que funciona pela metade e *o que não existe*.",
-      lead:
-        "Esta tabela é a mesma que usamos internamente para decidir o que se constrói. Publicamos porque a alternativa — você descobrir na terceira semana — não serve para ninguém, muito menos para nós.",
-      groups: [
-        {
-          label: "Sólido e em produção",
-          tone: "ok",
-          rows: [
-            {
-              name: "Modelo de venda duplo",
-              desc: "Pool de categoria e unidade única 1:1, escolhível por categoria, com detecção de estado misto, autocorreção e assistente de migração com rascunho, prévia e cancelamento.",
-            },
-            {
-              name: "Anti-overbooking",
-              desc: "Trava única por unidade e data no banco de dados. Os bloqueios de manutenção usam a mesma trava.",
-            },
-            {
-              name: "Motor de reservas",
-              desc: "Fluxo completo com calendário informativo, Estúdio do Motor de sete blocos, dois modos de confirmação e expiração automática das pendentes.",
-            },
-            {
-              name: "Multimoeda",
-              desc: "Moeda base, de cobrança e de comparação, com congelamento no check-in, dez moedas e cotação escolhível para ARS — blue, MEP, CCL ou oficial.",
-            },
-            {
-              name: "Calendário tape chart",
-              desc: "Mover e redimensionar com prévia do resultado e dos conflitos antes de aplicar.",
-            },
-            {
-              name: "Revenue management",
-              desc: "Analytics de eixo duplo, pace com benchmark próprio, comp-set, eventos, regras com ensaio a seco e ciclo fechado até o motor de preços.",
-            },
-            {
-              name: "Builder e renderer",
-              desc: "Construtor visual com componentes de domínio, multi-idioma, domínios próprios, popups e editor de SEO e GEO.",
-            },
-            {
-              name: "LinkHub",
-              desc: "Dez tipos de bloco, temas, agendamento por data, QR e analítica de visitas e cliques.",
-            },
-            {
-              name: "Roombir IA",
-              desc: "272 ferramentas e política de permissões em três camadas, com assunção de identidade e permissão de vida curta.",
-            },
-            {
-              name: "Suporte e cadastro",
-              desc: "38 tours guiados, treinamento por espaço de trabalho e cadastro de nove passos que retoma em outro dispositivo.",
-            },
-          ],
-        },
-        {
-          label: "Parcial: existe, mas não completo",
-          tone: "partial",
-          rows: [
-            {
-              name: "Presença online",
-              desc: "Funciona mas está escondida do menu por decisão de produto. As conexões de redes são declaradas — carga manual, sem OAuth real — e a sincronização com OTAs marca status mas não publica.",
-            },
-            {
-              name: "Google Business",
-              desc: "A ficha é editável e pode ser marcada como publicada no modelo, mas não há API do Google conectada: hoje se copia ao destino à mão.",
-            },
-            {
-              name: "Tarifas de concorrentes",
-              desc: "A descoberta de concorrentes é automática; as tarifas externas são carregadas à mão. Preparado para Lighthouse, RateGain, PriceLabs e KeyData, sem conexão.",
-            },
-            {
-              name: "Contratos e créditos de IA",
-              desc: "O plano define que produtos cada empresa tem e os créditos de IA são medidos e reportados, mas ainda não bloqueiam o acesso nem impõem cota.",
-            },
-            {
-              name: "Faturamento",
-              desc: "Existe a capacidade de gerenciar faturamento e o plano vive na empresa, mas não há sistema de faturamento conectado.",
-            },
-          ],
-        },
-        {
-          label: "Ainda não existe",
-          tone: "none",
-          rows: [
-            {
-              name: "Channel manager",
-              desc: "Não há integração de inventário nem de tarifas com OTAs. A única coisa que existe é um log de eventos que registra cada mudança relevante de uma reserva — criada, confirmada, atribuída, movida, check-in, check-out, cancelada, no-show — pensado para alimentar essa integração quando existir. Hoje é um arquivo para replay e diagnóstico, não uma conexão.",
-            },
-            {
-              name: "Gateway de pagamento",
-              desc: "Não se cobra online. O modelo de empresa tem a marca de pagamentos, mas não há gateway: a cobrança é no check-in, presencial, com o câmbio congelado naquele momento.",
-            },
-          ],
-        },
-      ],
-    },
     pilot: {
       eyebrow: "Onde estamos",
       title: "Em piloto de mercado, *de propósito*.",
       lead:
-        "Não estamos tentando faturar nesta etapa. Estamos tentando responder quatro perguntas com dados, e as quatro dependem de haver hospedagens usando o sistema para valer, com reservas reais dentro.",
+        "Nesta etapa não buscamos volume. Estamos tentando responder quatro perguntas com dados, e as quatro dependem de haver hospedagens usando o sistema para valer, com reservas reais dentro.",
       questions: [
         "O cadastro se completa sozinho, ou há um passo específico onde as pessoas desistem?",
         "Os hóspedes reservam pelo motor, ou o hábito volta ao chat mesmo com o link existindo?",
@@ -2117,8 +2607,8 @@ const pt: Dictionary = {
       stats: [
         { value: "2026", label: "ano do piloto de mercado" },
         { value: "AR", label: "feito na Argentina, em cinco idiomas" },
-        { value: "5", label: "idiomas de plataforma" },
-        { value: "0", label: "comissão por reserva do motor" },
+        { value: "5", label: "idiomas da plataforma" },
+        { value: "1", label: "único banco de dados para todo o sistema" },
       ],
     },
     cta: {
@@ -2137,7 +2627,7 @@ const pt: Dictionary = {
     meta: {
       title: "Contato",
       description:
-        "Escreva para a gente e conversamos sem rodeios: o que o Roombir resolve para a sua hospedagem e o que ainda não. Você também pode começar o cadastro grátis por conta própria.",
+        "Escreva para a gente e conversamos sem rodeios: o que o Roombir resolve para a sua hospedagem e o que ainda não. Você também pode começar o cadastro por conta própria.",
     },
     eyebrow: "Contato",
     title: "Conte como *você recebe reservas hoje*.",
@@ -2151,8 +2641,7 @@ const pt: Dictionary = {
     directLabel: "Ou escreva direto",
     shortcutTitle: "Prefere não esperar uma resposta?",
     shortcutText:
-      "O cadastro é autogerido, gratuito e não pede cartão. Dá para ter o motor funcionando antes de a gente responder este formulário.",
-    whatsappMessage: "Oi, quero conhecer o Roombir para a minha hospedagem.",
+      "O cadastro é autogerido e guiado. Dá para ter o motor funcionando antes de a gente responder este formulário.",
   },
 
   legal: {
@@ -2237,9 +2726,9 @@ const pt: Dictionary = {
         {
           p: "O Roombir é uma plataforma na nuvem para gerenciar uma hospedagem: reservas, quartos, motor de reservas público, sites, revenue management, portal do hóspede e um assistente de inteligência artificial. Acessa-se pelo navegador; não se entrega software para instalar.",
         },
-        { h: "2. Estado do produto" },
+        { h: "2. Escopo do serviço" },
         {
-          p: "A plataforma está em **piloto de mercado**. Há funcionalidades declaradas como parciais e outras que não existem — entre elas **channel manager** e **gateway de pagamento**. O detalhe atualizado está publicado em [Estado do produto](/nosotros#estado) e faz parte do que você aceita ao contratar: não prometemos funcionalidades que ali figurem como inexistentes.",
+          p: "A plataforma está em **piloto de mercado**: pode haver funcionalidades parciais ou que ainda não existam. O escopo vigente é detalhado por escrito na contratação e faz parte do que você aceita: não prometemos funcionalidades que não existam.",
         },
         { h: "3. Sua conta" },
         {
@@ -2252,12 +2741,12 @@ const pt: Dictionary = {
         {
           p: "Os dados que você carregar — propriedades, unidades, tarifas, reservas, hóspedes, conteúdo dos seus sites — são seus. Nós os processamos para prestar o serviço, conforme a [política de privacidade](/legal/privacidad). Se for você quem carrega dados de hóspedes, você é o controlador desses dados perante eles e perante a lei aplicável.",
         },
-        { h: "5. Planos e faturamento" },
+        { h: "5. Condições comerciais" },
         {
-          p: "Cada plano define que produtos inclui e que tetos de propriedades e de usuários tem; o publicado em [Preços](/precios) sai do mesmo catálogo com que a sua conta é resolvida. Os períodos gratuitos e os testes duram o que ali se indicar. Não há fidelidade mínima nem multa por encerrar.",
+          p: "Os produtos incluídos e os tetos de propriedades e de usuários de cada conta são comunicados por escrito no momento da contratação e fazem parte do acordo.",
         },
         {
-          p: "O motor de reservas não cobra comissão por reserva. A cobrança ao hóspede não passa pelo roombir: hoje acontece no check-in, entre a hospedagem e o hóspede.",
+          p: "A cobrança ao hóspede não passa pelo roombir: hoje acontece no check-in, entre a hospedagem e o hóspede.",
         },
         { h: "6. Uso aceitável" },
         { p: "Não se pode usar a plataforma para:" },
@@ -2401,7 +2890,7 @@ const pt: Dictionary = {
       rms: { label: "Revenue management", us: "Incluído no catálogo de produtos, conforme o plano; não é um módulo à parte", tone: "ok" },
       channel: { label: "Channel manager (OTAs)", us: "Ainda não existe. Só um registro de eventos para quando conectar", tone: "no" },
       payments: { label: "Cobrança online do hóspede", us: "Ainda não existe: a cobrança é no check-in", tone: "no" },
-      ai: { label: "Assistente de IA", us: "Executa: 272 ferramentas com as suas permissões, transcrição do turno visível", tone: "ok" },
+      ai: { label: "Assistente de IA", us: "Executa com as suas permissões, transcrição do turno visível", tone: "ok" },
       fx: { label: "Multimoeda", us: "10 moedas; conversão congelada no check-in; blue, MEP, CCL ou oficial para ARS", tone: "ok" },
       dual: { label: "Modelo de venda pool e unidade 1:1", us: "Sim, escolhido por categoria, convivendo no mesmo calendário", tone: "ok" },
       website: { label: "Site com domínio próprio", us: "Incluído: builder, multi-idioma, LinkHub com QR", tone: "ok" },
@@ -2472,16 +2961,16 @@ const pt: Dictionary = {
       littlehotelier: {
         name: "Little Hotelier",
         site: "littlehotelier.com",
-        oneLiner: "A marca do SiteMinder para 1–30 quartos: 30 dias de teste, calculadora de preço e taxa variável por reserva.",
+        oneLiner: "A marca do SiteMinder para 1–30 quartos: 30 dias de teste, calculadora de preço e add-ons que cobram por reserva.",
         meta: {
           title: "Roombir vs Little Hotelier",
           description:
-            "Little Hotelier e Roombir comparados: preço, teste grátis, taxa por reserva, revenue, channel manager, pagamentos e IA. Verificado contra littlehotelier.com em 2 de setembro de 2026.",
+            "Little Hotelier e Roombir comparados: preço, teste grátis, taxa por reserva, revenue, channel manager, pagamentos e IA. Verificado contra littlehotelier.com em 2 de setembro de 2026; comissões revisadas em 22 de setembro.",
         },
         hero: {
           title: "Roombir vs *Little Hotelier*",
           lead:
-            "O Little Hotelier é o sistema pequeno do SiteMinder, o maior distribuidor hoteleiro do mundo, e o mais parecido com a Roombir em tamanho de cliente: propriedades de 1 a 30 quartos. Publica uma calculadora de preço, dá 30 dias de teste e tem channel manager e pagamentos. Cobra também uma taxa variável por reserva, e o revenue, o site e o metasearch são add-ons.",
+            "O Little Hotelier é o sistema pequeno do SiteMinder, o maior distribuidor hoteleiro do mundo, e o mais parecido com a Roombir em tamanho de cliente: propriedades de 1 a 30 quartos. Publica uma calculadora de preço, dá 30 dias de teste e tem channel manager e pagamentos. O motor direto dele não declara comissão: as tarifas variáveis por reserva estão nos add-ons de metasearch e de canais, e o revenue e o site também entram como add-ons.",
         },
         them: [
           "Você precisa de channel manager e pagamentos hoje: os dois existem e funcionam em escala global.",
@@ -2489,7 +2978,7 @@ const pt: Dictionary = {
           "Você opera em inglês, alemão, italiano, tailandês ou indonésio: é onde ele localiza.",
         ],
         us: [
-          "Você quer uma mensalidade fixa, sem porcentagem sobre cada reserva que entra.",
+          "Você quer o preço completo numa linha, sem add-ons que cobram por reserva.",
           "Você quer o revenue e o site dentro do plano, não como add-ons.",
           "Você vende chalés com nome próprio junto com quartos, ou cobra em pesos e precisa congelar o câmbio.",
         ],
@@ -2497,7 +2986,7 @@ const pt: Dictionary = {
           price: { v: "Sim: calculadora por quantidade de quartos (o número é carregado por JavaScript)", tone: "ok" },
           trial: { v: "Sim: 30 dias grátis", tone: "ok" },
           lockin: { v: "Não declara na página de preços", tone: "mid" },
-          commission: { v: "Taxa variável por reserva sobre o total de reservas, além da assinatura (segundo a página de preços)", tone: "no" },
+          commission: { v: "O motor direto não declara comissão; Metasearch e Channels Plus cobram uma tarifa variável por reserva, e os pagamentos, por transação", tone: "mid" },
           rms: { v: "Add-on: Dynamic Revenue Plus", tone: "mid" },
           channel: { v: "Sim", tone: "ok" },
           payments: { v: "Sim, Little Hotelier Payments, com taxas por transação", tone: "ok" },
@@ -2514,11 +3003,11 @@ const pt: Dictionary = {
         faq: [
           {
             q: "O Little Hotelier cobra comissão?",
-            a: "A página de preços diz que se aplicam **taxas de reserva variáveis**, calculadas sobre o total de reservas líquido de cancelamentos, além da mensalidade. A Roombir não cobra porcentagem sobre o que o seu motor vende.",
+            a: "Sobre o motor direto dele, a página de preços não declara comissão. As **tarifas de reserva variáveis** —calculadas sobre o total de reservas líquidas de cancelamentos— se aplicam aos add-ons de metasearch e de canais, e os pagamentos cobram por transação (littlehotelier.com/pricing, 22 de setembro de 2026). A Roombir não cobra porcentagem sobre nenhuma reserva.",
           },
           {
             q: "Qual é mais barato?",
-            a: "Depende de quanto você vende. Com uma taxa variável por reserva, o Little Hotelier custa mais quanto melhor você vai; a Roombir é uma mensalidade fixa por hospedagem. A calculadora deles e [nossos planos](/precios) estão publicados: faça a conta com os seus números.",
+            a: "Depende do que você precisa. O Little Hotelier calcula o preço pela quantidade de quartos e soma o revenue e o site como add-ons; a Roombir traz isso no catálogo, com uma mensalidade fixa por hospedagem. A calculadora deles e [nossos planos](/precios) estão publicados: faça a conta com os seus números.",
           },
           {
             q: "O Little Hotelier tem channel manager e a Roombir não?",
@@ -2605,7 +3094,7 @@ const pt: Dictionary = {
         us: [
           "Você tem entre 1 e 50 unidades e não há ninguém de TI.",
           "Você quer saber o preço antes da demo e não assinar fidelidade.",
-          "Você quer que a camada aberta — llms.txt, disponibilidade legível, assistente que executa — esteja em todos os planos e não só no mais caro.",
+          "Você quer que a camada aberta —llms.txt, disponibilidade legível— venha com o motor de reservas e não só no plano mais caro.",
         ],
         rows: {
           price: { v: "Não: três planos com “Get Pricing”", tone: "no" },
@@ -2632,7 +3121,7 @@ const pt: Dictionary = {
           },
           {
             q: "O Mews é mais completo que a roombir?",
-            a: "Sim, em pagamentos, POS, contabilidade e integrações. A Roombir não tem pagamentos nem channel manager. O que temos em todos os planos é o que o Mews reserva para o mais caro: a camada aberta — llms.txt, disponibilidade legível — e um assistente que executa.",
+            a: "Sim, em pagamentos, POS, contabilidade e integrações. A Roombir não tem pagamentos nem channel manager. O que temos é o que o Mews reserva para o plano mais caro, e aqui vem com o motor de reservas: a camada aberta —llms.txt, disponibilidade legível—. E um assistente que executa, conforme o plano.",
           },
           {
             q: "Quanto custa o Mews?",
@@ -3196,6 +3685,7 @@ const pt: Dictionary = {
         ],
         topCats: "Top categorias",
         topCatsSub: "Maior ocupação hoje",
+        topCatNames: ["Duplo Superior", "Duplo", "Suíte"],
         quick: "Acessos rápidos",
         quickSub: "Apps ativos na Recepção",
         quickItems: [
@@ -3278,6 +3768,8 @@ const pt: Dictionary = {
           "Contato",
         ],
         footer: "Criado com roombir",
+        inShort: "21 mar",
+        outShort: "23 mar",
         travelers: "2 viajantes",
         monthTitle: "Março de 2026",
         dows: [
@@ -3373,6 +3865,656 @@ const pt: Dictionary = {
       fullscreen: "Tela cheia",
       exitFullscreen: "Sair da tela cheia",
       replay: "Ver de novo",
+    },
+  },
+
+  videoIa: {
+    meta: {
+      title: "Vídeo · Roombir IA",
+      description: "A Roombir IA em pouco mais de um minuto: pedidos do dia a dia que ficam prontos, o dossiê do seu destino, um plano quando o pedido é um objetivo e as suas permissões sempre na frente.",
+    },
+    tabsLine: "O que hoje leva *quatro abas*…",
+    placeholder: "Peça algo à Roombir IA",
+    name: "Roombir IA",
+    demo: {
+      thinking: "A Roombir IA está pensando",
+      wait: "Consultando o sistema",
+      captions: ["Anexe um arquivo", "Peça um relatório", "Dite por voz", "Veja o detalhe do seu destino"],
+      attach: {
+        label: "Anexar arquivo",
+        media: "Mídia",
+        docs: "Documentos",
+        image: "Imagem",
+        video: "Vídeo",
+        audio: "Áudio",
+        pdf: "PDF",
+        csv: "CSV",
+        file: "tarifas-abril.pdf",
+        ask: "Carrega estas tarifas em abril",
+        steps: [
+          { label: "PDF lido · 2 páginas", tool: "ler anexo" },
+          { label: "30 tarifas carregadas", tool: "carregar tarifas" },
+        ],
+        answer: "Pronto: carreguei as 30 tarifas de abril no plano Duplo Superior.",
+      },
+      report: {
+        ask: "Qual canal mais cancela?",
+        steps: [{ label: "Relatório de canais", tool: "relatório de canais" }],
+        answer: "Booking.com: 18 % de cancelamentos em 90 dias. O direto, 4 %.",
+        title: "Cancelamentos por canal · 90 dias",
+        meta: "377 reservas",
+        kpis: [
+          { label: "Booking.com", value: "18%", hint: "41 de 228" },
+          { label: "Airbnb", value: "9%", hint: "7 de 78" },
+          { label: "Direto", value: "4%", hint: "3 de 71" },
+        ],
+      },
+      voice: {
+        listening: "Ouvindo…",
+        heard: "Bloqueia o chalé Alerce na terça à tarde por manutenção",
+        steps: [{ label: "Bloqueio criado", tool: "criar bloqueio" }],
+        answer: "Feito: o chalé Alerce fica bloqueado a partir de terça à tarde. A manhã continua à venda.",
+      },
+      tourism: {
+        ask: "O que está acontecendo na cidade este mês?",
+        steps: [{ label: "Estado turístico", tool: "estado turístico" }],
+        answer: "Mês movimentado: clássico no Maracanã e o feriadão de Páscoa.",
+        panel: {
+          title: "Meu status turístico",
+          live: "Dado ao vivo",
+          delayed: "Com atraso",
+          sections: [
+            {
+              title: "Eventos próximos",
+              live: true,
+              metrics: [
+                { value: "6", label: "Eventos em 30 dias" },
+                { value: "21 mar", label: "Grande evento próximo" },
+              ],
+              narrative: "",
+              items: [
+                { title: "Clássico no Maracanã", detail: "21 mar · a 3 km" },
+                { title: "Meia maratona do Rio", detail: "12 abr · a 2 km" },
+                { title: "Congresso no Riocentro", detail: "14 → 16 abr · a 18 km" },
+              ],
+              spark: false,
+            },
+            {
+              title: "Temporada e calendário",
+              live: false,
+              metrics: [
+                { value: "3 → 5 abr", label: "Próximo feriado prolongado" },
+                { value: "13 → 24 jul", label: "Próximas férias escolares" },
+              ],
+              narrative: "A Páscoa cai de 3 a 5 de abril: feriadão no Brasil e na Argentina, seus dois principais mercados.",
+              items: [],
+              spark: false,
+            },
+            {
+              title: "Interesse e mercados",
+              live: true,
+              metrics: [
+                { value: "+18%", label: "Interesse online" },
+                { value: "3", label: "Mercados emissores em férias (60 d)" },
+              ],
+              narrative: "",
+              items: [],
+              spark: true,
+            },
+          ],
+          spark: "Visualizações diárias na Wikipédia (30 dias)",
+          readOnly: "Somente leitura: para agir, peça à Roombir IA no chat.",
+          footer: "Atualizado há 12 min · Fontes: Nager.Date · Open-Meteo · Wikipédia · OpenStreetMap",
+        },
+      },
+    },
+    dossier: {
+      count: "15 fontes, cada dado com a sua data",
+      topics: [
+        "Feriados",
+        "Feriadões",
+        "Férias escolares",
+        "Esportes",
+        "Cultura",
+        "Congressos e feiras",
+        "Voos",
+        "Clima",
+        "Câmbio",
+        "Segurança",
+        "Ameaças naturais",
+        "Vistos",
+        "Oferta hoteleira",
+        "Interesse no destino",
+        "Entorno",
+      ],
+      dates: ["22 set", "21 set", "22 set", "20 set", "22 set"],
+      placeMeta: "Rio de Janeiro · Brasil",
+    },
+    versus: {
+      pre: "Um chat genérico",
+      struck: "busca",
+      post: ".",
+      us: "A Roombir IA parte de *um dossiê*.",
+    },
+    goal: {
+      ask: "Quero mais reservas",
+      reads: "18 fontes da sua operação",
+      time: "1,1 s",
+      sources: [
+        "Inventário",
+        "Pace",
+        "Painel do dia",
+        "Motor",
+        "Planos de tarifa",
+        "Promoções",
+        "Restrições",
+        "Site",
+        "LinkHub",
+        "Visibilidade",
+        "Perfil do Google",
+        "OTAs",
+        "Redes",
+        "Avaliações",
+        "Regras de preço",
+        "Recomendações",
+        "Concorrência",
+        "Mercado",
+      ],
+      plan: {
+        title: "Baixa temporada com ritmo lento",
+        meta: "Plano · 3 passos",
+        diagnosis: "Outubro está vendendo mais devagar que o seu histórico para as mesmas datas.",
+        steps: [
+          "Promoção de 10% só no canal direto",
+          "Mínimo de 1 noite nas terças e quartas lentas",
+          "Regra de tarifa só nas datas atrasadas",
+        ],
+        confirm: "Confirmar",
+        done: "Aplicado",
+      },
+    },
+    perms: {
+      spaces: ["Recepção", "Administração"],
+      tools: "ferramentas",
+      modal: {
+        title: "Apagar a tarifa “Alta temporada”",
+        body: "Isto não pode ser desfeito.",
+        prompt: "Digite o nome para confirmar",
+        word: "Alta temporada",
+        confirm: "Apagar",
+        cancel: "Cancelar",
+      },
+    },
+    talk: {
+      lines: ["Você escreve.", "Você fala.", "Você mostra."],
+      typed: "Qual canal mais cancela?",
+      listening: "Ouvindo…",
+      heard: "Bloqueia o chalé Alerce na terça à tarde",
+      file: "tarifas-outubro.pdf",
+      fileMeta: "PDF · 2 páginas",
+      shot: "captura-ota.png",
+      withFile: "Carrega estas tarifas em outubro",
+    },
+  },
+
+  videoProps: {
+    meta: {
+      title: "Vídeo · Propriedades",
+      description: "Propriedades em um minuto: várias propriedades sob uma só conta, cada uma com sua moeda e sua equipe, acessos por propriedade e por função, e todo o resto pendurado na ficha.",
+    },
+    name: "Propriedades",
+    owner: { name: "Martina García", role: "Dona", initials: "MG" },
+    company: "Hotel del Parque S.A.",
+    hotel: {
+      name: "Hotel del Parque",
+      city: "Mendoza, Argentina",
+      type: "Hotel",
+      inventory: "3",
+      inventoryWord: "categorias",
+      spaces: "4",
+      currency: "ARS",
+      language: "Español",
+    },
+    cabins: {
+      name: "Cabañas del Lago",
+      city: "Villa La Angostura, Argentina",
+      cityOnly: "Villa La Angostura",
+      type: "Chalé",
+      inventory: "6",
+      inventoryWord: "unidades",
+      spaces: "4",
+      currency: "USD",
+      language: "English",
+    },
+    spacesWord: "espaços",
+    counts: { one: "1 propriedade", two: "2 propriedades", users2: "2 usuários", users3: "3 usuários" },
+    status: "active",
+    chips: { currency: "Moeda", timezone: "Fuso horário", language: "Idioma", tz: "UTC−3" },
+    // El recorrido: la organización (tipos, estructura, reservas), no el alta.
+    captions: ["Cada propriedade, com seu tipo", "Suas reservas, na sua moeda", "Troque de propriedade lá em cima", "Encontre tudo num só lugar"],
+    cabinUnits: ["Chalé Alerce", "Chalé Coihue", "Chalé Arrayán", "Chalé Maitén", "Chalé Lenga", "Chalé Ñire"],
+    suiteRate: "$ 142.000",
+    cabinRate: "US$ 180",
+    templateName: "Hotel del Parque · espaços e apps",
+    templateNone: "Sem modelo",
+    coords: { pair: "-40.7625, -71.6463", lat: "-40.7625", lng: "-71.6463" },
+    invite: {
+      name: "Lucía Ferreyra",
+      email: "lucia@cabanasdellago.com",
+      role: "Staff",
+      spaces: [
+        { name: "Recepção", apps: "9" },
+        { name: "Governança", apps: "4" },
+        { name: "Administração", apps: "" },
+      ],
+      users: "Usuários",
+      addedRow: "Cabañas del Lago · Recepção",
+      allProps: "Todas as propriedades",
+    },
+    search: {
+      query: "Alerce",
+      results: [
+        { kind: "room", title: "Chalé Alerce", meta: "Cabañas del Lago · 4 hóspedes" },
+        { kind: "booking", title: "#RES-2026-QX4T · Julián Paz", meta: "Chalé Alerce · 12 → 15 out" },
+        { kind: "property", title: "Cabañas del Lago", meta: "Villa La Angostura" },
+      ],
+    },
+    hotelTotals: ["$ 212.520", "$ 289.800", "$ 592.000", "$ 190.400", "$ 450.000"],
+    cabinRows: [
+      { code: "#RES-2026-QX4T", cat: "Chalé Alerce", guest: "Julián Paz", mail: "julian.paz@gmail.com", inDate: "12 out 2026", outDate: "15 out 2026", nights: "3 noites", total: "US$ 540", status: "confirmed" },
+      { code: "#RES-2026-7HPA", cat: "Chalé Coihue", guest: "Emma Walker", mail: "emma.w@outlook.com", inDate: "10 out 2026", outDate: "14 out 2026", nights: "4 noites", total: "US$ 760", status: "checked-in" },
+      { code: "#RES-2026-2KDN", cat: "Chalé Arrayán", guest: "Lucas Stein", mail: "lstein@gmx.de", inDate: "14 out 2026", outDate: "18 out 2026", nights: "4 noites", total: "US$ 720", status: "confirmed" },
+      { code: "#RES-2026-M8RE", cat: "Chalé Maitén", guest: "Sofía Ruiz", mail: "sofiaruiz@yahoo.com", inDate: "11 out 2026", outDate: "13 out 2026", nights: "2 noites", total: "US$ 330", status: "pending" },
+      { code: "#RES-2026-VT0L", cat: "Chalé Lenga", guest: "Noah Martin", mail: "noahm@gmail.com", inDate: "16 out 2026", outDate: "19 out 2026", nights: "3 noites", total: "US$ 510", status: "confirmed" },
+    ],
+    access: {
+      people: [
+        { name: "Lucía Ferreyra", initials: "LF", space: "Recepção", scope: "Cabañas del Lago" },
+        { name: "Tomás Ríos", initials: "TR", space: "Governança", scope: "Hotel del Parque" },
+        { name: "Martina García", initials: "MG", space: "Administração", scope: "Todas" },
+      ],
+      caps: "10 acessos administrativos, um por um",
+    },
+    root: {
+      items: ["Quartos", "Reservas", "Marca", "Site", "LinkHub", "Avaliações", "Galerias"],
+      phoneLabel: "Telefone",
+      phoneOld: "+54 261 555-0100",
+      phoneNew: "+54 261 555-0199",
+      targets: ["Site", "LinkHub", "Motor de reservas"],
+      updated: "Atualizado",
+    },
+    // Los rótulos de la UI real, copiados de los diccionarios del PMS (pms-core/app/src/i18n/dictionaries).
+    ui: {
+      newProperty: "Nova propriedade",
+      typeLabel: "Tipo de acomodação *",
+      typeHint: "Define como suas acomodações são vendidas: por unidade específica ou por categoria.",
+      template: "Template (opcional)",
+      create: "Criar propriedade",
+      nameLabel: "Nome *",
+      city: "Cidade *",
+      country: "País",
+      cancel: "Cancelar",
+      properties: "Propriedades",
+      unitTitle: "Venda por unidades",
+      unitHint: "Cada acomodação é reservada individualmente (1:1).",
+      catTitle: "Venda por categorias",
+      catHint: "Vende-se por tipo de quarto a partir de um pool de unidades.",
+      tCabin: "Cabana",
+      tVilla: "Villa",
+      tVacation: "Hospedagem de temporada",
+      tGlamping: "Glamping",
+      tResort: "Resort",
+      tAparthotel: "Aparthotel",
+      tHostel: "Hostel",
+      editProperty: "Editar propriedade",
+      coords: "Coordenadas",
+      lat: "Latitude",
+      lng: "Longitude",
+      coordTip: "Dica: no Google Maps clique com o botão direito sobre o ponto → copie as coordenadas e cole o par aqui (ele se divide sozinho em Lat / Long).",
+      howCopy: "Como copiar",
+      publicContact: "Contato público",
+      publicEmail: "E-mail público",
+      phone: "Telefone",
+      whatsapp: "WhatsApp",
+      social: "Redes sociais",
+      address: "Endereço",
+      save: "Salvar alterações",
+      spacesTitle: "Propriedades e espaços de trabalho",
+      spacesIntro: "Escolha a quais propriedades tem acesso. Abra cada uma para atribuir os espaços de trabalho.",
+      onlyChosen: "Apenas as selecionadas",
+      allFuture: "Todas, incluindo as futuras",
+      assignedSpaces: "espaços atribuídos",
+      seeSpaces: "Ver espaços",
+      isDefault: "Padrão",
+      allApps: "Acesso a todos os apps",
+      appsEnabled: "apps habilitados",
+      operate: "Operar",
+      capsTitle: "Acessos administrativos",
+      capsHint: "Escolha o que esta pessoa pode administrar dentro da empresa.",
+      gUsers: "Usuários",
+      gProps: "Propriedades e espaços",
+      gCompany: "Empresa",
+      changeProperty: "Trocar propriedade",
+      searchPlaceholder: "Buscar reservas, hóspedes, quartos, apps, usuários…",
+      navigate: "navegar",
+      open: "abrir",
+      close: "fechar",
+      kBooking: "Reserva",
+      kProperty: "Propriedade",
+      kRoom: "Quarto",
+      currentProperty: "Propriedade atual",
+      createUserTitle: "Criar um usuário",
+      createUserBtn: "Criar usuário",
+      createUserIntro: "A conta é criada com uma senha temporária. No primeiro acesso o usuário precisa trocá-la por uma própria.",
+      fullName: "Nome e sobrenome",
+      email: "E-mail do usuário",
+      role: "Função",
+      caps: [
+        "Gerenciar usuários",
+        "Atribuir espaços de trabalho",
+        "Criar propriedades",
+        "Editar propriedades",
+        "Trocar de propriedade",
+        "Gerenciar espaços de trabalho",
+        "Ativar e desativar apps",
+        "Configurações da empresa",
+        "Faturamento e plano",
+        "Sites"
+      ]
+    },
+  },
+
+  /* Os vídeos de Quartos, Motor, Relatórios, Revenue e Marketing
+     (`/video/quartos`, …): as manchetes vêm de cada página; aqui fica só o
+     próprio de cada vídeo (legendas dos passos e dados de exemplo). */
+  videoTours: {
+    rooms: {
+      meta: {
+        title: "Vídeo · Quartos",
+        description: "Quartos em um minuto: o estado da casa num relance, categorias em pool e chalés por nome no mesmo calendário, estados que não admitem o impossível e uma noite que se vende uma única vez.",
+      },
+      captions: ["O estado da casa, num relance", "Pool de categoria e chalés por nome, num calendário", "Uma noite se vende uma única vez"],
+      modes: ["Pool de categoria", "Unidade com nome próprio"],
+      cabinCat: "Chalés",
+      cabinRate: "$ 140.000",
+      cabins: ["Chalé Alerce", "Chalé Coihue"],
+      guestNew: "Romero",
+      sources: { first: "Seu site", second: "Booking" },
+      lock: { title: "Essa noite já está vendida", sub: "Chalé Alerce · 21 mar · o banco não deixa a segunda entrar" },
+      states: { forbidden: "Com o hóspede dentro, não", allowed: "Primeiro, saída pendente" },
+      notes: {
+        card: {
+          t: "Um cartão, um quarto",
+          d: "A cor diz o estado: livre, ocupado, em limpeza…"
+        },
+        moved: {
+          t: "A limpeza terminou",
+          d: "Você arrasta para Disponível e ele volta a ser vendido."
+        },
+        pool: {
+          t: "Categoria em pool",
+          d: "O hóspede compra “um Duplo”; o quarto é atribuído depois."
+        },
+        row: {
+          t: "Cada linha, um quarto",
+          d: "E cada barra, uma reserva: hóspede, pessoas e noites."
+        },
+        unit: {
+          t: "Unidade com nome próprio",
+          d: "Reserva-se o Chalé Alerce, com as suas fotos e o seu preço."
+        },
+        web: {
+          t: "Entra uma reserva do seu site",
+          d: "Ocupa as noites de 19 a 21."
+        },
+        second: {
+          t: "A Booking pede as mesmas noites",
+          d: "O banco de dados não a deixa entrar."
+        }
+      },
+      load: {
+        card: { name: "Duplo Superior", units: "4 unidades", mode: "Pool de categoria", rate: "$ 106.000 / noite", size: "24 m²", guests: "2 adultos", amenities: ["Wi-Fi","Ar-condicionado","Vista para a montanha"] },
+        chips: ["Calendário", "Motor de reservas", "Seu site", "LinkHub", "Revenue", "Roombir IA", "Relatórios"],
+      },
+    },
+    motor: {
+      meta: {
+        title: "Vídeo · Motor de reservas",
+        description: "O motor de reservas em um minuto: o hóspede escolhe as noites no seu site, a reserva entra no painel do dia e no calendário, cada preço diz de onde vem e o valor não muda com o câmbio.",
+      },
+      captions: ["A reserva entra no painel do dia", "E ocupa as noites no calendário", "O preço da noite, com o seu porquê"],
+      source: "Motor · seu site",
+      notes: {
+        price: {
+          t: "O preço de cada dia",
+          d: "Antes de escolher as datas, com as tarifas que o motor cobra."
+        },
+        units: {
+          t: "Quantos restam",
+          d: "O seu inventário real: no dia 21 restam 3."
+        },
+        photos: {
+          t: "Cada quarto, com as suas fotos",
+          d: "E o seu preço por noite para essas datas."
+        },
+        row: {
+          t: "A reserva nova, no topo",
+          d: "Confirmada e com o total: ninguém a digitou."
+        },
+        bar: {
+          t: "As suas duas noites, ocupadas",
+          d: "O 103 deixa de ser vendido nos dias 21 e 22."
+        },
+        accept: {
+          t: "Você aceita a sugestão",
+          d: "Essa tarifa passa a mandar sobre as outras."
+        }
+      },
+      chain: {
+        title: "De onde vem o preço",
+        steps: ["Aceito no Revenue", "Plano de tarifas", "Preço base", "Promoções"],
+        winner: "$ 106.260 · sáb 21 mar",
+      },
+      motorUi: {travelers: "Viajantes",dates: "Datas",adults: "Adultos",adultsHint: "Maiores de 18",children: "Crianças",childrenHint: "3 – 17 anos",infants: "Bebês",infantsHint: "0 – 2 anos",code: "Código",promoName: "Reserva direta",optional: "Opcional",back: "Voltar",done: "Pronto",available: "Quartos disponíveis",range: "21 mar → 23 mar",dayRange: "21 mar - 23 mar",nights: "2 noites",adultsCount: "2 adultos",monthCaption: "março de 2026",dows: ["Do","Se","Te","Qu","Qu","Se","Sá"]},
+      promos: {
+        title: "Promoções que *aparecem antes de reservar*.",
+        notes: {
+          code: { t: "Com código ou automáticas", d: "O hóspede digita o código, ou a promo se aplica sozinha nas datas dele." },
+          badge: { t: "A promo, à vista", d: "Etiqueta, preço anterior riscado e o nome da promo em cada quarto." },
+        },
+      },
+      currencyTitle: "O preço que o hóspede viu *fica congelado*.",
+      currencies: ["US$ · Dólar", "$ · Peso argentino", "R$ · Real", "CLP · Peso chileno", "COP · Peso colombiano", "MXN · Peso mexicano", "S/ · Sol", "UYU · Peso uruguaio", "€ · Euro", "£ · Libra"],
+      frozen: { guestLabel: "O hóspede viu", guestValue: "US$ 158,60", youLabel: "Você cobra", youValue: "$ 212.520", note: "Câmbio congelado no check-in · 21 mar 09:12" },
+    },
+    reports: {
+      meta: {
+        title: "Vídeo · Relatórios",
+        description: "Relatórios em um minuto: como a propriedade está indo sem montar uma planilha, cada número comparado com o período anterior e, o que não está no relatório, perguntado ao Roombir IA.",
+      },
+      captions: ["Como a propriedade está indo", "O que já está reservado, noite a noite", "Se não está no relatório, pergunte"],
+      ask: "Qual canal mais me cancela este mês?",
+      steps: [
+        { label: "Reservas do mês lidas", tool: "relatório de reservas" },
+        { label: "Cancelamentos por canal", tool: "cancelamentos" },
+      ],
+      answer: "A Booking cancela mais: 6 de 21 reservas (29 %). Seu site, 1 de 14. A recepção tem 2 reservas, então não afirmo.",
+      block: {
+        title: "Cancelamentos por canal",
+        meta: "março",
+        kpis: [
+          { label: "Booking", value: "29 %", hint: "6 de 21" },
+          { label: "Seu site", value: "7 %", hint: "1 de 14" },
+          { label: "Recepção", value: "—", hint: "2 reservas: poucas" },
+        ],
+      },
+      compare: {
+        vs: "vs. fevereiro",
+        items: [
+          { label: "Receita", now: "$ 4,1 M", prev: "$ 3,6 M", delta: "+14 %" },
+          { label: "Antecedência", now: "18 dias", prev: "22 dias", delta: "−4 dias" },
+          { label: "Estadia média", now: "2,8 noites", prev: "2,5 noites", delta: "+0,3" },
+          { label: "Ocupação", now: "78 %", prev: "71 %", delta: "+7 pts" },
+        ],
+      },
+      chips: ["Ocupação", "Demanda a 90 dias", "ADR", "RevPAR", "Cancelamentos", "Canais", "Receita", "Antecedência", "Estadia média", "Ocupação por categoria"],
+    },
+    revenue: {
+      meta: {
+        title: "Vídeo · Revenue",
+        description: "Revenue em um minuto: cada preço sugerido com o seu motivo, aceitar aplica no motor, o destino com as suas fontes e treze variáveis com um ensaio a seco.",
+      },
+      captions: ["Cada preço, com o seu motivo", "Aceitar aplica no motor", "O que move a demanda, com a fonte"],
+      vars: ["Ocupação", "Índice de demanda", "Disponibilidade", "Concorrente 1", "Concorrente 2", "Concorrente 3", "Concorrente 4", "Concorrente 5", "Reservas novas · 7 dias", "Reservas novas · 30 dias", "Impacto de eventos", "Dias até o evento", "Índice de pace"],
+      dryRun: {
+        title: "Ensaio a seco",
+        rule: "Se a ocupação ≥ 75 % a 14 dias → +8 %",
+        result: "Teria mudado 9 noites",
+        avg: "+$ 7.700 por noite",
+      },
+      applied: "Tarifa aplicada no motor",
+    },
+    marketing: {
+      meta: {
+        title: "Vídeo · Marketing",
+        description: "Marketing em um minuto: um site e um LinkHub que já sabem o que você tem livre, o editor com o seu assistente de IA, seguidores que reservam pelas suas redes, a sua marca carregada uma vez e todo o hub em um só lugar.",
+      },
+      linkhub: {
+        title: "Transforme seus seguidores *em hóspedes* com o LinkHub.",
+        points: ["Reservam ali mesmo, sem sair do link", "Vindo do Instagram, TikTok ou WhatsApp", "Suas datas livres, à vista na hora", "Em poucos toques, sem formulários a mais"],
+      },
+      brand: {
+        title: "Identidade de marca",
+        name: "Hotel del Parque",
+        palette: "Paleta tirada do logo",
+        tone: "Tom",
+        toneValue: "Caloroso e próximo",
+        font: "Tipografia",
+        fontValue: "Outfit",
+        targets: ["Seu site", "LinkHub", "Motor de reservas", "Buscadores", "E-mails ao hóspede", "Roombir IA"],
+      },
+      editor: {
+        captions: [
+          "Você cola uma captura e ele monta as seções",
+          "Você aponta um bloco e pede a mudança",
+          "Um controle de qualidade que também corrige"
+        ],
+        bar: {
+          add: "Adicionar",
+          layers: "Camadas",
+          files: "Arquivos",
+          popups: "Popups",
+          motor: "Motor",
+          settings: "Ajustes",
+          ai: "Editor",
+          preview: "Pré-visualizar",
+          unpublished: "Não publicado",
+          discard: "Descartar",
+          quality: "Qualidade",
+          publish: "Publicar",
+          published: "Publicado",
+          page: "Editar página:",
+          pageName: "Início",
+          editIn: "Editar em:",
+          device: "Desktop",
+          live: "Ver online",
+          domain: "Conecte o seu domínio"
+        },
+        chat: {
+          title: "Editor IA",
+          hello: "Olá! Sou a Roombir IA. Peça para eu criar, editar ou reordenar seções.",
+          placeholder: "Escreva para o roombir… Cole imagens ou selecione elementos da tela para citá-los.",
+          cite: "Citar elementos",
+          shot: "capa-referencia.png",
+          ask1: "Monte a minha capa como esta, com os meus quartos",
+          steps1: [
+            "Lendo a captura",
+            "Seção de capa",
+            "Seção de quartos",
+            "Seção de avaliações"
+          ],
+          answer1: "Pronto: montei a capa com três seções, em rascunho.",
+          quote: "Quartos",
+          ask2: "Adicione mais dois cartões",
+          steps2: [
+            "Editando “Quartos”"
+          ],
+          answer2: "Adicionei dois cartões. O resto ficou igual."
+        },
+        site: {
+          nav: [
+            "Quartos",
+            "Serviços",
+            "Localização"
+          ],
+          book: "Reservar",
+          heroTitle: "Sua casa em frente ao parque",
+          heroSub: "Hotel del Parque · Mendoza, Argentina",
+          roomsTitle: "Nossos quartos",
+          rooms: [
+            "Duplo Superior",
+            "Suíte do Parque",
+            "Cabana Alerce",
+            "Duplo Clássico",
+            "Cabana Coihue"
+          ],
+          guests: "hóspedes",
+          reviewsTitle: "O que dizem os nossos hóspedes",
+          review: "Café da manhã delicioso e uma vista do parque inesquecível.",
+          reviewer: "Laura M. · Google"
+        },
+        quality: {
+          title: "Qualidade do site",
+          sub: "Revisão completa",
+          gauges: [
+            "Desempenho",
+            "Acessibilidade",
+            "Recomendações",
+            "SEO",
+            "Agentes"
+          ],
+          overall: "Pontuação geral",
+          fix: "Corrigir tudo",
+          recheck: "Revisar de novo",
+          errors: "Erros",
+          passed: "Aprovadas",
+          issues: [
+            "Imagens sem descrição",
+            "Falta a descrição da página",
+            "Texto pequeno demais no celular"
+          ]
+        },
+        notes: {
+          draft: {
+            t: "Tudo vai para o rascunho",
+            d: "Publicar é um passo à parte, e é seu."
+          }
+        }
+      },
+      hub: {
+        title: "E todo o resto, *no mesmo lugar*.",
+        menu: [
+          "Sites",
+          "Identidade de marca",
+          "Galerias",
+          "Avaliações",
+          "LinkHub",
+          "Biblioteca de arquivos"
+        ],
+        chips: [
+          "Fotos e vídeos",
+          "Editor de imagem",
+          "Modelos com a sua marca",
+          "Importar avaliações",
+          "LinkHub com QR",
+          "Popups e WhatsApp",
+          "Seu domínio",
+          "Vários idiomas",
+          "SEO e GEO",
+          "Legível para uma IA"
+        ]
+      },
+      one: "Tudo no roombir, conectado às suas reservas",
     },
   },
 

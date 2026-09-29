@@ -40,7 +40,7 @@ export default function Faq({
         <h2 className="h2" style={{ marginBottom: 28 }}>
           {title}
         </h2>
-        <div className={styles.list}>
+        <div className={styles.list} data-fx="">
           {items.map((item) => (
             <details key={item.q} className={styles.item}>
               <summary className={styles.summary}>

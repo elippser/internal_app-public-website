@@ -1,0 +1,211 @@
+/* El póster de los videos de presentación (portada y productos) y su modal.
+   Horizontal (16:9) desde 768 px; vertical (9:16) por debajo, que es el
+   corte de "teléfono" del sitio. El marco es el de las viñetas: radio grande
+   y la sombra larga del video (salvo en modo ambiente). En la página no se
+   reproduce nada: el video corre sólo en el modal. */
+
+.wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--deep);
+    box-shadow: var(--shadow-float);
+    isolation: isolate;
+}
+
+.poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    cursor: pointer;
+    background: var(--deep);
+}
+
+/* Reproducir, al centro: abre el modal. */
+.play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(20, 21, 15, 0.72);
+    color: var(--paper);
+    border: 1px solid rgba(242, 239, 232, 0.28);
+    backdrop-filter: blur(8px);
+    transition: transform 0.16s ease, background-color 0.16s ease;
+}
+
+.play svg {
+    width: 30px;
+    height: 30px;
+    margin-left: 3px;
+}
+
+@media (hover: hover) {
+    .play:hover {
+        transform: scale(1.06);
+        background: rgba(20, 21, 15, 0.86);
+    }
+}
+
+/* En teléfono, el corte vertical: 9:16 con un alto máximo para que el
+   titular y el botón de empezar sigan a la vista, centrado en su columna. */
+@media (max-width: 767px) {
+    .wrap {
+        aspect-ratio: 9 / 16;
+        max-height: 72vh;
+        max-height: 72dvh;
+        width: auto;
+        max-width: 100%;
+        margin-inline: auto;
+    }
+
+    /* Mientras el navegador todavía no eligió la orientación, el póster
+       horizontal se recorta al centro: mejor que un salto de altura. */
+    .wrap[data-orient="h"] .poster {
+        object-position: center;
+    }
+}
+
+/* -------------------------------------------------------- modo ambiente -- */
+
+/* La home: el marco sin sombra, y detrás el mismo póster más grande y
+   borroso. El desenfoque se difumina solo hacia afuera, así que el halo no
+   tiene borde. */
+.stage {
+    position: relative;
+    isolation: isolate;
+}
+
+.stage .wrap {
+    position: relative;
+    z-index: 1;
+    box-shadow: none;
+    /* Sin sombra que lo tape, el fondo petróleo asomaba 1px por el redondeo
+       del 16:9: que se vea el halo. */
+    background: transparent;
+}
+
+.ambient {
+    position: absolute;
+    left: -12%;
+    top: -12%;
+    width: 124%;
+    height: 124%;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    filter: blur(48px) saturate(1.4);
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ------------------------------------------------------------- el modal -- */
+
+/* `<dialog>` nativo. Cerrado no se pinta (display: none, el default del
+   navegador); abierto cubre la ventana con fondo transparente, así el clic
+   fuera del video cae sobre el propio dialog y lo cierra. El overlay es
+   claro (papel desenfocado) y el reproductor va centrado y grande: el ancho
+   que entre en 96vw, 1600px y 92dvh de alto. El marco, el radio y el halo
+   los pone el propio reproductor (modo ambiente). */
+.modal {
+    /* Fijo a los cuatro bordes y sin scroll propio: el navegador le pone
+       `overflow: auto` al dialog modal y el halo, que es más grande que el
+       marco, lo volvía scrolleable. */
+    position: fixed;
+    inset: 0;
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    overflow: hidden;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    color: var(--paper);
+}
+
+.modal[open] {
+    display: grid;
+    place-items: center;
+}
+
+.modal::backdrop {
+    background: rgba(242, 239, 232, 0.8);
+    backdrop-filter: blur(14px);
+}
+
+.modalBody {
+    position: relative;
+    width: min(96vw, 1600px, calc(92vh * 16 / 9));
+    width: min(96vw, 1600px, calc(92dvh * 16 / 9));
+    aspect-ratio: 16 / 9;
+}
+
+.modal[data-orient="v"] .modalBody {
+    width: min(96vw, calc(92vh * 9 / 16));
+    width: min(96vw, calc(92dvh * 9 / 16));
+    aspect-ratio: 9 / 16;
+}
+
+.modalClose {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: var(--paper);
+    border: 0;
+    box-shadow: 0 8px 24px rgba(20, 21, 15, 0.22);
+    transition: background-color 0.16s ease;
+}
+
+.modalClose svg {
+    width: 20px;
+    height: 20px;
+}
+
+@media (hover: hover) {
+    .modalClose:hover {
+        background: var(--ink-3);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .modal[open] .modalBody {
+        animation: modalIn 0.28s cubic-bezier(0.22, 0.9, 0.3, 1);
+    }
+
+    .modal[open]::backdrop {
+        animation: backdropIn 0.28s ease;
+    }
+}
+
+/* Entrada sin escala: escalar un video remuestrea sus bordes y se ven
+   filetes que bailan. */
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+}
+
+@keyframes backdropIn {
+    from {
+        opacity: 0;
+    }
+}
