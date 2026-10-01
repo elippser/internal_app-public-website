@@ -2,6 +2,7 @@ import type { Dictionary } from "./es";
 import { solEn } from "./sol/en";
 import { platEn } from "./plat/en";
 import { intelEn } from "./intel/en";
+import { legalCenterEn } from "./legal/en";
 
 /**
  * English. Same keys as `es.ts` — TypeScript will not let it be otherwise.
@@ -82,6 +83,7 @@ const en: Dictionary = {
 
   plataformaCompleta: platEn.page,
   intelligence: intelEn,
+  legalCenter: legalCenterEn,
   solucionesIndex: solEn.index,
   solucionesPaginas: solEn.pages,
 
@@ -105,6 +107,7 @@ const en: Dictionary = {
       privacy: "Privacy",
       terms: "Terms",
       cookies: "Cookies",
+      siteTerms: "Site terms",
     },
     solutions: {
       hoteles: "Hotels and aparthotels",
@@ -579,7 +582,7 @@ const en: Dictionary = {
         disposable: "Use a permanent address: the access is sent there.",
         rate: "Too many attempts in a row. Try again in a few minutes.",
         mail: "We could not send you the email. Try again in a few minutes.",
-        generic: "We could not send it. Write to us at hola@roombir.com.",
+        generic: "We could not send it. Write to us at team@roombir.com.",
         network: "We could not connect. Check your connection and try again.",
       },
       done: {
@@ -613,7 +616,7 @@ const en: Dictionary = {
     honeypot: "Do not fill in",
     errorGeneric: "We couldn't send it.",
     errorRate: "Too many submissions in a row.",
-    errorTail: "If it keeps failing, write to us at hola@roombir.com.",
+    errorTail: "If it keeps failing, write to us at team@roombir.com.",
     legal:
       "We use your details only to contact you about roombir. You can ask us to delete them whenever you want. More in the [privacy policy](/legal/privacidad).",
     doneTitle: "Got it.",
@@ -736,6 +739,33 @@ const en: Dictionary = {
           link: "See Roombir AI",
         },
       ],
+    },
+    adapt: {
+      eyebrow: "Why Roombir",
+      title: "There are plenty of systems. Nearly all of them are the same one.",
+      lead: "The market is full of generic solutions: the same screens, the same steps and the same rules for a city hotel as for six cabins by a lake. With them, you are the one who adapts. Roombir does the opposite: it starts from your property, not from a template.",
+      heading: "Roombir adapts to your property",
+      cta: "Explore the platform",
+      clip: "The booking engine in use: a new booking lands on the daily dashboard and takes its nights on the calendar.",
+      world: {
+        label: "Built to connect you with the world",
+        title: "Every property is a world of its own, and Roombir has *the right solution* for each one.",
+        text: "A city hotel, a mountain inn and a cabin resort don't sell or work the same way. Roombir is set up around your type of property, your units and your currency, and puts your availability on your website, your booking engine and your link so guests can find you and book from anywhere.",
+        caption: "From a city hotel to a cabin by the lake, the system takes the shape of your property.",
+        alt: "A guest looks out over a mountain lake from the edge of an infinity pool.",
+      },
+      easy: {
+        label: "So easy you use it from day one",
+        title: "You don't need to be technical *or know how to read data*.",
+        text: "Roombir is made to be easy to use. You get assistance from day one, and all the complexity of running the property (bookings, rates, availability, reports) is brought together in one place and explained so you understand it at a glance.",
+        clip: "The Roombir PMS in use: properties, the booking calendar and search.",
+      },
+      ai: {
+        label: "Made for the age of AI",
+        title: "Your property has to join the age of AI *or fall behind*.",
+        text: "Today the internet offers hundreds of kinds of AI, hundreds of millions of data points and endless strategies. At Roombir we know your property and give you the best AI, with the concrete data and the best strategy to send your occupancy soaring.",
+        clip: "Roombir AI in use: it loads rates from a file, answers which channel cancels the most and blocks a unit from the chat.",
+      },
     },
     spaces: {
       eyebrow: "What nobody else has",
@@ -1836,7 +1866,7 @@ const en: Dictionary = {
     faq: [
       {
         q: "Do you charge a commission per booking?",
-        a: "No. The engine has no charge per booking: you pay the plan and nothing else. It's written into the [terms](/legal/terminos).",
+        a: "No. The engine has no charge per booking: you pay the plan and nothing else.",
       },
 {
         q: "Who confirms the booking?",
@@ -2665,7 +2695,7 @@ const en: Dictionary = {
       blocks: [
         { h: "1. Who we are" },
         {
-          p: "Roombir is a management platform for properties, operated from Argentina. For anything related to your personal data you can write to us at [hola@roombir.com](mailto:hola@roombir.com).",
+          p: "Roombir is a management platform for properties, operated from Argentina. For anything related to your personal data you can write to us at [team@roombir.com](mailto:team@roombir.com).",
         },
         { h: "2. Two different roles" },
         { p: "They are worth separating because the obligations are not the same:" },
@@ -2708,7 +2738,7 @@ const en: Dictionary = {
         },
         { h: "7. Your rights" },
         {
-          p: "You can ask us for access to your data, its correction, its update or its deletion by writing to [hola@roombir.com](mailto:hola@roombir.com). In Argentina, the Agency for Access to Public Information is the supervisory authority for personal data protection and handles claims from anyone who considers their rights infringed.",
+          p: "You can ask us for access to your data, its correction, its update or its deletion by writing to [team@roombir.com](mailto:team@roombir.com). In Argentina, the Agency for Access to Public Information is the supervisory authority for personal data protection and handles claims from anyone who considers their rights infringed.",
         },
         { h: "8. Security" },
         {
@@ -2717,77 +2747,6 @@ const en: Dictionary = {
         { h: "9. Changes" },
         {
           p: "If we update this policy, we change the date in the header. Relevant changes are also communicated by email to active accounts.",
-        },
-      ],
-    },
-    terms: {
-      meta: {
-        title: "Terms and conditions",
-        description:
-          "Terms of use for the Roombir platform: what the service includes, what is in pilot, each party's responsibilities and how an account is closed.",
-      },
-      title: "Terms and conditions",
-      lead: "The rules for using the platform, written to be understood.",
-      blocks: [
-        { h: "1. What the service is" },
-        {
-          p: "Roombir is a cloud platform for running a property: bookings, rooms, a public booking engine, websites, revenue management, a guest portal and an artificial intelligence assistant. You access it through a browser; no software is delivered to install.",
-        },
-        { h: "2. Scope of the service" },
-        {
-          p: "The platform is in a **market pilot**: some features may be partial or not exist yet. The current scope is detailed in writing when you contract and is part of what you accept: we do not promise features that do not exist.",
-        },
-        { h: "3. Your account" },
-        {
-          p: "You are responsible for your account credentials and for those of the people you create. The system creates users with a temporary password the person must change on first login; until they do, the interface stays locked for them.",
-        },
-        {
-          p: "You can assign roles, administrative capabilities and per-property scope. Configuring those permissions is yours: we provide the mechanism, we do not decide who sees what in your operation.",
-        },
-        { h: "4. Your data" },
-        {
-          p: "The data you load — properties, units, rates, bookings, guests, the content of your sites — is yours. We process it to provide the service, as set out in the [privacy policy](/legal/privacidad). If you are the one loading guest data, you are the controller of that data towards them and under applicable law.",
-        },
-        { h: "5. Commercial terms" },
-        {
-          p: "The products included and the property and user caps of each account are communicated in writing at the time of contracting and form part of the agreement.",
-        },
-        {
-          p: "Guest payment does not go through roombir: today it happens at check-in, between the property and the guest.",
-        },
-        { h: "6. Acceptable use" },
-        { p: "The platform cannot be used to:" },
-        {
-          ul: [
-            "Publish illegal or misleading content, or content you have no right to use.",
-            "Load fake reviews or attribute trust signals to your property that are not true.",
-            "Attempt to access another company's data, or to bypass the system's permission controls.",
-            "Load data automatically outside the intended interfaces, to the point of degrading the service for others.",
-          ],
-        },
-        { h: "7. Availability" },
-        {
-          p: "We do what is reasonable to keep the service available, but at this stage we do not offer a service level agreement with compensation. Maintenance that may interrupt the service is announced when it is foreseeable.",
-        },
-        { h: "8. The AI assistant" },
-        {
-          p: "The assistant executes operations with the real permissions of whoever uses it and leaves a record of what it did. Even so, it is a probabilistic system: **review what it executes** before taking a sensitive operation as done, just as you would review the work of someone who just joined. The revenue module's rate suggestions are exactly that, suggestions: the decision to apply them is yours.",
-        },
-        { h: "9. Intellectual property" },
-        {
-          p: "roombir's software, brand and documentation are ours. The content you load — texts, photos, logo, your site's design — is yours, and you authorise us to host and display it solely to provide the service.",
-        },
-        { h: "10. Closing your account" },
-        {
-          p: "You can close your account whenever you want by writing to [hola@roombir.com](mailto:hola@roombir.com). Before closing it we give you a reasonable period to download whatever you need to keep.",
-        },
-        { h: "11. Liability" },
-        {
-          p: "The service is provided as is. To the extent the law allows, our liability is limited to the amounts you have paid us in the twelve months before the event giving rise to it. None of this limits liabilities that by law cannot be limited.",
-        },
-        { h: "12. Changes and jurisdiction" },
-        {
-          p: "We may update these terms; relevant changes are announced by email to active accounts and the date in the header is updated. The laws of the Argentine Republic and its competent courts apply.",
         },
       ],
     },
@@ -2827,7 +2786,7 @@ const en: Dictionary = {
         },
         { h: "5. Questions" },
         {
-          p: "Any doubts about this, write to us at [hola@roombir.com](mailto:hola@roombir.com). See also the [privacy policy](/legal/privacidad).",
+          p: "Any doubts about this, write to us at [team@roombir.com](mailto:team@roombir.com). See also the [privacy policy](/legal/privacidad).",
         },
       ],
     },
@@ -2867,7 +2826,7 @@ const en: Dictionary = {
       info: "Fact, no judgement",
     },
     sourcesNote:
-      "{name} data taken from its public site on {date}. Roombir data from the [product status](/nosotros#estado) of the same date. If you find something outdated, write to hola@roombir.com. Source:",
+      "{name} data taken from its public site on {date}. Roombir data from the [product status](/nosotros#estado) of the same date. If you find something outdated, write to team@roombir.com. Source:",
     method: {
       eyebrow: "How we compare",
       title: "Only what their site says, *with a date*.",

@@ -2,6 +2,7 @@ import type { Dictionary } from "./es";
 import { solPt } from "./sol/pt";
 import { platPt } from "./plat/pt";
 import { intelPt } from "./intel/pt";
+import { legalCenterPt } from "./legal/pt";
 
 /**
  * Português do Brasil. As mesmas chaves de `es.ts` — o TypeScript não deixa
@@ -82,6 +83,7 @@ const pt: Dictionary = {
 
   plataformaCompleta: platPt.page,
   intelligence: intelPt,
+  legalCenter: legalCenterPt,
   solucionesIndex: solPt.index,
   solucionesPaginas: solPt.pages,
 
@@ -105,6 +107,7 @@ const pt: Dictionary = {
       privacy: "Privacidade",
       terms: "Termos",
       cookies: "Cookies",
+      siteTerms: "Termos do site",
     },
     solutions: {
       hoteles: "Hotéis e aparthotéis",
@@ -572,7 +575,7 @@ const pt: Dictionary = {
         disposable: "Use um endereço permanente: o acesso vai para lá.",
         rate: "Tentativas demais seguidas. Tente de novo em alguns minutos.",
         mail: "Não conseguimos enviar o e-mail. Tente de novo em alguns minutos.",
-        generic: "Não conseguimos enviar. Escreva para hola@roombir.com.",
+        generic: "Não conseguimos enviar. Escreva para team@roombir.com.",
         network: "Não conseguimos conectar. Verifique a conexão e tente de novo.",
       },
       done: {
@@ -606,7 +609,7 @@ const pt: Dictionary = {
     honeypot: "Não preencher",
     errorGeneric: "Não conseguimos enviar.",
     errorRate: "Envios demais seguidos.",
-    errorTail: "Se continuar falhando, escreva para hola@roombir.com.",
+    errorTail: "Se continuar falhando, escreva para team@roombir.com.",
     legal:
       "Usamos seus dados só para falar com você sobre o roombir. Pode pedir para apagá-los quando quiser. Mais na [política de privacidade](/legal/privacidad).",
     doneTitle: "Pronto, chegou.",
@@ -729,6 +732,33 @@ const pt: Dictionary = {
           link: "Ver Roombir IA",
         },
       ],
+    },
+    adapt: {
+      eyebrow: "Por que o Roombir",
+      title: "Sistemas existem muitos. Quase todos são o mesmo.",
+      lead: "O mercado está cheio de soluções genéricas: as mesmas telas, os mesmos passos e as mesmas regras para um hotel de cidade e para seis chalés à beira de um lago. Com elas, quem se adapta é você. O Roombir faz o contrário: parte da sua hospedagem, não de um molde.",
+      heading: "O Roombir se adapta à sua hospedagem",
+      cta: "Explorar a plataforma",
+      clip: "O motor de reservas em uso: uma reserva nova entra no painel do dia e ocupa as suas noites no calendário.",
+      world: {
+        label: "Criado para conectar você com o mundo",
+        title: "Cada hospedagem é um mundo, e o Roombir tem *a solução certa* para cada uma.",
+        text: "Um hotel de cidade, uma pousada na montanha e um complexo de chalés não vendem nem trabalham do mesmo jeito. O Roombir se configura conforme o seu tipo de hospedagem, as suas unidades e a sua moeda, e coloca a sua disponibilidade no seu site, no seu motor de reservas e no seu link para que encontrem você e reservem de qualquer lugar.",
+        caption: "Do hotel de cidade ao chalé à beira do lago, o sistema toma a forma da sua hospedagem.",
+        alt: "Uma hóspede observa um lago entre montanhas da beira de uma piscina de borda infinita.",
+      },
+      easy: {
+        label: "Tão fácil que você usa desde o primeiro dia",
+        title: "Você não precisa ser técnico *nem saber ler dados*.",
+        text: "O Roombir foi feito para ser fácil de usar. Você tem assistência desde o primeiro dia, e toda a complexidade da operação (reservas, tarifas, disponibilidade, relatórios) fica reunida em um só lugar e explicada para que você entenda de relance.",
+        clip: "O PMS do Roombir em uso: as propriedades, o calendário de reservas e a busca.",
+      },
+      ai: {
+        label: "Feito para a era da IA",
+        title: "A sua hospedagem precisa entrar na era da IA *para não ficar para trás*.",
+        text: "Hoje há na internet centenas de tipos de IA, centenas de milhões de dados e uma infinidade de estratégias disponíveis. No Roombir conhecemos a sua hospedagem e entregamos a melhor IA, com os dados concretos e a melhor estratégia para fazer a sua ocupação disparar.",
+        clip: "O Roombir IA em uso: carrega tarifas de um arquivo, responde qual canal mais cancela e bloqueia uma unidade pelo chat.",
+      },
     },
     spaces: {
       eyebrow: "O que ninguém mais tem",
@@ -1829,7 +1859,7 @@ const pt: Dictionary = {
     faq: [
       {
         q: "Vocês cobram comissão por reserva?",
-        a: "Não. O motor não tem cobrança por reserva: você paga o plano e nada mais. Está escrito nos [termos](/legal/terminos).",
+        a: "Não. O motor não tem cobrança por reserva: você paga o plano e nada mais.",
       },
 {
         q: "Quem confirma a reserva?",
@@ -2658,7 +2688,7 @@ const pt: Dictionary = {
       blocks: [
         { h: "1. Quem somos" },
         {
-          p: "O Roombir é uma plataforma de gestão para hospedagens operada a partir da Argentina. Para qualquer questão relacionada aos seus dados pessoais, escreva para [hola@roombir.com](mailto:hola@roombir.com).",
+          p: "O Roombir é uma plataforma de gestão para hospedagens operada a partir da Argentina. Para qualquer questão relacionada aos seus dados pessoais, escreva para [team@roombir.com](mailto:team@roombir.com).",
         },
         { h: "2. Dois papéis diferentes" },
         { p: "Vale separá-los porque as obrigações não são as mesmas:" },
@@ -2701,7 +2731,7 @@ const pt: Dictionary = {
         },
         { h: "7. Seus direitos" },
         {
-          p: "Você pode nos pedir acesso aos seus dados, correção, atualização ou exclusão escrevendo para [hola@roombir.com](mailto:hola@roombir.com). Na Argentina, a Agência de Acesso à Informação Pública é a autoridade de controle em proteção de dados pessoais e atende reclamações de quem considerar seus direitos violados.",
+          p: "Você pode nos pedir acesso aos seus dados, correção, atualização ou exclusão escrevendo para [team@roombir.com](mailto:team@roombir.com). Na Argentina, a Agência de Acesso à Informação Pública é a autoridade de controle em proteção de dados pessoais e atende reclamações de quem considerar seus direitos violados.",
         },
         { h: "8. Segurança" },
         {
@@ -2710,77 +2740,6 @@ const pt: Dictionary = {
         { h: "9. Mudanças" },
         {
           p: "Se atualizarmos esta política, mudamos a data do cabeçalho. As mudanças relevantes também são comunicadas por email às contas ativas.",
-        },
-      ],
-    },
-    terms: {
-      meta: {
-        title: "Termos e condições",
-        description:
-          "Condições de uso da plataforma roombir: o que o serviço inclui, o que está em piloto, responsabilidades de cada parte e como encerrar uma conta.",
-      },
-      title: "Termos e condições",
-      lead: "As regras de uso da plataforma, escritas para serem entendidas.",
-      blocks: [
-        { h: "1. O que é o serviço" },
-        {
-          p: "O Roombir é uma plataforma na nuvem para gerenciar uma hospedagem: reservas, quartos, motor de reservas público, sites, revenue management, portal do hóspede e um assistente de inteligência artificial. Acessa-se pelo navegador; não se entrega software para instalar.",
-        },
-        { h: "2. Escopo do serviço" },
-        {
-          p: "A plataforma está em **piloto de mercado**: pode haver funcionalidades parciais ou que ainda não existam. O escopo vigente é detalhado por escrito na contratação e faz parte do que você aceita: não prometemos funcionalidades que não existam.",
-        },
-        { h: "3. Sua conta" },
-        {
-          p: "Você é responsável pelas credenciais da sua conta e pelas das pessoas que cadastrar. O sistema cria usuários com senha temporária que a pessoa deve trocar no primeiro acesso; até fazer isso, a interface fica bloqueada para ela.",
-        },
-        {
-          p: "Você pode atribuir papéis, capacidades administrativas e alcance por propriedade. A configuração dessas permissões é sua: nós fornecemos o mecanismo, não decidimos quem vê o quê na sua operação.",
-        },
-        { h: "4. Seus dados" },
-        {
-          p: "Os dados que você carregar — propriedades, unidades, tarifas, reservas, hóspedes, conteúdo dos seus sites — são seus. Nós os processamos para prestar o serviço, conforme a [política de privacidade](/legal/privacidad). Se for você quem carrega dados de hóspedes, você é o controlador desses dados perante eles e perante a lei aplicável.",
-        },
-        { h: "5. Condições comerciais" },
-        {
-          p: "Os produtos incluídos e os tetos de propriedades e de usuários de cada conta são comunicados por escrito no momento da contratação e fazem parte do acordo.",
-        },
-        {
-          p: "A cobrança ao hóspede não passa pelo roombir: hoje acontece no check-in, entre a hospedagem e o hóspede.",
-        },
-        { h: "6. Uso aceitável" },
-        { p: "Não se pode usar a plataforma para:" },
-        {
-          ul: [
-            "Publicar conteúdo ilegal, enganoso ou que você não tenha direito de usar.",
-            "Carregar avaliações falsas ou atribuir à sua hospedagem sinais de confiança que não sejam verdadeiros.",
-            "Tentar acessar dados de outra empresa, ou burlar os controles de permissão do sistema.",
-            "Carregar de forma automatizada fora das interfaces previstas, a ponto de degradar o serviço para outros.",
-          ],
-        },
-        { h: "7. Disponibilidade" },
-        {
-          p: "Fazemos o razoável para que o serviço esteja disponível, mas nesta etapa não oferecemos acordo de nível de serviço com compensação. As manutenções que possam interromper o serviço são avisadas quando previsíveis.",
-        },
-        { h: "8. O assistente de IA" },
-        {
-          p: "O assistente executa operações com as permissões reais de quem o usa e deixa registro do que fez. Ainda assim, é um sistema probabilístico: **revise o que ele executa** antes de dar por feita uma operação sensível, como você revisaria o trabalho de alguém que acabou de entrar. As sugestões de tarifa do módulo de revenue são isso, sugestões: a decisão de aplicá-las é sua.",
-        },
-        { h: "9. Propriedade intelectual" },
-        {
-          p: "O software, a marca e a documentação do Roombir são nossos. O conteúdo que você carregar — textos, fotos, logo, design do seu site — é seu, e você nos autoriza a hospedá-lo e exibi-lo unicamente para prestar o serviço.",
-        },
-        { h: "10. Encerramento" },
-        {
-          p: "Você pode encerrar sua conta quando quiser escrevendo para [hola@roombir.com](mailto:hola@roombir.com). Antes de fechá-la damos um prazo razoável para você baixar o que precisar guardar.",
-        },
-        { h: "11. Responsabilidade" },
-        {
-          p: "O serviço é prestado como está. Na medida em que a lei permitir, nossa responsabilidade se limita aos valores que você nos tiver pago nos doze meses anteriores ao fato que a originar. Nada disso limita responsabilidades que por lei não possam ser limitadas.",
-        },
-        { h: "12. Mudanças e foro" },
-        {
-          p: "Podemos atualizar estes termos; as mudanças relevantes são avisadas por email às contas ativas e a data do cabeçalho é atualizada. Aplicam-se as leis da República Argentina e seus tribunais competentes.",
         },
       ],
     },
@@ -2820,7 +2779,7 @@ const pt: Dictionary = {
         },
         { h: "5. Dúvidas" },
         {
-          p: "Qualquer dúvida sobre isso, escreva para [hola@roombir.com](mailto:hola@roombir.com). Ver também a [política de privacidade](/legal/privacidad).",
+          p: "Qualquer dúvida sobre isso, escreva para [team@roombir.com](mailto:team@roombir.com). Ver também a [política de privacidade](/legal/privacidad).",
         },
       ],
     },
@@ -2860,7 +2819,7 @@ const pt: Dictionary = {
       info: "Dado sem julgamento",
     },
     sourcesNote:
-      "Dados de {name} tomados do seu site público em {date}. Os da roombir, do [estado do produto](/nosotros#estado) da mesma data. Se encontrar algo desatualizado, escreva para hola@roombir.com. Fonte:",
+      "Dados de {name} tomados do seu site público em {date}. Os da roombir, do [estado do produto](/nosotros#estado) da mesma data. Se encontrar algo desatualizado, escreva para team@roombir.com. Fonte:",
     method: {
       eyebrow: "Como comparamos",
       title: "Só o que o site deles diz, *com data*.",

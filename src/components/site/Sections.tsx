@@ -86,6 +86,8 @@ export function PageHero({
   actions,
   notes,
   aside,
+  center = false,
+  below,
 }: {
   locale: Locale;
   eyebrow: string;
@@ -95,11 +97,18 @@ export function PageHero({
   /** Las cosas chicas bajo los botones: sin tarjeta, sin instalar, etc. */
   notes?: string[];
   aside?: ReactNode;
+  /** El texto centrado, como la portada de Intelligence. Sin `aside`. */
+  center?: boolean;
+  /** La pieza que va debajo del texto, a lo ancho: un video, una captura. */
+  below?: ReactNode;
 }) {
+  const centered = center && !aside;
   return (
     <section className={[styles.hero, "section"].join(" ")}>
       <div className="container container-wide">
-        <div className={[styles.heroGrid, aside ? "" : styles.heroSolo].join(" ")}>
+        <div
+          className={[styles.heroGrid, aside ? "" : styles.heroSolo, centered ? styles.heroCenter : ""].join(" ")}
+        >
           <div className={styles.heroCopy}>
             {/* La cascada de entrada: cada pieza llega 60ms después de la
                 anterior. Es de tiempo, no de scroll — al segundo ya terminó. */}
@@ -134,6 +143,11 @@ export function PageHero({
             </div>
           )}
         </div>
+        {below && (
+          <div className={[styles.heroBelow, "rise"].join(" ")} style={rise(0.24)}>
+            {below}
+          </div>
+        )}
       </div>
     </section>
   );

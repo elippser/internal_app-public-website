@@ -1,0 +1,47 @@
+{
+  "razonSocial": {
+    "label": { "es": "razón social", "en": "company name", "pt": "razão social", "fr": "raison sociale", "de": "Firmenname" },
+    "value": null
+  },
+  "idFiscal": {
+    "label": { "es": "CUIT / ID fiscal", "en": "tax ID", "pt": "CUIT / ID fiscal", "fr": "identifiant fiscal", "de": "Steuernummer" },
+    "value": null
+  },
+  "domicilio": {
+    "label": { "es": "domicilio legal", "en": "registered address", "pt": "endereço legal", "fr": "siège social", "de": "Geschäftsanschrift" },
+    "value": null
+  },
+  "leyAplicable": {
+    "label": { "es": "ley aplicable", "en": "governing law", "pt": "lei aplicável", "fr": "loi applicable", "de": "anwendbares Recht" },
+    "value": {
+      "es": "la República Argentina",
+      "en": "the Argentine Republic",
+      "pt": "República Argentina",
+      "fr": "la République argentine",
+      "de": "der Republik Argentinien"
+    }
+  },
+  "jurisdiccion": {
+    "label": { "es": "tribunales o sede arbitral", "en": "courts or arbitral seat", "pt": "foro ou sede arbitral", "fr": "tribunaux ou siège arbitral", "de": "Gerichte oder Schiedsort" },
+    "value": null
+  },
+  "jurisdiccionSitio": {
+    "label": { "es": "tribunales competentes", "en": "competent courts", "pt": "foro competente", "fr": "tribunaux compétents", "de": "zuständige Gerichte" },
+    "value": null
+  },
+  "idiomaPrevaleciente": {
+    "label": "idioma prevaleciente",
+    "value": { "es": "español", "en": "Spanish", "pt": "espanhol", "fr": "espagnol", "de": "spanischer Sprache" }
+  },
+
+  "plazoVerificacionDias": { "label": "plazo de verificación", "value": "5" },
+  "plazoConfidencialidadAnios": { "label": "plazo de confidencialidad", "value": "5" },
+  "plazoExportacionDias": { "label": "plazo de exportación", "value": "30" },
+  "plazoPreavisoCambiosDias": { "label": "preaviso de cambios", "value": "15" },
+  "plazoCambioControlDias": { "label": "aviso de cambio de control", "value": "15" },
+  "plazoCese": {
+    "label": "plazo de cese y destrucción",
+    "value": { "es": "48 horas", "en": "48 hours", "pt": "48 horas", "fr": "48 heures", "de": "48 Stunden" }
+  },
+  "topeResponsabilidadMeses": { "label": "tope de responsabilidad", "value": "12" }
+}

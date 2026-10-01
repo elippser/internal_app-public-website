@@ -63,11 +63,22 @@ export const loginUrl =
   process.env.NEXT_PUBLIC_APP_LOGIN_URL ?? "https://app.roombir.com/login";
 
 /**
+ * El "Ingresar" con el idioma de la página: el PMS lee `?lang=` en su
+ * middleware y abre el login en ese idioma (si no, lo adivinaría por el país
+ * de la IP). No agrega rutas nuevas del PMS: sigue siendo el mismo destino.
+ */
+export function loginUrlFor(locale: string): string {
+  const url = new URL(loginUrl);
+  url.searchParams.set("lang", locale);
+  return url.toString();
+}
+
+/**
  * Datos de contacto públicos. Están acá y no repartidos por las páginas para
  * que cambiar un teléfono sea un archivo y no una búsqueda por todo el repo.
  */
 export const contact = {
-  email: "hola@roombir.com",
+  email: "team@roombir.com",
   instagram: "https://www.instagram.com/roombir.app/",
   linkedin: "https://www.linkedin.com/company/roombir/",
 };

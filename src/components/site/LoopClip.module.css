@@ -1,0 +1,97 @@
+/* Un clip mudo en bucle. El marco manda la proporción (16:9, o 9:16 en
+   teléfono) desde el CSS, así el póster ya ocupa su lugar antes de que cargue
+   nada y el video entra encima sin mover la página. */
+
+.clip {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
+    background: var(--paper-2);
+    box-shadow: var(--shadow-float);
+    /* El recorte redondeado va en el marco interior: acá recortaría también
+       la sombra del botón. */
+}
+
+.frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    border: 1px solid rgba(20, 21, 15, 0.06);
+}
+
+.poster,
+.video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* El video aparece recién cuando corre: hasta entonces se ve el póster, que
+   es su primer cuadro, y el cambio no se nota. */
+.video {
+    opacity: 0;
+}
+
+.clip[data-playing] .video {
+    opacity: 1;
+}
+
+.toggle {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(20, 21, 15, 0.58);
+    color: #fff;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+}
+
+.toggle svg {
+    width: 16px;
+    height: 16px;
+}
+
+.toggle:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+@media (hover: hover) {
+    /* Con mouse el botón se retira mientras el clip corre y vuelve al pasar
+       por encima o al enfocar; en táctil queda siempre a la vista. */
+    .clip[data-playing] .toggle {
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .clip[data-playing]:hover .toggle,
+    .clip[data-playing] .toggle:focus-visible {
+        opacity: 1;
+    }
+
+    .toggle:hover {
+        background: rgba(20, 21, 15, 0.78);
+    }
+}
+
+/* En teléfono, el corte vertical, con un alto máximo para que el clip no
+   pase de una pantalla. */
+@media (max-width: 767px) {
+    .clip {
+        aspect-ratio: 9 / 16;
+        width: min(100%, calc(72vh * 9 / 16));
+        width: min(100%, calc(72dvh * 9 / 16));
+        margin-inline: auto;
+    }
+}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LegalBody, TextHero } from "@/components/site/Sections";
+import { LegalPolicyPage } from "@/components/legal/LegalPages";
 import { readLocale } from "@/i18n/params";
 import { pageMetadata } from "@/lib/meta";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -21,16 +21,14 @@ export default async function LegalPage({
 }) {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  const t = dict.legal.privacy;
 
   return (
-    <>
-      <TextHero
-        title={t.title}
-        lead={t.lead}
-        updated={`${dict.legal.updated}: ${dict.legal.updatedDate}`}
-      />
-      <LegalBody blocks={t.blocks} locale={lang} />
-    </>
+    <LegalPolicyPage
+      locale={lang}
+      t={dict.legalCenter}
+      kicker={dict.legalCenter.docs.privacy.kicker}
+      policy={dict.legal.privacy}
+      updated={{ label: dict.legal.updated, date: dict.legal.updatedDate }}
+    />
   );
 }

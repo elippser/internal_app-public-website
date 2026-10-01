@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
-import { LegalBody, TextHero } from "@/components/site/Sections";
+import { LegalContractPage } from "@/components/legal/LegalPages";
+import { getDictionary } from "@/i18n/get-dictionary";
 import { readLocale } from "@/i18n/params";
 import { pageMetadata } from "@/lib/meta";
-import { getDictionary } from "@/i18n/get-dictionary";
+
+/**
+ * Los Términos y Condiciones del SOFTWARE: el contrato que se acepta antes de
+ * crear la cuenta. El texto vive en `content/legal/es/terms.md`.
+ */
 
 export async function generateMetadata({
   params,
@@ -11,26 +16,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const lang = await readLocale(params);
   const dict = await getDictionary(lang);
-  return pageMetadata(lang, "/legal/terminos", dict.legal.terms.meta.title, dict.legal.terms.meta.description);
+  const { meta } = dict.legalCenter.docs.terms;
+  return pageMetadata(lang, "/legal/terminos", meta.title, meta.description);
 }
 
-export default async function LegalPage({
+export default async function TermsPage({
   params,
 }: {
   params: Promise<{ lang: string }>;
 }) {
   const lang = await readLocale(params);
-  const dict = await getDictionary(lang);
-  const t = dict.legal.terms;
+  const { legalCenter: t } = await getDictionary(lang);
 
-  return (
-    <>
-      <TextHero
-        title={t.title}
-        lead={t.lead}
-        updated={`${dict.legal.updated}: ${dict.legal.updatedDate}`}
-      />
-      <LegalBody blocks={t.blocks} locale={lang} />
-    </>
-  );
+  return <LegalContractPage doc="terms" locale={lang} t={t} copy={t.docs.terms} />;
 }

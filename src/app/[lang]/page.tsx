@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AdaptSection from "@/components/site/AdaptSection";
 import Faq from "@/components/site/Faq";
 import { Headline } from "@/components/site/RichText";
 import SiteVideo from "@/components/site/SiteVideo";
@@ -25,9 +26,9 @@ import "./monax.css";
 
 /**
  * La home, para la etapa de captación de primeros clientes
- * (IDENTIDAD-COMUNICACIONAL-2026.md §4). Once bloques, en este orden:
- * titular → qué cambia → cómo funciona → qué es (con el video de portada)
- * → un martes con y sin → compromisos → Roombir IA → preguntas → cierre. Orden del 29-09-2026, pedido del usuario.
+ * (IDENTIDAD-COMUNICACIONAL-2026.md §4). Los bloques, en este orden:
+ * titular → qué cambia → qué es (con el video de portada) → por qué Roombir
+ * (`AdaptSection`) → los productos (la grilla) → un martes con y sin → compromisos → Roombir IA → preguntas → cierre. Orden del 29-09-2026, pedido del usuario.
  * Sin precios: la política comercial no está decidida
  * (28-09-2026) y el sitio no los menciona hasta que lo esté.
  *
@@ -61,14 +62,14 @@ function Sparkle() {
   );
 }
 
-/* Los cinco productos, con su icono y el tinte que le toca. Roombir IA va
-   primero y en doble ancho: es la capa que usa a los otros cuatro. El PMS
-   también va en doble ancho: es el núcleo, y lista sus cuatro partes. */
+/* Los productos, con su icono y el tinte que le toca. Roombir IA va primero
+   y en doble ancho: es la capa que usa a los demás. El PMS también va en
+   doble ancho: es el núcleo, y lista sus partes. */
 const MODULE_ICONS: Record<ProductKey, React.ReactNode> = {
   ia: (
     <>
-      <rect x="4" y="7" width="16" height="12" rx="3" />
-      <path d="M12 3v4M9 13h.01M15 13h.01M9.5 16.5h5" />
+      <path d="M11 5c.5 3.9 3.1 6.5 7 7-3.9.5-6.5 3.1-7 7-.5-3.9-3.1-6.5-7-7 3.9-.5 6.5-3.1 7-7Z" />
+      <path d="M18.5 3v3M17 4.5h3" />
     </>
   ),
   pms: (
@@ -97,12 +98,12 @@ const MODULE_ICONS: Record<ProductKey, React.ReactNode> = {
   ),
 };
 
-const MODULE_ORDER: readonly { key: ProductKey; tint: string; wide: boolean }[] = [
-  { key: "ia", tint: "iconAmber", wide: true },
-  { key: "pms", tint: "iconGreen", wide: true },
-  { key: "informes", tint: "iconClay", wide: false },
-  { key: "revenue", tint: "iconAmber", wide: false },
-  { key: "marketing", tint: "iconGreen", wide: false },
+const MODULE_ORDER: readonly { key: ProductKey; tint: string; wash: string; wide: boolean }[] = [
+  { key: "ia", tint: "iconAmber", wash: "washAmber", wide: true },
+  { key: "pms", tint: "iconGreen", wash: "washGreen", wide: true },
+  { key: "informes", tint: "iconClay", wash: "washClay", wide: false },
+  { key: "revenue", tint: "iconAmber", wash: "washAmber", wide: false },
+  { key: "marketing", tint: "iconGreen", wash: "washGreen", wide: false },
 ];
 
 export default async function HomePage({
@@ -282,37 +283,13 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* -------------------------------------------------- cómo funciona -- */}
-      <section className="section section-tight section-paper2" id="como-funciona">
-        <div className="container container-wide">
-          <SplitHead
-            locale={lang}
-            eyebrow={t.how.eyebrow}
-            title={t.how.title}
-            lead={t.how.lead}
-          />
-          <ol className={styles.how} data-reveal data-fx="">
-            {t.how.steps.map((step, i) => (
-              <li key={step.href} className={styles.howStep}>
-                <p className={styles.howNum}>0{i + 1}</p>
-                <h3 className={styles.howTitle}>{step.title}</h3>
-                <p className={styles.howText}>{step.text}</p>
-                <Link href={path(step.href)} className="link-arrow">
-                  {step.link}
-                  <ArrowRight />
-                </Link>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       {/* -------------------------------------------------------- qué es --- */}
-      <section className="section" id="modulos">
+      <section className="section" id="que-es">
         <div className="container container-wide">
           {/* Encabezado a la izquierda y el video de portada a la derecha
-              (29-09-2026): el video es la explicación del titular, antes del
-              detalle producto por producto. En tableta y teléfono se apilan. */}
+              (29-09-2026): el video es la explicación del titular. La grilla
+              de productos ya no va acá: es su propia sección, después de
+              "cómo funciona". En tableta y teléfono se apilan. */}
           <div className={styles.queEsTop}>
             <div className={["section-head", styles.queEsHead].join(" ")} data-reveal>
               <p className="eyebrow">{t.modules.eyebrow}</p>
@@ -325,13 +302,34 @@ export default async function HomePage({
               <SiteVideo piece="portada" locale={lang} t={dict.common.video} ambient />
             </div>
           </div>
+        </div>
+      </section>
 
+      {/* ------------------------------------------------ por qué Roombir -- */}
+      {/* Reemplazó a "cómo funciona" (29-09-2026, pedido del usuario): la
+          narrativa de distinción y, debajo, "Roombir se adapta a tu
+          alojamiento" fijo a la izquierda con sus tres razones apilándose,
+          y la explicación de cada una a la derecha. */}
+      {/* La zona oscura: el fondo que aparece al llegar a la parte de IA no se
+          va al seguir bajando; sigue detrás de la grilla de productos, que
+          queda con sus tarjetas claras sobre el oscuro, y termina donde
+          empieza "un martes" (pedido del usuario, 29-09-2026). */}
+      <div className={styles.deepZone}>
+      <AdaptSection locale={lang} t={t.adapt} video={dict.common.video} />
+
+      {/* ------------------------------------------------------ productos -- */}
+      {/* La grilla de productos, separada de "qué es" (29-09-2026, pedido del
+          usuario): primero qué es y por qué Roombir, después el detalle
+          producto por producto. Sin encabezado propio. Sin fondo propio: se
+          ve sobre el oscuro de la zona. */}
+      <section className="section section-tight" id="modulos">
+        <div className="container container-wide">
           <div className={styles.modules} data-reveal data-fx="">
             {MODULE_ORDER.map((mod) => (
               <Link
                 key={mod.key}
                 href={path(PRODUCT_HREFS[mod.key])}
-                className={[styles.module, mod.wide ? styles.moduleWide : ""].join(" ")}
+                className={[styles.module, styles[mod.wash], mod.wide ? styles.moduleWide : ""].join(" ")}
               >
                 <span
                   className={[styles.moduleIcon, styles[mod.tint]].join(" ")}
@@ -361,6 +359,8 @@ export default async function HomePage({
           </div>
         </div>
       </section>
+
+      </div>
 
       {/* -------------------------------------------------- un martes ------ */}
       <section className="section section-tight">

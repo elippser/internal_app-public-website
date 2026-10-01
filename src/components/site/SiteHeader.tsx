@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 
 import type { Locale } from "@/i18n/config";
 import { localizedHref as localePath } from "@/i18n/routes";
 import type { Dictionary } from "@/i18n/dict/es";
-import { loginUrl } from "@/lib/siteConfig";
+import { loginUrlFor } from "@/lib/siteConfig";
 import LangSwitcher from "./LangSwitcher";
 import Logo from "./Logo";
 import {
@@ -217,7 +217,7 @@ export default function SiteHeader({
           <div className={styles.actions}>
             <LangSwitcher locale={locale} label={nav.language} />
             {/* "Ingresar" sale del sitio: es el unico enlace al PMS. */}
-            <a href={loginUrl} className={styles.login}>
+            <a href={loginUrlFor(locale)} className={styles.login}>
               {nav.login}
             </a>
             <Link
@@ -499,7 +499,7 @@ export default function SiteHeader({
               >
                 {nav.signup}
               </Link>
-              <a href={loginUrl} className={["btn", "btn-ghost", "btn-lg"].join(" ")}>
+              <a href={loginUrlFor(locale)} className={["btn", "btn-ghost", "btn-lg"].join(" ")}>
                 {nav.login}
               </a>
             </div>

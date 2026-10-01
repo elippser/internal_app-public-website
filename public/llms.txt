@@ -30,7 +30,8 @@ Roombir está en piloto de mercado desde agosto de 2026. Su tesis: un alojamient
 
 ## Legal
 
-- [Términos y condiciones](https://roombir.com/es/legal/terminos): Qué incluye el servicio, qué está en piloto, responsabilidades de cada parte y cómo se da de baja una cuenta. El alcance del servicio forma parte de lo que se acepta al contratar.
+- [Términos y Condiciones de Uso del software](https://roombir.com/es/legal/terminos): El contrato que se acepta antes de crear la cuenta: licencia, conductas prohibidas, sanciones por uso indebido, prueba, auditoría y jurisdicción. Prevalece el texto en español.
+- [Términos de Uso del Sitio](https://roombir.com/es/legal/terminos-del-sitio): Condiciones para quien navega el sitio. Prohíben copiarlo, extraer su contenido por medios automatizados y usarlo para entrenar modelos de inteligencia artificial o construir datasets.
 - [Política de privacidad](https://roombir.com/es/legal/privacidad): Qué datos toma el sitio y la plataforma, con quién los procesa y cómo pedir que se borren.
 - [Política de cookies](https://roombir.com/es/legal/cookies): El sitio público no usa cookies propias salvo la del idioma.
 

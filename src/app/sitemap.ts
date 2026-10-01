@@ -16,7 +16,8 @@ import { siteUrl } from "@/lib/siteConfig";
 export default function sitemap(): MetadataRoute.Sitemap {
   return LOCALES.flatMap((locale) =>
     PUBLIC_ROUTE_KEYS.map((key) => {
-      const isLegal = key === "privacidad" || key === "terminos" || key === "cookies";
+      const isLegal =
+        key === "privacidad" || key === "terminos" || key === "terminosSitio" || key === "cookies";
       return {
         // Sin `lastModified` a propósito: antes iba `new Date()` y cada deploy
         // "modificaba" las 75 URLs, que es la manera más rápida de que Google

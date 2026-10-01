@@ -127,8 +127,16 @@ export default function SiteFooter({
             <div>
               <p className={styles.colLabel}>{dict.footer.columns.legal}</p>
               <div className={styles.colList}>
+                {/* Los documentos legales abren en pestaña nueva: quien los consulta
+                    no pierde la página en la que estaba. */}
                 {LEGAL_LINKS.map((item) => (
-                  <Link key={item.href} href={path(item.href)} className={styles.colLink}>
+                  <Link
+                    key={item.href}
+                    href={path(item.href)}
+                    className={styles.colLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {dict.footer.legal[item.key]}
                   </Link>
                 ))}

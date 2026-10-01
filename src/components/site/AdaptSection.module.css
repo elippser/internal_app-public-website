@@ -1,0 +1,598 @@
+/* "Por qué Roombir": narrativa arriba y, debajo, dos columnas: a la izquierda
+   la pila fija (titular + razones) y a la derecha las explicaciones, que
+   scrollean normal. Ver AdaptSection.tsx y AdaptStack.tsx. */
+
+/* Los colores del texto de la grilla, registrados como colores para que
+   puedan TRANSICIONAR: al llegar a la parte de IA el fondo pasa a oscuro y
+   el texto tiene que pasar a claro al mismo ritmo. Una variable sin registrar
+   salta de un valor al otro; registrada, interpola. En un navegador sin
+   `@property` el cambio es el mismo, sólo que de golpe. */
+@property --adapt-ink {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #14150f;
+}
+
+@property --adapt-text {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #242424;
+}
+
+@property --adapt-dim {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #63665a;
+}
+
+@property --adapt-label {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #4e6b28;
+}
+
+@property --adapt-line {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #cec8b6;
+}
+
+@property --adapt-g1 {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #2f4d18;
+}
+
+@property --adapt-g2 {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #4e6b28;
+}
+
+@property --adapt-g3 {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #8f5b20;
+}
+
+/* `section.adapt` y no `.adapt` sola: tiene que ganarle a `.section` de
+   globals sin depender del orden en que cargan las hojas. La sección lleva
+   piezas fijas, videos y un fondo `fixed` (que un `contain` encerraría), así
+   que no se difiere su render. El verde de arriba es el de `section-paper2`,
+   pero con alto propio: en una sección tan larga el degradado estirado al
+   100 % teñía todo.
+
+   Los colores son los del sistema (tinta, texto, gris apagado, musgo, línea
+   y los tres del degradado de los titulares), sobre papel. */
+section.adapt {
+    --adapt-ink: #14150f;
+    --adapt-text: #242424;
+    --adapt-dim: #63665a;
+    --adapt-label: #4e6b28;
+    --adapt-line: #cec8b6;
+    --adapt-g1: #2f4d18;
+    --adapt-g2: #4e6b28;
+    --adapt-g3: #8f5b20;
+
+    content-visibility: visible;
+    background: linear-gradient(180deg, #e2ead4 0, #ebeee0 340px, rgba(235, 238, 224, 0) 920px);
+    transition: --adapt-ink 0.8s ease, --adapt-text 0.8s ease, --adapt-dim 0.8s ease, --adapt-label 0.8s ease,
+        --adapt-line 0.8s ease, --adapt-g1 0.8s ease, --adapt-g2 0.8s ease, --adapt-g3 0.8s ease;
+}
+
+/* Sobre el degradado oscuro: los mismos papeles, con los colores que el
+   sistema usa sobre tinta (`--text-ink`, pistacho y arena de
+   `--grad-text-ink`). El gris apagado y el texto van sólidos y no con alfa:
+   el fondo no es parejo y con alfa el contraste dependería de dónde caen. */
+section.adapt[data-tone="ai"] {
+    --adapt-ink: #f2efe8;
+    --adapt-text: #d5dcd5;
+    --adapt-dim: #c6d0c8;
+    --adapt-label: #c8e293;
+    --adapt-line: #3f5f5a;
+    --adapt-g1: #c8e293;
+    --adapt-g2: #b9dcb4;
+    --adapt-g3: #eac98a;
+}
+
+/* ------------------------------------------------------------ narrativa -- */
+
+/* Mismas columnas que la grilla de abajo: los bordes coinciden. */
+.intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    column-gap: clamp(36px, 5.5vw, 96px);
+    row-gap: 20px;
+    align-items: end;
+    margin-bottom: clamp(64px, 8vw, 128px);
+}
+
+/* El titular de la narrativa va más chico y liviano que un `.h2` (pedido del
+   usuario, 29-09-2026), y sin palabra en degradado: el peso de la sección
+   es "Roombir se adapta a tu alojamiento", no este. */
+.intro .introTitle {
+    font-size: clamp(23px, 2.8vw, 36px);
+    font-weight: 300;
+    letter-spacing: -0.028em;
+    line-height: 1.14;
+}
+
+/* --------------------------------------------------------------- grilla -- */
+
+.grid {
+    /* Dónde se detiene la pila (el header flotante mide ~76 px) y el aire
+       entre el titular y la primera razón. AdaptStack los lee en px. */
+    --adapt-top: 124px;
+    --adapt-gap: 26px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    grid-template-rows: repeat(4, auto);
+    column-gap: clamp(36px, 5.5vw, 96px);
+    row-gap: clamp(88px, 10vw, 168px);
+}
+
+/* Cada pieza de la izquierda ocupa desde su fila hasta la última: el área
+   de grilla es el tramo dentro del cual puede quedarse fija. */
+.heading,
+.reason {
+    grid-column: 1;
+    align-self: start;
+    min-width: 0;
+}
+
+.heading {
+    grid-row: 1 / -1;
+    font-size: clamp(27px, 3vw, 42px);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.06;
+    text-wrap: balance;
+}
+
+/* El degradado de los titulares (`--grad-text`), en el titular entero y
+   armado con las variables de la sección para que cambie con el fondo. El
+   padding con margen negativo agranda la caja sin mover nada: el recorte al
+   texto se comería las colas de la j y la p. */
+.headingText {
+    padding: 0.14em 0.06em;
+    margin: -0.14em -0.06em;
+    background-image: linear-gradient(100deg, var(--adapt-g1) 0%, var(--adapt-g2) 45%, var(--adapt-g3) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+.reason {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: baseline;
+    padding-block: 15px;
+    border-top: 1px solid var(--adapt-line);
+    font-size: clamp(17px, 1.5vw, 21px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    color: var(--adapt-ink);
+    text-wrap: balance;
+}
+
+.reason[data-stack="1"] {
+    grid-row: 2 / -1;
+}
+
+.reason[data-stack="2"] {
+    grid-row: 3 / -1;
+}
+
+.reason[data-stack="3"] {
+    grid-row: 4 / -1;
+}
+
+.reasonNum {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--adapt-dim);
+}
+
+.first,
+.block {
+    grid-column: 2;
+    min-width: 0;
+}
+
+.first {
+    grid-row: 1;
+}
+
+.block[data-block="1"] {
+    grid-row: 2;
+}
+
+.block[data-block="2"] {
+    grid-row: 3;
+}
+
+.block[data-block="3"] {
+    grid-row: 4;
+}
+
+/* ---------------------------------------------------------------- bloque -- */
+
+.block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.block .blockTitle {
+    max-width: 24ch;
+    font-size: clamp(25px, 2.7vw, 38px);
+    line-height: 1.1;
+    letter-spacing: -0.032em;
+    color: var(--adapt-ink);
+}
+
+/* La palabra marcada: el mismo degradado de `.h3 em`, con las variables. */
+.block .blockTitle em {
+    background-image: linear-gradient(100deg, var(--adapt-g1) 0%, var(--adapt-g2) 45%, var(--adapt-g3) 100%);
+}
+
+.block .blockText {
+    max-width: 60ch;
+    margin-top: 18px;
+    color: var(--adapt-text);
+}
+
+.blockCta {
+    margin-top: 26px;
+}
+
+/* Sobre oscuro el botón va en pistacho, como en las bandas de tinta. */
+section.adapt[data-tone="ai"] .blockCta {
+    background: var(--brand-bright);
+    color: var(--ink);
+    box-shadow: 0 6px 20px rgba(200, 226, 147, 0.18);
+}
+
+.blockMedia {
+    width: 100%;
+    margin-top: clamp(30px, 3.4vw, 48px);
+}
+
+/* ------------------------------------------------------------------ foto -- */
+
+.photo {
+    position: relative;
+    aspect-ratio: 10 / 7;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--paper-2);
+    box-shadow: var(--shadow-float);
+}
+
+.photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* La figura está a la derecha: en recortes más angostos no se pierde. */
+    object-position: 82% center;
+    display: block;
+}
+
+/* Blur progresivo: capas apiladas sobre la mitad de abajo; cada una difumina
+   el doble que la anterior y su máscara entra un escalón más abajo, así el
+   desenfoque crece hacia el borde sin que se vea dónde empieza. Sólo la
+   propiedad estándar de `backdrop-filter`: el minificador genera la
+   `-webkit-` (ver SiteHeader.module.css). */
+.photoBlur {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 64%;
+    pointer-events: none;
+}
+
+.photoBlur span {
+    position: absolute;
+    inset: 0;
+}
+
+.photoBlur span:nth-child(1) {
+    backdrop-filter: blur(1px);
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 60%);
+}
+
+.photoBlur span:nth-child(2) {
+    backdrop-filter: blur(2px);
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 80%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 80%);
+}
+
+.photoBlur span:nth-child(3) {
+    backdrop-filter: blur(4px);
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
+}
+
+.photoBlur span:nth-child(4) {
+    backdrop-filter: blur(8px);
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 1) 100%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 1) 100%);
+}
+
+/* La última capa lleva además el velo petróleo que sostiene el texto. */
+.photoBlur span:nth-child(5) {
+    backdrop-filter: blur(16px);
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 78%, rgba(0, 0, 0, 1) 100%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 78%, rgba(0, 0, 0, 1) 100%);
+}
+
+.photoBlur::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(1, 45, 43, 0) 0%, rgba(1, 45, 43, 0.26) 48%, rgba(1, 45, 43, 0.66) 100%);
+}
+
+.photoCaption {
+    position: absolute;
+    inset: auto 0 0 0;
+    max-width: 32ch;
+    padding: clamp(20px, 2.6vw, 34px);
+    color: #fff;
+    font-size: clamp(17px, 1.7vw, 23px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.28;
+    text-wrap: balance;
+    text-shadow: 0 1px 14px rgba(1, 45, 43, 0.35);
+}
+
+/* --------------------------------------------------- el fondo de la IA --- */
+
+/* Al llegar al bloque de IA el fondo de la página cambia del papel al
+   degradado OSCURO de la marca, el verde petróleo de los videos
+   (`.gradientDeep` en video/scenes.module.css, calcado de la referencia del
+   usuario): fondo plano #012d2b, una pluma de luz que nace arriba y baja por
+   la izquierda, y un disco del color del fondo que la recorta a la derecha.
+   (Antes se probaron la malla multicolor de la tarjeta del menú y el
+   degradado verde claro; el usuario pidió el oscuro, 29-09-2026.)
+
+   - `position: fixed` y no un fondo de la sección: el degradado tiene que
+     medir lo que mide la ventana, no los ~3.500 px de la sección. Por eso la
+     sección no puede tener `contain` ni `content-visibility: auto`.
+   - `z-index: -1`: queda sobre el fondo de la sección y debajo de todo su
+     contenido, sin tocar el orden de nada.
+   - Una vez que aparece, NO se va al seguir bajando: sigue detrás de lo
+     que venga después, hasta donde termine la zona que lo recorta. Esa zona
+     la pone quien monta la sección (en la home, `.deepZone`, que abarca
+     también la grilla de productos). Sólo vuelve al papel si se sube por
+     encima del bloque de IA.
+   - `.aiStage` es el escenario del video (16:9) cubriendo la ventana desde
+     arriba a la izquierda, que es de donde viene la luz; las medidas de las
+     capas son las del video (1280 × 720) pasadas a porcentaje. En un
+     teléfono se ve el tramo izquierdo del escenario.
+   - LA PLUMA VA ATENUADA. En el video llega a #cfe2d2, casi blanco, y acá
+     encima va texto claro: justo arriba a la izquierda está el titular
+     fijo. Con la opacidad de `.aiLight` el punto más claro detrás del texto
+     deja 4,5:1 contra el gris de las razones apagadas. Si se sube, medir.
+   - Son degradados, sin `filter`: mover una capa es sólo `transform`. Fuera
+     de la parte de IA la deriva está en pausa. */
+.aiBg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background: #012d2b;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0s linear 0.8s;
+}
+
+section.adapt[data-tone="ai"] .aiBg {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.8s ease, visibility 0s;
+}
+
+.aiStage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    width: max(100vw, 177.78vh);
+    height: max(56.25vw, 100vh);
+}
+
+.aiStage i {
+    position: absolute;
+    display: block;
+}
+
+/* 1 · el campo de luz */
+.aiLight {
+    left: -29.7%;
+    top: -129.2%;
+    width: 146.9%;
+    height: 261.1%;
+    background: radial-gradient(50% 50% at 50% 50%, #cfe2d2 0%, #c8dccb 11%, #bbd1c2 22%, #a8c2b4 33%, #92b0a3 44%, #7c9e92 55%, #668c81 65%, #517a71 74%, #3d6862 83%, #2a5651 90%, #184441 96%, #012d2b00 100%);
+    opacity: 0.32;
+}
+
+/* 2 · el disco oscuro que recorta a la derecha */
+.aiDisc {
+    left: -16.4%;
+    top: -40.3%;
+    width: 234.4%;
+    height: 369.4%;
+    background: radial-gradient(50% 50% at 50% 50%, #012d2b 0%, #012d2b 58%, #012d2bfa 64%, #012d2bf0 70%, #012d2bdd 75%, #012d2bc2 80%, #012d2b9e 85%, #012d2b74 89%, #012d2b4a 93%, #012d2b23 97%, #012d2b00 100%);
+}
+
+/* 3 · el pie, que se cierra un poco incluso del lado claro */
+.aiFoot {
+    left: -25%;
+    bottom: -19.4%;
+    width: 150%;
+    height: 61.1%;
+    background: linear-gradient(180deg, #012d2b00 0%, #012d2b7a 62%, #012d2b99 100%);
+}
+
+/* El pie oscuro, la película de grano y los destellos del video. Sobre un
+   fondo tan oscuro el grano es sobre todo un dither: sin ruido el degradado
+   se escalona en bandas. (SVG en `data:`, sin saltos de línea: uno solo y
+   el CSS entero no parsea.) */
+.aiGrain {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 58%, rgba(1, 22, 21, 0.55) 100%);
+}
+
+.aiGrain::before,
+.aiGrain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+}
+
+.aiGrain::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    mix-blend-mode: overlay;
+    opacity: 0.15;
+}
+
+.aiGrain::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='8' intercept='-5.60'/%3E%3CfeFuncG type='linear' slope='8' intercept='-5.60'/%3E%3CfeFuncB type='linear' slope='8' intercept='-5.60'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='640' height='640' filter='url(%23f)'/%3E%3C/svg%3E");
+    background-size: 640px 640px;
+    mix-blend-mode: screen;
+    opacity: 0.16;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .aiLight,
+    .aiDisc {
+        will-change: transform;
+        animation: aiDriftA 21s ease-in-out infinite alternate paused;
+    }
+
+    .aiDisc {
+        animation-name: aiDriftB;
+        animation-duration: 26s;
+        animation-delay: -9s;
+    }
+
+    section.adapt[data-tone="ai"] .aiStage i {
+        animation-play-state: running;
+    }
+}
+
+/* La deriva del video: ±70 px la luz y ±80 px el disco, sobre 1280. Las dos
+   capas se pasan de largo del escenario, así que nunca asoma un borde. */
+@keyframes aiDriftA {
+    from {
+        transform: translate3d(-2.5%, -1%, 0);
+    }
+
+    to {
+        transform: translate3d(2.5%, 1%, 0);
+    }
+}
+
+@keyframes aiDriftB {
+    from {
+        transform: translate3d(1.4%, 0.8%, 0);
+    }
+
+    to {
+        transform: translate3d(-1.4%, -0.8%, 0);
+    }
+}
+
+/* ------------------------------------------------------------- la pila --- */
+
+/* Sólo en escritorio y sólo cuando AdaptStack midió (`data-ready`). */
+@media (min-width: 1024px) {
+    .grid[data-ready] .heading,
+    .grid[data-ready] .reason {
+        position: sticky;
+        top: calc(var(--adapt-top) + var(--stick, 0px));
+        margin-bottom: var(--below, 0px);
+    }
+
+    /* Con una razón activa, las otras bajan un tono. */
+    .grid[data-ready]:has(.reason[data-active]) .reason:not([data-active]) {
+        color: var(--adapt-dim);
+    }
+}
+
+/* ------------------------------------------------- tableta y teléfono ---- */
+
+/* Una columna, en orden de lectura: titular, clip del motor y, por cada
+   razón, su rótulo y su bloque. Nada fijo. */
+@media (max-width: 1023px) {
+    .intro {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+        margin-bottom: clamp(44px, 8vw, 72px);
+    }
+
+    .grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* En columna, `align-self: start` encogería cada pieza a su texto y la
+       línea de arriba de las razones quedaría corta. */
+    .heading,
+    .reason {
+        align-self: stretch;
+    }
+
+    .heading {
+        margin-bottom: clamp(22px, 4vw, 32px);
+    }
+
+    .reason {
+        margin-top: clamp(60px, 10vw, 96px);
+        padding-bottom: 0;
+        font-size: clamp(16px, 2.4vw, 19px);
+        color: var(--adapt-label);
+    }
+
+    .block {
+        margin-top: 16px;
+    }
+
+    .block .blockTitle {
+        max-width: 26ch;
+        font-size: clamp(25px, 4.6vw, 36px);
+    }
+}
+
+@media (max-width: 767px) {
+    /* Más alta: el texto de la foto ocupa tres o cuatro renglones. */
+    .photo {
+        aspect-ratio: 4 / 5;
+    }
+
+    /* El recorte vertical deja poco más de la mitad del ancho: se toma el
+       borde derecho, donde está la figura. */
+    .photo img {
+        object-position: 100% center;
+    }
+
+    .blockCta {
+        height: 44px;
+    }
+}

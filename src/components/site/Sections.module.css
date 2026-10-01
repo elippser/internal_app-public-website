@@ -72,6 +72,32 @@
     flex: none;
 }
 
+/* La portada centrada (29-09-2026): el texto al medio, con las medidas de la
+   de Intelligence, y debajo la pieza —el video de portada— a lo ancho. */
+.heroCenter {
+    margin-inline: auto;
+}
+
+.heroCenter .heroCopy {
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+}
+
+.heroCenter .heroCopy :global(.lead) {
+    max-width: 640px;
+}
+
+.heroCenter :global(.btn-row),
+.heroCenter .heroNote {
+    justify-content: center;
+}
+
+.heroBelow {
+    max-width: 1080px;
+    margin: clamp(36px, 5vw, 64px) auto 0;
+}
+
 @media (max-width: 900px) {
     .heroGrid {
         grid-template-columns: minmax(0, 1fr);

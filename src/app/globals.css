@@ -216,6 +216,21 @@ body:has([data-page="video"]) nextjs-portal {
     display: none;
 }
 
+/* El centro legal (`/legal/*`) trae su propio chrome, de la cabecera al pie:
+   otra marca, otra paleta y otro tono. El del sitio se apaga con el mismo
+   recurso que en el video, y el papel cálido deja paso al blanco. Los
+   `[aria-hidden]` son el grano y el desenfoque superior de la cabecera, que
+   vive fuera de su `<header>`. */
+body:has([data-page="legal"]) > header,
+body:has([data-page="legal"]) > footer,
+body:has([data-page="legal"]) > [aria-hidden] {
+    display: none;
+}
+
+body:has([data-page="legal"]) {
+    background: #fff;
+}
+
 /* ------------------------------------------------------------ tipografía -- */
 
 .display,

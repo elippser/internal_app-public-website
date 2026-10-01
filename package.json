@@ -8,7 +8,8 @@
     "start": "next start -p 6300",
     "typecheck": "tsc --noEmit",
     "capture:motor": "node scripts/capture-motor.cjs",
-    "sync:linkhub": "node scripts/sync-linkhub.mjs"
+    "sync:linkhub": "node scripts/sync-linkhub.mjs",
+    "cut:clips": "node scripts/cut-clips.mjs"
   },
   "dependencies": {
     "next": "16.2.4",

@@ -266,6 +266,8 @@ export const ROUTES = {
       de: "/legal/datenschutz",
     },
   },
+  /* Los Términos y Condiciones del SOFTWARE: el contrato que se acepta antes
+     de crear la cuenta. Los del sitio web son `terminosSitio`. */
   terminos: {
     path: "/legal/terminos",
     slugs: {
@@ -274,6 +276,18 @@ export const ROUTES = {
       pt: "/legal/termos",
       fr: "/legal/conditions",
       de: "/legal/agb",
+    },
+  },
+  /* Los términos de uso del SITIO: rigen para quien navega sin cuenta y sin
+     contrato (roombir-legal-spec-sitio.md). */
+  terminosSitio: {
+    path: "/legal/terminos-del-sitio",
+    slugs: {
+      es: "/legal/terminos-del-sitio",
+      en: "/legal/site-terms",
+      pt: "/legal/termos-do-site",
+      fr: "/legal/conditions-du-site",
+      de: "/legal/nutzungsbedingungen",
     },
   },
   cookies: {

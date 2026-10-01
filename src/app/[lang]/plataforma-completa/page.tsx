@@ -3,6 +3,7 @@ import Link from "next/link";
 import BreadcrumbsLd from "@/components/site/BreadcrumbsLd";
 import PlatformShot, { type ShotArea } from "@/components/site/PlatformShot";
 import { ArrowRight, CtaBand, HeroActions, PageHero, SplitHead } from "@/components/site/Sections";
+import SiteVideo from "@/components/site/SiteVideo";
 import {
   AgentSurface,
   AgentTurn,
@@ -32,6 +33,9 @@ import styles from "./plataforma-completa.module.css";
  * Roombir IA— y sus pantallas reales; abajo, el mapa con el enlace a cada
  * página. Los grupos y los ítems son los mismos de `PLATFORM_MENU` e
  * `IA_MENU`, así que menú y página no se pueden desalinear.
+ *
+ * La portada (29-09-2026) va centrada, como la de Intelligence, con el video
+ * de portada debajo del texto.
  */
 
 export async function generateMetadata({
@@ -121,6 +125,8 @@ export default async function PlataformaCompletaPage({
         title={t.hero.title}
         lead={t.hero.lead}
         actions={<HeroActions locale={lang} dict={dict} />}
+        center
+        below={<SiteVideo piece="portada" locale={lang} t={dict.common.video} priority />}
       />
 
       {/* --------------------------------------------------- el pantallazo -- */}

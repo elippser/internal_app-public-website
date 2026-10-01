@@ -45,8 +45,15 @@ export function renderRich(text: string, locale: Locale): ReactNode[] {
     if (link) {
       const [, label, href] = link;
       if (href.startsWith("/")) {
+        // Los documentos legales, en pestaña nueva (formularios, FAQ, políticas):
+        // consultarlos no puede sacar a nadie de lo que estaba completando.
+        const legal = href.startsWith("/legal/");
         return (
-          <Link key={i} href={localePath(locale, href)}>
+          <Link
+            key={i}
+            href={localePath(locale, href)}
+            {...(legal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+          >
             {label}
           </Link>
         );

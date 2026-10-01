@@ -2,6 +2,7 @@ import type { Dictionary } from "./es";
 import { solDe } from "./sol/de";
 import { platDe } from "./plat/de";
 import { intelDe } from "./intel/de";
+import { legalCenterDe } from "./legal/de";
 
 /**
  * Deutsch. Dieselben Schlüssel wie in `es.ts` — TypeScript lässt es nicht
@@ -82,6 +83,7 @@ const de: Dictionary = {
 
   plataformaCompleta: platDe.page,
   intelligence: intelDe,
+  legalCenter: legalCenterDe,
   solucionesIndex: solDe.index,
   solucionesPaginas: solDe.pages,
 
@@ -105,6 +107,7 @@ const de: Dictionary = {
       privacy: "Datenschutz",
       terms: "AGB",
       cookies: "Cookies",
+      siteTerms: "Nutzungsbedingungen",
     },
     solutions: {
       hoteles: "Hotels und Aparthotels",
@@ -572,7 +575,7 @@ const de: Dictionary = {
         disposable: "Nutzen Sie eine dauerhafte Adresse: dorthin geht der Zugang.",
         rate: "Zu viele Versuche hintereinander. Versuchen Sie es in ein paar Minuten erneut.",
         mail: "Wir konnten die E-Mail nicht senden. Versuchen Sie es in ein paar Minuten erneut.",
-        generic: "Wir konnten es nicht senden. Schreiben Sie uns an hola@roombir.com.",
+        generic: "Wir konnten es nicht senden. Schreiben Sie uns an team@roombir.com.",
         network: "Keine Verbindung. Prüfen Sie Ihr Netz und versuchen Sie es erneut.",
       },
       done: {
@@ -606,7 +609,7 @@ const de: Dictionary = {
     honeypot: "Nicht ausfüllen",
     errorGeneric: "Wir konnten es nicht senden.",
     errorRate: "Zu viele Sendungen hintereinander.",
-    errorTail: "Wenn es weiterhin fehlschlägt, schreiben Sie uns an hola@roombir.com.",
+    errorTail: "Wenn es weiterhin fehlschlägt, schreiben Sie uns an team@roombir.com.",
     legal:
       "Wir verwenden Ihre Daten nur, um Sie zu Roombir zu kontaktieren. Sie können jederzeit ihre Löschung verlangen. Mehr in der [Datenschutzerklärung](/legal/privacidad).",
     doneTitle: "Angekommen.",
@@ -729,6 +732,33 @@ const de: Dictionary = {
           link: "Zu Roombir KI",
         },
       ],
+    },
+    adapt: {
+      eyebrow: "Warum Roombir",
+      title: "Systeme gibt es viele. Fast alle sind dasselbe.",
+      lead: "Der Markt ist voll von generischen Lösungen: dieselben Bildschirme, dieselben Schritte und dieselben Regeln für ein Stadthotel wie für sechs Hütten am See. Dort sind Sie es, der sich anpasst. Roombir macht es umgekehrt: Es geht von Ihrer Unterkunft aus, nicht von einer Schablone.",
+      heading: "Roombir passt sich Ihrer Unterkunft an",
+      cta: "Plattform entdecken",
+      clip: "Die Booking-Engine im Einsatz: Eine neue Buchung erscheint im Tagespanel und belegt ihre Nächte im Kalender.",
+      world: {
+        label: "Gemacht, um Sie mit der Welt zu verbinden",
+        title: "Jede Unterkunft ist eine Welt für sich, und Roombir hat für jede *die passende Lösung*.",
+        text: "Ein Stadthotel, ein Berggasthof und eine Hüttenanlage verkaufen und arbeiten nicht gleich. Roombir wird nach Ihrer Art von Unterkunft, Ihren Einheiten und Ihrer Währung eingerichtet und bringt Ihre Verfügbarkeit auf Ihre Website, in Ihre Booking-Engine und in Ihren Link, damit man Sie von überall findet und bucht.",
+        caption: "Vom Stadthotel bis zur Hütte am See: Das System nimmt die Form Ihrer Unterkunft an.",
+        alt: "Ein Gast blickt vom Rand eines Infinity-Pools auf einen Bergsee.",
+      },
+      easy: {
+        label: "So einfach, dass Sie es ab dem ersten Tag nutzen",
+        title: "Sie müssen weder Techniker sein *noch Daten lesen können*.",
+        text: "Roombir ist dafür gemacht, einfach zu sein. Sie werden vom ersten Tag an begleitet, und die ganze Komplexität des Betriebs (Buchungen, Raten, Verfügbarkeit, Berichte) ist an einem Ort gebündelt und so erklärt, dass Sie sie auf einen Blick verstehen.",
+        clip: "Das PMS von Roombir im Einsatz: die Objekte, der Buchungskalender und die Suche.",
+      },
+      ai: {
+        label: "Gemacht für das Zeitalter der KI",
+        title: "Ihre Unterkunft muss im Zeitalter der KI ankommen, *um nicht zurückzufallen*.",
+        text: "Im Internet gibt es heute Hunderte Arten von KI, Hunderte Millionen Daten und unzählige Strategien. Bei Roombir kennen wir Ihre Unterkunft und geben Ihnen die beste KI, mit den konkreten Daten und der besten Strategie, um Ihre Auslastung in die Höhe zu treiben.",
+        clip: "Roombir KI im Einsatz: Sie lädt Raten aus einer Datei, beantwortet, welcher Kanal am häufigsten storniert, und sperrt eine Einheit direkt im Chat.",
+      },
     },
     spaces: {
       eyebrow: "Was sonst niemand hat",
@@ -1829,7 +1859,7 @@ const de: Dictionary = {
     faq: [
       {
         q: "Berechnen Sie eine Provision pro Buchung?",
-        a: "Nein. Die Maschine hat keine Gebühr pro Buchung: Sie zahlen den Tarif und nichts weiter. Das steht in den [Bedingungen](/legal/terminos).",
+        a: "Nein. Die Maschine hat keine Gebühr pro Buchung: Sie zahlen den Tarif und nichts weiter.",
       },
 {
         q: "Wer bestätigt die Buchung?",
@@ -2658,7 +2688,7 @@ const de: Dictionary = {
       blocks: [
         { h: "1. Wer wir sind" },
         {
-          p: "Roombir ist eine Verwaltungsplattform für Unterkünfte, betrieben aus Argentinien. Für alle Fragen zu Ihren personenbezogenen Daten schreiben Sie uns an [hola@roombir.com](mailto:hola@roombir.com).",
+          p: "Roombir ist eine Verwaltungsplattform für Unterkünfte, betrieben aus Argentinien. Für alle Fragen zu Ihren personenbezogenen Daten schreiben Sie uns an [team@roombir.com](mailto:team@roombir.com).",
         },
         { h: "2. Zwei verschiedene Rollen" },
         { p: "Es lohnt, sie zu trennen, denn die Pflichten sind nicht dieselben:" },
@@ -2701,7 +2731,7 @@ const de: Dictionary = {
         },
         { h: "7. Ihre Rechte" },
         {
-          p: "Sie können Auskunft über Ihre Daten, deren Berichtigung, Aktualisierung oder Löschung verlangen, indem Sie an [hola@roombir.com](mailto:hola@roombir.com) schreiben. In Argentinien ist die Agentur für Zugang zu öffentlichen Informationen die Aufsichtsbehörde für den Schutz personenbezogener Daten und bearbeitet Beschwerden derjenigen, die ihre Rechte verletzt sehen.",
+          p: "Sie können Auskunft über Ihre Daten, deren Berichtigung, Aktualisierung oder Löschung verlangen, indem Sie an [team@roombir.com](mailto:team@roombir.com) schreiben. In Argentinien ist die Agentur für Zugang zu öffentlichen Informationen die Aufsichtsbehörde für den Schutz personenbezogener Daten und bearbeitet Beschwerden derjenigen, die ihre Rechte verletzt sehen.",
         },
         { h: "8. Sicherheit" },
         {
@@ -2710,77 +2740,6 @@ const de: Dictionary = {
         { h: "9. Änderungen" },
         {
           p: "Wenn wir diese Erklärung aktualisieren, ändern wir das Datum im Kopf. Wesentliche Änderungen teilen wir aktiven Konten zusätzlich per E-Mail mit.",
-        },
-      ],
-    },
-    terms: {
-      meta: {
-        title: "Allgemeine Geschäftsbedingungen",
-        description:
-          "Nutzungsbedingungen der Plattform roombir: was der Dienst umfasst, was im Piloten ist, die Verantwortlichkeiten beider Seiten und wie ein Konto beendet wird.",
-      },
-      title: "Allgemeine Geschäftsbedingungen",
-      lead: "Die Regeln für die Nutzung der Plattform, so geschrieben, dass man sie versteht.",
-      blocks: [
-        { h: "1. Was der Dienst ist" },
-        {
-          p: "Roombir ist eine Cloud-Plattform zur Führung einer Unterkunft: Buchungen, Zimmer, öffentliche Buchungsmaschine, Websites, Revenue Management, Gästeportal und ein Assistent mit künstlicher Intelligenz. Der Zugang erfolgt über den Browser; es wird keine Software zur Installation ausgeliefert.",
-        },
-        { h: "2. Leistungsumfang" },
-        {
-          p: "Die Plattform befindet sich im **Marktpilot**: Einzelne Funktionen können unvollständig sein oder noch fehlen. Der geltende Umfang wird beim Vertragsabschluss schriftlich festgehalten und ist Teil dessen, was Sie akzeptieren: Wir versprechen keine Funktionen, die es nicht gibt.",
-        },
-        { h: "3. Ihr Konto" },
-        {
-          p: "Sie sind für die Zugangsdaten Ihres Kontos und die der von Ihnen angelegten Personen verantwortlich. Das System legt Nutzer mit einem temporären Passwort an, das die Person beim ersten Login ändern muss; bis dahin bleibt die Oberfläche für sie gesperrt.",
-        },
-        {
-          p: "Sie können Rollen, administrative Fähigkeiten und objektbezogenen Umfang vergeben. Die Konfiguration dieser Berechtigungen liegt bei Ihnen: wir stellen den Mechanismus, wir entscheiden nicht, wer in Ihrem Betrieb was sieht.",
-        },
-        { h: "4. Ihre Daten" },
-        {
-          p: "Die Daten, die Sie erfassen — Objekte, Einheiten, Raten, Buchungen, Gäste, Inhalte Ihrer Websites — gehören Ihnen. Wir verarbeiten sie zur Leistungserbringung, gemäß der [Datenschutzerklärung](/legal/privacidad). Wenn Sie es sind, der Gastdaten erfasst, sind Sie diesen Gästen und dem geltenden Recht gegenüber dafür verantwortlich.",
-        },
-        { h: "5. Kommerzielle Bedingungen" },
-        {
-          p: "Die enthaltenen Produkte und die Obergrenzen für Objekte und Nutzer jedes Kontos werden beim Vertragsabschluss schriftlich mitgeteilt und sind Teil der Vereinbarung.",
-        },
-        {
-          p: "Die Zahlung des Gastes läuft nicht über roombir: sie erfolgt heute beim Check-in, zwischen Unterkunft und Gast.",
-        },
-        { h: "6. Zulässige Nutzung" },
-        { p: "Die Plattform darf nicht genutzt werden, um:" },
-        {
-          ul: [
-            "Rechtswidrige oder irreführende Inhalte zu veröffentlichen oder solche, zu deren Nutzung Sie nicht berechtigt sind.",
-            "Falsche Bewertungen zu erfassen oder Ihrer Unterkunft Vertrauenssignale zuzuschreiben, die nicht zutreffen.",
-            "Auf Daten eines anderen Unternehmens zuzugreifen oder die Berechtigungskontrollen des Systems zu umgehen.",
-            "Automatisiert außerhalb der vorgesehenen Oberflächen zu erfassen, bis hin zur Beeinträchtigung des Dienstes für andere.",
-          ],
-        },
-        { h: "7. Verfügbarkeit" },
-        {
-          p: "Wir tun das Zumutbare, damit der Dienst verfügbar ist, bieten in dieser Phase aber keine Service-Level-Vereinbarung mit Entschädigung. Wartungen, die den Dienst unterbrechen können, werden angekündigt, wenn sie absehbar sind.",
-        },
-        { h: "8. Der KI-Assistent" },
-        {
-          p: "Der Assistent führt Vorgänge mit den echten Berechtigungen dessen aus, der ihn nutzt, und hinterlässt eine Spur dessen, was er getan hat. Dennoch ist er ein probabilistisches System: **prüfen Sie, was er ausführt**, bevor Sie einen sensiblen Vorgang als erledigt betrachten — so, wie Sie die Arbeit von jemandem prüfen würden, der gerade angefangen hat. Die Ratenvorschläge des Revenue-Moduls sind genau das, Vorschläge: die Entscheidung, sie anzuwenden, liegt bei Ihnen.",
-        },
-        { h: "9. Geistiges Eigentum" },
-        {
-          p: "Software, Marke und Dokumentation von Roombir gehören uns. Die Inhalte, die Sie erfassen — Texte, Fotos, Logo, Design Ihrer Website — gehören Ihnen, und Sie gestatten uns, sie ausschließlich zur Leistungserbringung zu hosten und anzuzeigen.",
-        },
-        { h: "10. Kündigung" },
-        {
-          p: "Sie können Ihr Konto jederzeit kündigen, indem Sie an [hola@roombir.com](mailto:hola@roombir.com) schreiben. Vor der Schließung räumen wir Ihnen eine angemessene Frist ein, um herunterzuladen, was Sie behalten möchten.",
-        },
-        { h: "11. Haftung" },
-        {
-          p: "Der Dienst wird bereitgestellt, wie er ist. Soweit gesetzlich zulässig, ist unsere Haftung auf die Beträge begrenzt, die Sie uns in den zwölf Monaten vor dem auslösenden Ereignis gezahlt haben. Nichts davon begrenzt Haftungen, die von Gesetzes wegen nicht begrenzt werden dürfen.",
-        },
-        { h: "12. Änderungen und Gerichtsstand" },
-        {
-          p: "Wir können diese Bedingungen aktualisieren; wesentliche Änderungen werden aktiven Konten per E-Mail mitgeteilt und das Datum im Kopf wird angepasst. Es gilt das Recht der Republik Argentinien und die Zuständigkeit ihrer Gerichte.",
         },
       ],
     },
@@ -2820,7 +2779,7 @@ const de: Dictionary = {
         },
         { h: "5. Fragen" },
         {
-          p: "Bei Fragen dazu schreiben Sie uns an [hola@roombir.com](mailto:hola@roombir.com). Siehe auch die [Datenschutzerklärung](/legal/privacidad).",
+          p: "Bei Fragen dazu schreiben Sie uns an [team@roombir.com](mailto:team@roombir.com). Siehe auch die [Datenschutzerklärung](/legal/privacidad).",
         },
       ],
     },
@@ -2860,7 +2819,7 @@ const de: Dictionary = {
       info: "Angabe ohne Bewertung",
     },
     sourcesNote:
-      "Daten zu {name} am {date} von der öffentlichen Website übernommen. Die zu Roombir aus dem [Produktstand](/nosotros#estado) desselben Datums. Wenn Sie etwas Veraltetes finden, schreiben Sie an hola@roombir.com. Quelle:",
+      "Daten zu {name} am {date} von der öffentlichen Website übernommen. Die zu Roombir aus dem [Produktstand](/nosotros#estado) desselben Datums. Wenn Sie etwas Veraltetes finden, schreiben Sie an team@roombir.com. Quelle:",
     method: {
       eyebrow: "Wie wir vergleichen",
       title: "Nur das, was ihre Website sagt, *mit Datum*.",

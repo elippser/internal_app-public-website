@@ -221,6 +221,7 @@ export type CompanyKey = (typeof COMPANY_LINKS)[number]["key"];
 export const LEGAL_LINKS = [
   { key: "privacy", href: "/legal/privacidad" },
   { key: "terms", href: "/legal/terminos" },
+  { key: "siteTerms", href: "/legal/terminos-del-sitio" },
   { key: "cookies", href: "/legal/cookies" },
 ] as const;
 
