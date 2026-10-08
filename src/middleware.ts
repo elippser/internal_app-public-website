@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { isLocale, pickLocale, type Locale } from "@/i18n/config";
+import { isLocale, type Locale } from "@/i18n/config";
+import { countryOf, localeFor } from "@/i18n/geo";
 import {
   ROUTES,
   internalPath,
@@ -17,7 +18,10 @@ import {
  *
  * 1. **Prefijar.** Una URL sin idioma —`/precios`, o los enlaces del sitio
  *    viejo, o el `/preview/plans` que embebe el panel interno— se redirige al
- *    idioma que corresponda según la cookie o el `Accept-Language`.
+ *    idioma que corresponda: el que el visitante eligió en el selector (cookie)
+ *    o, si nunca eligió, el del país de su IP; un país cuyo idioma no tenemos
+ *    va a inglés. Las URLs que ya traen idioma se respetan: son enlaces
+ *    compartidos o resultados del buscador en ese idioma.
  *
  * 2. **Traducir.** `/en/platform/ai` se reescribe a `/en/producto/ia`, que es
  *    la carpeta real. La barra de direcciones no cambia: el visitante y el
@@ -58,7 +62,7 @@ function legacyResponse(request: NextRequest, target: string) {
 function chooseLocale(request: NextRequest): Locale {
   const cookie = request.cookies.get(LOCALE_COOKIE)?.value;
   if (cookie && isLocale(cookie)) return cookie;
-  return pickLocale(request.headers.get("accept-language"));
+  return localeFor(countryOf(request.headers), request.headers.get("accept-language"));
 }
 
 export function middleware(request: NextRequest) {
@@ -79,7 +83,11 @@ export function middleware(request: NextRequest) {
     // slug traducido: un enlace viejo a `/precios` no debería aterrizar en
     // `/en/precios` para después rebotar otra vez.
     url.pathname = key ? publicPath(locale, key) : `/${locale}${pathname === "/" ? "" : pathname}`;
-    return NextResponse.redirect(url);
+    // Depende de la IP y la cookie de cada visitante: que nadie en el camino
+    // la guarde y le sirva a uno el idioma de otro.
+    const res = NextResponse.redirect(url);
+    res.headers.set("Cache-Control", "private, no-store");
+    return res;
   }
 
   const locale = first;

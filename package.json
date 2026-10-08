@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "capture:motor": "node scripts/capture-motor.cjs",
     "sync:linkhub": "node scripts/sync-linkhub.mjs",
-    "cut:clips": "node scripts/cut-clips.mjs"
+    "cut:clips": "node scripts/cut-clips.mjs",
+    "sync:geoip": "node scripts/sync-geoip.mjs"
   },
   "dependencies": {
     "next": "16.2.4",
@@ -20,6 +21,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "ip3country": "^5.0.0",
     "typescript": "^5"
   }
 }

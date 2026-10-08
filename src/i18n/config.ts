@@ -56,20 +56,3 @@ export const OG_LOCALES: Record<Locale, string> = {
 export function isLocale(value: string): value is Locale {
   return (LOCALES as readonly string[]).includes(value);
 }
-
-/**
- * Elige el mejor idioma para un `Accept-Language`.
- *
- * Deliberadamente simple: mira los tags por orden de preferencia y se queda
- * con el primero cuyo idioma base conozcamos. Sin pesos `q` ni negociación
- * fina — para cinco idiomas eso es precisión que nadie va a notar.
- */
-export function pickLocale(acceptLanguage: string | null): Locale {
-  if (!acceptLanguage) return DEFAULT_LOCALE;
-  for (const part of acceptLanguage.split(",")) {
-    const tag = part.split(";")[0].trim().toLowerCase();
-    const base = tag.split("-")[0];
-    if (isLocale(base)) return base;
-  }
-  return DEFAULT_LOCALE;
-}
