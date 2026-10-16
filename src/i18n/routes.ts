@@ -340,6 +340,18 @@ export const ROUTES = {
   },
   /* Los videos de Habitaciones, Motor, Informes, Revenue y Marketing
      (`components/video-tours/`). Fuera del sitemap y del menú. */
+  /* La guía de todas las herramientas sobre la cuenta demo (`components/video-guia/`).
+     Sólo en español; fuera del sitemap y del menú. */
+  videoGuia: {
+    path: "/video/guia",
+    slugs: {
+      es: "/video/guia",
+      en: "/video/guia",
+      pt: "/video/guia",
+      fr: "/video/guia",
+      de: "/video/guia",
+    },
+  },
   videoHabitaciones: {
     path: "/video/habitaciones",
     slugs: {

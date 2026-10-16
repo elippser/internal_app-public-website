@@ -53,6 +53,15 @@ export function layKitBeats(raw: { id: string; dur: number; enter?: "fade" | "no
   return beats;
 }
 
+/** El capítulo vigente: el último con nombre que arrancó en o antes de la escena activa. */
+function chapterAt(beats: KitBeat[], chapters: Record<string, string>, active: number): string {
+  for (let i = active; i >= 0; i--) {
+    const name = chapters[beats[i]?.id];
+    if (name !== undefined) return name;
+  }
+  return "";
+}
+
 function clock(ms: number): string {
   const secs = Math.max(0, Math.floor(ms / 1000));
   return `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
@@ -126,7 +135,7 @@ function Stage<D extends KitDict>({ beats, scenes, t, epoch, paused, v, locale, 
   );
 }
 
-export default function KitPlayer<D extends KitDict>({ locale, v, langs, beats: natural, scenes, posterAt, anchors, vo, pzoom }: { locale: Locale; v: D; langs: LangLink[]; beats: KitBeat[]; scenes: Record<string, (p: KitSceneProps<D>) => ReactNode>; /** El cuadro del póster: [id de escena, ms dentro de ella]. */ posterAt: [string, number]; /** Anclajes de la voz (ver KitEmbed). */ anchors?: VoiceAnchors; /** Zoom de cada escena en vertical (`?view=mobile`). */ pzoom?: Record<string, number>; /** El montaje de voz y música de este video e idioma, leído en el servidor (`getVideoVoiceover`). */ vo?: Voiceover | null }) {
+export default function KitPlayer<D extends KitDict>({ locale, v, langs, beats: natural, scenes, posterAt, anchors, vo, pzoom, chapters }: { locale: Locale; v: D; langs: LangLink[]; beats: KitBeat[]; scenes: Record<string, (p: KitSceneProps<D>) => ReactNode>; /** El cuadro del póster: [id de escena, ms dentro de ella]. */ posterAt: [string, number]; /** Anclajes de la voz (ver KitEmbed). */ anchors?: VoiceAnchors; /** Zoom de cada escena en vertical (`?view=mobile`). */ pzoom?: Record<string, number>; /** El montaje de voz y música de este video e idioma, leído en el servidor (`getVideoVoiceover`). */ vo?: Voiceover | null; /** Capítulos con nombre: id del beat donde arranca cada uno → título. Sin esto, la barra marca cada escena y dice "Escena N" (los videos de producto). */ chapters?: Record<string, string> }) {
   // `?embed=1`: la superficie que maneja la mesa de montaje del panel (ver KitEmbed).
   const [embed, setEmbed] = useState(false);
   // `?view=mobile`: el corte vertical (9:16), con los mismos tiempos (ver video-kit/portrait.tsx).
@@ -419,7 +428,7 @@ export default function KitPlayer<D extends KitDict>({ locale, v, langs, beats: 
             >
               <div className={s.trackRail}>
                 <i className={s.trackFill} style={{ transform: `scaleX(${progress})` }} />
-                {beats.slice(1).map((b) => (
+                {beats.slice(1).filter((b) => !chapters || chapters[b.id] !== undefined).map((b) => (
                   <i key={b.id} className={s.chapter} style={{ left: `${(b.start / total) * 100}%` }} />
                 ))}
               </div>
@@ -446,7 +455,7 @@ export default function KitPlayer<D extends KitDict>({ locale, v, langs, beats: 
                 {clock(ended ? total : t)} <span className={s.timeTotal}>/ {clock(total)}</span>
               </span>
               <span className={s.chapterName}>
-                {hud.scene} {active + 1}
+                {chapters ? chapterAt(beats, chapters, active) : `${hud.scene} ${active + 1}`}
               </span>
               <span className={s.spacer} />
               <nav className={s.langs} aria-label={hud.language}>

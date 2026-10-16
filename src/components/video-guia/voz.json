@@ -1,0 +1,256 @@
+{
+ "src": "/video/guia/voz-es.mp3",
+ "srcDur": 391080,
+ "blocks": [
+  {
+   "at": 0,
+   "dur": 6873,
+   "text": "Esta es la guía de Roombir. Vas a recorr"
+  },
+  {
+   "at": 7436,
+   "dur": 1288,
+   "text": "Empecemos por el escritorio."
+  },
+  {
+   "at": 9278,
+   "dur": 14615,
+   "text": "La pantalla de inicio resume tu día: lle"
+  },
+  {
+   "at": 24382,
+   "dur": 9633,
+   "text": "Cada equipo trabaja en su propio espacio"
+  },
+  {
+   "at": 34587,
+   "dur": 7772,
+   "text": "Con Control más K abres el buscador glob"
+  },
+  {
+   "at": 42928,
+   "dur": 1408,
+   "text": "Sigamos con las habitaciones."
+  },
+  {
+   "at": 44794,
+   "dur": 12631,
+   "text": "El tablero muestra cada habitación según"
+  },
+  {
+   "at": 57896,
+   "dur": 6952,
+   "text": "El plano de ocupación ordena las habitac"
+  },
+  {
+   "at": 65391,
+   "dur": 9543,
+   "text": "En Categorías defines cada tipo de habit"
+  },
+  {
+   "at": 75434,
+   "dur": 9999,
+   "text": "Editar una categoría es un asistente de "
+  },
+  {
+   "at": 85971,
+   "dur": 1393,
+   "text": "Ahora, las reservas."
+  },
+  {
+   "at": 87919,
+   "dur": 10580,
+   "text": "El panel del día es la pantalla de recep"
+  },
+  {
+   "at": 98992,
+   "dur": 8548,
+   "text": "En la lista de reservas filtras por esta"
+  },
+  {
+   "at": 108086,
+   "dur": 13386,
+   "text": "Al abrir una reserva ves al huésped, de "
+  },
+  {
+   "at": 122062,
+   "dur": 9186,
+   "text": "El calendario muestra cada habitación po"
+  },
+  {
+   "at": 131702,
+   "dur": 6679,
+   "text": "Para cargar una reserva a mano eliges fe"
+  },
+  {
+   "at": 138881,
+   "dur": 7908,
+   "text": "Eliges la habitación, revisas el detalle"
+  },
+  {
+   "at": 147405,
+   "dur": 10906,
+   "text": "En Tarifas defines el precio base de cad"
+  },
+  {
+   "at": 158812,
+   "dur": 11158,
+   "text": "La disponibilidad muestra cuántas unidad"
+  },
+  {
+   "at": 170380,
+   "dur": 10320,
+   "text": "Las promociones pueden ser automáticas o"
+  },
+  {
+   "at": 181139,
+   "dur": 9475,
+   "text": "En Configuración eliges cómo se vende ca"
+  },
+  {
+   "at": 191103,
+   "dur": 1361,
+   "text": "Pasemos a los informes."
+  },
+  {
+   "at": 192838,
+   "dur": 11114,
+   "text": "Informes reúne la ocupación, las reserva"
+  },
+  {
+   "at": 204528,
+   "dur": 1172,
+   "text": "Ahora, revenue."
+  },
+  {
+   "at": 206115,
+   "dur": 9301,
+   "text": "Revenue analiza ingresos, ocupación, tar"
+  },
+  {
+   "at": 215869,
+   "dur": 6528,
+   "text": "El pace compara cómo se está vendiendo c"
+  },
+  {
+   "at": 222908,
+   "dur": 9047,
+   "text": "Los eventos de mercado se detectan solos"
+  },
+  {
+   "at": 232346,
+   "dur": 7899,
+   "text": "Con tus reglas de precio, el motor sugie"
+  },
+  {
+   "at": 240792,
+   "dur": 1197,
+   "text": "Sigamos con marketing."
+  },
+  {
+   "at": 242430,
+   "dur": 5135,
+   "text": "En Sitios web están los sitios de tu hot"
+  },
+  {
+   "at": 247947,
+   "dur": 9301,
+   "text": "El resumen del sitio muestra sus páginas"
+  },
+  {
+   "at": 257704,
+   "dur": 11092,
+   "text": "El editor es visual: cambias textos, fot"
+  },
+  {
+   "at": 269233,
+   "dur": 4521,
+   "text": "Así lo ve el huésped: un sitio rápido, c"
+  },
+  {
+   "at": 274194,
+   "dur": 5756,
+   "text": "El motor de reservas muestra el calendar"
+  },
+  {
+   "at": 280319,
+   "dur": 5860,
+   "text": "El huésped elige su habitación, ve el pr"
+  },
+  {
+   "at": 286605,
+   "dur": 10653,
+   "text": "Identidad de marca guarda tu logo, color"
+  },
+  {
+   "at": 297645,
+   "dur": 7436,
+   "text": "Las galerías ordenan tus fotos por tema "
+  },
+  {
+   "at": 305467,
+   "dur": 8903,
+   "text": "En Reseñas juntas las opiniones de Googl"
+  },
+  {
+   "at": 314796,
+   "dur": 10211,
+   "text": "LinkHub es tu página de enlaces para Ins"
+  },
+  {
+   "at": 325260,
+   "dur": 4369,
+   "text": "Así se ve publicado: tus huéspedes reser"
+  },
+  {
+   "at": 330007,
+   "dur": 5362,
+   "text": "La librería de archivos guarda todas las"
+  },
+  {
+   "at": 335631,
+   "dur": 4709,
+   "text": "Cada archivo que subes queda disponible "
+  },
+  {
+   "at": 340785,
+   "dur": 1960,
+   "text": "Y ahora, Roombir IA."
+  },
+  {
+   "at": 343083,
+   "dur": 6083,
+   "text": "Roombir IA conoce todo tu sistema. Le pr"
+  },
+  {
+   "at": 349467,
+   "dur": 8177,
+   "text": "Responde con los datos reales del hotel "
+  },
+  {
+   "at": 358163,
+   "dur": 1849,
+   "text": "Por último, la administración."
+  },
+  {
+   "at": 360347,
+   "dur": 12658,
+   "text": "En la ficha de la propiedad ves sus dato"
+  },
+  {
+   "at": 373310,
+   "dur": 6419,
+   "text": "En Ajustes cada persona elige si quiere "
+  },
+  {
+   "at": 380030,
+   "dur": 7210,
+   "text": "Y si alguien del equipo está empezando, "
+  },
+  {
+   "at": 387632,
+   "dur": 3236,
+   "text": "Todo tu hotel, en un solo lugar. Roombir"
+  }
+ ]
+}
