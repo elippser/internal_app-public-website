@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { trackFormInvalid, trackFormResult } from "@/components/SiteTracker";
+import { attribution } from "@/lib/track";
 
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dict/es";
@@ -168,7 +169,10 @@ export default function SignupForm({
     setErrors({});
     setState("sending");
 
-    const utm: Record<string, string> = {};
+    // Las utm de la sesión (por si entró por un anuncio a otra página y llegó
+    // acá navegando) y encima las de esta URL, que son las más recientes.
+    const visit = attribution();
+    const utm: Record<string, string> = { ...(visit?.utm ?? {}) };
     for (const [key, value] of new URLSearchParams(window.location.search)) {
       if (key.startsWith("utm_")) utm[key] = value;
     }
@@ -190,6 +194,9 @@ export default function SignupForm({
           phone: String(form.get("phone") ?? "").trim(),
           locale,
           utm,
+          attribution: visit
+            ? { vid: visit.vid, sid: visit.sid, landing: visit.landing, refHost: visit.refHost }
+            : undefined,
           website: "",
           elapsedMs: Date.now() - mountedAt.current,
           interacted: interacted.current,

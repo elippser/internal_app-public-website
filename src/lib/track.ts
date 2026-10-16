@@ -209,6 +209,29 @@ export function track(t: EventType, data: Record<string, unknown> = {}) {
 }
 
 /**
+ * El visitante y la sesión vigentes, para que un formulario los mande junto con
+ * el alta: así el lead queda unido a su recorrido en el sitio y al canal por el
+ * que entró, aunque haya llegado a /crear-cuenta navegando desde otra página
+ * (las `utm` de la URL ya no están ahí, pero sí en la sesión). Vacío donde no
+ * se mide (local, iframe del panel).
+ */
+export function attribution(): {
+  vid: string;
+  sid: string;
+  landing: string;
+  refHost: string;
+  utm: Record<string, string>;
+} | null {
+  if (!trackingEnabled()) return null;
+  const v = visitor();
+  const s = session(v.isNew, !landingDone);
+  landingDone = true;
+  const utm: Record<string, string> = {};
+  for (const [key, value] of Object.entries(s.utm ?? {})) if (value) utm[`utm_${key}`] = value;
+  return { vid: v.id, sid: s.id, landing: s.landing, refHost: s.refHost ?? "", utm };
+}
+
+/**
  * Manda la cola. Con `beacon` (al ocultarse o cerrar la pestaña) va por
  * `sendBeacon`, que sobrevive a la descarga de la página; si no, fetch.
  */

@@ -98,6 +98,23 @@ export async function POST(req: Request) {
         )
       : {};
 
+  // El visitante del sitio (ids al azar de la telemetría) para unir el lead con
+  // su recorrido. Sólo los formatos que acepta el API: lo demás se descarta.
+  const raw =
+    body.attribution && typeof body.attribution === "object" && !Array.isArray(body.attribution)
+      ? (body.attribution as Record<string, unknown>)
+      : {};
+  const id = (value: unknown) => {
+    const v = str(value, 64);
+    return /^[a-z0-9]+$/.test(v) ? v : "";
+  };
+  const attribution = {
+    vid: id(raw.vid),
+    sid: id(raw.sid),
+    landing: str(raw.landing, 300),
+    refHost: str(raw.refHost, 200),
+  };
+
   const payload = {
     hotelName: str(body.hotelName, 160),
     lodgingType: str(body.lodgingType, 40),
@@ -110,6 +127,7 @@ export async function POST(req: Request) {
     locale: str(body.locale, 5) || "es",
     utm,
     referer: (req.headers.get("referer") ?? "").slice(0, 500),
+    attribution,
     website: "",
     elapsedMs: int(body.elapsedMs),
     interacted: body.interacted === true,
