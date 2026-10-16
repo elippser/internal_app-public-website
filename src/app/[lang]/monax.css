@@ -294,20 +294,94 @@
         padding-inline: 18px;
     }
 
+    /* En teléfono el titular manda: más grande, y las dos píldoras dejan de
+       apretar la línea del medio. El chip de color queda junto a "del pasado"
+       y "sin instalar nada" baja debajo del titular, como sello. Para eso la
+       línea 2 se disuelve (`display: contents`) y sus piezas pasan a ser
+       ítems del titular, ordenados con `order`. */
     .monax .headline {
-        font-size: clamp(24px, 7.35vw, 45px);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        column-gap: 12px;
+        row-gap: 2px;
+        font-size: clamp(28px, 9vw, 46px);
+        line-height: 1.04;
     }
 
     .monax .headline .line {
         flex-wrap: wrap;
         justify-content: center;
         gap: 10px;
-        row-gap: 4px;
+        row-gap: 2px;
+    }
+
+    .monax .headline .line-1,
+    .monax .headline .line-3 {
+        flex-basis: 100%;
+    }
+
+    .monax .headline .line-1 {
+        order: 1;
+    }
+
+    .monax .headline .line-2 {
+        display: contents;
+    }
+
+    .monax .headline .line-2 .word,
+    .monax .inline-img {
+        order: 2;
+    }
+
+    .monax .headline .line-3 {
+        order: 3;
+    }
+
+    .monax .idea-pill {
+        order: 4;
+        margin-top: 18px;
+        padding: 5px 6px 5px 13px;
+    }
+
+    .monax .idea-pill .txt br {
+        display: none;
+    }
+
+    .monax .idea-pill .txt>span+span::before {
+        content: " ";
+    }
+
+    .monax .idea-pill .txt {
+        font-size: 12px;
+    }
+
+    .monax .idea-pill .leaf {
+        width: 26px;
+        height: 26px;
     }
 
     .monax .inline-img {
-        width: 68px;
-        height: 36px;
+        width: 1.7em;
+        height: 0.9em;
+    }
+
+    .monax .hero-lead {
+        margin-top: 22px;
+    }
+
+    /* Los dos botones apilados, del mismo ancho: si no, el primero queda más
+       angosto que el segundo y la columna se ve torcida. */
+    .monax .monax-cta .btn-row {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .monax .monax-cta .btn-row .btn {
+        justify-content: center;
     }
 }
 
