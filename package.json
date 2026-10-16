@@ -10,9 +10,12 @@
     "capture:motor": "node scripts/capture-motor.cjs",
     "sync:linkhub": "node scripts/sync-linkhub.mjs",
     "cut:clips": "node scripts/cut-clips.mjs",
-    "sync:geoip": "node scripts/sync-geoip.mjs"
+    "sync:geoip": "node scripts/sync-geoip.mjs",
+    "prebuild": "node scripts/sync-geoip-city.mjs",
+    "sync:geoip-city": "node scripts/sync-geoip-city.mjs"
   },
   "dependencies": {
+    "mmdb-lib": "^2.2.1",
     "next": "16.2.4",
     "react": "19.2.4",
     "react-dom": "19.2.4"

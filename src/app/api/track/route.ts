@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { countryOf } from "@/i18n/geo";
+import { regionOf } from "@/lib/geoRegion";
 import { internalApiUrl } from "@/lib/siteConfig";
 
 /**
@@ -8,7 +9,8 @@ import { internalApiUrl } from "@/lib/siteConfig";
  *
  * 1. el secret del API interno vive acá y nunca baja al navegador;
  * 2. acá se ve la IP real (Traefik la deja en `X-Real-IP`) y con ella el país,
- *    con la misma tabla que decide el idioma. La IP no se reenvía ni se guarda;
+ *    y la provincia (base de DB-IP, `lib/geoRegion.ts`; sin ella, la tabla del
+ *    idioma da sólo el país). La IP no se reenvía ni se guarda;
  * 3. los bloqueadores de anuncios no cortan un endpoint propio, así que el
  *    número se parece más a la realidad que el de un script de terceros.
  *
@@ -86,12 +88,14 @@ export async function POST(req: NextRequest) {
     return NO_CONTENT();
   }
 
-  const country = countryOf(req.headers);
+  const geo = regionOf(ip);
+  const country = geo?.country ?? countryOf(req.headers);
+  const region = geo?.region ?? null;
   const browser = browserOf(ua);
   const os = osOf(ua);
   const enriched = events
     .filter((e): e is Record<string, unknown> => Boolean(e) && typeof e === "object")
-    .map((e) => ({ ...e, country, browser, os }));
+    .map((e) => ({ ...e, country, region, browser, os }));
 
   try {
     const res = await fetch(ENDPOINT, {

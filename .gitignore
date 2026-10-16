@@ -41,3 +41,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Base IP -> provincia de DB-IP: la baja el prebuild (scripts/sync-geoip-city.mjs)
+/data/geoip/
