@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { trackFormInvalid, trackFormResult } from "@/components/SiteTracker";
 
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dict/es";
@@ -156,6 +157,7 @@ export default function SignupForm({
     const found = validate(form);
     if (Object.keys(found).length > 0) {
       setErrors(found);
+      trackFormInvalid("signup", Object.keys(found));
       // El foco va al primer campo con problema: sin esto, en el movil el
       // mensaje queda fuera de pantalla y parece que el boton no hizo nada.
       const first = Object.keys(found)[0];
@@ -209,12 +211,15 @@ export default function SignupForm({
                   : t.errors.generic,
         });
         setState("error");
+        trackFormResult(formRef.current, "signup", { ok: false, code: code || `http_${res.status}` });
         return;
       }
 
+      trackFormResult(formRef.current, "signup", { ok: true });
       setSentTo(email);
       setState("sent");
     } catch {
+      trackFormResult(formRef.current, "signup", { ok: false, code: "network" });
       setErrors({ general: t.errors.network });
       setState("error");
     }
@@ -266,6 +271,7 @@ export default function SignupForm({
       onFocus={markInteraction}
       noValidate
       data-signup=""
+      data-track-form="signup"
     >
       <fieldset className={styles.group}>
         <legend className={styles.legend}>{t.groupProperty}</legend>

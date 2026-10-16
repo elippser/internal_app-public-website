@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { trackFormResult } from "@/components/SiteTracker";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dict/es";
 import { siteConfig } from "@/lib/siteConfig";
@@ -40,7 +41,8 @@ export default function LeadForm({
     e.preventDefault();
     if (state === "sending") return;
 
-    const form = new FormData(e.currentTarget);
+    const formEl = e.currentTarget;
+    const form = new FormData(formEl);
     // El campo trampa lo completan los bots y nadie más. Si tiene algo,
     // fingimos éxito: un error le diría al script que reintente distinto.
     if (String(form.get("website") ?? "").length > 0) {
@@ -79,10 +81,13 @@ export default function LeadForm({
         // resolver esperando.
         setError(body?.error === "rate_limited" ? t.errorRate : t.errorGeneric);
         setState("error");
+        trackFormResult(formEl, "lead", { ok: false, code: String(body?.error || `http_${res.status}`) });
         return;
       }
+      trackFormResult(formEl, "lead", { ok: true });
       setState("sent");
     } catch {
+      trackFormResult(formEl, "lead", { ok: false, code: "network" });
       setError(t.errorGeneric);
       setState("error");
     }
@@ -102,6 +107,7 @@ export default function LeadForm({
       className={[styles.form, className ?? ""].join(" ")}
       onSubmit={onSubmit}
       data-lead-form=""
+      data-track-form="lead"
     >
       <div className={styles.field}>
         <label className={styles.label} htmlFor="lead-name">

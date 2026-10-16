@@ -2756,6 +2756,9 @@ const pt: Dictionary = {
         {
           p: "As páginas de `roombir.com` são estáticas e não precisam de cookies para funcionar. Não usamos cookies próprios para traçar seu perfil nem para lembrar quem você é entre visitas. O único que pode aparecer é o que guarda o **idioma que você escolheu** no seletor, para não te devolver a outro na próxima visita.",
         },
+        {
+          p: "Para saber quais páginas funcionam e o que falha nos formulários, o site usa uma **medição própria**, sem terceiros. Ela guarda no armazenamento local do seu navegador dois identificadores aleatórios: `rb_vid`, que distingue uma visita nova de uma que volta, e `rb_ses`, que agrupa as páginas de uma mesma visita e se renova após 30 minutos sem atividade. Com eles registramos as páginas vistas, o tempo de leitura, os botões que você toca e se um formulário foi enviado ou em qual campo ficou. **Não guardamos o seu endereço IP nem o que você escreve nos formulários**, e o país é deduzido do IP sem armazená-lo. Você pode apagá-los quando quiser nas configurações do navegador.",
+        },
         { h: "2. Medição e publicidade" },
         {
           p: "O site pode montar ferramentas de medição de terceiros — analítica de navegação, medição de conversões de campanhas e pixels de plataformas de publicidade — quando estiverem configuradas. Essas ferramentas podem sim deixar cookies ou identificadores no seu navegador para contar visitas e atribuir conversões.",

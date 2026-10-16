@@ -2763,6 +2763,9 @@ const en: Dictionary = {
         {
           p: "The pages at `roombir.com` are static and do not need cookies to work. We do not use our own cookies to profile you or to remember who you are between visits. The only one that may appear is the one storing the **language you chose** in the switcher, so we do not send you back to another one on your next visit.",
         },
+        {
+          p: "To learn which pages work and what goes wrong in the forms, the site uses its **own measurement**, with no third parties. It stores two random identifiers in your browser's local storage: `rb_vid`, which tells a new visit from a returning one, and `rb_ses`, which groups the pages of a single visit and renews after 30 minutes without activity. With them we record the pages viewed, reading time, the buttons you tap and whether a form was sent or at which field it was left. **We do not store your IP address or anything you type into the forms**, and the country is derived from the IP without storing it. You can delete them at any time from your browser settings.",
+        },
         { h: "2. Measurement and advertising" },
         {
           p: "The site may load third-party measurement tools — navigation analytics, campaign conversion measurement and advertising platform pixels — when they are configured. Those tools can leave cookies or identifiers in your browser to count visits and attribute conversions.",

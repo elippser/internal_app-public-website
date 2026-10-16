@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Outfit } from "next/font/google";
 import Pixels from "@/components/Pixels";
+import SiteTracker from "@/components/SiteTracker";
 import FxObserver from "@/components/site/FxObserver";
 import SiteFooter from "@/components/site/SiteFooter";
 import SiteHeader from "@/components/site/SiteHeader";
@@ -143,6 +144,9 @@ export default async function RootLayout({
             Sin él la página se ve igual, sólo que quieta. */}
         <FxObserver />
         <Pixels />
+        {/* Visitas, clics, formularios y videos → Marketing › Tráfico del
+            panel interno. Primera parte, sin terceros: ver lib/track.ts. */}
+        <SiteTracker />
         {/* La entidad "roombir" para los grafos de conocimiento: quién es la
             organización detrás del dominio y cuáles son sus otros perfiles
             (`sameAs` es lo que le permite a un motor unir el sitio, el

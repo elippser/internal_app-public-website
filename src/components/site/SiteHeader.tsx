@@ -256,6 +256,7 @@ export default function SiteHeader({
         {open && (
           <div
             className={styles.megaWrap}
+            data-zone="mega"
             onMouseEnter={() => openMenu(open)}
             onMouseLeave={closeMenu}
             onClickCapture={closeOnLink}
@@ -426,7 +427,7 @@ export default function SiteHeader({
         )}
 
         {drawerOpen && (
-          <div className={styles.drawer} id="menu-movil" onClickCapture={closeOnLink}>
+          <div className={styles.drawer} id="menu-movil" data-zone="drawer" onClickCapture={closeOnLink}>
             {/* Plataforma: los tres grupos, con los ítems como píldoras. */}
             <div className={styles.drawerGroup}>
               <Link href={path("/producto")} className={styles.drawerLink}>
